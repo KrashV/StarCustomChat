@@ -1,0 +1,9 @@
+{
+  "version" : "1.0",
+  "author" : "Degranon",
+  "requires" : [],
+  "description" : "Irden Custom Chat",
+  "path" : ".",
+  "name" : "irdencustomchat",
+  "includes" : []
+}

@@ -1,0 +1,9 @@
+{
+  "type" : "irdencustomchat",
+
+  "scripts" : [
+  	"/stagehands/irden/irdencustomchathandler.lua"
+  ],
+  "scriptDelta" : 1,
+  "name": ""
+}

@@ -1,0 +1,3 @@
+[
+    {"op" : "add", "path": "/genericScriptContexts/irdencustomchat", "value": "/scripts/irdenchathandler.lua"}
+]
