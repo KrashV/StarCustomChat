@@ -174,12 +174,10 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   end
 
   local function drawPortrait(portrait, messageOffset)
-    for _, layer in ipairs(portrait) do 
-      if layer.transformation[1][3] == -42.5 then
-        self.canvas:drawImage(layer.image, vec2.mul(vec2.add(self.config.portraitImageOffset, messageOffset), 2), self.config.portraitScale)
-      else
-        self.canvas:drawImage(layer.image, vec2.add(self.config.portraitImageOffset, messageOffset), self.config.portraitScale)
-      end
+
+    for _, layer in ipairs(portrait) do
+      local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
+      self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
     end
   end
 

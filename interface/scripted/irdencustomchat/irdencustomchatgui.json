@@ -8,7 +8,7 @@
     "spacings": {
       "messages": 3,
       "lines": 1.8,
-      "name": 2
+      "name": 1
     },
     "spaceBetweenMessages": 4,
     "visTime" : 5,
@@ -19,14 +19,11 @@
     "nameOffset": [35, 0],
     "nameWrapWidth": 30,
 
-    "portraitTextOffset" : [28, 0],
-    "portraitScale" : 1,
-    "portraitImageOffset" : [-5, -27],
+    "portraitSize" : [22, 22],
+    "portraitImageOffset" : [6, -10],
+    "portraitCropArea": [10, 14, 32, 36],
     "portraitVerticalMargin" : 3,
     "portraitBackground" : "/interface/chat/portraitbg.png",
-
-    "iconImageOffset": [9, -9],
-    "iconImageScale": 0.5,
 
     "bodyHeight" : 55,
     "expandedBodyHeight" : 288,
@@ -45,9 +42,9 @@
     "disabledModeColor": "#191919D0",
 
     "font" : {
-      "baseSize" : 8,
+      "baseSize" : 9,
       "itemSize" : 8,
-      "nameSize" : 6,
+      "nameSize" : 10,
       "defaultColor" : [255, 255, 255]
     },
     "nameColors": {
@@ -225,7 +222,7 @@
         }
       ]
     },
-    
+
     "btnCkLocal": {
       "type": "button",
       "checkable": true,

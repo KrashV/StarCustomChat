@@ -29,6 +29,8 @@ function init()
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
+
+  chat.send("йцукенгшщзхъфывапролджэqg")
 end
 
 function createTotallyFakeWidget(wrapWidth, fontSize)
