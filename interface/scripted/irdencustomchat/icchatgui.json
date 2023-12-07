@@ -77,7 +77,7 @@
   "gui" : {
     "panefeature" : {
       "type" : "panefeature",
-      "anchor" : "bottomLeft",
+      "anchor" : "bottomRight",
       "positionLocked" : true,
       "offset": [0, 5]
     },
@@ -175,6 +175,7 @@
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "selected": true,
+          "fontColor": "#2e691eF8",
           "data": {
             "mode": "Local"
           }
@@ -344,5 +345,5 @@
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
-  "scripts": ["/interface/scripted/irdencustomchat/irdencustomchatgui.lua"]
+  "scripts": ["/interface/scripted/irdencustomchat/icchatgui.lua"]
 }

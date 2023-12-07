@@ -6,6 +6,7 @@ function init()
   
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
   message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
+  message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
 end
 
 function handleMessage(data)
@@ -23,8 +24,22 @@ function handleMessage(data)
   end
 end
 
+function getAllPlayers()
+  local players = {}
+  for _, player in ipairs(world.players()) do 
+    if world.entityName(player) and world.entityPortrait(player, "bust") then
+      table.insert(players, {
+        id = player,
+        name = world.entityName(player),
+        portrait = requestPortrait(player)
+      })
+    end
+  end
+  return players
+end
+
 function requestPortrait(entityId)
-  if world.entityExists(entityId) then 
+  if world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
     return world.entityPortrait(entityId, "bust")
   else
     return nil

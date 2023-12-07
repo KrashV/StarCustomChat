@@ -7,7 +7,7 @@
     3. Handle Irden-Specific messages
     4. Bind Enter and slash
     5. Showcase commands
-    6. Set avatar
+    6. Set avatar: image and offset
     7. Whisper should show the author / recepient
     8. On message receive play a sound
     9. Collapse long messages
@@ -18,6 +18,7 @@
 
 require "/scripts/irden/chat/message_class.lua"
 require "/scripts/vec2.lua"
+require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 
 IrdenChat = {
@@ -97,45 +98,6 @@ function IrdenChat:getMessages ()
   return self.messages
 end
 
-
-local function sendDataToStagehand(entityId, stagehandType, data)
-  local radius = 50
-
-  local function findStagehand(stagehandType, r)
-    for _, sId in ipairs( world.entityQuery(world.entityPosition(entityId), r, {
-      includedTypes = {"stagehand"}
-    })) do 
-      if world.stagehandType(sId) == stagehandType then
-        return sId
-      end
-    end
-  end
-
-  local fakePromise = {
-    succeeded = function() return findStagehand(stagehandType, radius) end,
-    finished = function()
-      return true
-    end,
-    result = function() end,
-    error = function() end
-  }
-
-  local function findStagehandAndSendData()
-    local sId = findStagehand(stagehandType, radius)
-    if sId then
-      world.sendEntityMessage(sId, "icc_sendMessage", data)
-      return true
-    end
-  end
-
-  if not findStagehandAndSendData() then
-    world.spawnStagehand(world.entityPosition(entityId), stagehandType)
-    promises:add(fakePromise, findStagehandAndSendData, function() 
-      promises:add(fakePromise, findStagehandAndSendData) 
-    end)
-  end
-end
-
 function IrdenChat:processCommand(text)
   local test = chat.command(text)
   for _, line in ipairs(test) do 
@@ -150,6 +112,8 @@ function IrdenChat:processCommand(text)
 end
 
 function IrdenChat:sendMessage(text, mode)
+  if text == "" then return end
+
   local data = {
     text = text,
     connection = self.author // -65536,
@@ -157,12 +121,13 @@ function IrdenChat:sendMessage(text, mode)
     mode = mode,
     nickname = player.name()
   }
+
   if mode == "Broadcast" or mode == "Local" or mode == "Party" then
     chat.send(data.text, mode)
   elseif mode == "Proximity" then
-    sendDataToStagehand(self.author, self.stagehandType, data)
+    icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
   elseif mode == "Announcement" then
-    sendDataToStagehand(self.author, self.stagehandType, data)
+    icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
   elseif mode == "Whisper" then
     chat.command("/w \"" .. world.entityName(widget.getSelectedData) .. "\" " .. text )
   end
@@ -174,7 +139,6 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   end
 
   local function drawPortrait(portrait, messageOffset)
-
     for _, layer in ipairs(portrait) do
       local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
       self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
@@ -191,10 +155,10 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
         drawPortrait(self.savedPortraits[target], messageOffset)
       else
         self.canvas:drawImage(self.config.icons.unknown, vec2.add(self.config.iconImageOffset, messageOffset), self.config.iconScale)
-        promises:add(world.sendEntityMessage(self.stagehandType, "icc_requestPortrait", target), function(portrait) 
+        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
           if portrait then
             self.savedPortraits[target] = portrait
-            drawPortrait(self.savedPortraits[target], messageOffset)
+            drawPortrait(portrait, messageOffset)
           end
         end)
       end

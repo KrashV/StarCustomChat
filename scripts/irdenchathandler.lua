@@ -3,7 +3,7 @@ require "/scripts/util.lua"
 
 function init()
   --if not player.getProperty("irdenCustomChatIsOpen") then
-    local interfacePath = "/interface/scripted/irdencustomchat/irdencustomchatgui.json"
+    local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
     player.interact("ScriptPane", root.assetJson(interfacePath))
   --end
 

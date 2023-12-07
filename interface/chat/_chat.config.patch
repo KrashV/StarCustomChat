@@ -1,8 +1,8 @@
 [
   {
     "op": "replace",
-    "path": "/gui/panefeature/offset/1",
-    "value": -200
+    "path": "/gui/panefeature/offset/0",
+    "value": 1000
   },
   {
     "op": "replace",
