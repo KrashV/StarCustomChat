@@ -42,7 +42,7 @@
     "selectedModeColor": "#2e691eF8",
     "unselectedModeColor": "white",
     "highlightColor": "#FFA50037",
-    "disabledModeColor": "#191919D0",
+    "disabledModeColor": "#393939D0",
 
     "font" : {
       "baseSize" : 8,
@@ -96,7 +96,7 @@
       "direction" : "vertical",
       "zlevel" : -9,
       "size": [269, 0],
-      "position": [20, 24],
+      "position": [20, 23],
       "stretchSet": {
         "end": "/interface/scripted/irdencustomchat/bodyheader.png",
         "inner": "/interface/scripted/irdencustomchat/bodyinner.png",
@@ -155,7 +155,7 @@
     "tbxInput": {
       "type": "textbox",
       "position": [23, 14],
-      "hint": "ПЕЧАТАТЬ ЗДЕСЬ",
+      "hint": "Text Here",
       "callback": "null",
       "maxWidth": 263,
       "enterKey": "sendMessage",
@@ -195,7 +195,7 @@
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [112, 0],
+          "position": [111, 0],
           "data": {
             "mode": "Whisper"
           }
@@ -206,7 +206,7 @@
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [168, 0],
+          "position": [166, 0],
           "disabled": true,
           "data": {
             "mode": "Server"
@@ -218,7 +218,7 @@
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [224, 0],
+          "position": [222, 0],
           "data": {
             "mode": "Broadcast"
           }
@@ -229,7 +229,7 @@
     "lblLocal": {
       "type": "label",
       "position": [42, 6],
-      "value": "Общий",
+      "value": "Local",
       "hAnchor": "mid",
       "vAnchor": "mid",
       "mouseTransparent": true
@@ -237,7 +237,7 @@
     "lblParty": {
       "type": "label",
       "position": [104, 6],
-      "value": "Группа",
+      "value": "Party",
       "hAnchor": "mid",
       "vAnchor": "mid",
       "mouseTransparent": true
@@ -245,23 +245,23 @@
     "lblWhisper": {
       "type": "label",
       "position": [159, 6],
-      "value": "Личные",
+      "value": "Whisper",
       "hAnchor": "mid",
       "vAnchor": "mid",
       "mouseTransparent": true
     },
     "lblServer": {
       "type": "label",
-      "position": [211, 6],
-      "value": "Команды",
+      "position": [208, 6],
+      "value": "Server",
       "hAnchor": "mid",
       "vAnchor": "mid",
       "mouseTransparent": true
     },
     "lblBroadcast": {
       "type": "label",
-      "position": [268, 6],
-      "value": "Важное",
+      "position": [264, 6],
+      "value": "Broadcast",
       "hAnchor": "mid",
       "vAnchor": "mid",
       "mouseTransparent": true
@@ -271,7 +271,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [63, 0],
+      "position": [64, 0],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -285,7 +285,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [231, 0],
+      "position": [230, 0],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -298,14 +298,14 @@
 
     "lytCharactersToDM": {
       "type": "layout",
-			"rect": [1, 25, 27, 300],
+			"rect": [0, 23, 28, 312], 
       "visible": false,
 			"layoutType": "basic",
 			"children": {
         "background": {
           "type": "imageStretch",
           "direction" : "vertical",
-          "size": [18, 0],
+          "size": [20, 0],
           "position": [0, 0],
           "stretchSet": {
             "end": "/interface/scripted/irdencustomchat/charactersheader.png",
@@ -353,7 +353,7 @@
                   "background": {
                     "type": "image",
                     "file": "/interface/scripted/irdencustomchat/characterunselected.png",
-                    "position": [0,
+                    "position": [1,
                     0]
                   },
                   "contactAvatar": {
@@ -373,7 +373,7 @@
 
     "btnToBottom": {
       "type": "button",
-      "position": [0, 0],
+      "position": [4, 0],
       "base": "/interface/scripted/irdencustomchat/tobottom.png",
       "hover": "/interface/scripted/irdencustomchat/tobottomhover.png",
       "callback": "toBottom"
