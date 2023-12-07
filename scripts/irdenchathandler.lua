@@ -2,10 +2,10 @@ require "/scripts/messageutil.lua"
 require "/scripts/util.lua"
 
 function init()
-  if not player.getProperty("irdenCustomChatIsOpen") then
+  --if not player.getProperty("irdenCustomChatIsOpen") then
     local interfacePath = "/interface/scripted/irdencustomchat/irdencustomchatgui.json"
     player.interact("ScriptPane", root.assetJson(interfacePath))
-  end
+  --end
 
   self.messageQueue = nil
 

@@ -200,7 +200,8 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
       end
     end
   elseif type(target) == "string" then
-    self.canvas:drawImage(target, vec2.add(self.config.iconImageOffset, messageOffset), self.config.iconScale)
+    local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+    self.canvas:drawImageRect(target, {0, 0, table.unpack(root.imageSize(target))}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
   end
   
   self.canvas:drawText(cleanNickname(nickname), {

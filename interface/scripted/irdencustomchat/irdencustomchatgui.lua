@@ -63,6 +63,7 @@ function update()
   self.irdenChat:clearHighlights()
   checkGroup()
   checkTyping()
+  processButtonEvents()
 end
 
 function checkTyping()
@@ -169,6 +170,16 @@ function processEvents(screenPosition)
     if event.type == "MouseWheel" then 
       self.irdenChat:offsetCanvas(event.data.mouseWheel * -1)
     end
+  end
+end
+
+function processButtonEvents()
+  if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
+    if input.keyDown("/") then
+      widget.setText("tbxInput", "/")
+    end
+    widget.focus("tbxInput")
+    chat.setInput("")
   end
 end
 

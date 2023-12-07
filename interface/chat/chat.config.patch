@@ -1,0 +1,17 @@
+[
+  {
+    "op": "replace",
+    "path": "/gui/panefeature/offset/1",
+    "value": -200
+  },
+  {
+    "op": "replace",
+    "path": "/config/visTime",
+    "value": 0
+  },
+  {
+    "op": "replace",
+    "path": "/config/fadeRate",
+    "value": 0
+  }
+]

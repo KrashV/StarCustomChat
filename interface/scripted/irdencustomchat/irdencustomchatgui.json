@@ -25,6 +25,9 @@
     "portraitVerticalMargin" : 3,
     "portraitBackground" : "/interface/chat/portraitbg.png",
 
+    
+    "iconImageOffset" : [6, -10],
+
     "bodyHeight" : 55,
     "expandedBodyHeight" : 288,
 
@@ -74,7 +77,7 @@
   "gui" : {
     "panefeature" : {
       "type" : "panefeature",
-      "anchor" : "bottomRight",
+      "anchor" : "bottomLeft",
       "positionLocked" : true,
       "offset": [0, 5]
     },
@@ -156,7 +159,8 @@
       "callback": "null",
       "maxWidth": 263,
       "enterKey": "sendMessage",
-      "escapeKey": "blurTextbox"
+      "escapeKey": "blurTextbox",
+      "disabled": true
     },
 
     "rgChatMode": {
