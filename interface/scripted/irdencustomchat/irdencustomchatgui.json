@@ -225,48 +225,7 @@
         }
       ]
     },
-
-    "lblLocal": {
-      "type": "label",
-      "position": [42, 6],
-      "value": "Общий",
-      "hAnchor": "mid",
-      "vAnchor": "mid",
-      "mouseTransparent": true
-    },
-    "lblParty": {
-      "type": "label",
-      "position": [104, 6],
-      "value": "Группа",
-      "hAnchor": "mid",
-      "vAnchor": "mid",
-      "mouseTransparent": true
-    },
-    "lblWhisper": {
-      "type": "label",
-      "position": [159, 6],
-      "value": "Личные",
-      "hAnchor": "mid",
-      "vAnchor": "mid",
-      "mouseTransparent": true
-    },
-    "lblServer": {
-      "type": "label",
-      "position": [211, 6],
-      "value": "Команды",
-      "hAnchor": "mid",
-      "vAnchor": "mid",
-      "mouseTransparent": true
-    },
-    "lblBroadcast": {
-      "type": "label",
-      "position": [268, 6],
-      "value": "Важное",
-      "hAnchor": "mid",
-      "vAnchor": "mid",
-      "mouseTransparent": true
-    },
-
+    
     "btnCkLocal": {
       "type": "button",
       "checkable": true,

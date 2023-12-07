@@ -1,0 +1,12 @@
+{
+  "chat.modes.local": "Local",
+  "chat.modes.party": "Party",
+  "chat.modes.private": "Whisper",
+  "chat.modes.fight": "Fight",
+  "chat.modes.broadcast": "Broadcast",
+
+  "chat.textbox.hint": "Type here",
+
+  "chat.alerts.dm_not_specified": "Select the recepient",
+  "chat.alerts.dm_not_found": "The player has to be on the same planet"
+}

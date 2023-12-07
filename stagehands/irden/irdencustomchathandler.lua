@@ -2,7 +2,6 @@ require "/scripts/messageutil.lua"
 require "/scripts/irden/chat/stagehand_class.lua"
 
 function init()
-  sb.logInfo("Player INIT")
   self.stagehand = IrdenChatStagehand:create("irdencustomchat", 300)
   
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )

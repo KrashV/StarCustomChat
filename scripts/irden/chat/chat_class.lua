@@ -13,6 +13,7 @@
     9. Collapse long messages
     10. Time on message
     11. Weather
+    12. Fight chat
 ]]
 
 require "/scripts/irden/chat/message_class.lua"

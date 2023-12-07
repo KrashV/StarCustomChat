@@ -1,6 +1,7 @@
 require "/scripts/messageutil.lua"
 require "/scripts/timer.lua"
 require "/scripts/irden/chat/chat_class.lua"
+require "/interface/scripted/irdencustomchat/irdencustomchatguiutils.lua"
 
 function init()
   player.setProperty("irdenCustomChatIsOpen", true)
@@ -11,16 +12,20 @@ function init()
   self.charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
   local chatConfig = config.getParameter("config")
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
+
+  self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
+  
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, "irdencustomchat", chatConfig, player.id())
   self.irdenChat:createMessageQueue()
   self.contacts = {}
   self.tooltipFields = {}
 
-  widget.setFontColor("lblLocal", self.irdenChat.config.selectedModeColor)
-  widget.setFontColor("lblServer", self.irdenChat.config.disabledModeColor)
   widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})  
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
+
+  localeChat()
+  setMode(_, {mode = "Local"})
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
@@ -35,6 +40,21 @@ function createTotallyFakeWidget(wrapWidth, fontSize)
   }, "totallyFakeLabel")
 end
 
+function localeChat()
+  widget.setText("rgChatMode.-1", icchat.utils.getTranslation("chat.modes.local"))
+  widget.setText("rgChatMode.0", icchat.utils.getTranslation("chat.modes.party"))
+  widget.setText("rgChatMode.1", icchat.utils.getTranslation("chat.modes.private"))
+  widget.setText("rgChatMode.2", icchat.utils.getTranslation("chat.modes.fight"))
+  widget.setText("rgChatMode.3", icchat.utils.getTranslation("chat.modes.broadcast"))
+
+  -- Unfortunately, to reset HINT we have to recreate the textbox
+  local standardTbx = config.getParameter("gui")["tbxInput"]
+  standardTbx.hint = icchat.utils.getTranslation("chat.textbox.hint")
+
+  pane.removeWidget("tbxInput")
+  pane.addWidget(standardTbx, "tbxInput")
+end
+
 function update()
   timers:update()
   promises:update()
@@ -44,11 +64,13 @@ function update()
 end
 
 function checkTyping()
+  --[[
   if widget.hasFocus("tbxInput") then
     effectsAnimator.setAnimationState("busy", "chatting")
   else
     effectsAnimator.setAnimationState("busy", "none")
   end
+  ]]
 end
 
 function checkGroup()
@@ -167,10 +189,10 @@ function sendMessage(widgetName)
     self.irdenChat:processCommand(message)
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-    if not li then interface.queueMessage("Выбери персонажа, чтобы отправить текст") return end
+    if not li then interface.queueMessage(icchat.utils.getTranslation("chat.alerts.dm_not_specified")) return end
 
     local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-    if not world.entityExists(data.id) then interface.queueMessage("Игрок не на планете") return end
+    if not world.entityExists(data.id) then interface.queueMessage(icchat.utils.getTranslation("chat.alerts.dm_not_found")) return end
 
     self.irdenChat:processCommand("/w " .. world.entityName(data.id) .. " " .. message)
 
@@ -181,12 +203,15 @@ function sendMessage(widgetName)
   widget.blur(widgetName)
 end
 
+
 function setMode(_, data)
-  local modes = {"Local", "Broadcast", "Party", "Proximity", "Whisper", "Announcement"}
-  for _, mode in ipairs(modes) do 
-    widget.setFontColor("lbl" .. mode, self.irdenChat.config.unselectedModeColor)
+  local modeButtons = config.getParameter("gui")["rgChatMode"]["buttons"]
+  local selectedMode = -1
+  for i, btn in ipairs(modeButtons) do 
+    widget.setFontColor("rgChatMode." .. i - 2, self.irdenChat.config.unselectedModeColor)
+    selectedMode = data.mode == btn.data.mode and i or selectedMode
   end
-  widget.setFontColor("lbl" .. data.mode, self.irdenChat.config.selectedModeColor)
+  widget.setFontColor("rgChatMode." .. selectedMode - 2, self.irdenChat.config.selectedModeColor)
 
   widget.setVisible("lytCharactersToDM", data.mode == "Whisper")
 end
@@ -198,7 +223,6 @@ end
 function toBottom()
   self.irdenChat:resetOffset()
 end
-
 
 -- Utility function: return the index of a value in the given array
 function index(tab, value)

@@ -1,0 +1,12 @@
+{
+  "chat.modes.local": "Общий",
+  "chat.modes.party": "Группа",
+  "chat.modes.private": "Личные",
+  "chat.modes.fight": "Бой",
+  "chat.modes.broadcast": "Важное",
+
+  "chat.textbox.hint": "Введите сообщение",
+
+  "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
+  "chat.alerts.dm_not_found": "Игрок не на планете"
+}
