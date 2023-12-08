@@ -2,16 +2,15 @@ require "/scripts/messageutil.lua"
 require "/scripts/util.lua"
 
 function init()
-  --if not player.getProperty("irdenCustomChatIsOpen") then
-    local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
-    player.interact("ScriptPane", root.assetJson(interfacePath))
-  --end
-
   self.messageQueue = nil
+
+  self.lastCheckedQueueTimer = 2
+  self.lastCheckQueueTime = self.lastCheckedQueueTimer
 
   message.setHandler( "icc_getMessageQueue", localHandler(function()
     local queue = copy(self.messageQueue)
     self.messageQueue = nil
+    self.lastCheckQueueTime = self.lastCheckedQueueTimer
     return queue
   end))
 
@@ -26,8 +25,15 @@ function init()
   end))
 end
 
-function update()
-
+-- We will wait self.lastCheckedQueueTimer seconds to check for the message to be read.
+-- If we don't receive the request for the message, consider the chat dead.
+function update(dt)
+  self.lastCheckQueueTime = self.lastCheckQueueTime - dt 
+  if self.lastCheckQueueTime < 0 then
+    local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
+    player.interact("ScriptPane", root.assetJson(interfacePath))
+    self.lastCheckQueueTime = self.lastCheckedQueueTimer
+  end
 end
 
 function uninit()

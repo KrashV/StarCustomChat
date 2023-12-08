@@ -2,10 +2,8 @@
   Chat Class instance
 
   TODO:
-    0. How to keep the chat always running
     2. Store chat messages
     3. Handle Irden-Specific messages
-    4. Bind Enter and slash
     5. Showcase commands
     6. Set avatar: image and offset
     7. Whisper should show the author / recepient
@@ -32,7 +30,10 @@ IrdenChat = {
   totalHeight = 0,
   config = {},
   expanded = true,
-  savedPortraits = {}
+  savedPortraits = {},
+
+  queueTimer = 1,
+  queueTime = 0
 }
 
 IrdenChat.__index = IrdenChat
@@ -70,6 +71,7 @@ function IrdenChat:createMessageQueue()
 
 
   local function addMessagesToQueue(queue)
+    self.queueTime = 0
     if queue then
       for _, msg in ipairs(queue) do 
         table.insert(self.messages, msg)
@@ -79,7 +81,7 @@ function IrdenChat:createMessageQueue()
         self:processQueue()
       end
     end
-
+    
     if world.entityExists(player.id()) then
       promises:add(world.sendEntityMessage(player.id(), "icc_getMessageQueue"), addMessagesToQueue)
     else
@@ -91,6 +93,16 @@ function IrdenChat:createMessageQueue()
     promises:add(world.sendEntityMessage(player.id(), "icc_getMessageQueue"), addMessagesToQueue)
   else
     promises:add(fakePromise, addMessagesToQueue)
+  end
+end
+
+-- Wheck that we run the queue at least once per second
+function IrdenChat:checkMessageQueue(dt)
+  self.queueTime = self.queueTime + dt 
+
+  if self.queueTime > self.queueTimer then
+    self:createMessageQueue()
+    self.queueTime = 0
   end
 end
 

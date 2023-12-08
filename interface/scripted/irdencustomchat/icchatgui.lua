@@ -5,8 +5,6 @@ require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 function init()
-  player.setProperty("irdenCustomChatIsOpen", true)
-
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -57,13 +55,14 @@ function localeChat()
   pane.addWidget(standardTbx, "tbxInput")
 end
 
-function update()
+function update(dt)
   timers:update()
   promises:update()
   self.irdenChat:clearHighlights()
   checkGroup()
   checkTyping()
   processButtonEvents()
+  self.irdenChat:checkMessageQueue(dt)
 end
 
 function checkTyping()
@@ -274,5 +273,5 @@ end
 
 
 function uninit()
-  player.setProperty("irdenCustomChatIsOpen", nil)
+  
 end
