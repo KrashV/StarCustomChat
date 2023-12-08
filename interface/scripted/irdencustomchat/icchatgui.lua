@@ -29,6 +29,7 @@ function init()
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
+
 end
 
 function createTotallyFakeWidget(wrapWidth, fontSize)
@@ -56,7 +57,7 @@ function localeChat()
 end
 
 function update(dt)
-  timers:update()
+  timers:update(dt)
   promises:update()
   self.irdenChat:clearHighlights()
   checkGroup()
@@ -95,36 +96,38 @@ function checkDMs()
   timers:add(1, checkDMs)
 end
 
-function populateList() --edited to use the state players keep in their deployment
-  icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
-    --online is either provided by list_loop or fetched.
-    --then add online players
-    local idTable = {}  -- This table will store only the 'id' values
+function populateList()
+  if not self.cannotUse then
+    self.cannotUse = icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
+      --online is either provided by list_loop or fetched.
+      --then add online players
+      local idTable = {}  -- This table will store only the 'id' values
 
-    for _, player in ipairs(players) do
-      table.insert(idTable, player.id)
+      for _, player in ipairs(players) do
+        table.insert(idTable, player.id)
 
-      if index(self.contacts, player.id) == 0 then
-        local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-        drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.portrait)
-        widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
-          id = player.id,
-          displayText = player.name
-        })
-        self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
-        table.insert(self.contacts, player.id)
+        if index(self.contacts, player.id) == 0 then
+          local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
+          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.portrait)
+          widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
+            id = player.id,
+            displayText = player.name
+          })
+          self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
+          table.insert(self.contacts, player.id)
+        end
       end
-    end
 
 
-    for i, id in ipairs(self.contacts) do
-      if index(idTable, id) == 0 then
-        widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
-        table.remove(self.contacts, i)
+      for i, id in ipairs(self.contacts) do
+        if index(idTable, id) == 0 then
+          widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
+          table.remove(self.contacts, i)
+        end
       end
-    end
 
-  end)
+    end) ~= 0
+  end
 end
 
 function drawIcon(canvasName, args)
@@ -210,10 +213,10 @@ function sendMessage(widgetName)
     self.irdenChat:processCommand(message)
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-    if not li then interface.queueMessage(icchat.utils.getTranslation("chat.alerts.dm_not_specified")) return end
+    if not li then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_specified")) return end
 
     local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-    if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then interface.queueMessage(icchat.utils.getTranslation("chat.alerts.dm_not_found")) return end
+    if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_found")) return end
 
     self.irdenChat:processCommand("/w " .. widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText .. " " .. message)
 

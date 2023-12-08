@@ -15,15 +15,21 @@ function icchat.utils.getTranslation(key)
   end
 end
 
+function icchat.utils.alert(message)
+  interface.queueMessage(message)
+end
+
 function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback)
-  local radius = 50
+  local radius = 20
 
   local function findStagehand(stagehandType, r)
-    for _, sId in ipairs( world.entityQuery(world.entityPosition(player.id()), r, {
-      includedTypes = {"stagehand"}
-    })) do 
-      if world.stagehandType(sId) == stagehandType then
-        return sId
+    if world.entityPosition(player.id()) then
+      for _, sId in ipairs( world.entityQuery(world.entityPosition(player.id()), r, {
+        includedTypes = {"stagehand"}
+      })) do 
+        if world.stagehandType(sId) == stagehandType then
+          return sId
+        end
       end
     end
   end
@@ -50,9 +56,14 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
   end
 
   if not findStagehandAndSendData() then
-    world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
-    promises:add(fakePromise, findStagehandAndSendData, function() 
-      promises:add(fakePromise, findStagehandAndSendData) 
-    end)
+    if pcall(world.spawnStagehand(world.entityPosition(player.id()), stagehandType)) then
+      promises:add(fakePromise, findStagehandAndSendData, function() 
+        promises:add(fakePromise, findStagehandAndSendData) 
+      end)
+      return 0
+    else
+      icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.stagehand_not_found"))
+      return 1
+    end
   end
 end

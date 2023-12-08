@@ -8,5 +8,6 @@
   "chat.textbox.hint": "Type here",
 
   "chat.alerts.dm_not_specified": "Select the recepient",
-  "chat.alerts.dm_not_found": "The player has to be on the same planet"
+  "chat.alerts.dm_not_found": "The player has to be on the same planet",
+  "chat.alerts.stagehand_not_found": "^red;The server does not support this chat"
 }

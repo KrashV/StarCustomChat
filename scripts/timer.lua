@@ -19,12 +19,12 @@ function TimerKeeper:empty()
 end
 
 -- Remove finished timers, calling their callbacks.
-function TimerKeeper:update()
+function TimerKeeper:update(dt)
   local timers = self.timers
   -- Ensure timers made while processing callbacks are kept
   self.timers = {}
   for _,timer in pairs(timers) do
-    timer.duration = timer.duration - 1
+    timer.duration = timer.duration - dt
     if timer.duration <= 0 then
       timer.fun()
     else

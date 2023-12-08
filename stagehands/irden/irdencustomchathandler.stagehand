@@ -2,7 +2,7 @@
   "type" : "irdencustomchat",
 
   "scripts" : [
-  	"/stagehands/irden/irdencustomchathandler.lua"
+  	"/stagehands/waypoint.lua"
   ],
   "scriptDelta" : 1,
   "name": ""

@@ -8,5 +8,6 @@
   "chat.textbox.hint": "Введите сообщение",
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
-  "chat.alerts.dm_not_found": "Игрок не на планете"
+  "chat.alerts.dm_not_found": "Игрок не на планете",
+  "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат"
 }
