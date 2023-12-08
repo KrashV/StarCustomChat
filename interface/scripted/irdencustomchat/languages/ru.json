@@ -1,9 +1,10 @@
 {
-  "chat.modes.local": "Общий",
-  "chat.modes.party": "Группа",
-  "chat.modes.private": "Личные",
-  "chat.modes.fight": "Бой",
-  "chat.modes.broadcast": "Важное",
+  "chat.modes.Local": "Локал",
+  "chat.modes.Broadcast": "Общий",
+  "chat.modes.Proximity": "Близкий",
+  "chat.modes.Party": "Группа",
+  "chat.modes.Whisper": "Личные",
+  "chat.modes.Fight": "Бой",
 
   "chat.textbox.hint": "Введите сообщение",
 

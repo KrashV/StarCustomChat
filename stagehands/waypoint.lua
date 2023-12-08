@@ -32,8 +32,6 @@ function handleMessage(data)
         self.stagehand:sendDataToPlayer(pId, data)
       end
     end
-  elseif data.mode == "Announcement" then 
-    self.stagehand:sendDataToAllPlayers(data)
   end
 end
 

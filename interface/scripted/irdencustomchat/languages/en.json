@@ -1,9 +1,10 @@
 {
-  "chat.modes.local": "Local",
-  "chat.modes.party": "Party",
-  "chat.modes.private": "Whisper",
-  "chat.modes.fight": "Fight",
-  "chat.modes.broadcast": "Broadcast",
+  "chat.modes.Local": "Local",
+  "chat.modes.Broadcast": "Broad",
+  "chat.modes.Proximity": "Close",
+  "chat.modes.Party": "Party",
+  "chat.modes.Whisper": "Whisper",
+  "chat.modes.Fight": "Fight",
 
   "chat.textbox.hint": "Type here",
 

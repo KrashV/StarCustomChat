@@ -73,8 +73,7 @@ function IrdenChat:createMessageQueue()
   local function addMessagesToQueue(queue)
     self.queueTime = 0
     if queue then
-      for _, msg in ipairs(queue) do 
-        sb.logInfo(sb.print(msg))
+      for _, msg in ipairs(queue) do
         table.insert(self.messages, msg)
         if #self.messages > self.config.chatHistoryLimit then
           table.remove(self.messages, 1)
@@ -139,10 +138,6 @@ function IrdenChat:sendMessage(text, mode)
     chat.send(data.text, mode)
   elseif mode == "Proximity" then
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
-  elseif mode == "Announcement" then
-    icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
-  elseif mode == "Whisper" then
-    chat.command("/w \"" .. world.entityName(widget.getSelectedData) .. "\" " .. text )
   end
 end
 
@@ -229,9 +224,10 @@ function filterMessages(messages)
   for _, message in ipairs(messages) do 
     --filter messages by mode availability
     local mode = message.mode
-    if mode == "Broadcast" or mode == "Party" or mode == "Whisper" or mode == "RadioMessage" 
-      or (mode == "CommandResult" and widget.getChecked("btnCkServer")) 
-      or (mode == "Local" and widget.getChecked("btnCkLocal"))
+    if mode == "CommandResult" or mode == "Party" or mode == "Whisper" or mode == "RadioMessage" or mode == "Fight"
+      or (mode == "Local" and widget.getChecked("btnCkLocal")) 
+      or (mode == "Broadcast" and widget.getChecked("btnCkBroadcast")) 
+      or (mode == "Proximity" and widget.getChecked("btnCkProximity"))
     then
       table.insert(drawnMessages, message)
     end
@@ -251,7 +247,7 @@ function IrdenChat:processQueue()
     
     local entityId = message.connection * -65536
     -- If the message should contain an avatar and name:
-    self.messages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode)
+    self.drawnMessages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode)
 
     -- Get amount of lines in the message and its length
     widget.setText("totallyFakeLabel", message.text)
@@ -284,13 +280,13 @@ function IrdenChat:processQueue()
           self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
         elseif messageMode == "RadioMessage" then
           self:drawIcon(message.portrait or "/ai/portraits/humanportrait.png:idle", message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Announcement" or messageMode == "Party" then
+        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" then
           if message.connection == 0 then
             self:drawIcon(self.config.icons.server, "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
           else
-            self:drawIcon(entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
+            self:drawIcon(message.portrait ~= "" and message.portrait or entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
           end
-        elseif messageMode == "Broadcast" then
+        elseif messageMode == "Announcement" then
           if message.connection == 0 then
             self:drawIcon(self.config.icons.server, "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.colors[messageMode])
           else

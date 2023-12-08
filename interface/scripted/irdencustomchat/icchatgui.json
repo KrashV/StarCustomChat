@@ -180,12 +180,35 @@
           }
         },
         {
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "pressedOffset": [ 0, 0 ],
+          "position": [45, 0],
+          "data": {
+            "mode": "Broadcast"
+          }
+        },
+        {
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "pressedOffset": [ 0, 0 ],
+          "position": [90, 0],
+          "data": {
+            "mode": "Proximity"
+          }
+        },
+        {
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [56, 0],
+          "position": [135, 0],
+          "disabled": true,
           "data": {
             "mode": "Party"
           }
@@ -196,32 +219,20 @@
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [112, 0],
+          "position": [180, 0],
           "data": {
             "mode": "Whisper"
           }
         },
         {
-          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
-          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
-          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
-          "position": [168, 0],
-          "disabled": true,
+          "position": [225, 0],
           "data": {
             "mode": "Fight"
-          }
-        },
-        {
-          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
-          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
-          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
-          "pressedOffset": [ 0, 0 ],
-          "position": [224, 0],
-          "data": {
-            "mode": "Broadcast"
           }
         }
       ]
@@ -231,7 +242,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [63, 0],
+      "position": [52, 0],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -241,18 +252,36 @@
         "mode": "Local"
       }
     },
-    "btnCkServer": {
+
+    "btnCkBroadcast": {
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [231, 0],
+      "position": [97, 0],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Server"
+        "mode": "Broadcast"
+      }
+    },
+
+    
+
+    "btnCkProximity": {
+      "type": "button",
+      "checkable": true,
+      "checked": true,
+      "position": [142, 0],
+      "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "callback": "redrawChat",
+      "data": {
+        "mode": "Proximity"
       }
     },
 

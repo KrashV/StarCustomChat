@@ -29,7 +29,6 @@ function init()
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
-
 end
 
 function createTotallyFakeWidget(wrapWidth, fontSize)
@@ -41,12 +40,21 @@ function createTotallyFakeWidget(wrapWidth, fontSize)
   }, "totallyFakeLabel")
 end
 
+function findButtonByMode(mode)
+  local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
+  for i, button in ipairs(buttons) do 
+    if button.data.mode == mode then
+      return i - 2
+    end
+  end
+  return -1
+end
+
 function localeChat()
-  widget.setText("rgChatMode.-1", icchat.utils.getTranslation("chat.modes.local"))
-  widget.setText("rgChatMode.0", icchat.utils.getTranslation("chat.modes.party"))
-  widget.setText("rgChatMode.1", icchat.utils.getTranslation("chat.modes.private"))
-  widget.setText("rgChatMode.2", icchat.utils.getTranslation("chat.modes.fight"))
-  widget.setText("rgChatMode.3", icchat.utils.getTranslation("chat.modes.broadcast"))
+  local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
+  for i, button in ipairs(buttons) do 
+    widget.setText("rgChatMode." .. i - 2, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
+  end
 
   -- Unfortunately, to reset HINT we have to recreate the textbox
   local standardTbx = config.getParameter("gui")["tbxInput"]
@@ -68,32 +76,36 @@ function update(dt)
 end
 
 function checkTyping()
+  --[[
   if widget.hasFocus("tbxInput") then
     effectsAnimator.setAnimationState("busy", "chatting")
   else
     effectsAnimator.setAnimationState("busy", "none")
   end
+  ]]
 end
 
 function checkGroup()
+  local id = findButtonByMode("Party")
   if #player.teamMembers() == 0 then
-    widget.setButtonEnabled("rgChatMode.0", false)
+    widget.setButtonEnabled("rgChatMode." .. id, false)
     if widget.getSelectedData("rgChatMode").mode == "Party" then
       widget.setSelectedOption("rgChatMode", -1)
     end
   else
-    widget.setButtonEnabled("rgChatMode.0", true)
+    widget.setButtonEnabled("rgChatMode." .. id, true)
   end
 end
 
 function checkFight()
+  local id = findButtonByMode("Fight")
   if not player.hasActiveQuest("irdeninitiative") then
-    widget.setButtonEnabled("rgChatMode.2", false)
+    widget.setButtonEnabled("rgChatMode." .. id, false)
     if widget.getSelectedData("rgChatMode").mode == "Fight" then
       widget.setSelectedOption("rgChatMode", -1)
     end
   else
-    widget.setButtonEnabled("rgChatMode.2", true)
+    widget.setButtonEnabled("rgChatMode." .. id, true)
   end
 end
 
@@ -216,6 +228,8 @@ end
 
 function sendMessage(widgetName)
   local message = widget.getText(widgetName)
+
+  if message == "" then return end
 
   if string.sub(message, 1, 1) == "/" then
     self.irdenChat:processCommand(message)
