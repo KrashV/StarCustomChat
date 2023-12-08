@@ -61,31 +61,39 @@ function update(dt)
   promises:update()
   self.irdenChat:clearHighlights()
   checkGroup()
+  checkFight()
   checkTyping()
   processButtonEvents()
   self.irdenChat:checkMessageQueue(dt)
 end
 
 function checkTyping()
-  --[[
   if widget.hasFocus("tbxInput") then
     effectsAnimator.setAnimationState("busy", "chatting")
   else
     effectsAnimator.setAnimationState("busy", "none")
   end
-  ]]
 end
 
 function checkGroup()
   if #player.teamMembers() == 0 then
     widget.setButtonEnabled("rgChatMode.0", false)
-    widget.setFontColor("lblParty", self.irdenChat.config.disabledModeColor)
     if widget.getSelectedData("rgChatMode").mode == "Party" then
       widget.setSelectedOption("rgChatMode", -1)
-      widget.setFontColor("lblParty", self.irdenChat.config.unselectedModeColor)
     end
   else
     widget.setButtonEnabled("rgChatMode.0", true)
+  end
+end
+
+function checkFight()
+  if not player.hasActiveQuest("irdeninitiative") then
+    widget.setButtonEnabled("rgChatMode.2", false)
+    if widget.getSelectedData("rgChatMode").mode == "Fight" then
+      widget.setSelectedOption("rgChatMode", -1)
+    end
+  else
+    widget.setButtonEnabled("rgChatMode.2", true)
   end
 end
 

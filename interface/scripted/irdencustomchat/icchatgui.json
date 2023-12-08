@@ -77,9 +77,9 @@
   "gui" : {
     "panefeature" : {
       "type" : "panefeature",
-      "anchor" : "bottomRight",
+      "anchor" : "bottomLeft",
       "positionLocked" : true,
-      "offset": [0, 5]
+      "offset": [3, 5]
     },
     "close": {
       "type": "button",
@@ -159,8 +159,7 @@
       "callback": "null",
       "maxWidth": 263,
       "enterKey": "sendMessage",
-      "escapeKey": "blurTextbox",
-      "disabled": true
+      "escapeKey": "blurTextbox"
     },
 
     "rgChatMode": {
@@ -211,7 +210,7 @@
           "position": [168, 0],
           "disabled": true,
           "data": {
-            "mode": "Server"
+            "mode": "Fight"
           }
         },
         {

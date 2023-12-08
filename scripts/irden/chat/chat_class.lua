@@ -74,6 +74,7 @@ function IrdenChat:createMessageQueue()
     self.queueTime = 0
     if queue then
       for _, msg in ipairs(queue) do 
+        sb.logInfo(sb.print(msg))
         table.insert(self.messages, msg)
         if #self.messages > self.config.chatHistoryLimit then
           table.remove(self.messages, 1)
@@ -281,7 +282,9 @@ function IrdenChat:processQueue()
       if messageOffset + self.drawnMessages[i].height >= 0 and messageOffset <= self.canvas:size()[2] then
         if messageMode == "CommandResult" then
           self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-        elseif messageMode == "RadioMessage" or messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Announcement" or messageMode == "Party" then
+        elseif messageMode == "RadioMessage" then
+          self:drawIcon(message.portrait or "/ai/portraits/humanportrait.png:idle", message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
+        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Announcement" or messageMode == "Party" then
           if message.connection == 0 then
             self:drawIcon(self.config.icons.server, "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
           else
