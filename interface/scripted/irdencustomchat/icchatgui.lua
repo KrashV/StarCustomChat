@@ -237,7 +237,7 @@ end
 
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do 
-    if event.type == "MouseWheel" then 
+    if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then 
       self.irdenChat:offsetCanvas(event.data.mouseWheel * -1)
     end
   end

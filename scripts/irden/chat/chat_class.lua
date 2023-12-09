@@ -268,6 +268,12 @@ function IrdenChat:processQueue()
   self.totalHeight = 0
   self.drawnMessages = filterMessages(self.messages)
 
+  local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
+    return message.avatar and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
+      or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
+  end
+
+
   for i = #self.drawnMessages, 1, -1 do 
     local message = self.drawnMessages[i]
     local messageMode = message.mode
@@ -292,18 +298,15 @@ function IrdenChat:processQueue()
 
     -- Draw the actual message unless it's outside of drawing area
     
-    if messageOffset + self.drawnMessages[i].height >= -2 and messageOffset <= self.canvas:size()[2] then
+    if isInsideChat(self.drawnMessages[i], messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
       self.canvas:drawText(message.text, {
         position = vec2.add(self.config.textOffset, {0, messageOffset}),
         horizontalAnchor = "left", -- left, mid, right
         verticalAnchor = "bottom", -- top, mid, bottom
         wrapWidth = self.config.wrapWidth -- wrap width in pixels or nil
       }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.defaultColor)
-    end
-    
-    -- If it's an avatar, draw the avatar and add it to height
-    if self.drawnMessages[i].avatar then
-      if messageOffset + self.drawnMessages[i].height >= -2 and messageOffset <= self.canvas:size()[2] then
+
+      if self.drawnMessages[i].avatar then
         if messageMode == "CommandResult" then
           self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
         elseif messageMode == "RadioMessage" then
@@ -321,11 +324,11 @@ function IrdenChat:processQueue()
             self:drawIcon(entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode] )
           end
         end
+  
+        self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
       end
-
-      self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
     end
-
+    
     self.drawnMessages[i].offset = messageOffset
     self.totalHeight = self.totalHeight + self.drawnMessages[i].height
 
