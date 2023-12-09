@@ -4,7 +4,7 @@ require "/scripts/util.lua"
 function init()
   self.messageQueue = nil
 
-  self.lastCheckedQueueTimer = 2
+  self.lastCheckedQueueTimer = 1
   self.lastCheckQueueTime = self.lastCheckedQueueTimer
 
   message.setHandler( "icc_getMessageQueue", localHandler(function()

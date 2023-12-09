@@ -22,7 +22,7 @@
     "portraitSize" : [22, 22],
     "portraitImageOffset" : [6, -10],
     "portraitCropArea": [10, 14, 32, 36],
-    "portraitVerticalMargin" : 3,
+    "portraitFrameScale" : 1,
     "portraitBackground" : "/interface/chat/portraitbg.png",
 
     

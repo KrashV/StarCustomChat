@@ -33,7 +33,7 @@ IrdenChat = {
   expanded = true,
   savedPortraits = {},
 
-  queueTimer = 1,
+  queueTimer = 0.5,
   queueTime = 0
 }
 
@@ -164,10 +164,18 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     return string.gsub(nick, ".*<(.*)",  "%1")
   end
 
+  local function drawFrame(offset)
+    local frame = self.config.portraitBackground
+    local frameSize = root.imageSize(frame)
+
+    self.canvas:drawImage(frame, offset, self.config.portraitFrameScale)
+  end
+
   local function drawPortrait(portrait, messageOffset)
+    local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
+    drawFrame(offset)
     for _, layer in ipairs(portrait) do
-      local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
-      self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
+      self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
     end
   end
 
@@ -191,6 +199,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+    drawFrame(offset)
     self.canvas:drawImageRect(target, {0, 0, table.unpack(root.imageSize(target))}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
   end
   
@@ -225,7 +234,7 @@ function IrdenChat:clearHighlights()
   self.highlightCanvas:clear()
 end
 
---TODO: instead of all messages we need to look at the messages that are drawn
+
 function IrdenChat:selectMessage()
   local pos = self.highlightCanvas:mousePosition()
   for i = #self.drawnMessages, 1, -1 do 
@@ -282,7 +291,8 @@ function IrdenChat:processQueue()
     end
 
     -- Draw the actual message unless it's outside of drawing area
-    if messageOffset + self.drawnMessages[i].height >= 0 and messageOffset <= self.canvas:size()[2] then
+    
+    if messageOffset + self.drawnMessages[i].height >= -2 and messageOffset <= self.canvas:size()[2] then
       self.canvas:drawText(message.text, {
         position = vec2.add(self.config.textOffset, {0, messageOffset}),
         horizontalAnchor = "left", -- left, mid, right
@@ -293,7 +303,7 @@ function IrdenChat:processQueue()
     
     -- If it's an avatar, draw the avatar and add it to height
     if self.drawnMessages[i].avatar then
-      if messageOffset + self.drawnMessages[i].height >= 0 and messageOffset <= self.canvas:size()[2] then
+      if messageOffset + self.drawnMessages[i].height >= -2 and messageOffset <= self.canvas:size()[2] then
         if messageMode == "CommandResult" then
           self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
         elseif messageMode == "RadioMessage" then
