@@ -24,8 +24,11 @@ function init()
   self.contacts = {}
   self.tooltipFields = {}
 
-  self.savedCommandStart = nil
   self.savedCommandSelection = 0
+
+  self.sentMessages = {}
+  self.sentMessagesLimit = 15
+  self.currentSentMessage = 0
 
   widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})  
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
@@ -252,8 +255,18 @@ function processButtonEvents()
   if widget.hasFocus("tbxInput") then
     for _, event in ipairs(input.events()) do 
       if event.type == "KeyDown" then
-        if event.data.key == "Tab"  then 
+        if event.data.key == "Tab" then 
           self.savedCommandSelection = self.savedCommandSelection + 1
+        elseif event.data.key == "Up" and event.data.mods and event.data.mods.LShift then
+          if #self.sentMessages > 0 then
+            widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
+            self.currentSentMessage = math.max(self.currentSentMessage - 1, 1)
+          end
+        elseif event.data.key == "Down" and event.data.mods and event.data.mods.LShift then
+          if #self.sentMessages > 0 then
+            self.currentSentMessage = math.min(self.currentSentMessage + 1, #self.sentMessages)
+            widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
+          end
         end
       end
     end
@@ -279,7 +292,11 @@ end
 function sendMessage(widgetName)
   local message = widget.getText(widgetName)
 
-  if message == "" then return end
+  if message == "" then 
+    widget.setText(widgetName, "")
+    widget.blur(widgetName)
+    return 
+  end
 
   if string.sub(message, 1, 1) == "/" then
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" then
@@ -288,6 +305,7 @@ function sendMessage(widgetName)
     else
       self.irdenChat:processCommand(message)
       self.lastCommand = message
+      icchat.utils.saveMessage(message)
     end
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
@@ -296,10 +314,12 @@ function sendMessage(widgetName)
     local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
     if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_found")) return end
 
-    self.irdenChat:processCommand("/w " .. widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText .. " " .. message)
-
+    local whisper = "/w " .. widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText .. " " .. message
+    self.irdenChat:processCommand(whisper)
+    icchat.utils.saveMessage(whisper)
   else
     self.irdenChat:sendMessage(message, widget.getSelectedData("rgChatMode").mode)
+    icchat.utils.saveMessage(message)
   end
   widget.setText(widgetName, "")
   widget.blur(widgetName)

@@ -19,6 +19,15 @@ function icchat.utils.alert(message)
   interface.queueMessage(message)
 end
 
+function icchat.utils.saveMessage(message)
+  table.insert(self.sentMessages, message)
+
+  if #self.sentMessages > self.sentMessagesLimit then
+    table.remove(self.sentMessages, 1)
+  end
+  self.currentSentMessage = #self.sentMessages
+end
+
 function icchat.utils.getCommands(allCommands, substr)
   local availableCommands = {}
 
