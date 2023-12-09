@@ -19,6 +19,23 @@ function icchat.utils.alert(message)
   interface.queueMessage(message)
 end
 
+function icchat.utils.getCommands(allCommands, substr)
+  local availableCommands = {}
+
+  for type, commlist in pairs(allCommands) do 
+    for _, comm in ipairs(commlist) do
+      if type ~= "admin" or (type == "admin" and player.isAdmin()) then
+        if string.find(comm, substr) then
+          table.insert(availableCommands, comm)
+        end
+      end
+    end
+  end
+
+  table.sort(availableCommands, function(a, b) return a:upper() < b:upper() end)
+  return availableCommands
+end
+
 function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback)
   local radius = 20
 

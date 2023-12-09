@@ -8,17 +8,24 @@ function init()
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
+  self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
   self.chatWindowWidth = widget.getSize("backgroundImage")[1]
   self.charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
+
+  self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
+
   local chatConfig = config.getParameter("config")
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
 
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.stagehandName, chatConfig, player.id())
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id())
   self.irdenChat:createMessageQueue()
   self.contacts = {}
   self.tooltipFields = {}
+
+  self.savedCommandStart = nil
+  self.savedCommandSelection = 0
 
   widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})  
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
@@ -26,6 +33,8 @@ function init()
 
   localeChat()
   --setMode(_, {mode = "Local"})
+
+  self.lastCommand = nil
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
@@ -71,8 +80,35 @@ function update(dt)
   checkGroup()
   checkFight()
   checkTyping()
+  checkCommandsPreview()
   processButtonEvents()
   self.irdenChat:checkMessageQueue(dt)
+end
+
+function checkCommandsPreview()
+  local text = widget.getText("tbxInput")
+
+  if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
+    local availableCommands = icchat.utils.getCommands(self.availableCommands, text)
+
+    if #availableCommands > 0 then
+      self.savedCommandSelection = math.max(self.savedCommandSelection % (#availableCommands + 1), 1)
+      widget.setVisible("lytCommandPreview", true)
+      widget.setText("lblCommandPreview", availableCommands[self.savedCommandSelection])
+      widget.setData("lblCommandPreview", availableCommands[self.savedCommandSelection])
+      self.irdenChat:previewCommands(availableCommands, self.savedCommandSelection)
+    else
+      widget.setVisible("lytCommandPreview", false)
+      widget.setText("lblCommandPreview", "")
+      widget.setData("lblCommandPreview", nil)
+      self.savedCommandSelection = 0
+    end
+  else
+    widget.setVisible("lytCommandPreview", false)
+    widget.setText("lblCommandPreview", "")
+    widget.setData("lblCommandPreview", nil)
+    self.savedCommandSelection = 0
+  end
 end
 
 function checkTyping()
@@ -212,6 +248,20 @@ function processButtonEvents()
     widget.focus("tbxInput")
     chat.setInput("")
   end
+
+  if widget.hasFocus("tbxInput") then
+    for _, event in ipairs(input.events()) do 
+      if event.type == "KeyDown" then
+        if event.data.key == "Tab"  then 
+          self.savedCommandSelection = self.savedCommandSelection + 1
+        end
+      end
+    end
+  end
+
+  if input.bindDown("icchat", "repeatcommand") and self.lastCommand then
+    self.irdenChat:processCommand(self.lastCommand)
+  end
 end
 
 function cursorOverride(screenPosition)
@@ -232,7 +282,13 @@ function sendMessage(widgetName)
   if message == "" then return end
 
   if string.sub(message, 1, 1) == "/" then
-    self.irdenChat:processCommand(message)
+    if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" then
+      widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
+      return
+    else
+      self.irdenChat:processCommand(message)
+      self.lastCommand = message
+    end
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
     if not li then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_specified")) return end

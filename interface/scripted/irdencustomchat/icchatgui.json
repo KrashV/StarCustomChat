@@ -44,10 +44,15 @@
     "highlightColor": "#FFA50037",
     "disabledModeColor": "#191919D0",
 
+    "commandPreviewColor": "white",
+    "commandPreviewSelectedColor": "yellow",
+
+
     "font" : {
       "baseSize" : 9,
       "itemSize" : 8,
       "nameSize" : 10,
+      "previewCommandSize": 8,
       "defaultColor" : [255, 255, 255]
     },
     "nameColors": {
@@ -117,6 +122,30 @@
       "mouseTransparent": false,
       "captureMouseEvents": true
     },
+
+    "lytCommandPreview": {
+      "type": "layout",
+      "layoutType": "basic",
+      "rect": [21, 25, 300, 53],
+      "zlevel": 10,
+      "visible": false,
+      "children": {
+        "imgBackground": {
+          "type": "image",
+          "file": "/interface/scripted/irdencustomchat/commandpreview.png",
+          "zlevel": 11
+        },
+        "cnvCommandsCanvas": {
+          "type": "canvas",
+          "zlevel": 12,
+          "rect": [0, 0, 270, 12],
+          "mouseTransparent": false,
+          "captureMouseEvents": false
+        }
+      }
+    },
+
+    
     "saScrollArea": {
       "type": "scrollArea",
       "rect": [20, 26, 289, 312],
@@ -158,8 +187,18 @@
       "hint": "ПЕЧАТАТЬ ЗДЕСЬ",
       "callback": "null",
       "maxWidth": 263,
+      "zlevel": 4,
       "enterKey": "sendMessage",
       "escapeKey": "blurTextbox"
+    },
+
+    "lblCommandPreview": {
+      "type": "label",
+      "position": [23,14],
+      "value": "",
+      "mouseTransparent": true,
+      "zLevel": 3,
+      "color": "#bbbbbbAA"
     },
 
     "rgChatMode": {

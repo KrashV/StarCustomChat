@@ -27,6 +27,7 @@ IrdenChat = {
   stagehandType = "",
   canvas = nil,
   highlightCanvas = nil,
+  commandPreviewCanvas = nil,
   totalHeight = 0,
   config = {},
   expanded = true,
@@ -38,7 +39,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, stagehandType, config, playerId)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -47,6 +48,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, stagehandType, config,
   o.author = playerId
   o.canvas = widget.bindCanvas(canvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
+  o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
 
   return o
@@ -138,7 +140,23 @@ function IrdenChat:sendMessage(text, mode)
     chat.send(data.text, mode)
   elseif mode == "Proximity" then
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
+    player.say(text)
   end
+end
+
+function IrdenChat:previewCommands(commands, selected)
+  self.commandPreviewCanvas:clear()
+
+  local result = ""
+  for i, command in ipairs(commands) do 
+    result = result .. "^" .. (i == selected and self.config.commandPreviewSelectedColor or self.config.commandPreviewColor) .. ";" .. command .. " "
+  end
+
+  self.commandPreviewCanvas:drawText(result, {
+    position = {0, 0},
+    horizontalAnchor = "left", -- left, mid, right
+    verticalAnchor = "bottom" -- top, mid, bottom
+  }, self.config.font.previewCommandSize)
 end
 
 function IrdenChat:drawIcon(target, nickname, messageOffset, color)
