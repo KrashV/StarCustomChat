@@ -71,11 +71,44 @@ function IrdenChat:createMessageQueue()
     onError = function() promises:add(fakePromise) end
   }
 
+  function formatMessage(message)
+    local text = message.text
+    if message.connection == 0 then
+      local fightPattern = "^%[%^red;(.-)%^reset;%]"
+      local discordPattern = "<%^orange;(.-)%^reset;> (.+)$"
+  
+      if string.find(text, "%[%^orange;DC%^reset;%]") then
+        local username, restOfText = string.match(text, discordPattern)
+  
+        if username and restOfText then
+          message.mode = "RadioMessage"
+          message.nickname = username
+          message.text = restOfText
+          message.portrait = self.config.icons.discord
+        end
+      elseif player.hasActiveQuest("irdeninitiative") then
+        local fightName = player.getProperty("irdenfightName") or "UNKNWON_FIGHT"
+  
+        -- Use string.match to extract the text
+        local result = string.match(text, fightPattern)
+        
+        if result and fightName == result then
+          message.mode = "Fight"
+          message.nickname = fightName
+          message.portrait = self.config.icons.fight
+        end
+      end
+    end
+    return message
+  end
+
+
 
   local function addMessagesToQueue(queue)
     self.queueTime = 0
     if queue then
       for _, msg in ipairs(queue) do
+        msg = formatMessage(msg)
         table.insert(self.messages, msg)
         if #self.messages > self.config.chatHistoryLimit then
           table.remove(self.messages, 1)
@@ -164,16 +197,15 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     return string.gsub(nick, ".*<(.*)",  "%1")
   end
 
-  local function drawFrame(offset)
-    local frame = self.config.portraitBackground
-    local frameSize = root.imageSize(frame)
+  local function drawImage(image, offset)
+    local frameSize = root.imageSize(image)
 
-    self.canvas:drawImage(frame, offset, self.config.portraitFrameScale)
+    self.canvas:drawImage(image, offset, self.config.portraitFrameScale)
   end
 
   local function drawPortrait(portrait, messageOffset)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
-    drawFrame(offset)
+    drawImage(self.config.icons.empty, offset)
     for _, layer in ipairs(portrait) do
       self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
     end
@@ -188,7 +220,9 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
       if self.savedPortraits[target] then
         drawPortrait(self.savedPortraits[target], messageOffset)
       else
-        self.canvas:drawImage(self.config.icons.unknown, vec2.add(self.config.iconImageOffset, messageOffset), self.config.iconScale)
+        local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+        drawImage(self.config.icons.empty, offset)
+        drawImage(self.config.icons.unknown, offset)
         icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
           if portrait then
             self.savedPortraits[target] = portrait
@@ -199,8 +233,8 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
-    drawFrame(offset)
-    self.canvas:drawImageRect(target, {0, 0, table.unpack(root.imageSize(target))}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[1]})
+    drawImage(self.config.icons.empty, offset)
+    drawImage(target, offset)
   end
   
   self.canvas:drawText(cleanNickname(nickname), {
@@ -311,17 +345,11 @@ function IrdenChat:processQueue()
           self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
         elseif messageMode == "RadioMessage" then
           self:drawIcon(message.portrait or "/ai/portraits/humanportrait.png:idle", message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" then
+        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight" then
           if message.connection == 0 then
-            self:drawIcon(self.config.icons.server, "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
+            self:drawIcon(message.portrait or self.config.icons.server, message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
           else
             self:drawIcon(message.portrait ~= "" and message.portrait or entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-          end
-        elseif messageMode == "Announcement" then
-          if message.connection == 0 then
-            self:drawIcon(self.config.icons.server, "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.colors[messageMode])
-          else
-            self:drawIcon(entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode] )
           end
         end
   

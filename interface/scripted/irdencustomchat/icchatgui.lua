@@ -43,6 +43,10 @@ function init()
   self.irdenChat:processQueue()
 
   -- Debind chat opening
+  removeChatBindings()
+end
+
+function removeChatBindings()
   local bindings = root.getConfiguration("bindings")
   bindings["ChatBegin"] = jarray()
   bindings["ChatBeginCommand"] = jarray()
@@ -304,8 +308,7 @@ function sendMessage(widgetName)
   local message = widget.getText(widgetName)
 
   if message == "" then 
-    widget.setText(widgetName, "")
-    widget.blur(widgetName)
+    blurTextbox(widgetName)
     return 
   end
 
@@ -332,8 +335,7 @@ function sendMessage(widgetName)
     self.irdenChat:sendMessage(message, widget.getSelectedData("rgChatMode").mode)
     icchat.utils.saveMessage(message)
   end
-  widget.setText(widgetName, "")
-  widget.blur(widgetName)
+  blurTextbox(widgetName)
 end
 
 

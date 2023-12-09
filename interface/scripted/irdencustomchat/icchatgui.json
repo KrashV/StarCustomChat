@@ -36,7 +36,9 @@
       "console": "/interface/scripted/irdencustomchat/icons/console.png",
       "unknown": "/interface/scripted/irdencustomchat/icons/unknown.png",
       "server": "/interface/scripted/irdencustomchat/icons/server.png",
-      "announcement": "/interface/scripted/irdencustomchat/icons/announcement.png"
+      "announcement": "/interface/scripted/irdencustomchat/icons/announcement.png",
+      "fight": "/interface/scripted/irdencustomchat/icons/fight.png",
+      "discord": "/interface/scripted/irdencustomchat/icons/discord.png"
     },
 
     "selectedModeColor": "#2e691eF8",
