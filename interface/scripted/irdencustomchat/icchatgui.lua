@@ -41,6 +41,17 @@ function init()
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
+
+  -- Debind chat opening
+  local bindings = root.getConfiguration("bindings")
+  bindings["ChatBegin"] = jarray()
+  bindings["ChatBeginCommand"] = jarray()
+  bindings["ChatNextLine"] = jarray()
+  bindings["ChatPageDown"] = jarray()
+  bindings["ChatPageUp"] = jarray()
+  bindings["ChatPreviousLine"] = jarray()
+  bindings["ChatSendLine"] = jarray()
+  root.setConfiguration("bindings", bindings)
 end
 
 function createTotallyFakeWidget(wrapWidth, fontSize)
