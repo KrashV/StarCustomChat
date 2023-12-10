@@ -14,6 +14,8 @@ function init()
 
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
+  self.chatmonster = root.assetJson("/interface/chattingmonster/chatmonster.json")
+
   local chatConfig = config.getParameter("config")
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
 
@@ -130,13 +132,17 @@ function checkCommandsPreview()
 end
 
 function checkTyping()
-  --[[
   if widget.hasFocus("tbxInput") then
-    effectsAnimator.setAnimationState("busy", "chatting")
+    if self.chatting == nil then
+      self.chatmonster.parentEntity = player.id()
+      self.chatting = world.spawnMonster("punchy", world.entityPosition(player.id()), self.chatmonster)
+    end
   else
-    effectsAnimator.setAnimationState("busy", "none")
+    if self.chatting ~= nil then
+      world.sendEntityMessage(self.chatting, "dieplz")
+      self.chatting = nil
+    end
   end
-  ]]
 end
 
 function checkGroup()
