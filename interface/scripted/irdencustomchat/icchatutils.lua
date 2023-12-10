@@ -85,13 +85,18 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
   end
 
   if not findStagehandAndSendData() then
-    if pcall(world.spawnStagehand(world.entityPosition(player.id()), stagehandType)) then
+    if not player.id() or not world.entityPosition(player.id()) then
+      promises:add(fakePromise, findStagehandAndSendData, function() 
+        promises:add(fakePromise, findStagehandAndSendData) 
+      end)
+
+    elseif pcall(world.spawnStagehand(world.entityPosition(player.id()), stagehandType)) then
       promises:add(fakePromise, findStagehandAndSendData, function() 
         promises:add(fakePromise, findStagehandAndSendData) 
       end)
       return 0
     else
-      icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.stagehand_not_found"))
+      --icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.stagehand_not_found"))
       return 1
     end
   end
