@@ -76,15 +76,18 @@ function IrdenChat:createMessageQueue()
 
   function formatMessage(message)
     local text = message.text
+    
     if message.connection == 0 then
       local fightPattern = "^%[%^red;(.-)%^reset;%]"
       local discordPattern = "<%^orange;(.-)%^reset;> (.+)$"
   
+      if message.mode == "RadioMessage" then message.mode = "Broadcast" end
+
       if string.find(text, "%[%^orange;DC%^reset;%]") then
         local username, restOfText = string.match(text, discordPattern)
   
         if username and restOfText then
-          message.mode = "RadioMessage"
+          message.mode = "Broadcast"
           message.nickname = username
           message.text = restOfText
           message.portrait = self.config.icons.discord
