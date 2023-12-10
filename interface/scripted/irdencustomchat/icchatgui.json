@@ -3,7 +3,8 @@
   "dismissable" : false,
   "config": {
     "lineHeight" : 1.1,
-    "wrapWidth": 230,
+    "wrapWidthFullMode": 230,
+    "wrapWidthCompactMode": 260,
     "lineSpacing": 2,
     "spacings": {
       "messages": 3,
@@ -15,7 +16,8 @@
     "fadeRate" : 1.0,
     "chatHistoryLimit" : 64,
 
-    "textOffset": [35, 0],
+    "textOffsetFullMode": [35, 0],
+    "textOffsetCompactMode": [5, 0],
     "nameOffset": [35, 0],
     "nameWrapWidth": 30,
 
@@ -53,10 +55,10 @@
       "baseSize" : 9,
       "itemSize" : 8,
       "nameSize" : 10,
-      "previewCommandSize": 8,
-      "defaultColor" : [255, 255, 255]
+      "previewCommandSize": 8
     },
     "nameColors": {
+      "default": "white",
       "Local" : "white",
       "Party" : "blue",
       "Broadcast" : "red",
@@ -69,6 +71,7 @@
       "Fight" : "gray"
     },
     "colors" : {
+      "default": "white",
       "Local" : "white",
       "Party" : "blue",
       "Broadcast" : "white",

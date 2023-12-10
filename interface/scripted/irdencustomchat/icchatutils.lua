@@ -1,6 +1,9 @@
 icchat = {
   utils = {}
 }
+function icchat.utils.cleanNickname(nick)
+  return string.gsub(nick, ".*<(.*)",  "%1")
+end
 
 function icchat.utils.getLocale()
   return root.getConfiguration("iccLocale") or "en"

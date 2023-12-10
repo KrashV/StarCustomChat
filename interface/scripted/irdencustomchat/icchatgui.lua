@@ -5,9 +5,9 @@ require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 function init()
-  self.chatMode = root.getConfiguration("iccMode") or "full"
+  localeChat()
 
-
+  
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -21,7 +21,7 @@ function init()
   self.chatting = nil
 
   local chatConfig = config.getParameter("config")
-  createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
+  createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.font.baseSize)
   
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
@@ -42,7 +42,6 @@ function init()
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
-  localeChat()
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
@@ -65,13 +64,19 @@ function removeChatBindings()
   root.setConfiguration("bindings", bindings)
 end
 
-function createTotallyFakeWidget(wrapWidth, fontSize)
+function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontSize)
   pane.addWidget({
     type = "label",
-    wrapWidth = wrapWidth,
+    wrapWidth = wrapWidthFullMode,
     fontSize = fontSize,
     position = {-100, -100}
-  }, "totallyFakeLabel")
+  }, "totallyFakeLabelFullMode")
+  pane.addWidget({
+    type = "label",
+    wrapWidth = wrapWidthCompactMode,
+    fontSize = fontSize,
+    position = {-100, -100}
+  }, "totallyFakeLabelCompactMode")
 end
 
 function findButtonByMode(mode)
@@ -85,6 +90,8 @@ function findButtonByMode(mode)
 end
 
 function localeChat()
+  
+  self.chatMode = root.getConfiguration("iccMode") or "full"
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do 

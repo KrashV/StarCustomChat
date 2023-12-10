@@ -204,10 +204,6 @@ function IrdenChat:previewCommands(commands, selected)
 end
 
 function IrdenChat:drawIcon(target, nickname, messageOffset, color)
-  local function cleanNickname(nick)
-    return string.gsub(nick, ".*<(.*)",  "%1")
-  end
-
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
 
@@ -251,11 +247,11 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     drawImage(self.config.icons.frame, offset)
   end
   
-  self.canvas:drawText(cleanNickname(nickname), {
+  self.canvas:drawText(icchat.utils.cleanNickname(nickname), {
     position = vec2.add(self.config.nameOffset, messageOffset),
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "bottom" -- top, mid, bottom
-  }, self.config.font.nameSize, (color or self.config.defaultColor))
+  }, self.config.font.nameSize, (color or self.config.colors.default))
 end
 
 
@@ -310,6 +306,10 @@ function filterMessages(messages)
   return drawnMessages
 end
 
+function createNameForCompactMode(name, color, text)
+  return "<^" .. color .. ";" .. icchat.utils.cleanNickname(name) .."^reset;>: "  .. text
+end
+
 --TODO: instead of all messages we need to look at the messages that are drawn
 function IrdenChat:processQueue()
   self.canvas:clear()
@@ -317,7 +317,7 @@ function IrdenChat:processQueue()
   self.drawnMessages = filterMessages(self.messages)
 
   local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
-    return message.avatar and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
+    return (self.chatMode == "full" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
       or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
   end
 
@@ -327,15 +327,36 @@ function IrdenChat:processQueue()
     local messageMode = message.mode
     
     local entityId = message.connection * -65536
+
+    local icon
+    local name
+    if messageMode == "CommandResult" then
+      icon = self.config.icons.console
+      name = "Console"         
+    elseif messageMode == "RadioMessage" then
+      icon = message.portrait or "/ai/portraits/humanportrait.png:idle"
+      name = message.nickname or "Server"
+    elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight" then
+      if message.connection == 0 then
+        icon = message.portrait or self.config.icons.server
+        name = message.nickname or "Server"
+      else
+        icon = message.portrait ~= "" and message.portrait or entityId
+        name = message.nickname
+      end
+    end
+
     -- If the message should contain an avatar and name:
     self.drawnMessages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode or message.nickname ~= self.drawnMessages[i-1].nickname)
 
     -- Get amount of lines in the message and its length
-    widget.setText("totallyFakeLabel", message.text)
-    local sizeOfText = widget.getSize("totallyFakeLabel")
+    local labelToCheck = self.chatMode == "full" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
+    local text = self.chatMode == "full" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text)
+    widget.setText(labelToCheck, text)
+    local sizeOfText = widget.getSize(labelToCheck)
     self.drawnMessages[i].n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.font.baseSize + self.config.spacings.lines)
     self.drawnMessages[i].height = sizeOfText[2]
-    widget.setText("totallyFakeLabel", "")
+    widget.setText(labelToCheck, "")
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.font.baseSize + self.config.spacings.lines)
@@ -344,36 +365,37 @@ function IrdenChat:processQueue()
       messageOffset = self.drawnMessages[i + 1].offset + self.drawnMessages[i + 1].height + self.config.spacings.messages
     end
 
-    -- Draw the actual message unless it's outside of drawing area
-    
-    if isInsideChat(self.drawnMessages[i], messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
-      self.canvas:drawText(message.text, {
-        position = vec2.add(self.config.textOffset, {0, messageOffset}),
-        horizontalAnchor = "left", -- left, mid, right
-        verticalAnchor = "bottom", -- top, mid, bottom
-        wrapWidth = self.config.wrapWidth -- wrap width in pixels or nil
-      }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.defaultColor)
+    local offset = {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}
 
-      if self.drawnMessages[i].avatar then
-        if messageMode == "CommandResult" then
-          self:drawIcon(self.config.icons.console, "Console", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-        elseif messageMode == "RadioMessage" then
-          self:drawIcon(message.portrait or "/ai/portraits/humanportrait.png:idle", message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-        elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight" then
-          if message.connection == 0 then
-            self:drawIcon(message.portrait or self.config.icons.server, message.nickname or "Server", {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-          else
-            self:drawIcon(message.portrait ~= "" and message.portrait or entityId, message.nickname, {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}, self.config.nameColors[messageMode])
-          end
+
+    -- Draw the actual message unless it's outside of drawing area
+    if self.chatMode == "full" then
+      if isInsideChat(self.drawnMessages[i], messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
+        self.canvas:drawText(message.text, {
+          position = vec2.add(self.config.textOffsetFullMode, {0, messageOffset}),
+          horizontalAnchor = "left", -- left, mid, right
+          verticalAnchor = "bottom", -- top, mid, bottom
+          wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
+        }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
+
+        if self.drawnMessages[i].avatar then
+          self:drawIcon(icon, name, offset, self.config.nameColors[messageMode])
+          self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
         end
-  
-        self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
+      end
+    
+    else -- compact mode
+      if isInsideChat(self.drawnMessages[i], messageOffset, 0, self.canvas:size()) then
+        self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text), {
+          position = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset}),
+          horizontalAnchor = "left", -- left, mid, right
+          verticalAnchor = "bottom", -- top, mid, bottom
+          wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
+        }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
       end
     end
     
     self.drawnMessages[i].offset = messageOffset
     self.totalHeight = self.totalHeight + self.drawnMessages[i].height
-
-    -- Modes: "CommandResult", "Broadcast", "Whisper", "Party", "Local", "World", "RadioMessage", "Proximity"
   end
 end
