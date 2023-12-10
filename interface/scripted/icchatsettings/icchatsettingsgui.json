@@ -114,20 +114,6 @@
       "callback": "moveCorner",
       "data": [0, -1]
     },
-    "ok" : {
-      "type" : "button",
-      "base" : "/interface/quests/newquest/acceptUp.png",
-      "hover" : "/interface/quests/newquest/acceptOver.png",
-      "position" : [135, 18],
-      "caption" : "Okay"
-    },
-    "cancel" : {
-      "type" : "button",
-      "base" : "/interface/quests/newquest/declineUp.png",
-      "hover" : "/interface/quests/newquest/declineOver.png",
-      "position" : [55, 18],
-      "caption" : "Cancel"
-    },
     "lblLanguage": {
       "type": "label",
       "value": "Language: ",
@@ -164,7 +150,7 @@
       "position" : [220, 132]
     }
   },
-  "scriptWidgetCallbacks": ["ok", "cancel", "moveCorner", "changeCorner", "changeLanguage", "changeMode"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode"],
   "canvasClickCallbacks" : {
 
   },
