@@ -99,11 +99,11 @@
       "positionLocked" : true,
       "offset": [3, 5]
     },
-    "close": {
-      "type": "button",
-      "position": [280, 12],
-      "base": "/interface/x.png"
-    },  	
+    //"close": {
+    //  "type": "button",
+    //  "position": [280, 12],
+    //  "base": "/interface/x.png"
+    //},  	
     "background" : {
       "zlevel" : -10,
       "type" : "background",
