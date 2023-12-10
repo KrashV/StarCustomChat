@@ -193,13 +193,18 @@ function populateList()
   if not self.cannotUse then
     self.cannotUse = icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
 
+      local mode = #players > 7 and "letter" or "avatar"
+
+
       local idTable = {}  -- This table will store only the 'id' values
       for _, player in ipairs(players) do
         table.insert(idTable, player.id)
 
         if index(self.contacts, player.id) == 0 and player.data then
           local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-          if player.data.portrait then
+          if mode == "letter" then
+            drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", string.sub(player.name, 1, 2))
+          elseif player.data.portrait then
             drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
           end
 
@@ -237,7 +242,14 @@ function drawIcon(canvasName, args)
     for _, layer in ipairs(args) do
       playerCanvas:drawImage(layer.image, {-14, -18})
     end
-  else
+  elseif type(args) == "string" and string.len(args) == 2 then
+    playerCanvas:drawText(args, {
+      position = {8, 3},
+      horizontalAnchor = "mid", -- left, mid, right
+      verticalAnchor = "bottom", -- top, mid, bottom
+      wrapWidth = nil -- wrap width in pixels or nil
+    }, self.irdenChat.config.font.nameSize)
+  elseif type(args) == "string" then
     playerCanvas:drawImage(args, {-1, 0})
   end
 end
