@@ -13,7 +13,7 @@
   "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
 
   "settings.title": "Chat settings",
-  "settings.subtitle": "Changes require rejoining",
+  "settings.subtitle": "",
   "settings.corners_hint": "Select corners to adjust",
   "settings.locale": "Language",
   "settings.chat_mode": "Chat mode",
@@ -22,5 +22,7 @@
   "settings.cancel": "Cancel",
 
   "settings.modes.compact": "Compact",
-  "settings.modes.full": "Full"
+  "settings.modes.full": "Full",
+
+  "textspecific.weather": "^orange;Weather"
 }

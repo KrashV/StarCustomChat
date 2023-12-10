@@ -16,6 +16,7 @@ function IrdenChatStagehand:create (stagehandUUID, proximityRadius)
 
   o.uuid = stagehandUUID
   o.proximityRadius = proximityRadius
+  o.portraits = {}
   --stagehand.setUniqueId(stagehandUUID)
   return o
 end

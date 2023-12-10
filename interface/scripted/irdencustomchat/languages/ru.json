@@ -13,7 +13,7 @@
   "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
 
   "settings.title": "Настройки чата",
-  "settings.subtitle": "После сохранения необходимо перезайти",
+  "settings.subtitle": "",
   "settings.corners_hint": "Выбери углы портрета",
   "settings.locale": "Язык",
   "settings.chat_mode": "Режим чата",
@@ -22,5 +22,7 @@
   "settings.cancel": "Отменить",
 
   "settings.modes.compact": "Компактный",
-  "settings.modes.full": "Полный"
+  "settings.modes.full": "Полный",
+
+  "textspecific.weather": "^orange;Погода"
 }

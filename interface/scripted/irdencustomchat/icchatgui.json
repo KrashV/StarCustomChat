@@ -29,7 +29,7 @@
     "iconImageOffset" : [6, -10],
 
     "bodyHeight" : 55,
-    "expandedBodyHeight" : 288,
+    "expandedBodyHeight" : 289,
 
     "icons": {
       "empty": "/interface/scripted/irdencustomchat/icons/empty.png",
@@ -40,6 +40,14 @@
       "fight": "/interface/scripted/irdencustomchat/icons/fight.png",
       "discord": "/interface/scripted/irdencustomchat/icons/discord.png",
       "frame": "/interface/scripted/irdencustomchat/icons/frame.png"
+    },
+
+    // The names of these should be located at <language>.json
+    "serverTextSpecific": {
+      "Погода%^reset;": {
+        "icon": "/interface/scripted/irdencustomchat/icons/weather.png",
+        "nickname": "textspecific.weather"
+      }
     },
 
     "selectedModeColor": "#2e691eF8",

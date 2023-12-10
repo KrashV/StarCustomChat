@@ -92,9 +92,8 @@ function IrdenChat:createMessageQueue()
           message.text = restOfText
           message.portrait = self.config.icons.discord
         end
-      elseif player.hasActiveQuest("irdeninitiative") then
-        local fightName = player.getProperty("irdenfightName") or "UNKNWON_FIGHT"
-  
+      elseif player.hasActiveQuest("irdeninitiative") and player.getProperty("irdenfightName") and string.match(text, fightPattern) then 
+        local fightName = player.getProperty("irdenfightName")
         -- Use string.match to extract the text
         local result = string.match(text, fightPattern)
         
@@ -102,6 +101,18 @@ function IrdenChat:createMessageQueue()
           message.mode = "Fight"
           message.nickname = fightName
           message.portrait = self.config.icons.fight
+        end
+      else
+        for substr, settings in pairs(self.config.serverTextSpecific) do 
+          if string.find(text, substr) then
+            if settings.icon then
+              message.portrait = settings.icon
+            end
+            if settings.nickname then
+              message.nickname = icchat.utils.getTranslation(settings.nickname)
+            end
+            break
+          end
         end
       end
     end
@@ -147,6 +158,13 @@ function IrdenChat:createMessageQueue()
   else
     promises:add(fakePromise, addMessagesToQueue)
   end
+
+  
+  icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
+    entityId = player.id(),
+    portrait = nil,
+    cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
+  })
 end
 
 -- Wheck that we run the queue at least once per second
