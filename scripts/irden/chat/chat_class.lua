@@ -39,11 +39,12 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages)
   local o = {}
   setmetatable(o, self)
   self.__index = self
 
+  o.messages = messages
   o.stagehandType = stagehandType
   o.author = playerId
   o.canvas = widget.bindCanvas(canvasWid)

@@ -20,9 +20,11 @@ function init()
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
 
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
-  
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id())
+
+  local storedMessages = root.getConfiguration("icc_last_messages", {})
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages)
   self.irdenChat:createMessageQueue()
+  self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
 
@@ -38,8 +40,6 @@ function init()
 
   localeChat()
   --setMode(_, {mode = "Local"})
-
-  self.lastCommand = nil
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
@@ -397,4 +397,9 @@ function uninit()
     world.sendEntityMessage(self.chatting, "dieplz")
     self.chatting = nil
   end
+
+  -- Save messages and last command
+  local messages = self.irdenChat:getMessages()
+  root.setConfiguration("icc_last_messages", messages)
+  root.setConfiguration("icc_last_command", self.lastCommand)
 end
