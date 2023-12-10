@@ -66,6 +66,8 @@ function changeLanguage()
   local i = index(self.availableLocales, currentLocale)
   self.locale = self.availableLocales[(i % #self.availableLocales) + 1]
   localeSettings(self.locale)
+
+  save()
 end
 
 
@@ -74,6 +76,8 @@ function changeMode()
   local i = index(self.availableModes, currentMode)
   self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
   localeSettings(self.locale)
+
+  save()
 end
 
 -- Utility function: return the index of a value in the given array
@@ -84,12 +88,16 @@ function index(tab, value)
   return 0
 end
 
-function ok()
+function save()
   root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_resetSettings")
+end
+
+function ok()
+  save()
   pane.dismiss()
 end
 

@@ -13,7 +13,7 @@
   "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
 
   "settings.title": "Chat settings",
-  "settings.subtitle": "",
+  "settings.subtitle": "Avatar changes would require reloading",
   "settings.corners_hint": "Select corners to adjust",
   "settings.locale": "Language",
   "settings.chat_mode": "Chat mode",
