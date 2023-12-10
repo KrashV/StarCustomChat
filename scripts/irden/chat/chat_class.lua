@@ -30,7 +30,8 @@ IrdenChat = {
   commandPreviewCanvas = nil,
   totalHeight = 0,
   config = {},
-  expanded = true,
+  expanded = false,
+  chatMode = "full",
   savedPortraits = {},
 
   queueTimer = 0.5,
@@ -39,7 +40,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -51,6 +52,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
   o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
+  o.chatMode = chatMode
 
   return o
 end
@@ -211,6 +213,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     for _, layer in ipairs(portrait) do
       self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
     end
+    drawImage(self.config.icons.frame, offset)
   end
 
   if type(target) == "number" then
@@ -225,6 +228,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
         local offset = vec2.add(self.config.iconImageOffset, messageOffset)
         drawImage(self.config.icons.empty, offset)
         drawImage(self.config.icons.unknown, offset)
+        drawImage(self.config.icons.frame, offset)
         icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
           if portrait then
             self.savedPortraits[target] = portrait
@@ -237,6 +241,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
     drawImage(target, offset)
+    drawImage(self.config.icons.frame, offset)
   end
   
   self.canvas:drawText(cleanNickname(nickname), {

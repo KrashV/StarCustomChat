@@ -5,6 +5,9 @@ require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 function init()
+  self.chatMode = root.getConfiguration("iccMode") or "full"
+
+
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -23,7 +26,7 @@ function init()
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages)
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages, self.chatMode)
   self.irdenChat:createMessageQueue()
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -40,13 +43,14 @@ function init()
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
   localeChat()
-  --setMode(_, {mode = "Local"})
 
   timers:add(1, checkDMs)
   self.irdenChat:processQueue()
 
   -- Debind chat opening
   removeChatBindings()
+
+  canvasClickEvent({0, 0}, 0, true)
 end
 
 function removeChatBindings()
@@ -364,6 +368,16 @@ end
 
 function toBottom()
   self.irdenChat:resetOffset()
+end
+
+function openSettings()
+  local chatConfigInterface = root.assetJson("/interface/scripted/icchatsettings/icchatsettingsgui.json")
+  chatConfigInterface.locale = icchat.utils.getLocale()
+  chatConfigInterface.chatMode = self.chatMode
+  chatConfigInterface.backImage = self.irdenChat.config.icons.empty
+  chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
+  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame",  self.irdenChat.config.portraitCropArea)
+  player.interact("ScriptPane", chatConfigInterface)
 end
 
 -- Utility function: return the index of a value in the given array

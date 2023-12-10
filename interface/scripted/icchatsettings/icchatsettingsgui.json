@@ -1,0 +1,161 @@
+{
+  "gui" : {
+    "background" : {
+      "zlevel" : -10,
+      "type" : "background",
+      "fileBody" : "/interface/scripted/icchatsettings/body.png",
+      "fileHeader" : "/interface/scripted/icchatsettings/header.png",
+      "fileFooter" : "/interface/scripted/icchatsettings/footer.png"
+    },
+    "bgShine" : {
+      "type" : "image",
+      "file" : "/interface/confirmation/shine.png",
+      "position" : [0, 20],
+      "zlevel" : -1
+    },
+    "windowtitle" : {
+      "type" : "title",
+      "title" : "Settings",
+      "subtitle" : "",
+      "position" : [0, 254],
+      "icon" : {
+        "type" : "image",
+        "file" : "",
+        "position" : [0, 0],
+        "zlevel" : -1
+      }
+    },
+    "portraitCanvas": {
+      "type": "canvas",
+      "rect": [10, 50, 80, 120]
+    },
+    "rgAvatarCorners": {
+      "type": "radioGroup",
+      "position": [10, 50],
+      "zlevel": 4,
+      "callback": "changeCorner",
+      "buttons": [
+        {
+          "id" : 1,
+          "baseImage": "/interface/scripted/icchatsettings/corner.png",
+          "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
+          "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
+          "pressedOffset": [ 0, 0 ],
+          "position": [ 0, 0 ],
+          "selected": true
+        },
+        {
+          "id" : 3,
+          "baseImage": "/interface/scripted/icchatsettings/corner.png",
+          "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
+          "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
+          "pressedOffset": [ 0, 0 ],
+          "position": [ 62, 62 ]
+        }
+      ]
+    },
+    "lblCrop": {
+      "type": "label",
+      "position": [100, 110],
+      "value": "Crop avatar area"
+    },
+    "xPosition": {
+      "type": "label",
+      "position": [100, 90],
+      "value": "X: "
+    },
+    "yPosition": {
+      "type": "label",
+      "position": [140, 90],
+      "value": "Y: "
+    },
+    "btnLeft": {
+      "type": "button",
+      "position": [100, 80],
+      "base": "/interface/scrollarea/harrow-backward.png",
+      "hover": "/interface/scrollarea/harrow-backwardhover.png",
+      "callback": "moveCorner",
+      "data": [-1, 0]
+    },
+    "btnRight": {
+      "type": "button",
+      "position": [110, 80],
+      "base": "/interface/scrollarea/harrow-forward.png",
+      "hover": "/interface/scrollarea/harrow-forwardhover.png",
+      "callback": "moveCorner",
+      "data": [1, 0]
+    },
+    "btnDown": {
+      "type": "button",
+      "position": [140, 80],
+      "base": "/interface/scrollarea/harrow-backward.png",
+      "hover": "/interface/scrollarea/harrow-backwardhover.png",
+      "callback": "moveCorner",
+      "data": [0, -1]
+    },
+    "btnUp": {
+      "type": "button",
+      "position": [150, 80],
+      "base": "/interface/scrollarea/harrow-forward.png",
+      "hover": "/interface/scrollarea/harrow-forwardhover.png",
+      "callback": "moveCorner",
+      "data": [0, 1]
+    },
+    "ok" : {
+      "type" : "button",
+      "base" : "/interface/quests/newquest/acceptUp.png",
+      "hover" : "/interface/quests/newquest/acceptOver.png",
+      "position" : [135, 18],
+      "caption" : "Okay"
+    },
+    "cancel" : {
+      "type" : "button",
+      "base" : "/interface/quests/newquest/declineUp.png",
+      "hover" : "/interface/quests/newquest/declineOver.png",
+      "position" : [55, 18],
+      "caption" : "Cancel"
+    },
+    "lblLanguage": {
+      "type": "label",
+      "value": "Language: ",
+      "position": [100, 60]
+    },
+    "btnLanguage": {
+      "type": "button",
+      "base" : "/interface/button.png",
+      "hover" : "/interface/buttonhover.png",
+      "position": [150, 57],
+      "callback": "changeLanguage"
+    },
+
+    "lblMode": {
+      "type": "label",
+      "value": "Mode: ",
+      "position": [100, 40]
+    },
+    "btnMode": {
+      "type": "button",
+      "base" : "/interface/button.png",
+      "hover" : "/interface/buttonhover.png",
+      "position": [150, 37],
+      "callback": "changeMode"
+    },
+
+    
+    "close" : {
+      "type" : "button",
+      "base" : "/interface/x.png",
+      "hover" : "/interface/xhover.png",
+      "pressed" : "/interface/xpress.png",
+      "pressedOffset" : [0, 0],
+      "position" : [220, 132]
+    }
+  },
+  "scriptWidgetCallbacks": ["ok", "cancel", "moveCorner", "changeCorner", "changeLanguage", "changeMode"],
+  "canvasClickCallbacks" : {
+
+  },
+  "scripts": ["/interface/scripted/icchatsettings/icchatsettingsgui.lua"]
+}

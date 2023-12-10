@@ -10,5 +10,16 @@
 
   "chat.alerts.dm_not_specified": "Select the recepient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
-  "chat.alerts.stagehand_not_found": "^red;The server does not support this chat"
+  "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
+
+  "settings.title": "Chat settings",
+  "settings.subtitle": "Changes require rejoining",
+  "settings.locale": "Language",
+  "settings.chat_mode": "Chat mode",
+  "settings.crop_area": "Crop Area",
+  "settings.ok": "Okay",
+  "settings.cancel": "Cancel",
+
+  "settings.modes.compact": "Compact",
+  "settings.modes.full": "Full"
 }

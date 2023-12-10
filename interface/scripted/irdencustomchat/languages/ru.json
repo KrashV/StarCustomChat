@@ -10,5 +10,16 @@
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
   "chat.alerts.dm_not_found": "Игрок не на планете",
-  "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат"
+  "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
+
+  "settings.title": "Настройки чата",
+  "settings.subtitle": "После сохранения необходимо перезайти",
+  "settings.locale": "Язык",
+  "settings.chat_mode": "Режим чата",
+  "settings.crop_area": "Вырез",
+  "settings.ok": "Принять",
+  "settings.cancel": "Отменить",
+
+  "settings.modes.compact": "Компактный",
+  "settings.modes.full": "Полный"
 }
