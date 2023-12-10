@@ -139,10 +139,9 @@
     "lytCommandPreview": {
       "type": "layout",
       "layoutType": "basic",
-      "rect": [21, 24, 300, 53],
+      "rect": [21, 25, 300, 53],
       "zlevel": 10,
       "visible": false,
-      "mouseTransparent": true,
       "children": {
         "imgBackground": {
           "type": "image",
@@ -340,7 +339,7 @@
 
     "lytCharactersToDM": {
       "type": "layout",
-			"rect": [1, 25, 27, 300],
+			"rect": [1, 25, 27, 313],
       "visible": false,
 			"layoutType": "basic",
 			"children": {
@@ -348,7 +347,7 @@
           "type": "imageStretch",
           "direction" : "vertical",
           "size": [18, 0],
-          "position": [0, 0],
+          "position": [0, -1],
           "stretchSet": {
             "end": "/interface/scripted/irdencustomchat/charactersheader.png",
             "inner": "/interface/scripted/irdencustomchat/charactersinner.png",
@@ -415,7 +414,7 @@
 
     "btnToBottom": {
       "type": "button",
-      "position": [0, 0],
+      "position": [1, 0],
       "base": "/interface/scripted/irdencustomchat/tobottom.png",
       "hover": "/interface/scripted/irdencustomchat/tobottomhover.png",
       "callback": "toBottom"
@@ -423,7 +422,7 @@
 
     "btnSettings": {
       "type": "button",
-      "position": [0, 13],
+      "position": [1, 13],
       "base": "/interface/scripted/irdencustomchat/settings.png",
       "hover": "/interface/scripted/irdencustomchat/settingshover.png",
       "callback": "openSettings"
