@@ -56,7 +56,7 @@
                         "body": {
                             "idle": {
                                 "properties": {
-                                    "image": "/animations/chatting/chatting.png:<frame>"
+                                    "image": "/animations/chatting/chatting.png:<frame>?flipx"
                                 }
                             },
                             "walk": {

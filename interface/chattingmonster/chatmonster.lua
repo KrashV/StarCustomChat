@@ -12,7 +12,7 @@ function init()
         self.shouldDie = true
         status.addEphemeralEffect("monsterdespawn")
       end)
-      sb.logInfo("Chat monster spawn")
+    --   sb.logInfo("Chat monster spawn")
       
 
 end
@@ -29,7 +29,6 @@ function update(dt)
         {stat = "invulnerable", amount = 1}
        
       })
-    mcontroller.controlFace(1)
     self.dotpos = world.entityMouthPosition(self.parentEntity)
     mcontroller.setPosition({self.dotpos[1] - 0.125, self.dotpos[2] + 2.5})
 end
