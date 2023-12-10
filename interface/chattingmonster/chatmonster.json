@@ -1,0 +1,121 @@
+{
+    "animationCustom": {
+        "transformationGroups": {
+            "body": {
+                "interpolated": true
+            }
+        },
+        "animatedParts": {
+            "stateTypes": {
+                "body": {
+                    "states": {
+                        "idle": {
+                            "mode": "loop",
+                            "cycle": 1.5,
+                            "frames": 3
+                        }
+                    },
+                    "default": "idle",
+                    "priority": 0
+                },
+                "damage": {
+                    "states": {
+                        "none": {
+                            "frames": 1
+                        },
+                        "leave": {
+                            "cycle": 0.25,
+                            "frames": 4
+                        },
+                        "stunned": {
+                            "properties": {
+                                "persistentSound": ""
+                            },
+                            "mode": "loop",
+                            "cycle": 0.15,
+                            "frames": 2
+                        }
+                    },
+                    "default": "none",
+                    "priority": 3
+                }
+            },
+            "parts": {
+                "body": {
+                    "properties": {
+                        "fullbright": false,
+                        "transformationGroups": [
+                            "body"
+                        ],
+                        "offset": [
+                            0,
+                            0
+                        ]
+                    },
+                    "partStates": {
+                        "body": {
+                            "idle": {
+                                "properties": {
+                                    "image": "/animations/chatting/chatting.png:<frame>"
+                                }
+                            },
+                            "walk": {
+                                "properties": {
+                                    "image": ""
+                                }
+                            },
+                            "fall": {
+                                "properties": {
+                                    "image": ""
+                                }
+                            }
+                        },
+                        "damage": {
+                            "leave": {
+                                "properties": {
+                                    "image": ""
+                                }
+                            },
+                            "stunned": {
+                                "properties": {
+                                    "image": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "statusSettings": {
+        "stats": {
+            "maxHealth": {
+                "baseValue": 1
+            },
+            "grit": {
+                "baseValuse": 1
+            }
+        }
+    },
+    "scripts": [
+        "/interface/chattingmonster/chatmonster.lua"
+    ],
+    "clientEntityMode": "ClientMasterAllowed",
+    "capturable": false,
+    "aggressive": false,
+    "scale": 1,
+    "movementSettings": {
+        "airFriction": 0,
+        "collisionPoly" : [[0,0]],
+        "ignorePlatformCollision": true,
+        "maxMovementPerStep": 1,
+        "bounceFactor": 0,
+        "collisionEnabled": false,
+        "gravityMultiplier": 0,
+        "liquidFriction": 0
+    },
+    "knockoutAnimationStates": {
+        "damage": "leave"
+    },
+    "relocatable": false
+}
