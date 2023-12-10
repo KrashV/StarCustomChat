@@ -166,12 +166,13 @@ function IrdenChat:sendMessage(text, mode)
     connection = self.author // -65536,
     portrait = "", --TODO: Add portrait,
     mode = mode,
+    fight = player.getProperty("irdenfightName") or nil,
     nickname = player.name()
   }
 
   if mode == "Broadcast" or mode == "Local" or mode == "Party" then
     chat.send(data.text, mode)
-  elseif mode == "Proximity" then
+  elseif mode == "Proximity" or mode == "Fight" then
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
     player.say(text)
   end

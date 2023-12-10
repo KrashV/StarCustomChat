@@ -393,5 +393,8 @@ end
 
 
 function uninit()
-  
+  if self.chatting ~= nil then
+    world.sendEntityMessage(self.chatting, "dieplz")
+    self.chatting = nil
+  end
 end

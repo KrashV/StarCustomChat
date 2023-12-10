@@ -1,5 +1,5 @@
 require "/scripts/messageutil.lua"
-require "/scripts/irden/chat/stagehand_class.lua"
+require "/stagehands/irden/irdencustomchathandler.lua"
 
 function init()
   local broadcastArea = config.getParameter("broadcastArea")
@@ -15,44 +15,9 @@ function init()
   end
 
   -- That's new
-  self.stagehand = IrdenChatStagehand:create("irdencustomchat", 300)
-  
-  message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
-  message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
-  message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
+  iccstagehand_init()
 end
 
-function handleMessage(data)
-  local author = data.connection * -65536
-  if data.mode == "Proximity" then
-    local authorPos = world.entityPosition(author)
-    for _, pId in ipairs(world.players()) do 
-      local distance = world.magnitude(authorPos, world.entityPosition(pId))
-      if distance <= self.stagehand.proximityRadius then
-        self.stagehand:sendDataToPlayer(pId, data)
-      end
-    end
-  end
-end
-
-function getAllPlayers()
-  local players = {}
-  for _, player in ipairs(world.players()) do 
-    if world.entityName(player) and world.entityPortrait(player, "bust") then
-      table.insert(players, {
-        id = player,
-        name = world.entityName(player),
-        portrait = requestPortrait(player)
-      })
-    end
-  end
-  return players
-end
-
-function requestPortrait(entityId)
-  if world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
-    return world.entityPortrait(entityId, "bust")
-  else
-    return nil
-  end
+function update(dt)
+  iccstagehand_update(dt)
 end

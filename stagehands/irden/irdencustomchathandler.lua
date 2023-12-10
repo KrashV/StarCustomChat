@@ -1,7 +1,7 @@
 require "/scripts/messageutil.lua"
 require "/scripts/irden/chat/stagehand_class.lua"
 
-function init()
+function iccstagehand_init()
   self.stagehand = IrdenChatStagehand:create("irdencustomchat", 300)
   
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
@@ -19,8 +19,14 @@ function handleMessage(data)
         self.stagehand:sendDataToPlayer(pId, data)
       end
     end
-  elseif data.mode == "Announcement" then 
-    self.stagehand:sendDataToAllPlayers(data)
+  elseif data.mode == "Fight" and data.fight then
+    promises:add(world.sendEntityMessage("irdenfighthandler_" .. data.fight, "getFight"), function(fight) 
+      if fight and not fight.done then
+        for uuid, player in pairs(fight.players) do
+          self.stagehand:sendDataToPlayer(uuid, data)
+        end
+      end
+    end)
   end
 end
 
@@ -46,8 +52,10 @@ function requestPortrait(entityId)
   end
 end
 
-function update()
 
+
+function iccstagehand_update(dt)
+  promises:update()
 end
 
 function uninit()

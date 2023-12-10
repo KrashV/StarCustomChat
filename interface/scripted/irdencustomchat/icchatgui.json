@@ -66,7 +66,8 @@
       "RadioMessage" : "cyan",
       "World" : "cyan",
       "Proximity" : "darkgreen",
-      "Announcement" : "red"
+      "Announcement" : "red",
+      "Fight" : "gray"
     },
     "colors" : {
       "Local" : "white",

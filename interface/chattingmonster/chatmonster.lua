@@ -12,9 +12,6 @@ function init()
         self.shouldDie = true
         status.addEphemeralEffect("monsterdespawn")
       end)
-    --   sb.logInfo("Chat monster spawn")
-      
-
 end
 
 function update(dt)
@@ -40,4 +37,8 @@ function die()
     self.deathBehavior = nil
     self.shouldDie = true
     status.addEphemeralEffect("monsterdespawn")   
+end
+
+function uninit()
+    die()
 end
