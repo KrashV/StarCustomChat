@@ -7,7 +7,7 @@ require "/interface/scripted/irdencustomchat/icchatutils.lua"
 function init()
   localeChat()
 
-  
+
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -332,6 +332,11 @@ function sendMessage(widgetName)
   end
 
   if string.sub(message, 1, 1) == "/" then
+    if string.len(message) == 1 then
+      blurTextbox(widgetName)
+      return
+    end
+
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" then
       widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
       return
