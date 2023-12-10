@@ -45,16 +45,19 @@ end
 
 function requestPortrait(entityId)
   local uuid = world.entityUniqueId(entityId)
-  if self.stagehand.portraits[uuid] then
-    return self.stagehand.portraits[uuid]
-  elseif world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
-    self.stagehand.portraits[uuid] = {
-      portrait = world.entityPortrait(entityId, "bust"),
-      cropArea = cropArea
-    }
-    return self.stagehand.portraits[uuid]
-  else
-    return nil
+
+  if uuid then
+    if self.stagehand.portraits[uuid] then
+      return self.stagehand.portraits[uuid]
+    elseif world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
+      self.stagehand.portraits[uuid] = {
+        portrait = world.entityPortrait(entityId, "bust"),
+        cropArea = cropArea
+      }
+      return self.stagehand.portraits[uuid]
+    else
+      return nil
+    end
   end
 end
 
