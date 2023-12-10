@@ -321,7 +321,7 @@ function IrdenChat:processQueue()
     
     local entityId = message.connection * -65536
     -- If the message should contain an avatar and name:
-    self.drawnMessages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode)
+    self.drawnMessages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode or message.nickname ~= self.drawnMessages[i-1].nickname)
 
     -- Get amount of lines in the message and its length
     widget.setText("totallyFakeLabel", message.text)

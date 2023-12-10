@@ -26,6 +26,7 @@ function localeSettings(locale)
   widget.setText("lblCrop", localeConfig["settings.crop_area"])
   widget.setText("lblLanguage", localeConfig["settings.locale"])
   widget.setText("lblMode", localeConfig["settings.chat_mode"])
+  widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
 end
 
 function drawCharacter()

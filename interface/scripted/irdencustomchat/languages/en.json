@@ -14,6 +14,7 @@
 
   "settings.title": "Chat settings",
   "settings.subtitle": "Changes require rejoining",
+  "settings.corners_hint": "Select corners to adjust",
   "settings.locale": "Language",
   "settings.chat_mode": "Chat mode",
   "settings.crop_area": "Crop Area",

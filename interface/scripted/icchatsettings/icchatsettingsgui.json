@@ -29,6 +29,17 @@
       "type": "canvas",
       "rect": [10, 50, 80, 120]
     },
+
+    "lblCornersHint": {
+      "type": "label",
+      "position":[45, 50],
+      "value": "Select corners to adjust",
+      "fontSize": 7,
+      "hAnchor": "mid",
+      "vAnchor": "top",
+      "wrapWidth": 80
+    },
+
     "rgAvatarCorners": {
       "type": "radioGroup",
       "position": [10, 50],
