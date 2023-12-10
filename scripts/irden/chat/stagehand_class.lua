@@ -4,7 +4,8 @@
 
 IrdenChatStagehand = {
   uuid = "",
-  proximityRadius = 100
+  proximityRadius = 100,
+  portraits = {}
 }
 
 function IrdenChatStagehand:create (stagehandUUID, proximityRadius)

@@ -7,6 +7,7 @@ function iccstagehand_init()
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
   message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
   message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
+  message.setHandler( "icc_savePortrait", simpleHandler(savePortrait) )
 end
 
 function handleMessage(data)
@@ -45,14 +46,32 @@ function getAllPlayers()
 end
 
 function requestPortrait(entityId)
-  if world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
-    return world.entityPortrait(entityId, "bust")
+  local uuid = world.entityUniqueId(entityId)
+  if self.stagehand.portraits[uuid] then
+    return self.stagehand.portraits[uuid]
+  elseif world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
+    self.stagehand.portraits[uuid] = {
+      portrait = world.entityPortrait(entityId, "bust"),
+      cropArea = cropArea
+    }
+    return self.stagehand.portraits[uuid]
   else
     return nil
   end
 end
 
-
+function savePortrait(request)
+  if world.entityExists(request.entityId) and world.entityPortrait(request.entityId, "bust") then 
+    local uuid = world.entityUniqueId(request.entityId)
+    self.stagehand.portraits[uuid] = {
+      portrait = request.portrait or world.entityPortrait(request.entityId, "bust"),
+      cropArea = request.cropArea
+    }
+    return true
+  else
+    return nil
+  end
+end
 
 function iccstagehand_update(dt)
   promises:update()

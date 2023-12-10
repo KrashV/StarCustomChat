@@ -115,6 +115,11 @@ function IrdenChat:createMessageQueue()
           if msg == "RESET_CHAT" then
             localeChat()
             self.chatMode = root.getConfiguration("iccMode") or "full"
+            icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
+              entityId = player.id(),
+              portrait = nil,
+              cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
+            })
           end
         else
           msg = formatMessage(msg)
@@ -210,35 +215,29 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
     self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
   end
 
-  local function drawPortrait(portrait, messageOffset)
+  local function drawPortrait(portrait, messageOffset, cropArea)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
     for _, layer in ipairs(portrait) do
-      self.canvas:drawImageRect(layer.image, self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
+      self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
     end
     drawImage(self.config.icons.frame, offset)
   end
 
   if type(target) == "number" then
-    if world.entityExists(target) then
-      local portrait = world.entityPortrait(target, "bust")
-      drawPortrait(portrait, messageOffset)
-      self.savedPortraits[target] = portrait
+    if self.savedPortraits[target] then
+      drawPortrait(self.savedPortraits[target].portrait, messageOffset, self.savedPortraits[target].cropArea)
     else
-      if self.savedPortraits[target] then
-        drawPortrait(self.savedPortraits[target], messageOffset)
-      else
-        local offset = vec2.add(self.config.iconImageOffset, messageOffset)
-        drawImage(self.config.icons.empty, offset)
-        drawImage(self.config.icons.unknown, offset)
-        drawImage(self.config.icons.frame, offset)
-        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
-          if portrait then
-            self.savedPortraits[target] = portrait
-            drawPortrait(portrait, messageOffset)
-          end
-        end)
-      end
+      local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+      drawImage(self.config.icons.empty, offset)
+      drawImage(self.config.icons.unknown, offset)
+      drawImage(self.config.icons.frame, offset)
+      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
+        if portrait then
+          self.savedPortraits[target] = portrait
+          drawPortrait(portrait.portrait, messageOffset, portrait.cropArea)
+        end
+      end)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
