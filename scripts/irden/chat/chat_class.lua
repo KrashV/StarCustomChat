@@ -111,10 +111,17 @@ function IrdenChat:createMessageQueue()
     self.queueTime = 0
     if queue then
       for _, msg in ipairs(queue) do
-        msg = formatMessage(msg)
-        table.insert(self.messages, msg)
-        if #self.messages > self.config.chatHistoryLimit then
-          table.remove(self.messages, 1)
+        if type(msg) == "string" then
+          if msg == "RESET_CHAT" then
+            localeChat()
+            self.chatMode = root.getConfiguration("iccMode") or "full"
+          end
+        else
+          msg = formatMessage(msg)
+          table.insert(self.messages, msg)
+          if #self.messages > self.config.chatHistoryLimit then
+            table.remove(self.messages, 1)
+          end
         end
         self:processQueue()
       end

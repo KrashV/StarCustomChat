@@ -23,6 +23,11 @@ function init()
     self.messageQueue = self.messageQueue or {}
     table.insert(self.messageQueue, message)
   end))
+  
+  message.setHandler( "icc_resetSettings", localHandler(function()
+    self.messageQueue = self.messageQueue or {}
+    table.insert(self.messageQueue, "RESET_CHAT")
+  end))
 end
 
 -- We will wait self.lastCheckedQueueTimer seconds to check for the message to be read.

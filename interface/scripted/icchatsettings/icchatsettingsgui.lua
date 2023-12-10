@@ -88,6 +88,8 @@ function ok()
   root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   player.setProperty("icc_portrait_frame",  self.cropArea)
+
+  world.sendEntityMessage(player.id(), "icc_resetSettings")
   pane.dismiss()
 end
 

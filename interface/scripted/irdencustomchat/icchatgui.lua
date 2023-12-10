@@ -85,6 +85,7 @@ function findButtonByMode(mode)
 end
 
 function localeChat()
+  self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do 
     widget.setText("rgChatMode." .. i - 2, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
