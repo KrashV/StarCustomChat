@@ -139,9 +139,10 @@
     "lytCommandPreview": {
       "type": "layout",
       "layoutType": "basic",
-      "rect": [21, 25, 300, 53],
+      "rect": [21, 24, 300, 53],
       "zlevel": 10,
       "visible": false,
+      "mouseTransparent": true,
       "children": {
         "imgBackground": {
           "type": "image",
@@ -422,7 +423,7 @@
 
     "btnSettings": {
       "type": "button",
-      "position": [0, 25],
+      "position": [0, 13],
       "base": "/interface/scripted/irdencustomchat/settings.png",
       "hover": "/interface/scripted/irdencustomchat/settingshover.png",
       "callback": "openSettings"

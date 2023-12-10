@@ -42,8 +42,8 @@ function init()
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
-
-  timers:add(1, checkDMs)
+  self.DMTimer = 3
+  checkDMs()
   self.irdenChat:processQueue()
 
   -- Debind chat opening
@@ -186,14 +186,13 @@ function checkDMs()
   if widget.active("lytCharactersToDM") then
     populateList()
   end
-  timers:add(1, checkDMs)
+  timers:add(self.DMTimer, checkDMs)
 end
 
 function populateList()
   if not self.cannotUse then
     self.cannotUse = icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
-      --online is either provided by list_loop or fetched.
-      --then add online players
+
       local idTable = {}  -- This table will store only the 'id' values
       for _, player in ipairs(players) do
         table.insert(idTable, player.id)
@@ -203,7 +202,7 @@ function populateList()
           if player.data.portrait then
             drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
           end
-          
+
           widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
             id = player.id,
             displayText = player.name
