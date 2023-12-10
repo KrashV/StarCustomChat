@@ -39,11 +39,12 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages)
   local o = {}
   setmetatable(o, self)
   self.__index = self
 
+  o.messages = messages
   o.stagehandType = stagehandType
   o.author = playerId
   o.canvas = widget.bindCanvas(canvasWid)
@@ -166,12 +167,13 @@ function IrdenChat:sendMessage(text, mode)
     connection = self.author // -65536,
     portrait = "", --TODO: Add portrait,
     mode = mode,
+    fight = player.getProperty("irdenfightName") or nil,
     nickname = player.name()
   }
 
   if mode == "Broadcast" or mode == "Local" or mode == "Party" then
     chat.send(data.text, mode)
-  elseif mode == "Proximity" then
+  elseif mode == "Proximity" or mode == "Fight" then
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
     player.say(text)
   end
@@ -200,7 +202,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
 
-    self.canvas:drawImage(image, offset, self.config.portraitFrameScale)
+    self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
   end
 
   local function drawPortrait(portrait, messageOffset)
