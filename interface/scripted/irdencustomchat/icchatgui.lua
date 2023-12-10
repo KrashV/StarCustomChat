@@ -15,10 +15,11 @@ function init()
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
   self.chatmonster = root.assetJson("/interface/chattingmonster/chatmonster.json")
+  self.chatting = nil
 
   local chatConfig = config.getParameter("config")
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
-
+  
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
@@ -395,9 +396,7 @@ end
 function uninit()
   if self.chatting ~= nil then
     world.sendEntityMessage(self.chatting, "dieplz")
-    self.chatting = nil
   end
-
   -- Save messages and last command
   local messages = self.irdenChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
