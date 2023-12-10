@@ -195,14 +195,15 @@ function populateList()
       --online is either provided by list_loop or fetched.
       --then add online players
       local idTable = {}  -- This table will store only the 'id' values
-
       for _, player in ipairs(players) do
         table.insert(idTable, player.id)
 
-        if index(self.contacts, player.id) == 0 then
+        if index(self.contacts, player.id) == 0 and player.data then
           local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.portrait.portrait)
-
+          if player.data.portrait then
+            drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
+          end
+          
           widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
             id = player.id,
             displayText = player.name

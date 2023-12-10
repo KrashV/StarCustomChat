@@ -37,35 +37,46 @@ function getAllPlayers()
     table.insert(players, {
       id = player,
       name = world.entityName(player),
-      portrait = requestPortrait(player)
+      data = requestPortrait(player)
     })
   end
   return players
 end
 
-function requestPortrait(entityId)
-  local uuid = world.entityUniqueId(entityId)
+function getPortraitSafely(entityId)
+  local portrait
+  if pcall(function()
+    portrait = world.entityPortrait(entityId, "bust")
+  end) then 
+    return portrait 
+  end
+end
 
-  if uuid then
-    if self.stagehand.portraits[uuid] then
-      return self.stagehand.portraits[uuid]
-    elseif world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then 
-      self.stagehand.portraits[uuid] = {
-        portrait = world.entityPortrait(entityId, "bust"),
-        cropArea = cropArea
-      }
-      return self.stagehand.portraits[uuid]
-    else
-      return nil
+function requestPortrait(entityId)
+  if world.entityExists(entityId) then
+    local uuid = world.entityUniqueId(entityId)
+
+    if uuid then
+      if self.stagehand.portraits[uuid] then
+        return self.stagehand.portraits[uuid]
+      elseif world.entityExists(entityId) and getPortraitSafely(entityId) then 
+        self.stagehand.portraits[uuid] = {
+          portrait = getPortraitSafely(entityId),
+          cropArea = cropArea
+        }
+        return self.stagehand.portraits[uuid]
+      else
+        return nil
+      end
     end
   end
 end
 
 function savePortrait(request)
-  if world.entityExists(request.entityId) and world.entityPortrait(request.entityId, "bust") then 
+  if world.entityExists(request.entityId) and getPortraitSafely(request.entityId) then 
     local uuid = world.entityUniqueId(request.entityId)
     self.stagehand.portraits[uuid] = {
-      portrait = request.portrait or world.entityPortrait(request.entityId, "bust"),
+      portrait = request.portrait or getPortraitSafely(request.entityId),
       cropArea = request.cropArea
     }
     return true

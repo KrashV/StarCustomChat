@@ -253,10 +253,10 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
       drawImage(self.config.icons.empty, offset)
       drawImage(self.config.icons.unknown, offset)
       drawImage(self.config.icons.frame, offset)
-      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(portrait) 
-        if portrait then
-          self.savedPortraits[target] = portrait
-          drawPortrait(portrait.portrait, messageOffset, portrait.cropArea)
+      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(data) 
+        if data then
+          self.savedPortraits[target] = data
+          drawPortrait(data.portrait, messageOffset, data.cropArea)
         end
       end)
     end
