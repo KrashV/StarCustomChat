@@ -34,13 +34,11 @@ end
 function getAllPlayers()
   local players = {}
   for _, player in ipairs(world.players()) do 
-    if world.entityName(player) and world.entityPortrait(player, "bust") then
-      table.insert(players, {
-        id = player,
-        name = world.entityName(player),
-        portrait = requestPortrait(player)
-      })
-    end
+    table.insert(players, {
+      id = player,
+      name = world.entityName(player),
+      portrait = requestPortrait(player)
+    })
   end
   return players
 end

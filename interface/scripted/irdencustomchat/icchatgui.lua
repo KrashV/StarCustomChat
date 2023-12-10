@@ -201,7 +201,8 @@ function populateList()
 
         if index(self.contacts, player.id) == 0 then
           local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.portrait)
+          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.portrait.portrait)
+
           widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
             id = player.id,
             displayText = player.name
