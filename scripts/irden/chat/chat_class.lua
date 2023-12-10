@@ -92,7 +92,7 @@ function IrdenChat:createMessageQueue()
           message.text = restOfText
           message.portrait = self.config.icons.discord
         end
-      elseif player.hasActiveQuest("irdeninitiative") and player.getProperty("irdenfightName") and string.match(text, fightPattern) then 
+      elseif player.hasActiveQuest(self.config.fightQuestName) and player.getProperty("irdenfightName") and string.match(text, fightPattern) then 
         local fightName = player.getProperty("irdenfightName")
         -- Use string.match to extract the text
         local result = string.match(text, fightPattern)

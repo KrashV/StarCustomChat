@@ -21,6 +21,8 @@ function init()
   self.chatting = nil
 
   local chatConfig = config.getParameter("config")
+
+  self.fightQuestName = chatConfig.fightQuestName
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.font.baseSize)
   
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
@@ -172,7 +174,7 @@ end
 
 function checkFight()
   local id = findButtonByMode("Fight")
-  if not player.hasActiveQuest("irdeninitiative") then
+  if not player.hasActiveQuest(self.fightQuestName) then
     widget.setButtonEnabled("rgChatMode." .. id, false)
     if widget.getSelectedData("rgChatMode").mode == "Fight" then
       widget.setSelectedOption("rgChatMode", -1)

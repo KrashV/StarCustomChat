@@ -31,6 +31,8 @@
     "bodyHeight" : 55,
     "expandedBodyHeight" : 289,
 
+    "fightQuestName": "irdeninitiative",
+    
     "icons": {
       "empty": "/interface/scripted/irdencustomchat/icons/empty.png",
       "console": "/interface/scripted/irdencustomchat/icons/console.png",
