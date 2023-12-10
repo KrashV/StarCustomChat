@@ -15,10 +15,11 @@ function init()
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
   self.chatmonster = root.assetJson("/interface/chattingmonster/chatmonster.json")
+  self.chatting = nil
 
   local chatConfig = config.getParameter("config")
   createTotallyFakeWidget(chatConfig.wrapWidth, chatConfig.font.baseSize)
-
+  
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id())
@@ -393,5 +394,7 @@ end
 
 
 function uninit()
-  
+  if self.chatting ~= nil then
+    world.sendEntityMessage(self.chatting, "dieplz")
+  end
 end
