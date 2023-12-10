@@ -201,7 +201,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
 
-    self.canvas:drawImage(image, offset, self.config.portraitFrameScale)
+    self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
   end
 
   local function drawPortrait(portrait, messageOffset)
