@@ -44,7 +44,7 @@ function init()
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
-  self.DMTimer = 3
+  self.DMTimer = 1
   checkDMs()
   self.irdenChat:processQueue()
 
@@ -186,6 +186,7 @@ function checkFight()
 end
 
 function checkDMs()
+  sb.setLogMap("WER ARE", sb.nrand())
   if widget.active("lytCharactersToDM") then
     populateList()
   end
@@ -193,42 +194,57 @@ function checkDMs()
 end
 
 function populateList()
-  if not self.cannotUse then
-    self.cannotUse = icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
+  local function drawCharacters(players)
+    local mode = #players > 7 and "letter" or "avatar"
 
-      local mode = #players > 7 and "letter" or "avatar"
+    local idTable = {}  -- This table will store only the 'id' values
 
-      local idTable = {}  -- This table will store only the 'id' values
-      for _, player in ipairs(players) do
-        table.insert(idTable, player.id)
+    for _, player in ipairs(players) do
+      table.insert(idTable, player.id)
 
-        if index(self.contacts, player.id) == 0 and player.data then
-          local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-          if mode == "letter" then
-            drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", string.sub(player.name, 1, 2))
-          elseif player.data.portrait then
-            drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
-          end
-
-          widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
-            id = player.id,
-            displayText = player.name
-          })
-          self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
-          table.insert(self.contacts, player.id)
+      if index(self.contacts, player.id) == 0 and player.data then
+        local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
+        if mode == "letter" then
+          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", string.sub(player.name, 1, 2))
+        elseif player.data.portrait then
+          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
         end
+
+        widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
+          id = player.id,
+          displayText = player.name
+        })
+        self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
+        table.insert(self.contacts, player.id)
       end
+    end
 
 
-      for i, id in ipairs(self.contacts) do
-        if index(idTable, id) == 0 then
-          widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
-          table.remove(self.contacts, i)
-        end
+    for i, id in ipairs(self.contacts) do
+      if index(idTable, id) == 0 then
+        widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
+        table.remove(self.contacts, i)
       end
-
-    end) ~= 0
+    end
   end
+
+  local playersAround = {}
+  for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do 
+    table.insert(playersAround, {
+      id = player,
+      name = world.entityName(player),
+      data = {
+        portrait = world.entityPortrait(player, "bust")
+      }
+    })
+  end
+
+  drawCharacters(playersAround)
+
+
+  icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
+    drawCharacters(players)
+  end)
 end
 
 function drawIcon(canvasName, args)
