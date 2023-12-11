@@ -43,7 +43,7 @@
             "parts": {
                 "body": {
                     "properties": {
-                        "fullbright": false,
+                        "fullbright": true,
                         "transformationGroups": [
                             "body"
                         ],
