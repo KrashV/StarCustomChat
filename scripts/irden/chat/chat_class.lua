@@ -117,6 +117,15 @@ function IrdenChat:createMessageQueue()
           end
         end
       end
+    elseif not self.savedPortraits[message.connection] then
+      local entityId = message.connection * -65536
+      local uuid = world.entityUniqueId(entityId)
+      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", entityId, function(data) 
+        if data then
+          self.savedPortraits[uuid] = data
+          self:processQueue()
+        end
+      end)
     end
     return message
   end
@@ -243,19 +252,14 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   end
 
   if type(target) == "number" then
-    if self.savedPortraits[target] then
-      drawPortrait(self.savedPortraits[target].portrait, messageOffset, self.savedPortraits[target].cropArea)
+    local uuid = world.entityExists(target) and world.entityUniqueId(target) or nil
+    if uuid and self.savedPortraits[uuid] then
+      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
       drawImage(self.config.icons.unknown, offset)
       drawImage(self.config.icons.frame, offset)
-      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", target, function(data) 
-        if data then
-          self.savedPortraits[target] = data
-          drawPortrait(data.portrait, messageOffset, data.cropArea)
-        end
-      end)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
