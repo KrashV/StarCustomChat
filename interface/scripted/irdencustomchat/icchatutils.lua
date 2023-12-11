@@ -49,10 +49,10 @@ function icchat.utils.getCommands(allCommands, substr)
 end
 
 function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback)
-  local radius = 20
+  local radius = 200
 
   local function findStagehand(stagehandType, r)
-    if world.entityPosition(player.id()) then
+    if player.id() and world.entityPosition(player.id()) then
       for _, sId in ipairs( world.entityQuery(world.entityPosition(player.id()), r, {
         includedTypes = {"stagehand"}
       })) do 
@@ -60,44 +60,42 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
           return sId
         end
       end
+
+      -- If we can't find such a stagehand, spawn one
+      world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
     end
   end
 
   local fakePromise = {
-    succeeded = function() return findStagehand(stagehandType, radius) end,
-    finished = function()
-      return true
+    succeeded = function() return true end,
+    finished =  function() 
+      return findStagehand(stagehandType, radius) or false
     end,
-    result = function() end,
-    error = function() end
+    result =    function() end,
+    error  =    function() end
   }
 
   local function findStagehandAndSendData()
-    local sId = findStagehand(stagehandType, radius)
-    if sId then
+    local function sendData(sId)
       promises:add(world.sendEntityMessage(sId, message, data), function(result)
         if callback then 
           callback(result)
         end
+      end, function()
+        sendData(sId)
       end)
-      return true
+    end
+    
+
+    local sId = findStagehand(stagehandType, radius)
+    
+    if sId then
+      sendData(sId)
     end
   end
 
-  if not findStagehandAndSendData() then
-    if not player.id() or not world.entityPosition(player.id()) then
-      promises:add(fakePromise, findStagehandAndSendData, function() 
-        promises:add(fakePromise, findStagehandAndSendData) 
-      end)
 
-    elseif pcall(world.spawnStagehand(world.entityPosition(player.id()), stagehandType)) then
-      promises:add(fakePromise, findStagehandAndSendData, function() 
-        promises:add(fakePromise, findStagehandAndSendData) 
-      end)
-      return 0
-    else
-      --icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.stagehand_not_found"))
-      return 1
-    end
+  if not findStagehandAndSendData() then
+    promises:add(fakePromise, findStagehandAndSendData)
   end
 end

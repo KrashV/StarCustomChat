@@ -111,6 +111,7 @@ end
 function update(dt)
   timers:update(dt)
   promises:update()
+  
   self.irdenChat:clearHighlights()
   checkGroup()
   checkFight()
@@ -196,7 +197,6 @@ function populateList()
     self.cannotUse = icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
 
       local mode = #players > 7 and "letter" or "avatar"
-
 
       local idTable = {}  -- This table will store only the 'id' values
       for _, player in ipairs(players) do

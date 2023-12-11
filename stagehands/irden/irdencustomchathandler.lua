@@ -8,10 +8,19 @@ function iccstagehand_init()
   message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
   message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
   message.setHandler( "icc_savePortrait", simpleHandler(savePortrait) )
+
+  self.aliveTime = 10
+  self.aliveTimer = 0
+end
+
+function handlerWithReset(fun)
+  self.aliveTimer = 0
+  simpleHandler(fun)
 end
 
 function handleMessage(data)
   local author = data.connection * -65536
+
   if data.mode == "Proximity" then
     local authorPos = world.entityPosition(author)
     for _, pId in ipairs(world.players()) do 
@@ -29,6 +38,7 @@ function handleMessage(data)
       end
     end)
   end
+  return true
 end
 
 function getAllPlayers()
@@ -87,6 +97,10 @@ end
 
 function iccstagehand_update(dt)
   promises:update()
+  self.aliveTimer = self.aliveTimer + dt 
+  if self.aliveTimer > self.aliveTime then
+    stagehand.die()
+  end
 end
 
 function uninit()
