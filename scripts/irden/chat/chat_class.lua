@@ -120,9 +120,9 @@ function IrdenChat:createMessageQueue()
     elseif not self.savedPortraits[message.connection] then
       local entityId = message.connection * -65536
       local uuid = world.entityUniqueId(entityId)
-      if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then
+      if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
         self.savedPortraits[uuid] = {
-          portrait = world.entityPortrait(entityId, "bust"),
+          portrait = world.entityPortrait(entityId, "full"),
           cropArea = self.config.portraitCropArea
         }
         self:processQueue()

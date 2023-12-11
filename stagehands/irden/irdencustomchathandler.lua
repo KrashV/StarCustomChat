@@ -56,7 +56,7 @@ end
 function getPortraitSafely(entityId)
   local portrait
   if pcall(function()
-    portrait = world.entityPortrait(entityId, "bust")
+    portrait = world.entityPortrait(entityId, "full")
   end) then 
     return portrait 
   end
