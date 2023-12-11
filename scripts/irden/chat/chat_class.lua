@@ -161,13 +161,6 @@ function IrdenChat:createMessageQueue()
   else
     promises:add(fakePromise, addMessagesToQueue)
   end
-
-  
-  icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
-    entityId = player.id(),
-    portrait = nil,
-    cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
-  })
 end
 
 -- Wheck that we run the queue at least once per second

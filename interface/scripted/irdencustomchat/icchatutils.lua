@@ -76,25 +76,22 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
   }
 
   local function findStagehandAndSendData()
+    if type(data) == "table" and data.text then sb.logInfo("SENT AGAG" .. data.text) end
     local function sendData(sId)
-      promises:add(world.sendEntityMessage(sId, message, data), function(result)
+      promises:add(world.sendEntityMessage(sId, message, data), function(...)
         if callback then 
-          callback(result)
+          callback(...)
         end
       end, function()
         sendData(sId)
       end)
     end
     
-
     local sId = findStagehand(stagehandType, radius)
-    
     if sId then
       sendData(sId)
     end
   end
 
-  if not findStagehandAndSendData() then
-    promises:add(fakePromise, findStagehandAndSendData)
-  end
+  promises:add(fakePromise, findStagehandAndSendData)
 end
