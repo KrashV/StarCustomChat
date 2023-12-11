@@ -31,6 +31,9 @@
     "bodyHeight" : 55,
     "expandedBodyHeight" : 289,
 
+    "pageSkipExpanded": 20,
+    "pageSkip": 3,
+
     "fightQuestName": "irdeninitiative",
     
     "icons": {
