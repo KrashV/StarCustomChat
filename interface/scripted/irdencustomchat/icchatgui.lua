@@ -112,12 +112,6 @@ function update(dt)
   timers:update(dt)
   promises:update()
   
-  local i = 0
-  for _, _ in pairs(promises.promises) do 
-    i = i + 1
-  end
-  sb.setLogMap("Promises", i)
-  
   self.irdenChat:clearHighlights()
   checkGroup()
   checkFight()

@@ -50,6 +50,8 @@ end
 
 function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback)
   local radius = 200
+  local n_attempts = 10
+  local findStagehandResult = false
 
   local function findStagehand(stagehandType, r)
     if player.id() and world.entityPosition(player.id()) then
@@ -57,6 +59,7 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
         includedTypes = {"stagehand"}
       })) do 
         if world.stagehandType(sId) == stagehandType then
+          findStagehandResult = true
           return sId
         end
       end
@@ -64,10 +67,14 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
       -- If we can't find such a stagehand, spawn one
       world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
     end
+
+    if n_attempts <= 0 then
+      findStagehandResult = false
+    end
   end
 
   local fakePromise = {
-    succeeded = function() return true end,
+    succeeded = function() return findStagehandResult end,
     finished =  function() 
       return findStagehand(stagehandType, radius) or false
     end,
@@ -76,7 +83,15 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
   }
 
   local function findStagehandAndSendData()
+    local n_attempts = 10
+
     local function sendData(sId)
+      n_attempts = n_attempts - 1
+      if n_attempts < 0 then
+        sb.logError("Cannot send data to stagehand")
+        return
+      end
+
       promises:add(world.sendEntityMessage(sId, message, data), function(...)
         if callback then 
           callback(...)
