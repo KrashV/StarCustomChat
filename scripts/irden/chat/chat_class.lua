@@ -33,6 +33,7 @@ IrdenChat = {
   expanded = false,
   chatMode = "full",
   savedPortraits = {},
+  proximityRadius = 100,
 
   queueTimer = 0.5,
   queueTime = 0
@@ -40,7 +41,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -53,6 +54,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
   o.chatMode = chatMode
+  o.proximityRadius = proximityRadius
 
   return o
 end
@@ -129,6 +131,7 @@ function IrdenChat:createMessageQueue()
           if msg == "RESET_CHAT" then
             localeChat()
             self.chatMode = root.getConfiguration("iccMode") or "full"
+            self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
             icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
               entityId = player.id(),
               portrait = nil,
@@ -203,6 +206,7 @@ function IrdenChat:sendMessage(text, mode)
     portrait = "", --TODO: Add portrait,
     mode = mode,
     fight = player.getProperty("irdenfightName") or nil,
+    proximityRadius = self.proximityRadius,
     nickname = player.name()
   }
 

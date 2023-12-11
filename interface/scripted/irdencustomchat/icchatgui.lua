@@ -28,7 +28,7 @@ function init()
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages, self.chatMode)
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100)
   self.irdenChat:createMessageQueue()
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -404,6 +404,7 @@ function openSettings()
   chatConfigInterface.chatMode = self.chatMode
   chatConfigInterface.backImage = self.irdenChat.config.icons.empty
   chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
+  chatConfigInterface.proximityRadius = self.irdenChat.proximityRadius
   chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame",  self.irdenChat.config.portraitCropArea)
   player.interact("ScriptPane", chatConfigInterface)
 end

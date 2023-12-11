@@ -2,7 +2,7 @@ require "/scripts/messageutil.lua"
 require "/scripts/irden/chat/stagehand_class.lua"
 
 function iccstagehand_init()
-  self.stagehand = IrdenChatStagehand:create("irdencustomchat", 300)
+  self.stagehand = IrdenChatStagehand:create("irdencustomchat", 100)
   
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
   message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
@@ -21,11 +21,11 @@ end
 function handleMessage(data)
   local author = data.connection * -65536
 
-  if data.mode == "Proximity" then
+  if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
     for _, pId in ipairs(world.players()) do 
       local distance = world.magnitude(authorPos, world.entityPosition(pId))
-      if distance <= self.stagehand.proximityRadius then
+      if distance <= data.proximityRadius then
         self.stagehand:sendDataToPlayer(pId, data)
       end
     end

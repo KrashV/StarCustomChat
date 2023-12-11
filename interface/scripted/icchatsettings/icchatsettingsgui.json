@@ -74,17 +74,17 @@
     },
     "xPosition": {
       "type": "label",
-      "position": [100, 90],
+      "position": [150, 110],
       "value": "X: "
     },
     "yPosition": {
       "type": "label",
-      "position": [140, 90],
+      "position": [180, 110],
       "value": "Y: "
     },
     "btnLeft": {
       "type": "button",
-      "position": [100, 80],
+      "position": [150, 100],
       "base": "/interface/scrollarea/harrow-backward.png",
       "hover": "/interface/scrollarea/harrow-backwardhover.png",
       "callback": "moveCorner",
@@ -92,7 +92,7 @@
     },
     "btnRight": {
       "type": "button",
-      "position": [110, 80],
+      "position": [160, 100],
       "base": "/interface/scrollarea/harrow-forward.png",
       "hover": "/interface/scrollarea/harrow-forwardhover.png",
       "callback": "moveCorner",
@@ -100,7 +100,7 @@
     },
     "btnDown": {
       "type": "button",
-      "position": [140, 80],
+      "position": [180, 100],
       "base": "/interface/scrollarea/harrow-backward.png",
       "hover": "/interface/scrollarea/harrow-backwardhover.png",
       "callback": "moveCorner",
@@ -108,7 +108,7 @@
     },
     "btnUp": {
       "type": "button",
-      "position": [150, 80],
+      "position": [190, 100],
       "base": "/interface/scrollarea/harrow-forward.png",
       "hover": "/interface/scrollarea/harrow-forwardhover.png",
       "callback": "moveCorner",
@@ -140,6 +140,24 @@
       "callback": "changeMode"
     },
 
+    "lblProxRadiusHint" : {
+      "type": "label",
+      "position": [100, 90],
+      "value": ""
+    },
+    
+    "sldProxRadius" : {
+      "type": "slider",
+      "gridImage" : "/interface/optionsmenu/largeselection.png",
+      "position": [100, 80],
+      "callback": "updateProxRadius"
+    },
+
+    "lblProxRadiusValue" : {
+      "type": "label",
+      "position": [150, 70],
+      "value": ""
+    },
     
     "close" : {
       "type" : "button",
@@ -150,7 +168,7 @@
       "position" : [220, 132]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius"],
   "canvasClickCallbacks" : {
 
   },

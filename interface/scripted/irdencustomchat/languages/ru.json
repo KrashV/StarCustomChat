@@ -13,13 +13,14 @@
   "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
 
   "settings.title": "Настройки чата",
-  "settings.subtitle": "Смена аватара потребует перезагрузки",
+  "settings.subtitle": "/debug показывает радиус близких сообщений",
   "settings.corners_hint": "Выбери углы портрета",
   "settings.locale": "Язык",
   "settings.chat_mode": "Режим чата",
   "settings.crop_area": "Вырез",
   "settings.ok": "Принять",
   "settings.cancel": "Отменить",
+  "settings.prox_radius": "Радиус близких сообщений",
 
   "settings.modes.compact": "Компактный",
   "settings.modes.full": "Полный",

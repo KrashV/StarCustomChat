@@ -1,9 +1,12 @@
+require "/scripts/vec2.lua"
+
 function init()
   self.cropArea = config.getParameter("portraitFrame")
   self.backImage = config.getParameter("backImage")
   self.frameImage = config.getParameter("frameImage")
   self.locale = config.getParameter("locale")
   self.chatMode = config.getParameter("chatMode")
+  self.proximityRadius = config.getParameter("proximityRadius")
   
   self.portraitCanvas = widget.bindCanvas("portraitCanvas")
   localeSettings(self.locale)
@@ -11,6 +14,11 @@ function init()
   self.availableLocales = root.assetJson("/interface/scripted/irdencustomchat/languages/locales.json")
   self.availableModes = {"compact", "full"}
   setCoordinates()
+
+  widget.setSliderRange("sldProxRadius", 10, 100, 1)
+  widget.setSliderValue("sldProxRadius", self.proximityRadius)
+
+  widget.setText("lblProxRadiusValue", self.proximityRadius)
 end
 
 function localeSettings(locale)
@@ -27,6 +35,7 @@ function localeSettings(locale)
   widget.setText("lblLanguage", localeConfig["settings.locale"])
   widget.setText("lblMode", localeConfig["settings.chat_mode"])
   widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
+  widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
 end
 
 function drawCharacter()
@@ -80,6 +89,12 @@ function changeMode()
   save()
 end
 
+function updateProxRadius(widgetName)
+  self.proximityRadius = widget.getSliderValue(widgetName)
+  widget.setText("lblProxRadiusValue", self.proximityRadius)
+  save()
+end
+
 -- Utility function: return the index of a value in the given array
 function index(tab, value)
   for k, v in ipairs(tab) do
@@ -91,6 +106,7 @@ end
 function save()
   root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
   root.setConfiguration("iccMode", widget.getData("btnMode"))
+  root.setConfiguration("icc_proximity_radius", self.proximityRadius)
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_resetSettings")
@@ -103,4 +119,18 @@ end
 
 function cancel()
   pane.dismiss()
+end
+
+
+function update()
+  local nPoints = 100
+	local points = {}
+	
+  if player.id() and world.entityPosition(player.id()) then
+    for i = 1, nPoints do
+      local angle = math.pi / 2 + 2 * math.pi * i / nPoints;
+      table.insert(points, vec2.add(world.entityPosition(player.id()), vec2.rotate({self.proximityRadius, 0}, angle)))
+    end
+    world.debugPoly(points, "blue")
+  end
 end

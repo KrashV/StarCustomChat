@@ -94,7 +94,6 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
     end
   end
 
-
   if not findStagehandAndSendData() then
     promises:add(fakePromise, findStagehandAndSendData)
   end
