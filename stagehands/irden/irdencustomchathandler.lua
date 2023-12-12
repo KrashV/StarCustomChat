@@ -62,7 +62,7 @@ function getPortraitSafely(entityId)
     return portrait 
   else
     if self.debug  then
-      sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has broken hair!")
+      sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has a broken portrait!")
     end
   end
 end
