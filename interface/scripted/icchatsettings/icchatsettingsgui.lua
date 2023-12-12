@@ -16,7 +16,7 @@ function init()
   self.availableModes = {"compact", "full"}
   setCoordinates()
 
-  widget.setSliderRange("sldProxRadius", 10, 100, 1)
+  widget.setSliderRange("sldProxRadius", 0, 90, 1)
   widget.setSliderValue("sldProxRadius", self.proximityRadius)
 
   widget.setText("lblProxRadiusValue", self.proximityRadius)
@@ -102,7 +102,7 @@ function changeMode()
 end
 
 function updateProxRadius(widgetName)
-  self.proximityRadius = widget.getSliderValue(widgetName)
+  self.proximityRadius = widget.getSliderValue(widgetName) + 10
   widget.setText("lblProxRadiusValue", self.proximityRadius)
   save()
 end
