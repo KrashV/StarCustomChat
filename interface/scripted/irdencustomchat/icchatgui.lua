@@ -186,7 +186,6 @@ function checkFight()
 end
 
 function checkDMs()
-  sb.setLogMap("WER ARE", sb.nrand())
   if widget.active("lytCharactersToDM") then
     populateList()
   end
