@@ -59,6 +59,8 @@ function getPortraitSafely(entityId)
     portrait = world.entityPortrait(entityId, "full")
   end) then 
     return portrait 
+  else
+    sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has broken hair!")
   end
 end
 
@@ -88,7 +90,8 @@ function savePortrait(request)
     local uuid = world.entityUniqueId(request.entityId)
     self.stagehand.portraits[uuid] = {
       portrait = request.portrait or getPortraitSafely(request.entityId),
-      cropArea = request.cropArea
+      cropArea = request.cropArea,
+      uuid = uuid
     }
     return true
   else
