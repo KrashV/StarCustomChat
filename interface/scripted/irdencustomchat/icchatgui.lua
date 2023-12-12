@@ -17,7 +17,7 @@ function init()
 
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
-  self.chatmonster = root.assetJson("/interface/chattingmonster/chatmonster.json")
+  self.chatmonster = root.assetJson("/monsters/unsorted/chattingmonster/chatmonster.json")
   self.chatting = nil
 
   local chatConfig = config.getParameter("config")

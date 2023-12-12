@@ -98,7 +98,7 @@
         }
     },
     "scripts": [
-        "/interface/chattingmonster/chatmonster.lua"
+        "/monsters/unsorted/chattingmonster/chatmonster.lua"
     ],
     "clientEntityMode": "ClientMasterAllowed",
     "capturable": false,
