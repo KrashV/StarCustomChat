@@ -410,8 +410,13 @@ function sendMessage(widgetName)
     local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
     if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
 
-    local whisper = "/w " .. widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText .. " " .. message
+    local whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText
+    local whisper = "/w " .. whisperName .. " " .. message
     self.irdenChat:processCommand(whisper)
+    self.irdenChat.lastWhisper = {
+      recepient = whisperName,
+      text = message
+    }
     icchat.utils.saveMessage(whisper)
   else
     self.irdenChat:sendMessage(message, widget.getSelectedData("rgChatMode").mode)

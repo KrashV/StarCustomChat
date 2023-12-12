@@ -37,7 +37,8 @@ IrdenChat = {
   proximityRadius = 100,
 
   queueTimer = 0.5,
-  queueTime = 0
+  queueTime = 0,
+  lastWhisper = nil
 }
 
 IrdenChat.__index = IrdenChat
@@ -119,6 +120,12 @@ function IrdenChat:createMessageQueue()
         end
       end
     else
+
+      if message.mode == "Whisper" and self.lastWhisper and message.text == self.lastWhisper.text then
+        message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
+        self.lastWhisper = nil
+      end
+
       local entityId = message.connection * -65536
       local uuid = world.entityUniqueId(entityId)
 

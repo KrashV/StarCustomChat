@@ -12,6 +12,8 @@ function iccstagehand_init()
   self.debug = config.getParameter("debug") or false
   self.aliveTime = 10
   self.aliveTimer = 0
+
+  self.alertedPlayers = {}
 end
 
 function handlerWithReset(fun)
@@ -61,8 +63,9 @@ function getPortraitSafely(entityId)
   end) then 
     return portrait 
   else
-    if self.debug  then
-      sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has a broken portrait!")
+    if self.debug and not self.alertedPlayers[entityId] then
+      sb.logError("ICC PORTRAIT ERROR! " .. world.entityName(entityId) .. " has a broken portrait!")
+      self.alertedPlayers[entityId] = true
     end
   end
 end
