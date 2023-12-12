@@ -33,6 +33,7 @@ IrdenChat = {
   expanded = false,
   chatMode = "full",
   savedPortraits = {},
+  entityToUuid = {},
   proximityRadius = 100,
 
   queueTimer = 0.5,
@@ -117,25 +118,27 @@ function IrdenChat:createMessageQueue()
           end
         end
       end
-    elseif not self.savedPortraits[message.connection] then
+    else
       local entityId = message.connection * -65536
       local uuid = world.entityUniqueId(entityId)
-      if not self.savedPortraits[uuid] then
+
+      if uuid and not self.savedPortraits[uuid] then
         if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
+          self.entityToUuid[entityId] = uuid
           self.savedPortraits[uuid] = {
             portrait = world.entityPortrait(entityId, "full"),
             cropArea = self.config.portraitCropArea
           }
           self:processQueue()
         end
-
-        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", entityId, function(data) 
-          if data then
-            self.savedPortraits[uuid] = data
-            self:processQueue()
-          end
-        end)
       end
+      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", entityId, function(data) 
+        if data then
+          self.savedPortraits[data.uuid] = data
+          self.entityToUuid[entityId] = data.uuid
+          self:processQueue()
+        end
+      end)
     end
     return message
   end
@@ -264,9 +267,10 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
   end
 
   if type(target) == "number" then
-    local uuid = world.entityExists(target) and world.entityUniqueId(target) or nil
-    if uuid and self.savedPortraits[uuid] then
-      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
+    local entityId = target * -65536
+
+    if self.entityToUuid[entityId] and self.savedPortraits[self.entityToUuid[entityId]] then
+      drawPortrait(self.savedPortraits[self.entityToUuid[entityId]].portrait, messageOffset, self.savedPortraits[self.entityToUuid[entityId]].cropArea)
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
@@ -358,8 +362,6 @@ function IrdenChat:processQueue()
   for i = #self.drawnMessages, 1, -1 do 
     local message = self.drawnMessages[i]
     local messageMode = message.mode
-    
-    local entityId = message.connection * -65536
 
     local icon
     local name
@@ -374,7 +376,7 @@ function IrdenChat:processQueue()
         icon = message.portrait or self.config.icons.server
         name = message.nickname or "Server"
       else
-        icon = message.portrait ~= "" and message.portrait or entityId
+        icon = message.portrait ~= "" and message.portrait or message.connection
         name = message.nickname
       end
     end

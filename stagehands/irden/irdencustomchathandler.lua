@@ -72,7 +72,8 @@ function requestPortrait(entityId)
       elseif world.entityExists(entityId) and getPortraitSafely(entityId) then 
         self.stagehand.portraits[uuid] = {
           portrait = getPortraitSafely(entityId),
-          cropArea = cropArea
+          cropArea = cropArea,
+          uuid = uuid
         }
         return self.stagehand.portraits[uuid]
       else
