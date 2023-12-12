@@ -54,17 +54,15 @@ function init()
   -- Debind chat opening
   removeChatBindings()
 
-  canvasClickEvent({0, 0}, 2, true)
+  canvasClickEvent({0, 0}, 0, true)
 
   self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
-    if doubleTappedKey == "iccLeftMouseButton" then
+    if doubleTappedKey == "iccRightMouseButton" then
       local message = self.irdenChat:selectMessage()
       if message then
         clipboard.setText(message.text)
         icchat.utils.alert("chat.alerts.copied_to_clipboard")
       end
-    elseif doubleTappedKey == "iccRightMouseButton" then
-
     end
   end)
 end
@@ -290,7 +288,7 @@ function drawIcon(canvasName, args)
 end
 
 function canvasClickEvent(position, button, isButtonDown)
-  if button == 2 and isButtonDown then
+  if button == 0 and isButtonDown then
     self.irdenChat.expanded = not self.irdenChat.expanded
     local canvasSize = self.irdenChat.canvas:size()
     local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
