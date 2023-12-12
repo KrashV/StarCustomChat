@@ -5,9 +5,9 @@ require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 require "/tech/doubletap.lua"
 
+ICChatTimer = TimerKeeper.new()
 function init()
   localeChat()
-
 
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
@@ -56,14 +56,14 @@ function init()
 
   canvasClickEvent({0, 0}, 2, true)
 
-  self.doubleTap = DoubleTap:new({"leftMouseButton", "rightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
-    if doubleTappedKey == "leftMouseButton" then
+  self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
+    if doubleTappedKey == "iccLeftMouseButton" then
       local message = self.irdenChat:selectMessage()
       if message then
         clipboard.setText(message.text)
         icchat.utils.alert("chat.alerts.copied_to_clipboard")
       end
-    elseif doubleTappedKey == "rightMouseButton" then
+    elseif doubleTappedKey == "iccRightMouseButton" then
 
     end
   end)
@@ -124,7 +124,7 @@ function localeChat()
 end
 
 function update(dt)
-  timers:update(dt)
+  ICChatTimer:update(dt)
   promises:update()
   
   self.irdenChat:clearHighlights()
@@ -204,7 +204,7 @@ function checkDMs()
   if widget.active("lytCharactersToDM") then
     populateList()
   end
-  timers:add(self.DMTimer, checkDMs)
+  ICChatTimer:add(self.DMTimer, checkDMs)
 end
 
 function populateList()
@@ -340,8 +340,8 @@ function processButtonEvents(dt)
     chat.setInput("")
   end
 
-  self.doubleTap:update(dt, {leftMouseButton = input.mouseDown("MouseLeft"),
-    rightMouseButton = input.mouseDown("MouseRight")})
+  self.doubleTap:update(dt, {iccLeftMouseButton = input.mouseDown("MouseLeft"),
+  iccRightMouseButton = input.mouseDown("MouseRight")})
 
 
   if widget.hasFocus("tbxInput") then
