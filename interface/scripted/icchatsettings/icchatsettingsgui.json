@@ -69,22 +69,30 @@
     },
     "lblCrop": {
       "type": "label",
-      "position": [100, 110],
+      "position": [100, 115],
       "value": "Crop avatar area"
+    },
+    "btnResetAvatar": {
+      "type": "button",
+      "position": [99, 100],
+      "callback": "resetAvatar",
+      "caption": "",
+      "base" : "/interface/buttonred.png",
+      "hover" : "/interface/buttonredhover.png"
     },
     "xPosition": {
       "type": "label",
-      "position": [150, 110],
+      "position": [160, 115],
       "value": "X: "
     },
     "yPosition": {
       "type": "label",
-      "position": [180, 110],
+      "position": [190, 115],
       "value": "Y: "
     },
     "btnLeft": {
       "type": "button",
-      "position": [150, 100],
+      "position": [160, 105],
       "base": "/interface/scrollarea/harrow-backward.png",
       "hover": "/interface/scrollarea/harrow-backwardhover.png",
       "callback": "moveCorner",
@@ -92,7 +100,7 @@
     },
     "btnRight": {
       "type": "button",
-      "position": [160, 100],
+      "position": [170, 105],
       "base": "/interface/scrollarea/harrow-forward.png",
       "hover": "/interface/scrollarea/harrow-forwardhover.png",
       "callback": "moveCorner",
@@ -100,7 +108,7 @@
     },
     "btnDown": {
       "type": "button",
-      "position": [180, 100],
+      "position": [190, 105],
       "base": "/interface/scrollarea/harrow-backward.png",
       "hover": "/interface/scrollarea/harrow-backwardhover.png",
       "callback": "moveCorner",
@@ -108,7 +116,7 @@
     },
     "btnUp": {
       "type": "button",
-      "position": [190, 100],
+      "position": [200, 105],
       "base": "/interface/scrollarea/harrow-forward.png",
       "hover": "/interface/scrollarea/harrow-forwardhover.png",
       "callback": "moveCorner",
@@ -164,7 +172,7 @@
       "type" : "button",
       "base" : "/interface/buttonred.png",
       "hover" : "/interface/buttonredhover.png",
-      "position" : [10, 20],
+      "position" : [10, 21],
       "caption" : "Cancel",
       "callback": "clearHistory"
     },
@@ -178,7 +186,7 @@
       "position" : [220, 132]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar"],
   "canvasClickCallbacks" : {
 
   },

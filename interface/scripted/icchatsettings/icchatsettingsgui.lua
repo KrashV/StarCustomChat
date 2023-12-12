@@ -2,6 +2,7 @@ require "/scripts/vec2.lua"
 
 function init()
   self.cropArea = config.getParameter("portraitFrame")
+  self.defaultCropArea = config.getParameter("defaultCropArea")
   self.backImage = config.getParameter("backImage")
   self.frameImage = config.getParameter("frameImage")
   self.locale = config.getParameter("locale")
@@ -37,6 +38,14 @@ function localeSettings(locale)
   widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
   widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
   widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
+  widget.setText("btnResetAvatar", localeConfig["settings.reset_avatar"])
+end
+
+function resetAvatar()
+  self.cropArea = self.defaultCropArea
+  setCoordinates()
+  drawCharacter()
+  save()
 end
 
 function drawCharacter()
@@ -65,6 +74,8 @@ function moveCorner(btn, direction)
   self.cropArea[widget.getSelectedOption("rgAvatarCorners") + 1] = self.cropArea[widget.getSelectedOption("rgAvatarCorners") + 1] + direction[2]
   setCoordinates()
   drawCharacter()
+
+  save()
 end
 
 function changeCorner()
