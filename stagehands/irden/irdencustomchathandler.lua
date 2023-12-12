@@ -9,6 +9,7 @@ function iccstagehand_init()
   message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
   message.setHandler( "icc_savePortrait", simpleHandler(savePortrait) )
 
+  self.debug = config.getParameter("debug") or false
   self.aliveTime = 10
   self.aliveTimer = 0
 end
@@ -60,7 +61,9 @@ function getPortraitSafely(entityId)
   end) then 
     return portrait 
   else
-    sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has broken hair!")
+    if self.debug  then
+      sb.logError("PORTRAIT ERROR! " .. world.entityName(entityId) .. " has broken hair!")
+    end
   end
 end
 
