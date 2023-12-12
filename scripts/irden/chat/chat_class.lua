@@ -156,6 +156,8 @@ function IrdenChat:createMessageQueue()
               portrait = nil,
               cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
             })
+          elseif msg == "CLEAR_HISTORY" then
+            self.messages = {}
           end
         else
           msg = formatMessage(msg)

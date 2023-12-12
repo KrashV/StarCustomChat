@@ -36,6 +36,7 @@ function localeSettings(locale)
   widget.setText("lblMode", localeConfig["settings.chat_mode"])
   widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
   widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
+  widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
 end
 
 function drawCharacter()
@@ -93,6 +94,10 @@ function updateProxRadius(widgetName)
   self.proximityRadius = widget.getSliderValue(widgetName)
   widget.setText("lblProxRadiusValue", self.proximityRadius)
   save()
+end
+
+function clearHistory()
+  world.sendEntityMessage(player.id(), "icc_clearHistory")
 end
 
 -- Utility function: return the index of a value in the given array

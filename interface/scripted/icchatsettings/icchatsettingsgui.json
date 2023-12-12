@@ -158,6 +158,16 @@
       "position": [150, 70],
       "value": ""
     },
+
+
+    "btnDeleteChat" : {
+      "type" : "button",
+      "base" : "/interface/buttonred.png",
+      "hover" : "/interface/buttonredhover.png",
+      "position" : [10, 20],
+      "caption" : "Cancel",
+      "callback": "clearHistory"
+    },
     
     "close" : {
       "type" : "button",
@@ -168,7 +178,7 @@
       "position" : [220, 132]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory"],
   "canvasClickCallbacks" : {
 
   },

@@ -21,6 +21,7 @@
   "settings.ok": "Принять",
   "settings.cancel": "Отменить",
   "settings.prox_radius": "Радиус близких сообщений",
+  "settings.clear_chat_history": "Очистить чат",
 
   "settings.modes.compact": "Компактный",
   "settings.modes.full": "Полный",

@@ -21,6 +21,7 @@
   "settings.ok": "Okay",
   "settings.cancel": "Cancel",
   "settings.prox_radius": "Proximity radius",
+  "settings.clear_chat_history": "Clear chat",
 
   "settings.modes.compact": "Compact",
   "settings.modes.full": "Full",
