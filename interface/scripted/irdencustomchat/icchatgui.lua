@@ -34,6 +34,8 @@ function init()
   self.contacts = {}
   self.tooltipFields = {}
 
+  self.receivedMessageFromStagehand = false
+
   self.savedCommandSelection = 0
 
   self.sentMessages = {}
@@ -44,7 +46,7 @@ function init()
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
-  self.DMTimer = 1
+  self.DMTimer = 2
   checkDMs()
   self.irdenChat:processQueue()
 
@@ -193,7 +195,7 @@ function checkDMs()
 end
 
 function populateList()
-  local function drawCharacters(players)
+  local function drawCharacters(players, toRemovePlayers)
     local mode = #players > 7 and "letter" or "avatar"
 
     local idTable = {}  -- This table will store only the 'id' values
@@ -219,10 +221,12 @@ function populateList()
     end
 
 
-    for i, id in ipairs(self.contacts) do
-      if index(idTable, id) == 0 then
-        widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
-        table.remove(self.contacts, i)
+    if toRemovePlayers then
+      for i, id in ipairs(self.contacts) do
+        if index(idTable, id) == 0 then
+          widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
+          table.remove(self.contacts, i)
+        end
       end
     end
   end
@@ -238,11 +242,12 @@ function populateList()
     })
   end
 
-  drawCharacters(playersAround)
+  drawCharacters(playersAround, not self.receivedMessageFromStagehand)
 
 
-  icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)  
-    drawCharacters(players)
+  icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)
+    self.receivedMessageFromStagehand = true
+    drawCharacters(players, true)
   end)
 end
 
