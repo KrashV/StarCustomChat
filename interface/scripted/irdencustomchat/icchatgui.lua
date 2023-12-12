@@ -39,9 +39,9 @@ function init()
 
   self.savedCommandSelection = 0
 
-  self.sentMessages = {}
+  self.sentMessages = root.getConfiguration("icc_my_messages",{}) or {}
   self.sentMessagesLimit = 15
-  self.currentSentMessage = 0
+  self.currentSentMessage = #self.sentMessages
 
   widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})  
   widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
@@ -492,4 +492,5 @@ function uninit()
   local messages = self.irdenChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
+  root.setConfiguration("icc_my_messages", self.sentMessages)
 end
