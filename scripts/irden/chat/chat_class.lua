@@ -322,6 +322,7 @@ function IrdenChat:selectMessage()
     local message = self.drawnMessages[i]
     if pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
       self:highlightMessage(message.offset, message.offset + message.height + self.config.spacings.messages)
+      return message
     end
   end
 end

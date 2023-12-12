@@ -5,5 +5,6 @@
   "description" : "Irden Custom Chat",
   "path" : ".",
   "name" : "irdencustomchat",
-  "includes" : []
+  "includes" : [],
+  "permissions" : ["clipboard"]
 }

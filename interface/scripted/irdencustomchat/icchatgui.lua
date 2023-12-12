@@ -3,6 +3,7 @@ require "/scripts/timer.lua"
 require "/scripts/util.lua"
 require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
+require "/tech/doubletap.lua"
 
 function init()
   localeChat()
@@ -53,7 +54,19 @@ function init()
   -- Debind chat opening
   removeChatBindings()
 
-  canvasClickEvent({0, 0}, 0, true)
+  canvasClickEvent({0, 0}, 2, true)
+
+  self.doubleTap = DoubleTap:new({"leftMouseButton", "rightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
+    if doubleTappedKey == "leftMouseButton" then
+      local message = self.irdenChat:selectMessage()
+      if message then
+        clipboard.setText(message.text)
+        icchat.utils.alert("chat.alerts.copied_to_clipboard")
+      end
+    elseif doubleTappedKey == "rightMouseButton" then
+
+    end
+  end)
 end
 
 function removeChatBindings()
@@ -119,7 +132,7 @@ function update(dt)
   checkFight()
   checkTyping()
   checkCommandsPreview()
-  processButtonEvents()
+  processButtonEvents(dt)
   self.irdenChat:checkMessageQueue(dt)
 end
 
@@ -277,7 +290,7 @@ function drawIcon(canvasName, args)
 end
 
 function canvasClickEvent(position, button, isButtonDown)
-  if button == 0 and isButtonDown then
+  if button == 2 and isButtonDown then
     self.irdenChat.expanded = not self.irdenChat.expanded
     local canvasSize = self.irdenChat.canvas:size()
     local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
@@ -318,7 +331,7 @@ function processEvents(screenPosition)
   end
 end
 
-function processButtonEvents()
+function processButtonEvents(dt)
   if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
     if input.keyDown("/") then
       widget.setText("tbxInput", "/")
@@ -326,6 +339,10 @@ function processButtonEvents()
     widget.focus("tbxInput")
     chat.setInput("")
   end
+
+  self.doubleTap:update(dt, {leftMouseButton = input.mouseDown("MouseLeft"),
+    rightMouseButton = input.mouseDown("MouseRight")})
+
 
   if widget.hasFocus("tbxInput") then
     for _, event in ipairs(input.events()) do 
@@ -355,6 +372,7 @@ end
 
 function cursorOverride(screenPosition)
   processEvents(screenPosition)
+
   if widget.inMember(self.highlightCanvasName, screenPosition) then
     self.irdenChat:selectMessage()
   end
@@ -389,10 +407,10 @@ function sendMessage(widgetName)
     end
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-    if not li then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_specified")) return end
+    if not li then icchat.utils.alert("chat.alerts.dm_not_specified") return end
 
     local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-    if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert(icchat.utils.getTranslation("chat.alerts.dm_not_found")) return end
+    if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
 
     local whisper = "/w " .. widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText .. " " .. message
     self.irdenChat:processCommand(whisper)

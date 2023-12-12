@@ -2,6 +2,7 @@
   "paneLayer" : "tooltip",
   "dismissable" : false,
   "config": {
+    "maximumDoubleTapTime": 0.25,
     "lineHeight" : 1.1,
     "wrapWidthFullMode": 230,
     "wrapWidthCompactMode": 260,
