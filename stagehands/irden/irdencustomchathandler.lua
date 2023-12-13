@@ -96,7 +96,7 @@ end
 function requestAsyncPortrait(data)
   local entityId = data.entityId
   local author = data.author
-  if world.entityExists(entityId) then
+  if world.entityExists(entityId) and world.entityExists(author) then
     local uuid = world.entityUniqueId(entityId)
 
     if uuid then
@@ -105,7 +105,7 @@ function requestAsyncPortrait(data)
       else
         promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(res_data) 
           self.stagehand.portraits[uuid] = res_data
-          IrdenChatStagehand:sendDataToPlayer(author, res_data)
+          self.stagehand:sendDataToPlayer(author, res_data)
         end, function() 
           if world.entityExists(entityId) and getPortraitSafely(entityId) then
             local res_data = {
@@ -115,7 +115,7 @@ function requestAsyncPortrait(data)
               entityId = entityId,
               uuid = uuid
             }
-            IrdenChatStagehand:sendDataToPlayer(author, res_data)
+            self.stagehand:sendDataToPlayer(author, res_data)
           end
         end)
       end
