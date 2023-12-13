@@ -130,16 +130,19 @@ function IrdenChat:createMessageQueue()
       local uuid = world.entityUniqueId(entityId)
 
       if not self.savedPortraits[uuid] then
+        
         icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {
           entityId = entityId,
           author = player.id()
-        }, function()
+        }, _, 
+        function()
           if uuid then
             if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
               self.entityToUuid[entityId] = uuid
               self.savedPortraits[uuid] = {
                 portrait = world.entityPortrait(entityId, "full"),
-                cropArea = self.config.portraitCropArea
+                cropArea = self.config.portraitCropArea,
+                uuid = uuid
               }
               self:processQueue()
             end

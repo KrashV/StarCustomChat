@@ -49,7 +49,7 @@ function icchat.utils.getCommands(allCommands, substr)
   return availableCommands
 end
 
-function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback)
+function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
   local radius = 200
   local n_attempts = 10
   local findStagehandResult = false
@@ -71,6 +71,9 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
 
     if n_attempts <= 0 then
       findStagehandResult = false
+      if errcallback then
+        errcallback(data)
+      end
     end
   end
 
@@ -89,6 +92,9 @@ function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callb
     local function sendData(sId)
       n_attempts = n_attempts - 1
       if n_attempts < 0 then
+        if errcallback then
+          errcallback(data)
+        end
         sb.logError("Cannot send data to stagehand")
         return
       end
