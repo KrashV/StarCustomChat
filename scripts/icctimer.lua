@@ -9,7 +9,7 @@ end
 
 function TimerKeeper:add(duration, fun)
   self.timers[#self.timers+1] = {
-      duration = duration * 60,
+      duration = duration,
       fun = fun
     }
 end
