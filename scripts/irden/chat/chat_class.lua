@@ -276,16 +276,15 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
 
   if type(target) == "number" then
     local entityId = target * -65536
-    if world.entityExists(entityId) then
-      local uuid = world.entityUniqueId(entityId)
-      if uuid and self.savedPortraits[uuid] then
-        drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
-      else
-        local offset = vec2.add(self.config.iconImageOffset, messageOffset)
-        drawImage(self.config.icons.empty, offset)
-        drawImage(self.config.icons.unknown, offset)
-        drawImage(self.config.icons.frame, offset)
-      end
+    
+    local uuid = world.entityExists(entityId) and world.entityUniqueId(entityId)
+    if uuid and self.savedPortraits[uuid] then
+      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
+    else
+      local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+      drawImage(self.config.icons.empty, offset)
+      drawImage(self.config.icons.unknown, offset)
+      drawImage(self.config.icons.frame, offset)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
