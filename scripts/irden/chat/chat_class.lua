@@ -129,23 +129,23 @@ function IrdenChat:createMessageQueue()
       local entityId = message.connection * -65536
       local uuid = world.entityUniqueId(entityId)
 
-      if uuid and not self.savedPortraits[uuid] then
-        if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
-          self.entityToUuid[entityId] = uuid
-          self.savedPortraits[uuid] = {
-            portrait = world.entityPortrait(entityId, "full"),
-            cropArea = self.config.portraitCropArea
-          }
-          self:processQueue()
-        end
+      if not self.savedPortraits[uuid] then
+        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {
+          entityId = entityId,
+          author = player.id()
+        }, function()
+          if uuid then
+            if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
+              self.entityToUuid[entityId] = uuid
+              self.savedPortraits[uuid] = {
+                portrait = world.entityPortrait(entityId, "full"),
+                cropArea = self.config.portraitCropArea
+              }
+              self:processQueue()
+            end
+          end
+        end)
       end
-      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestPortrait", entityId, function(data) 
-        if data then
-          self.savedPortraits[data.uuid] = data
-          self.entityToUuid[entityId] = data.uuid
-          self:processQueue()
-        end
-      end)
     end
     return message
   end
@@ -170,10 +170,15 @@ function IrdenChat:createMessageQueue()
             self.messages = {}
           end
         else
-          msg = formatMessage(msg)
-          table.insert(self.messages, msg)
-          if #self.messages > self.config.chatHistoryLimit then
-            table.remove(self.messages, 1)
+          if msg.type and msg.type == "UPDATE_PORTRAIT" then
+            self.savedPortraits[msg.uuid] = msg
+            self.entityToUuid[msg.entityId] = msg.uuid
+          else
+            msg = formatMessage(msg)
+            table.insert(self.messages, msg)
+            if #self.messages > self.config.chatHistoryLimit then
+              table.remove(self.messages, 1)
+            end
           end
         end
         self:processQueue()

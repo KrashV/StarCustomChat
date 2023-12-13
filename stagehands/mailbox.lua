@@ -10,7 +10,9 @@ function init()
 end
 
 function uninit()
-  self.outbox:uninit()
+  if self.outbox then
+    self.outbox:uninit()
+  end
 end
 
 function update(dt)

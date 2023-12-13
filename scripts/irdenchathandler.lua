@@ -33,6 +33,18 @@ function init()
     self.messageQueue = self.messageQueue or {}
     table.insert(self.messageQueue, "CLEAR_HISTORY")
   end))
+  
+  message.setHandler( "icc_request_player_portrait", simpleHandler(function()
+    if player.id() and world.entityExists(player.id()) then
+      return {
+        portrait = world.entityPortrait(player.id(), "full"),
+        type = "UPDATE_PORTRAIT",
+        entityId = player.id(),
+        cropArea = player.getProperty("icc_portrait_frame"),
+        uuid = player.uniqueId()
+      }
+    end
+  end))
 end
 
 -- We will wait self.lastCheckedQueueTimer seconds to check for the message to be read.

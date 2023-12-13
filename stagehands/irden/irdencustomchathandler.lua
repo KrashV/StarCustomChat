@@ -6,6 +6,7 @@ function iccstagehand_init()
   
   message.setHandler( "icc_sendMessage", simpleHandler(handleMessage) )
   message.setHandler( "icc_requestPortrait", simpleHandler(requestPortrait) )
+  message.setHandler( "icc_requestAsyncPortrait", simpleHandler(requestAsyncPortrait) )
   message.setHandler( "icc_getAllPlayers", simpleHandler(getAllPlayers) )
   message.setHandler( "icc_savePortrait", simpleHandler(savePortrait) )
 
@@ -77,7 +78,8 @@ function requestPortrait(entityId)
     if uuid then
       if self.stagehand.portraits[uuid] then
         return self.stagehand.portraits[uuid]
-      elseif world.entityExists(entityId) and getPortraitSafely(entityId) then 
+      elseif world.entityExists(entityId) and getPortraitSafely(entityId) then
+
         self.stagehand.portraits[uuid] = {
           portrait = getPortraitSafely(entityId),
           cropArea = cropArea,
@@ -86,6 +88,36 @@ function requestPortrait(entityId)
         return self.stagehand.portraits[uuid]
       else
         return nil
+      end
+    end
+  end
+end
+
+function requestAsyncPortrait(data)
+  local entityId = data.entityId
+  local author = data.author
+  if world.entityExists(entityId) then
+    local uuid = world.entityUniqueId(entityId)
+
+    if uuid then
+      if self.stagehand.portraits[uuid] then
+        return self.stagehand.portraits[uuid]
+      else
+        promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(res_data) 
+          self.stagehand.portraits[uuid] = res_data
+          IrdenChatStagehand:sendDataToPlayer(author, res_data)
+        end, function() 
+          if world.entityExists(entityId) and getPortraitSafely(entityId) then
+            local res_data = {
+              type = "UPDATE_PORTRAIT",
+              portrait = getPortraitSafely(entityId),
+              cropArea = cropArea,
+              entityId = entityId,
+              uuid = uuid
+            }
+            IrdenChatStagehand:sendDataToPlayer(author, res_data)
+          end
+        end)
       end
     end
   end
