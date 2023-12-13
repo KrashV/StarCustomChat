@@ -1,5 +1,5 @@
 require "/scripts/messageutil.lua"
-require "/scripts/timer.lua"
+require "/scripts/icctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
@@ -243,14 +243,17 @@ function populateList()
   end
 
   local playersAround = {}
-  for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do 
-    table.insert(playersAround, {
-      id = player,
-      name = world.entityName(player),
-      data = {
-        portrait = world.entityPortrait(player, "full")
-      }
-    })
+
+  if player.id() and world.entityPosition(player.id()) then
+    for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do 
+      table.insert(playersAround, {
+        id = player,
+        name = world.entityName(player),
+        data = {
+          portrait = world.entityPortrait(player, "full")
+        }
+      })
+    end
   end
 
   drawCharacters(playersAround, not self.receivedMessageFromStagehand)
@@ -411,7 +414,7 @@ function sendMessage(widgetName)
     if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
 
     local whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText
-    local whisper = "/w " .. whisperName .. " " .. message
+    local whisper = "/w \"" .. whisperName .. "\" " .. message
     self.irdenChat:processCommand(whisper)
     self.irdenChat.lastWhisper = {
       recepient = whisperName,
