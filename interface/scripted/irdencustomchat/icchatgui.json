@@ -346,7 +346,7 @@
 
     "lytCharactersToDM": {
       "type": "layout",
-			"rect": [1, 25, 27, 313],
+			"rect": [1, 28, 27, 313],
       "visible": false,
 			"layoutType": "basic",
 			"children": {

@@ -14,7 +14,6 @@ function init()
   self.highlightCanvasName = "cnvHighlightCanvas"
   self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
   self.chatWindowWidth = widget.getSize("backgroundImage")[1]
-  self.charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
 
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
@@ -305,12 +304,16 @@ end
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
   local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
+  
+  local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
+
   return {
     canvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages },
     highligtCanvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
     bgStretchImageSize = expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {self.chatWindowWidth, chatParameters.bodyHeight},
     scrollAreaSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight} or {canvasSize[1], chatParameters.bodyHeight },
-    playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight}
+    playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight},
+    playersDMBackground = expanded and {charactersListWidth, chatParameters.expandedBodyHeight - 15} or {charactersListWidth, chatParameters.bodyHeight} 
   }
 end
 
@@ -318,6 +321,7 @@ function setSizes(expanded, chatParameters, currentSizes)
   local defaultSizes = getSizes(expanded, chatParameters)
   widget.setSize(self.canvasName, currentSizes and currentSizes.canvasSize or defaultSizes.canvasSize)
   widget.setSize(self.highlightCanvasName, currentSizes and currentSizes.highligtCanvasSize or defaultSizes.highligtCanvasSize)
+  widget.setSize("lytCharactersToDM.background", currentSizes and currentSizes.playersDMBackground or defaultSizes.playersDMBackground)
   widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
   widget.setSize("saScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
   widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)  
