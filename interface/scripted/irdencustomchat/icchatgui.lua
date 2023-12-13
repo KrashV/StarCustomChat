@@ -31,7 +31,7 @@ function init()
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
-    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("entityToUuid"))
+    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("entityToUuid"), config.getParameter("chatLineOffset"))
   self.irdenChat:createMessageQueue()
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -54,8 +54,6 @@ function init()
   -- Debind chat opening
   removeChatBindings()
 
-  --canvasClickEvent({0, 0}, 0, true)
-
   self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
     if doubleTappedKey == "iccRightMouseButton" then
       local message = self.irdenChat:selectMessage()
@@ -76,6 +74,7 @@ function init()
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
   end
+  input.setMousePosition(input.mousePosition())
 end
 
 function removeChatBindings()
@@ -308,9 +307,9 @@ function getSizes(expanded, chatParameters)
   local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
 
   return {
-    canvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages },
-    highligtCanvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
-    bgStretchImageSize = expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {self.chatWindowWidth, chatParameters.bodyHeight},
+    canvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages - 4} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages - 4},
+    highligtCanvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages - 4} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages - 4},
+    bgStretchImageSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
     scrollAreaSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight} or {canvasSize[1], chatParameters.bodyHeight },
     playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight},
     playersDMBackground = expanded and {charactersListWidth, chatParameters.expandedBodyHeight - 15} or {charactersListWidth, chatParameters.bodyHeight} 
@@ -343,6 +342,7 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.portraits = self.irdenChat.savedPortraits
     chatConfig.entityToUuid =  self.irdenChat.entityToUuid
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+    chatConfig.chatLineOffset = self.irdenChat.lineOffset
     player.interact("ScriptPane", chatConfig)
   end
 
@@ -404,10 +404,10 @@ function processButtonEvents(dt)
   end
 end
 
-function cursorOverride(screenPosition, force)
+function cursorOverride(screenPosition)
   processEvents(screenPosition)
 
-  if widget.inMember(self.highlightCanvasName, screenPosition) or force then
+  if widget.inMember(self.highlightCanvasName, screenPosition) then
     self.irdenChat:selectMessage()
   end
 end

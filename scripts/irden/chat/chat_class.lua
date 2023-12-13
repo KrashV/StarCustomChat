@@ -43,7 +43,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, entityToUuid)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, entityToUuid, lineOffset)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -60,6 +60,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.expanded = expanded
   o.savedPortraits = savedPortraits or {}
   o.entityToUuid = entityToUuid or {}
+  o.lineOffset = lineOffset or 0
   return o
 end
 
@@ -264,7 +265,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, mode)
     local squareSize = self.config.modeIndicatorSize
     self.canvas:drawRect({offset[1] + frameSize[1] - squareSize , offset[2] + frameSize[1] - squareSize , offset[1] + frameSize[1] - 1, offset[2] + frameSize[1] - 1}, color)
   end
-  
+
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
 
