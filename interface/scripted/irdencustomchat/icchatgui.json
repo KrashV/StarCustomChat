@@ -28,6 +28,7 @@
     "portraitFrameScale" : 1,
     
     "iconImageOffset" : [6, -10],
+    "modeIndicatorSize": 6,
 
     "bodyHeight" : 60,
     "expandedBodyHeight" : 289,
@@ -73,7 +74,7 @@
     },
     "nameColors": {
       "default": "white",
-      "Local" : "white",
+      "Local" : "cyan",
       "Party" : "blue",
       "Broadcast" : "red",
       "Whisper" : "pink",
@@ -87,14 +88,14 @@
     "colors" : {
       "default": "white",
       "Local" : "white",
-      "Party" : "blue",
+      "Party" : "white",
       "Broadcast" : "white",
-      "Whisper" : "pink",
-      "CommandResult" : "lightgray",
-      "RadioMessage" : "cyan",
-      "World" : "cyan",
-      "Proximity" : "darkgreen",
-      "Announcement" : "yellow"
+      "Whisper" : "white",
+      "CommandResult" : "white",
+      "RadioMessage" : "white",
+      "World" : "white",
+      "Proximity" : "white",
+      "Announcement" : "white"
     }
   },
 

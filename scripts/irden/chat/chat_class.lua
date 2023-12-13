@@ -258,38 +258,50 @@ function IrdenChat:previewCommands(commands, selected)
   }, self.config.font.previewCommandSize)
 end
 
-function IrdenChat:drawIcon(target, nickname, messageOffset, color)
+function IrdenChat:drawIcon(target, nickname, messageOffset, color, mode)
+  local function drawModeIcon(offset)
+    local frameSize = root.imageSize(self.config.icons.frame)
+    local squareSize = self.config.modeIndicatorSize
+    self.canvas:drawRect({offset[1] + frameSize[1] - squareSize , offset[2] + frameSize[1] - squareSize , offset[1] + frameSize[1] - 1, offset[2] + frameSize[1] - 1}, color)
+  end
+  
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
 
     self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
   end
 
-  local function drawPortrait(portrait, messageOffset, cropArea)
+  local function drawPortrait(portrait, messageOffset, cropArea, color)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
+
     for _, layer in ipairs(portrait) do
       self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
     end
+    drawModeIcon(offset)
     drawImage(self.config.icons.frame, offset)
   end
 
+
+
   if type(target) == "number" then
     local entityId = target * -65536
-    
+
     local uuid = world.entityExists(entityId) and world.entityUniqueId(entityId)
     if uuid and self.savedPortraits[uuid] then
-      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
+      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, color)
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
       drawImage(self.config.icons.unknown, offset)
+      drawModeIcon(offset)
       drawImage(self.config.icons.frame, offset)
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
     drawImage(target, offset)
+    drawModeIcon(offset)
     drawImage(self.config.icons.frame, offset)
   end
   
@@ -424,7 +436,7 @@ function IrdenChat:processQueue()
         }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
 
         if self.drawnMessages[i].avatar then
-          self:drawIcon(icon, name, offset, self.config.nameColors[messageMode])
+          self:drawIcon(icon, name, offset, self.config.nameColors[messageMode], messageMode)
           self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
         end
       end
