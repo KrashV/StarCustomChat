@@ -1,6 +1,7 @@
 {
   "paneLayer" : "tooltip",
   "dismissable" : false,
+  "expanded": true,
   "config": {
     "maximumDoubleTapTime": 0.25,
     "lineHeight" : 1.1,
@@ -12,9 +13,8 @@
       "lines": 1.8,
       "name": 1
     },
+
     "spaceBetweenMessages": 4,
-    "visTime" : 5,
-    "fadeRate" : 1.0,
     "chatHistoryLimit" : 64,
 
     "textOffsetFullMode": [35, 0],
@@ -29,7 +29,7 @@
     
     "iconImageOffset" : [6, -10],
 
-    "bodyHeight" : 55,
+    "bodyHeight" : 60,
     "expandedBodyHeight" : 289,
 
     "pageSkipExpanded": 20,
@@ -289,6 +289,7 @@
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "position": [225, 0],
+          "disabled": true,
           "data": {
             "mode": "Fight"
           }

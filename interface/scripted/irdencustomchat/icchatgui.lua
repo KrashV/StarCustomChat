@@ -22,6 +22,8 @@ function init()
   self.chatting = nil
 
   local chatConfig = config.getParameter("config")
+  local expanded = config.getParameter("expanded")
+  setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   self.fightQuestName = chatConfig.fightQuestName
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.font.baseSize)
@@ -29,7 +31,8 @@ function init()
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100)
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
+    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("entityToUuid"))
   self.irdenChat:createMessageQueue()
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -43,8 +46,6 @@ function init()
   self.sentMessagesLimit = 15
   self.currentSentMessage = #self.sentMessages
 
-  widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})  
-  widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
   self.DMTimer = 2
@@ -54,7 +55,7 @@ function init()
   -- Debind chat opening
   removeChatBindings()
 
-  canvasClickEvent({0, 0}, 0, true)
+  --canvasClickEvent({0, 0}, 0, true)
 
   self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
     if doubleTappedKey == "iccRightMouseButton" then
@@ -65,6 +66,17 @@ function init()
       end
     end
   end)
+
+  local lastText = config.getParameter("lastInputMessage")
+  if lastText and lastText ~= "" then
+    widget.setText("tbxInput", lastText)
+    widget.focus("tbxInput")
+  end
+
+  local currentMessageMode = config.getParameter("currentMessageMode")
+  if currentMessageMode then
+    widget.setSelectedOption("rgChatMode", currentMessageMode)
+  end
 end
 
 function removeChatBindings()
@@ -132,6 +144,9 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
   self.irdenChat:checkMessageQueue(dt)
+
+  sb.setLogMap("Expanded", self.irdenChat and sb.print(self.irdenChat.expanded) or "NULL")
+  sb.setLogMap("Body Image", config.getParameter("gui")["background"]["fileBody"])
 end
 
 function checkCommandsPreview()
@@ -290,27 +305,44 @@ function drawIcon(canvasName, args)
   end
 end
 
+function getSizes(expanded, chatParameters)
+  local canvasSize = widget.getSize(self.canvasName)
+  local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
+  return {
+    canvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages },
+    highligtCanvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
+    bgStretchImageSize = expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {self.chatWindowWidth, chatParameters.bodyHeight},
+    scrollAreaSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight} or {canvasSize[1], chatParameters.bodyHeight },
+    playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight}
+  }
+end
+
+function setSizes(expanded, chatParameters, currentSizes)
+  local defaultSizes = getSizes(expanded, chatParameters)
+  widget.setSize(self.canvasName, currentSizes and currentSizes.canvasSize or defaultSizes.canvasSize)
+  widget.setSize(self.highlightCanvasName, currentSizes and currentSizes.highligtCanvasSize or defaultSizes.highligtCanvasSize)
+  widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
+  widget.setSize("saScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
+  widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)  
+end
+
 function canvasClickEvent(position, button, isButtonDown)
   if button == 0 and isButtonDown then
     self.irdenChat.expanded = not self.irdenChat.expanded
-    local canvasSize = self.irdenChat.canvas:size()
-    local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
-    if self.irdenChat.expanded then
-      widget.setSize(self.canvasName, {canvasSize[1], self.irdenChat.config.expandedBodyHeight})
-      widget.setSize(self.highlightCanvasName, {canvasSize[1], self.irdenChat.config.expandedBodyHeight - self.irdenChat.config.spacings.messages})
-      widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.expandedBodyHeight})
-      widget.setSize("saScrollArea", {canvasSize[1], self.irdenChat.config.expandedBodyHeight})
-      widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.expandedBodyHeight})  
-      widget.setSize("lytCharactersToDM.saPlayers", {saPlayersSize[1], self.irdenChat.config.expandedBodyHeight - 15})  
-    else
-      widget.setSize(self.canvasName, {canvasSize[1], self.irdenChat.config.bodyHeight - self.irdenChat.config.spacings.messages})
-      widget.setSize(self.highlightCanvasName, {canvasSize[1], self.irdenChat.config.bodyHeight - self.irdenChat.config.spacings.messages})
-      widget.setSize("backgroundImage", {self.chatWindowWidth, self.irdenChat.config.bodyHeight})
-      widget.setSize("saScrollArea", {canvasSize[1], self.irdenChat.config.bodyHeight })
-      widget.setSize("lytCharactersToDM.background", {self.charactersListWidth, self.irdenChat.config.bodyHeight})  
-      widget.setSize("lytCharactersToDM.saPlayers", {saPlayersSize[1], self.irdenChat.config.bodyHeight})  
-    end
-    self.irdenChat:processQueue()
+
+    local chatParameters = getSizes(self.irdenChat.expanded, self.irdenChat.config)
+    saveEverythingDude()
+    pane.dismiss()
+
+    local chatConfig = root.assetJson("/interface/scripted/irdencustomchat/icchatgui.json")
+    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/irdencustomchat/%s.png", self.irdenChat.expanded and "body" or "shortbody") 
+    chatConfig.expanded = self.irdenChat.expanded
+    chatConfig.currentSizes = chatParameters
+    chatConfig.lastInputMessage = widget.getText("tbxInput")
+    chatConfig.portraits = self.irdenChat.savedPortraits
+    chatConfig.entityToUuid =  self.irdenChat.entityToUuid
+    chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+    player.interact("ScriptPane", chatConfig)
   end
 
   -- Defocus from the canvases or we can never leave lol :D
@@ -371,10 +403,10 @@ function processButtonEvents(dt)
   end
 end
 
-function cursorOverride(screenPosition)
+function cursorOverride(screenPosition, force)
   processEvents(screenPosition)
 
-  if widget.inMember(self.highlightCanvasName, screenPosition) then
+  if widget.inMember(self.highlightCanvasName, screenPosition) or force then
     self.irdenChat:selectMessage()
   end
 end
@@ -488,13 +520,19 @@ function createTooltip(screenPosition)
 end
 
 
-function uninit()
-  if self.chatting ~= nil then
-    world.sendEntityMessage(self.chatting, "dieplz")
-  end
+function saveEverythingDude()
   -- Save messages and last command
   local messages = self.irdenChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", self.sentMessages)
+end
+
+function uninit()
+  if self.chatting ~= nil then
+    world.sendEntityMessage(self.chatting, "dieplz")
+  end
+
+
+  saveEverythingDude()
 end

@@ -43,7 +43,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, entityToUuid)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -57,7 +57,9 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.config = config
   o.chatMode = chatMode
   o.proximityRadius = proximityRadius
-
+  o.expanded = expanded
+  o.savedPortraits = savedPortraits or {}
+  o.entityToUuid = entityToUuid or {}
   return o
 end
 
@@ -274,14 +276,16 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color)
 
   if type(target) == "number" then
     local entityId = target * -65536
-
-    if self.entityToUuid[entityId] and self.savedPortraits[self.entityToUuid[entityId]] then
-      drawPortrait(self.savedPortraits[self.entityToUuid[entityId]].portrait, messageOffset, self.savedPortraits[self.entityToUuid[entityId]].cropArea)
-    else
-      local offset = vec2.add(self.config.iconImageOffset, messageOffset)
-      drawImage(self.config.icons.empty, offset)
-      drawImage(self.config.icons.unknown, offset)
-      drawImage(self.config.icons.frame, offset)
+    if world.entityExists(entityId) then
+      local uuid = world.entityUniqueId(entityId)
+      if uuid and self.savedPortraits[uuid] then
+        drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea)
+      else
+        local offset = vec2.add(self.config.iconImageOffset, messageOffset)
+        drawImage(self.config.icons.empty, offset)
+        drawImage(self.config.icons.unknown, offset)
+        drawImage(self.config.icons.frame, offset)
+      end
     end
   elseif type(target) == "string" then
     local offset = vec2.add(self.config.iconImageOffset, messageOffset)
