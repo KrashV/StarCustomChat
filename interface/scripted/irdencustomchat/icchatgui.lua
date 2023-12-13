@@ -144,9 +144,6 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
   self.irdenChat:checkMessageQueue(dt)
-
-  sb.setLogMap("Expanded", self.irdenChat and sb.print(self.irdenChat.expanded) or "NULL")
-  sb.setLogMap("Body Image", config.getParameter("gui")["background"]["fileBody"])
 end
 
 function checkCommandsPreview()
