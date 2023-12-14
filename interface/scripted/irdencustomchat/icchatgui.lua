@@ -377,6 +377,8 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.connectionToUuid =  self.irdenChat.connectionToUuid
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
+
+    self.reopening = true
     player.interact("ScriptPane", chatConfig)
   end
 
@@ -568,6 +570,9 @@ function uninit()
     world.sendEntityMessage(self.chatting, "dieplz")
   end
 
-
+  local text = widget.getText("tbxInput")
+  if not self.reopening and text and text ~= "" then
+    clipboard.setText(text)
+  end
   saveEverythingDude()
 end
