@@ -37,7 +37,7 @@ function init()
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
-    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("entityToUuid"), config.getParameter("chatLineOffset"))
+    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
@@ -372,7 +372,7 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.currentSizes = chatParameters
     chatConfig.lastInputMessage = widget.getText("tbxInput")
     chatConfig.portraits = self.irdenChat.savedPortraits
-    chatConfig.entityToUuid =  self.irdenChat.entityToUuid
+    chatConfig.connectionToUuid =  self.irdenChat.connectionToUuid
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
     player.interact("ScriptPane", chatConfig)

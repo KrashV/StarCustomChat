@@ -84,7 +84,8 @@ function requestPortrait(entityId)
           portrait = getPortraitSafely(entityId),
           cropArea = cropArea,
           uuid = uuid,
-          entityId = entityId
+          entityId = entityId,
+          connection = entityId // -65536
         }
         return self.stagehand.portraits[uuid]
       else
@@ -114,7 +115,8 @@ function requestAsyncPortrait(data)
               portrait = getPortraitSafely(entityId),
               cropArea = cropArea,
               entityId = entityId,
-              uuid = uuid
+              uuid = uuid,
+              connection = entityId // -65536
             }
             self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
           end
@@ -130,7 +132,9 @@ function savePortrait(request)
     self.stagehand.portraits[uuid] = {
       portrait = request.portrait or getPortraitSafely(request.entityId),
       cropArea = request.cropArea,
-      uuid = uuid
+      entityId = request.entityId,
+      uuid = uuid,
+      connection = entityId // -65536
     }
     return true
   else

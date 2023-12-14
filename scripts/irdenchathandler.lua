@@ -21,6 +21,7 @@ function init()
         portrait = world.entityPortrait(player.id(), "full"),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
+        connection = player.id() // -65536,
         cropArea = player.getProperty("icc_portrait_frame"),
         uuid = player.uniqueId()
       }

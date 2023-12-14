@@ -33,7 +33,7 @@ IrdenChat = {
   expanded = false,
   chatMode = "full",
   savedPortraits = {},
-  entityToUuid = {},
+  connectionToUuid = {},
   proximityRadius = 100,
 
   queueTimer = 0.5,
@@ -43,7 +43,7 @@ IrdenChat = {
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, entityToUuid, lineOffset)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, connectionToUuid, lineOffset)
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -59,7 +59,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.proximityRadius = proximityRadius
   o.expanded = expanded
   o.savedPortraits = savedPortraits or {}
-  o.entityToUuid = entityToUuid or {}
+  o.connectionToUuid = connectionToUuid or {}
   o.lineOffset = lineOffset or 0
   return o
 end
@@ -119,7 +119,7 @@ function IrdenChat:addMessage(msg)
 
       if uuid and not self.savedPortraits[uuid] then
         if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
-          self.entityToUuid[entityId] = uuid
+          self.connectionToUuid[message.connection] = uuid
           self.savedPortraits[uuid] = {
             portrait = world.entityPortrait(entityId, "full"),
             cropArea = self.config.portraitCropArea
@@ -145,7 +145,7 @@ end
 
 function IrdenChat:updatePortrait(data)
   self.savedPortraits[data.uuid] = data
-  self.entityToUuid[data.entityId] = data.uuid
+  self.connectionToUuid[data.connection] = data.uuid
   self:processQueue()
 end
 
@@ -248,7 +248,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, mode)
   if type(target) == "number" then
     local entityId = target * -65536
 
-    local uuid = world.entityExists(entityId) and world.entityUniqueId(entityId)
+    local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[target]
     if uuid and self.savedPortraits[uuid] then
       drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, color)
     else
