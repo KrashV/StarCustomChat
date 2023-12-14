@@ -21,19 +21,19 @@ function IrdenChatStagehand:create (stagehandUUID, proximityRadius)
   return o
 end
 
-function IrdenChatStagehand:sendDataToAllPlayers(data)
+function IrdenChatStagehand:sendDataToAllPlayers(data, message)
   local players = world.players()
   for _, pId in ipairs(players) do 
-    world.sendEntityMessage(pId, "icc_sendToUser", data)
+    world.sendEntityMessage(pId, message or "icc_sendToUser", data)
   end
 end
 
-function IrdenChatStagehand:sendDataToPlayers(players, data)
+function IrdenChatStagehand:sendDataToPlayers(players, data, message)
   for _, pId in ipairs(players) do 
-    world.sendEntityMessage(pId, "icc_sendToUser", data)
+    world.sendEntityMessage(pId, message or "icc_sendToUser", data)
   end
 end
 
-function IrdenChatStagehand:sendDataToPlayer(pId, data)
-  world.sendEntityMessage(pId, "icc_sendToUser", data)
+function IrdenChatStagehand:sendDataToPlayer(pId, data, message)
+  world.sendEntityMessage(pId, message or "icc_sendToUser", data)
 end

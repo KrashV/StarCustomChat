@@ -105,7 +105,7 @@ function requestAsyncPortrait(data)
       else
         promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(res_data) 
           self.stagehand.portraits[uuid] = res_data
-          self.stagehand:sendDataToPlayer(author, res_data)
+          self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
         end, function() 
           if world.entityExists(entityId) and getPortraitSafely(entityId) then
             local res_data = {
@@ -115,7 +115,7 @@ function requestAsyncPortrait(data)
               entityId = entityId,
               uuid = uuid
             }
-            self.stagehand:sendDataToPlayer(author, res_data)
+            self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
           end
         end)
       end

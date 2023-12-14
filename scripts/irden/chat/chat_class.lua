@@ -64,22 +64,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   return o
 end
 
-function IrdenChat:createMessageQueue()
-  -- Local promise chain to retrieve incoming messages
-
-  -- Create fake RPCPromise. Basically wait until we are able to find ourselves again lmao
-  local fakePromise = {
-    succeeded = function()
-      return world.entityExists(player.id())
-    end,
-    finished = function()
-      return true
-    end,
-    result = function() end,
-    error = function() end,
-    onSuccess = addMessagesToQueue,
-    onError = function() promises:add(fakePromise) end
-  }
+function IrdenChat:addMessage(msg)
 
   function formatMessage(message)
     local text = message.text
@@ -147,63 +132,37 @@ function IrdenChat:createMessageQueue()
     return message
   end
 
-
-
-  local function addMessagesToQueue(queue)
-    self.queueTime = 0
-    if queue then
-      for _, msg in ipairs(queue) do
-        if type(msg) == "string" then
-          if msg == "RESET_CHAT" then
-            localeChat()
-            self.chatMode = root.getConfiguration("iccMode") or "full"
-            self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
-            icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
-              entityId = player.id(),
-              portrait = nil,
-              cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
-            })
-          elseif msg == "CLEAR_HISTORY" then
-            self.messages = {}
-          end
-        else
-          if msg.type and msg.type == "UPDATE_PORTRAIT" then
-            self.savedPortraits[msg.uuid] = msg
-            self.entityToUuid[msg.entityId] = msg.uuid
-          else
-            msg = formatMessage(msg)
-            table.insert(self.messages, msg)
-            if #self.messages > self.config.chatHistoryLimit then
-              table.remove(self.messages, 1)
-            end
-          end
-        end
-        self:processQueue()
-      end
-    end
-    
-    if world.entityExists(player.id()) then
-      promises:add(world.sendEntityMessage(player.id(), "icc_getMessageQueue"), addMessagesToQueue)
-    else
-      promises:add(fakePromise, addMessagesToQueue)
+  if msg.connection then
+    msg = formatMessage(msg)
+    table.insert(self.messages, msg)
+    if #self.messages > self.config.chatHistoryLimit then
+      table.remove(self.messages, 1)
     end
   end
 
-  if world.entityExists(player.id()) then
-    promises:add(world.sendEntityMessage(player.id(), "icc_getMessageQueue"), addMessagesToQueue)
-  else
-    promises:add(fakePromise, addMessagesToQueue)
-  end
+  self:processQueue()
 end
 
--- Wheck that we run the queue at least once per second
-function IrdenChat:checkMessageQueue(dt)
-  self.queueTime = self.queueTime + dt 
+function IrdenChat:updatePortrait(data)
+  self.savedPortraits[data.uuid] = data
+  self.entityToUuid[data.entityId] = data.uuid
+  self:processQueue()
+end
 
-  if self.queueTime > self.queueTimer then
-    self:createMessageQueue()
-    self.queueTime = 0
-  end
+function IrdenChat:clearHistory()
+  self.messages = {}
+  self:processQueue()
+end
+
+function IrdenChat:resetChat()
+  localeChat()
+  self.chatMode = root.getConfiguration("iccMode") or "full"
+  self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
+  icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
+    entityId = player.id(),
+    portrait = nil,
+    cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
+  })
 end
 
 function IrdenChat:getMessages ()

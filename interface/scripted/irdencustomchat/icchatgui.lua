@@ -5,6 +5,12 @@ require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 require "/tech/doubletap.lua"
 
+local shared = getmetatable('').shared
+if type(shared) ~= "table" then
+  shared = {}
+  getmetatable('').shared = shared
+end
+
 ICChatTimer = TimerKeeper.new()
 function init()
   localeChat()
@@ -32,7 +38,6 @@ function init()
   local storedMessages = root.getConfiguration("icc_last_messages", {})
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("entityToUuid"), config.getParameter("chatLineOffset"))
-  self.irdenChat:createMessageQueue()
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
@@ -75,6 +80,34 @@ function init()
     widget.setSelectedOption("rgChatMode", currentMessageMode)
   end
   input.setMousePosition(input.mousePosition())
+
+  registerCallbacks()
+end
+
+function registerCallbacks()
+  shared.setMessageHandler("newChatMessage", localHandler(function(message)
+    self.irdenChat:addMessage(message)
+  end))
+
+  shared.setMessageHandler("icc_sendToUser", simpleHandler(function(message)
+    self.irdenChat:addMessage(message)
+  end))
+
+  shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
+    return true
+  end))
+
+  shared.setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
+    self.irdenChat:updatePortrait(data)
+  end))
+
+  shared.setMessageHandler( "icc_resetSettings", localHandler(function(data)
+    self.irdenChat:resetChat(message)
+  end))
+
+  shared.setMessageHandler( "icc_clearHistory", localHandler(function(data)
+    self.irdenChat:clearHistory(message)
+  end))
 end
 
 function removeChatBindings()
@@ -141,7 +174,6 @@ function update(dt)
   checkTyping()
   checkCommandsPreview()
   processButtonEvents(dt)
-  self.irdenChat:checkMessageQueue(dt)
 end
 
 function checkCommandsPreview()
