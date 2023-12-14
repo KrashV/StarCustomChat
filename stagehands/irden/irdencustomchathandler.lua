@@ -25,6 +25,8 @@ end
 function handleMessage(data)
   local author = data.connection * -65536
 
+  world.sendEntityMessage(0, "icc_log_message", data)
+
   if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
     for _, pId in ipairs(world.players()) do 
