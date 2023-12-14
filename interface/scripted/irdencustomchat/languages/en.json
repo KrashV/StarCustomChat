@@ -5,6 +5,7 @@
   "chat.modes.Party": "Party",
   "chat.modes.Whisper": "Whisper",
   "chat.modes.Fight": "Fight",
+  "chat.modes.RadioMessage": "RadioMessage",
 
   "chat.textbox.hint": "Type here",
 

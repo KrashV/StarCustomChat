@@ -13,8 +13,13 @@ end
 
 ICChatTimer = TimerKeeper.new()
 function init()
-  localeChat()
+  if shared.chatIsOpen and not config.getParameter("reopened") then
+    pane.dismiss()
+  end
 
+  shared.chatIsOpen = true
+
+  localeChat()
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -35,11 +40,11 @@ function init()
   
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
-  local storedMessages = root.getConfiguration("icc_last_messages", {})
-
+  local storedMessages = root.getConfiguration("icc_last_messages", jarray())
   
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
+  
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
@@ -63,10 +68,12 @@ function init()
 
   self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
     if doubleTappedKey == "iccRightMouseButton" then
-      local message = self.irdenChat:selectMessage()
-      if message then
-        clipboard.setText(message.text)
-        icchat.utils.alert("chat.alerts.copied_to_clipboard")
+      if widget.inMember(self.highlightCanvasName, input.mousePosition()) then
+        local message = self.irdenChat:selectMessage()
+        if message then
+          clipboard.setText(message.text)
+          icchat.utils.alert("chat.alerts.copied_to_clipboard")
+        end
       end
     end
   end)
@@ -97,6 +104,11 @@ function registerCallbacks()
 
   shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
     return true
+  end))
+
+  shared.setMessageHandler("icc_close_chat", localHandler(function(message)
+    uninit()
+    pane.dismiss()
   end))
 
   shared.setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
@@ -167,6 +179,7 @@ function localeChat()
 end
 
 function update(dt)
+  shared.chatIsOpen = true
   ICChatTimer:update(dt)
   promises:update()
   
@@ -176,6 +189,10 @@ function update(dt)
   checkTyping()
   checkCommandsPreview()
   processButtonEvents(dt)
+
+  if not player.id() or not world.entityExists(player.id()) then
+    pane.dismiss()
+  end
 end
 
 function checkCommandsPreview()
@@ -377,6 +394,7 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.connectionToUuid =  self.irdenChat.connectionToUuid
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
+    chatConfig.reopened = true
 
     self.reopening = true
     player.interact("ScriptPane", chatConfig)
@@ -551,7 +569,7 @@ function createTooltip(screenPosition)
     local w = widget.getChildAt(screenPosition)
     local wData = widget.getData(w:sub(2))
     if wData and type(wData) == "table" and wData.displayText then
-      return wData.displayText
+      return wData.mode and icchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.displayText
     end
   end
 end
@@ -574,5 +592,6 @@ function uninit()
   if not self.reopening and text and text ~= "" then
     clipboard.setText(text)
   end
+
   saveEverythingDude()
 end

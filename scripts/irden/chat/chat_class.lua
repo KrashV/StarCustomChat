@@ -20,8 +20,8 @@ require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 
 IrdenChat = {
-  messages = {},
-  drawnMessages = {},
+  messages = jarray(),
+  drawnMessages = jarray(),
   author = 0,
   lineOffset = 0,
   stagehandType = "",
@@ -70,10 +70,9 @@ function IrdenChat:addMessage(msg)
     local text = message.text
     
     if message.connection == 0 then
+
       local fightPattern = "^%[%^red;(.-)%^reset;%]"
       local discordPattern = "<%^orange;(.-)%^reset;> (.+)$"
-  
-      if message.mode == "RadioMessage" then message.mode = "Broadcast" end
 
       if string.find(text, "%[%^orange;DC%^reset;%]") then
         local username, restOfText = string.match(text, discordPattern)
@@ -153,7 +152,7 @@ function IrdenChat:updatePortrait(data)
 end
 
 function IrdenChat:clearHistory()
-  self.messages = {}
+  self.messages = jarray()
   self:processQueue()
 end
 
@@ -304,6 +303,7 @@ end
 
 function IrdenChat:selectMessage()
   local pos = self.highlightCanvas:mousePosition()
+
   for i = #self.drawnMessages, 1, -1 do 
     local message = self.drawnMessages[i]
     if pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
@@ -319,10 +319,11 @@ function filterMessages(messages)
   for _, message in ipairs(messages) do 
     --filter messages by mode availability
     local mode = message.mode
-    if mode == "CommandResult" or mode == "Party" or mode == "Whisper" or mode == "RadioMessage" or mode == "Fight"
+    if mode == "CommandResult" or mode == "Party" or mode == "Whisper" or mode == "Fight"
       or (mode == "Local" and widget.getChecked("btnCkLocal")) 
       or (mode == "Broadcast" and widget.getChecked("btnCkBroadcast")) 
       or (mode == "Proximity" and widget.getChecked("btnCkProximity"))
+      or (mode == "RadioMessage" and widget.getChecked("btnCkRadioMessage"))
     then
       table.insert(drawnMessages, message)
     end
@@ -338,8 +339,9 @@ end
 function IrdenChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
-  self.drawnMessages = filterMessages(self.messages)
 
+  self.drawnMessages = filterMessages(self.messages)
+  
   local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
     return (self.chatMode == "full" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
       or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])

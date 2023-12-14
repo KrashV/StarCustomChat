@@ -11,7 +11,7 @@ end
 
 
 function init()
-  self.checkChatTimer = 3
+  self.checkChatTimer = 0
 
   shared.setMessageHandler = message.setHandler
   
@@ -28,18 +28,12 @@ function init()
     end
   end))
 
-  local function createCheckingTheInterface()
-    promises:add(world.sendEntityMessage(player.uniqueId(), "icc_is_chat_open"), function()
-      ChatHandlerTimers:add(self.checkChatTimer, createCheckingTheInterface)
-    end, function()
+  ChatHandlerTimers:add(self.checkChatTimer, function()
+    if not shared.chatIsOpen then
       local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
       player.interact("ScriptPane", root.assetJson(interfacePath))
-      ChatHandlerTimers:add(self.checkChatTimer, createCheckingTheInterface)
-    end)
-  end
-
-  
-  ChatHandlerTimers:add(self.checkChatTimer, createCheckingTheInterface)
+    end
+  end)
 end
 
 -- We will wait self.lastCheckedQueueTimer seconds to check for the message to be read.
@@ -50,5 +44,4 @@ function update(dt)
 end
 
 function uninit()
-  
 end

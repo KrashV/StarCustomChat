@@ -79,7 +79,7 @@
       "Broadcast" : "red",
       "Whisper" : "pink",
       "CommandResult" : "lightgray",
-      "RadioMessage" : "cyan",
+      "RadioMessage" : "yellow",
       "World" : "cyan",
       "Proximity" : "darkgreen",
       "Announcement" : "red",
@@ -227,10 +227,10 @@
       "callback": "setMode",
       "buttons": [
         {
-          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
-          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
-          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "selected": true,
           "fontColor": "#2e691eF8",
@@ -239,10 +239,10 @@
           }
         },
         {
-          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
-          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
-          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "position": [45, 0],
           "data": {
@@ -250,10 +250,10 @@
           }
         },
         {
-          "baseImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png",
-          "hoverImage": "/interface/scripted/irdencustomchat/chatmode_toggable.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png",
-          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmode_toggableselected.png?brightness=30",
+          "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
+          "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
+          "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
+          "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "position": [90, 0],
           "data": {
@@ -303,14 +303,15 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [52, 0],
+      "position": [289, 59],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Broadcast"
+        "mode": "Broadcast",
+        "displayText": "Broadcast"
       }
     },
 
@@ -319,35 +320,52 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [97, 0],
+      "position": [289, 44],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Local"
+        "mode": "Local",
+        "displayText": "Local"
       }
     },
-
-
-
-    
 
     "btnCkProximity": {
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [142, 0],
+      "position": [289, 29],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Proximity"
+        "mode": "Proximity",
+        "displayText": "Proximity"
       }
     },
+
+    "btnCkRadioMessage": {
+      "type": "button",
+      "checkable": true,
+      "checked": true,
+      "position": [289, 14],
+      "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "callback": "redrawChat",
+      "data": {
+        "mode": "RadioMessage",
+        "displayText": "RadioMessage"
+      }
+    },
+
+
+
 
     "lytCharactersToDM": {
       "type": "layout",
