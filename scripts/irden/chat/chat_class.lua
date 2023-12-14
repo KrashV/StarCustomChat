@@ -163,6 +163,7 @@ function IrdenChat:resetChat()
     portrait = nil,
     cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
   })
+  self:processQueue()
 end
 
 function IrdenChat:getMessages ()

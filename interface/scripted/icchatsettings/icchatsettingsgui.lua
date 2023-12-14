@@ -108,7 +108,7 @@ function updateProxRadius(widgetName)
 end
 
 function clearHistory()
-  world.sendEntityMessage(player.id(), "icc_clearHistory")
+  world.sendEntityMessage(player.id(), "icc_clear_history")
 end
 
 -- Utility function: return the index of a value in the given array
@@ -125,7 +125,7 @@ function save()
   root.setConfiguration("icc_proximity_radius", self.proximityRadius)
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
-  world.sendEntityMessage(player.id(), "icc_resetSettings")
+  world.sendEntityMessage(player.id(), "icc_reset_settings")
 end
 
 function ok()

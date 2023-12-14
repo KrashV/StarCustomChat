@@ -101,11 +101,11 @@ function registerCallbacks()
     self.irdenChat:updatePortrait(data)
   end))
 
-  shared.setMessageHandler( "icc_resetSettings", localHandler(function(data)
+  shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
     self.irdenChat:resetChat(message)
   end))
 
-  shared.setMessageHandler( "icc_clearHistory", localHandler(function(data)
+  shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
     self.irdenChat:clearHistory(message)
   end))
 end
