@@ -235,7 +235,7 @@
           "selected": true,
           "fontColor": "#2e691eF8",
           "data": {
-            "mode": "Local"
+            "mode": "Broadcast"
           }
         },
         {
@@ -246,7 +246,7 @@
           "pressedOffset": [ 0, 0 ],
           "position": [45, 0],
           "data": {
-            "mode": "Broadcast"
+            "mode": "Local"
           }
         },
         {
@@ -298,7 +298,8 @@
       ]
     },
 
-    "btnCkLocal": {
+
+    "btnCkBroadcast": {
       "type": "button",
       "checkable": true,
       "checked": true,
@@ -309,11 +310,12 @@
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Local"
+        "mode": "Broadcast"
       }
     },
 
-    "btnCkBroadcast": {
+
+    "btnCkLocal": {
       "type": "button",
       "checkable": true,
       "checked": true,
@@ -324,9 +326,11 @@
       "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
       "callback": "redrawChat",
       "data": {
-        "mode": "Broadcast"
+        "mode": "Local"
       }
     },
+
+
 
     
 
