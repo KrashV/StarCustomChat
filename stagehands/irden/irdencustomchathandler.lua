@@ -25,7 +25,12 @@ end
 function handleMessage(data)
   local author = data.connection * -65536
 
-  world.sendEntityMessage(author, "icc_log_message", data)
+  world.sendEntityMessage(author, "icc_log_message", {
+    mode = data.mode,
+    text = data.text,
+    nickname = data.nickname,
+    fight = data.fight
+  })
 
   if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
@@ -66,9 +71,10 @@ function getPortraitSafely(entityId)
   end) then 
     return portrait 
   else
-    if self.debug and not self.alertedPlayers[entityId] then
+    local conn = tostring(entityId // -65536)
+    if self.debug and not self.alertedPlayers[conn] then
       sb.logError("ICC PORTRAIT ERROR! " .. world.entityName(entityId) .. " has a broken portrait!")
-      self.alertedPlayers[entityId] = true
+      self.alertedPlayers[conn] = true
     end
   end
 end
@@ -78,20 +84,16 @@ function requestPortrait(entityId)
     local uuid = world.entityUniqueId(entityId)
 
     if uuid then
-      if self.stagehand.portraits[uuid] then
-        return self.stagehand.portraits[uuid]
-      elseif world.entityExists(entityId) and getPortraitSafely(entityId) then
+      local portrait = getPortraitSafely(entityId)
+      if world.entityExists(entityId) and portrait then
 
-        self.stagehand.portraits[uuid] = {
-          portrait = getPortraitSafely(entityId),
+        return {
+          portrait = portrait,
           cropArea = cropArea,
           uuid = uuid,
           entityId = entityId,
           connection = entityId // -65536
         }
-        return self.stagehand.portraits[uuid]
-      else
-        return nil
       end
     end
   end
@@ -104,17 +106,16 @@ function requestAsyncPortrait(data)
     local uuid = world.entityUniqueId(entityId)
 
     if uuid then
-      if self.stagehand.portraits[uuid] then
-        return self.stagehand.portraits[uuid]
-      else
-        promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(res_data) 
-          self.stagehand.portraits[uuid] = res_data
-          self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
-        end, function() 
-          if world.entityExists(entityId) and getPortraitSafely(entityId) then
+      promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(res_data)
+        self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
+      end, function() 
+        if world.entityExists(entityId) then
+          local portrait = getPortraitSafely(entityId)
+
+          if portrait then
             local res_data = {
               type = "UPDATE_PORTRAIT",
-              portrait = getPortraitSafely(entityId),
+              portrait = portrait,
               cropArea = cropArea,
               entityId = entityId,
               uuid = uuid,
@@ -122,26 +123,14 @@ function requestAsyncPortrait(data)
             }
             self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
           end
-        end)
-      end
+        end
+      end)
     end
   end
 end
 
 function savePortrait(request)
-  if world.entityExists(request.entityId) and getPortraitSafely(request.entityId) then 
-    local uuid = world.entityUniqueId(request.entityId)
-    self.stagehand.portraits[uuid] = {
-      portrait = request.portrait or getPortraitSafely(request.entityId),
-      cropArea = request.cropArea,
-      entityId = request.entityId,
-      uuid = uuid,
-      connection = request.entityId // -65536
-    }
-    return true
-  else
-    return nil
-  end
+  return true
 end
 
 function iccstagehand_update(dt)

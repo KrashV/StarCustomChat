@@ -115,7 +115,7 @@ function IrdenChat:addMessage(msg)
       end
 
       local entityId = message.connection * -65536
-      local uuid = world.entityUniqueId(entityId)
+      local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(message.connection)]
 
       if uuid and not self.savedPortraits[uuid] then
         if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
@@ -126,8 +126,11 @@ function IrdenChat:addMessage(msg)
           }
           self:processQueue()
         end
+        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {entityId= entityId, author = player.id() })
+      else
+        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {entityId= entityId, author = player.id() })
       end
-      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {entityId= entityId, author = player.id() })
+      
     end
     return message
   end
