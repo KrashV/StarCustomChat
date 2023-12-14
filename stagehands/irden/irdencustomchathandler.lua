@@ -83,7 +83,8 @@ function requestPortrait(entityId)
         self.stagehand.portraits[uuid] = {
           portrait = getPortraitSafely(entityId),
           cropArea = cropArea,
-          uuid = uuid
+          uuid = uuid,
+          entityId = entityId
         }
         return self.stagehand.portraits[uuid]
       else
