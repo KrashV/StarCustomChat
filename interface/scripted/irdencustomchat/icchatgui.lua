@@ -36,6 +36,10 @@ function init()
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", {})
+
+  
+  sb.logInfo("After")
+  sb.logInfo(sb.print(config.getParameter("connectionToUuid")))
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
   self.lastCommand = root.getConfiguration("icc_last_command")
@@ -373,6 +377,8 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.lastInputMessage = widget.getText("tbxInput")
     chatConfig.portraits = self.irdenChat.savedPortraits
     chatConfig.connectionToUuid =  self.irdenChat.connectionToUuid
+    sb.logInfo("Before")
+    sb.logInfo(sb.print(chatConfig.connectionToUuid))
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
     player.interact("ScriptPane", chatConfig)

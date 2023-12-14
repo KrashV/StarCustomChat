@@ -134,7 +134,7 @@ function savePortrait(request)
       cropArea = request.cropArea,
       entityId = request.entityId,
       uuid = uuid,
-      connection = entityId // -65536
+      connection = request.entityId // -65536
     }
     return true
   else

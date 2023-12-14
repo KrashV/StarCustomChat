@@ -119,7 +119,7 @@ function IrdenChat:addMessage(msg)
 
       if uuid and not self.savedPortraits[uuid] then
         if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
-          self.connectionToUuid[message.connection] = uuid
+          self.connectionToUuid[tostring(message.connection)] = uuid
           self.savedPortraits[uuid] = {
             portrait = world.entityPortrait(entityId, "full"),
             cropArea = self.config.portraitCropArea
@@ -145,7 +145,7 @@ end
 
 function IrdenChat:updatePortrait(data)
   self.savedPortraits[data.uuid] = data
-  self.connectionToUuid[data.connection] = data.uuid
+  self.connectionToUuid[tostring(data.connection)] = data.uuid
   self:processQueue()
 end
 
@@ -248,7 +248,8 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, mode)
   if type(target) == "number" then
     local entityId = target * -65536
 
-    local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[target]
+    local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[tostring(target)]
+
     if uuid and self.savedPortraits[uuid] then
       drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, color)
     else
