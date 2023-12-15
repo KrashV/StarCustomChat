@@ -17,7 +17,7 @@ function init()
   setCoordinates()
 
   widget.setSliderRange("sldProxRadius", 0, 90, 1)
-  widget.setSliderValue("sldProxRadius", self.proximityRadius)
+  widget.setSliderValue("sldProxRadius", self.proximityRadius - 10)
 
   widget.setText("lblProxRadiusValue", self.proximityRadius)
 end
