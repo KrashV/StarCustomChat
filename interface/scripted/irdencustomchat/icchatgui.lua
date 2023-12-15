@@ -13,12 +13,8 @@ end
 
 ICChatTimer = TimerKeeper.new()
 function init()
-  if shared.chatIsOpen and not config.getParameter("reopened") then
-    pane.dismiss()
-  end
 
   shared.chatIsOpen = true
-
   localeChat()
   self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
