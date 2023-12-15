@@ -21,7 +21,7 @@ require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 IrdenChat = {
   messages = jarray(),
-  drawnMessages = jarray(),
+  drawnMessageIndexes = jarray(),
   author = 0,
   lineOffset = 0,
   stagehandType = "",
@@ -280,7 +280,7 @@ end
 
 --TODO: instead of all messages we need to look at the messages that are drawn
 function IrdenChat:offsetCanvas(offset)
-  if #self.drawnMessages > 0 and self.drawnMessages[1].offset + self.drawnMessages[1].height - 20 < 0 and offset < 0 then
+  if #self.drawnMessageIndexes > 0 and self.messages[self.drawnMessageIndexes[1]].offset + self.messages[self.drawnMessageIndexes[1]].height - 20 < 0 and offset < 0 then
     return
   else
     self.lineOffset = math.min(self.lineOffset + offset, 0)
@@ -305,8 +305,8 @@ end
 function IrdenChat:selectMessage()
   local pos = self.highlightCanvas:mousePosition()
 
-  for i = #self.drawnMessages, 1, -1 do 
-    local message = self.drawnMessages[i]
+  for i = #self.drawnMessageIndexes, 1, -1 do 
+    local message = self.messages[self.drawnMessageIndexes[i]]
     if pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
       self:highlightMessage(message.offset, message.offset + message.height + self.config.spacings.messages)
       return message
@@ -315,9 +315,9 @@ function IrdenChat:selectMessage()
 end
 
 function filterMessages(messages)
-  local drawnMessages = {}
+  local drawnMessageIndexes = {}
 
-  for _, message in ipairs(messages) do 
+  for i, message in ipairs(messages) do 
     --filter messages by mode availability
     local mode = message.mode
     if mode == "CommandResult" or mode == "Party" or mode == "Whisper" or mode == "Fight"
@@ -326,10 +326,10 @@ function filterMessages(messages)
       or (mode == "Proximity" and widget.getChecked("btnCkProximity"))
       or (mode == "RadioMessage" and widget.getChecked("btnCkRadioMessage"))
     then
-      table.insert(drawnMessages, message)
+      table.insert(drawnMessageIndexes, i)
     end
   end
-  return drawnMessages
+  return drawnMessageIndexes
 end
 
 function createNameForCompactMode(name, color, text)
@@ -341,7 +341,7 @@ function IrdenChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
 
-  self.drawnMessages = filterMessages(self.messages)
+  self.drawnMessageIndexes = filterMessages(self.messages)
   
   local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
     return (self.chatMode == "full" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
@@ -349,8 +349,8 @@ function IrdenChat:processQueue()
   end
 
 
-  for i = #self.drawnMessages, 1, -1 do 
-    local message = self.drawnMessages[i]
+  for i = #self.drawnMessageIndexes, 1, -1 do 
+    local message = self.messages[self.drawnMessageIndexes[i]]
     local messageMode = message.mode
 
     local icon
@@ -372,30 +372,31 @@ function IrdenChat:processQueue()
     end
 
     -- If the message should contain an avatar and name:
-    self.drawnMessages[i].avatar = i == 1 or (message.connection ~= self.drawnMessages[i-1].connection or message.mode ~= self.drawnMessages[i-1].mode or message.nickname ~= self.drawnMessages[i-1].nickname)
+    local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
+    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname)
 
     -- Get amount of lines in the message and its length
     local labelToCheck = self.chatMode == "full" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
     local text = self.chatMode == "full" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text)
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
-    self.drawnMessages[i].n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.font.baseSize + self.config.spacings.lines)
-    self.drawnMessages[i].height = sizeOfText[2]
+    message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.font.baseSize + self.config.spacings.lines)
+    message.height = sizeOfText[2]
     widget.setText(labelToCheck, "")
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.font.baseSize + self.config.spacings.lines)
 
-    if i ~= #self.drawnMessages then
-      messageOffset = self.drawnMessages[i + 1].offset + self.drawnMessages[i + 1].height + self.config.spacings.messages
+    if i ~= #self.drawnMessageIndexes then
+      messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
     end
 
-    local offset = {0, messageOffset + self.drawnMessages[i].height + self.config.spacings.name}
+    local offset = {0, messageOffset + message.height + self.config.spacings.name}
 
 
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "full" then
-      if isInsideChat(self.drawnMessages[i], messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
+      if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
         self.canvas:drawText(message.text, {
           position = vec2.add(self.config.textOffsetFullMode, {0, messageOffset}),
           horizontalAnchor = "left", -- left, mid, right
@@ -403,14 +404,14 @@ function IrdenChat:processQueue()
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
         }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
 
-        if self.drawnMessages[i].avatar then
+        if message.avatar then
           self:drawIcon(icon, name, offset, self.config.nameColors[messageMode], messageMode)
-          self.drawnMessages[i].height = self.drawnMessages[i].height + self.config.spacings.name + self.config.font.nameSize
+          message.height = message.height + self.config.spacings.name + self.config.font.nameSize
         end
       end
     
     else -- compact mode
-      if isInsideChat(self.drawnMessages[i], messageOffset, 0, self.canvas:size()) then
+      if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
         self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text), {
           position = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset}),
           horizontalAnchor = "left", -- left, mid, right
@@ -420,7 +421,8 @@ function IrdenChat:processQueue()
       end
     end
     
-    self.drawnMessages[i].offset = messageOffset
-    self.totalHeight = self.totalHeight + self.drawnMessages[i].height
+    message.offset = messageOffset
+    self.totalHeight = self.totalHeight + message.height
+    self.messages[self.drawnMessageIndexes[i]] = message
   end
 end
