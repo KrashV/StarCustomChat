@@ -133,6 +133,41 @@ function savePortrait(request)
   return true
 end
 
+function distortText(maincolor, originalText, distance, max_distance)
+  -- Check if distance is beyond the maximum allowed distance
+  if distance > max_distance then
+      return nil
+  end
+
+  -- Calculate distortion factor based on distance (you can adjust this formula)
+  local distortionFactor = distance / max_distance
+
+  -- Function to distort a single character
+  local function distortCharacter(char)
+      local alpha = 255 * (1 - distortionFactor) -- Default alpha value
+
+      -- Add some randomness to the alpha channel
+      local randomOffset = math.random(- 50, 50)
+      alpha = math.max(0, math.min(255, alpha + randomOffset))
+
+      -- Calculate distorted alpha based on the distortion factor
+      local distortedAlpha = math.floor(alpha)
+
+      -- Convert the distorted alpha back to a hex value
+      local distortedAlphaHex = string.format("%02X", distortedAlpha)
+
+      -- Add the color directive before the character
+      local distortedChar = maincolor ..distortedAlphaHex .. ";" .. char
+
+      return distortedChar
+  end
+
+  -- Iterate through each character in the original text and distort it
+  local distortedText = originalText:gsub(".", distortCharacter)
+
+  return distortedText
+end
+
 function iccstagehand_update(dt)
   promises:update()
   self.aliveTimer = self.aliveTimer + dt 

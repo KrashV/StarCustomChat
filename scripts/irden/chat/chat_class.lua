@@ -74,6 +74,7 @@ function IrdenChat:addMessage(msg)
       local fightPattern = "^%[%^red;(.-)%^reset;%]"
       local discordPattern = "<%^orange;(.-)%^reset;> (.+)$"
 
+      local ismCurrentRollMode = player.getProperty("icc_current_roll_mode") or ""
       if string.find(text, "%[%^orange;DC%^reset;%]") then
         local username, restOfText = string.match(text, discordPattern)
   
@@ -83,7 +84,7 @@ function IrdenChat:addMessage(msg)
           message.text = restOfText
           message.portrait = self.config.icons.discord
         end
-      elseif player.hasActiveQuest(self.config.fightQuestName) and player.getProperty("irdenfightName") and string.match(text, fightPattern) then 
+      elseif player.hasActiveQuest(self.config.fightQuestName) and player.getProperty("irdenfightName") and string.match(text, fightPattern) and ismCurrentRollMode == "Fight" then 
         local fightName = player.getProperty("irdenfightName")
         -- Use string.match to extract the text
         local result = string.match(text, fightPattern)

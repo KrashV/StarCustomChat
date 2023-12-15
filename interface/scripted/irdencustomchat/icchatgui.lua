@@ -84,7 +84,6 @@ function init()
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
   end
-  input.setMousePosition(input.mousePosition())
 
   registerCallbacks()
 end
