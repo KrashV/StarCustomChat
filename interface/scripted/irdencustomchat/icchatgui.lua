@@ -42,7 +42,7 @@ function init()
     widget.setChecked(btn, isChecked)
   end
 
-  
+
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
   
@@ -69,12 +69,10 @@ function init()
 
   self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
     if doubleTappedKey == "iccRightMouseButton" then
-      if widget.inMember(self.highlightCanvasName, input.mousePosition()) then
-        local message = self.irdenChat:selectMessage()
-        if message then
-          clipboard.setText(message.text)
-          icchat.utils.alert("chat.alerts.copied_to_clipboard")
-        end
+      local message = self.irdenChat:selectMessage()
+      if message then
+        clipboard.setText(message.text)
+        icchat.utils.alert("chat.alerts.copied_to_clipboard")
       end
     end
   end)
@@ -185,6 +183,7 @@ function update(dt)
   promises:update()
   
   self.irdenChat:clearHighlights()
+  
   checkGroup()
   checkFight()
   checkTyping()
@@ -407,6 +406,9 @@ function canvasClickEvent(position, button, isButtonDown)
     player.interact("ScriptPane", chatConfig)
   end
 
+  self.doubleTap:update(script.updateDt(), {iccLeftMouseButton = button == 0 and isButtonDown,
+    iccRightMouseButton = button == 2 and isButtonDown})
+
   -- Defocus from the canvases or we can never leave lol :D
   widget.blur(self.canvasName)
   widget.blur(self.highlightCanvasName)
@@ -434,9 +436,6 @@ function processButtonEvents(dt)
     widget.focus("tbxInput")
     chat.setInput("")
   end
-
-  self.doubleTap:update(dt, {iccLeftMouseButton = input.mouseDown("MouseLeft"),
-  iccRightMouseButton = input.mouseDown("MouseRight")})
 
 
   if widget.hasFocus("tbxInput") then
