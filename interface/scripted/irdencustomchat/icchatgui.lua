@@ -417,7 +417,7 @@ end
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do 
     if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then 
-      self.irdenChat:offsetCanvas(event.data.mouseWheel * -1)
+      self.irdenChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
     elseif event.type == "KeyDown" then
       if event.data.key == "PageUp" then
         self.irdenChat:offsetCanvas(self.irdenChat.expanded and - self.irdenChat.config.pageSkipExpanded or - self.irdenChat.config.pageSkip)
