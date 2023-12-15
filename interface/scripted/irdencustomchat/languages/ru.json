@@ -6,6 +6,7 @@
   "chat.modes.Whisper": "Личные",
   "chat.modes.Fight": "Бой",
   "chat.modes.RadioMessage": "Броски",
+  "chat.modes.CommandResult": "Команды",
 
   "chat.textbox.hint": "Введите сообщение",
 

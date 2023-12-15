@@ -320,11 +320,12 @@ function filterMessages(messages)
   for i, message in ipairs(messages) do 
     --filter messages by mode availability
     local mode = message.mode
-    if mode == "CommandResult" or mode == "Party" or mode == "Whisper" or mode == "Fight"
+    if mode == "Party" or mode == "Whisper" or mode == "Fight"
       or (mode == "Local" and widget.getChecked("btnCkLocal")) 
       or (mode == "Broadcast" and widget.getChecked("btnCkBroadcast")) 
       or (mode == "Proximity" and widget.getChecked("btnCkProximity"))
       or (mode == "RadioMessage" and widget.getChecked("btnCkRadioMessage"))
+      or (mode == "CommandResult" and widget.getChecked("btnCkCommandResult"))
     then
       table.insert(drawnMessageIndexes, i)
     end

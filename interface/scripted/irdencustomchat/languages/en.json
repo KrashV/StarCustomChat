@@ -6,6 +6,7 @@
   "chat.modes.Whisper": "Whisper",
   "chat.modes.Fight": "Fight",
   "chat.modes.RadioMessage": "RadioMessage",
+  "chat.modes.CommandResult": "CommandResult",
 
   "chat.textbox.hint": "Type here",
 

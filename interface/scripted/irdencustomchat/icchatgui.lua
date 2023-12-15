@@ -400,6 +400,7 @@ function canvasClickEvent(position, button, isButtonDown)
       btnCkLocal = widget.getChecked("btnCkLocal"),
       btnCkProximity = widget.getChecked("btnCkProximity"),
       btnCkRadioMessage = widget.getChecked("btnCkRadioMessage"),
+      btnCkCommandResult = widget.getChecked("btnCkCommandResult")
     }
 
     self.reopening = true

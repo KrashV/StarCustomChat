@@ -303,7 +303,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 59],
+      "position": [289, 66],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -320,7 +320,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 44],
+      "position": [289, 51],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -336,7 +336,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 29],
+      "position": [289, 36],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -352,7 +352,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 14],
+      "position": [289, 21],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -361,6 +361,22 @@
       "data": {
         "mode": "RadioMessage",
         "displayText": "RadioMessage"
+      }
+    },
+
+    "btnCkCommandResult": {
+      "type": "button",
+      "checkable": true,
+      "checked": true,
+      "position": [289, 6],
+      "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "callback": "redrawChat",
+      "data": {
+        "mode": "CommandResult",
+        "displayText": "CommandResult"
       }
     },
 
