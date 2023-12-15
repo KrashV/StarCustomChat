@@ -38,6 +38,11 @@ function init()
 
   local storedMessages = root.getConfiguration("icc_last_messages", jarray())
   
+  for btn, isChecked in pairs(config.getParameter("selectedModes") or {}) do
+    widget.setChecked(btn, isChecked)
+  end
+
+  
   self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
   
@@ -86,6 +91,7 @@ function init()
   end
 
   registerCallbacks()
+
 end
 
 function registerCallbacks()
@@ -390,6 +396,12 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
     chatConfig.reopened = true
+    chatConfig.selectedModes = {
+      btnCkBroadcast = widget.getChecked("btnCkBroadcast"),
+      btnCkLocal = widget.getChecked("btnCkLocal"),
+      btnCkProximity = widget.getChecked("btnCkProximity"),
+      btnCkRadioMessage = widget.getChecked("btnCkRadioMessage"),
+    }
 
     self.reopening = true
     player.interact("ScriptPane", chatConfig)
