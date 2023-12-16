@@ -50,69 +50,32 @@ function icchat.utils.getCommands(allCommands, substr)
 end
 
 function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
-  local radius = 200
   local n_attempts = 10
   local findStagehandResult = false
 
-  local function findStagehand(stagehandType, r)
-    if player.id() and world.entityPosition(player.id()) then
-      for _, sId in ipairs( world.entityQuery(world.entityPosition(player.id()), r, {
-        includedTypes = {"stagehand"}
-      })) do 
-        if world.stagehandType(sId) == stagehandType then
-          findStagehandResult = true
-          return sId
-        end
+  promises:add(world.findUniqueEntity(stagehandType), function() 
+    promises:add(world.sendEntityMessage(stagehandType, message, data), function (result)
+      if callback then
+        callback(result)
       end
-
-      -- If we can't find such a stagehand, spawn one
-      world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
-    end
-
-    if n_attempts <= 0 then
-      findStagehandResult = false
+    end, function (err)
       if errcallback then
-        errcallback(data)
+        errcallback(err)
       end
-    end
-  end
+    end)
+  end, function()
+    world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
 
-  local fakePromise = {
-    succeeded = function() return findStagehandResult end,
-    finished =  function() 
-      return findStagehand(stagehandType, radius) or false
-    end,
-    result =    function() end,
-    error  =    function() end
-  }
-
-  local function findStagehandAndSendData()
-    local n_attempts = 10
-
-    local function sendData(sId)
-      n_attempts = n_attempts - 1
-      if n_attempts < 0 then
+    promises:add(world.findUniqueEntity(stagehandType), function() 
+      promises:add(world.sendEntityMessage(stagehandType, message, data), function (result)
+        if callback then
+          callback(result)
+        end
+      end, function (err)
         if errcallback then
-          errcallback(data)
+          errcallback(err)
         end
-        sb.logError("Cannot send data to stagehand")
-        return
-      end
-
-      promises:add(world.sendEntityMessage(sId, message, data), function(...)
-        if callback then 
-          callback(...)
-        end
-      end, function()
-        sendData(sId)
       end)
-    end
-    
-    local sId = findStagehand(stagehandType, radius)
-    if sId then
-      sendData(sId)
-    end
-  end
-
-  promises:add(fakePromise, findStagehandAndSendData)
+    end)
+  end)
 end

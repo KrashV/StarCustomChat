@@ -3,10 +3,11 @@ require "/stagehands/irden/irdencustomchathandler.lua"
 function init()
   if Outbox then
     self.outbox = Outbox.new("outbox", ContactList.new("contacts"))
+  else
+    -- That's new
+    iccstagehand_init()
   end
 
-  -- That's new
-  iccstagehand_init()
 end
 
 function uninit()
@@ -22,9 +23,9 @@ function update(dt)
     if self.outbox:empty() or not(iccstagehand_update) then
       stagehand.die()
     end
+  else
+    iccstagehand_update(dt)
   end
-  
-  iccstagehand_update(dt)
 end
 
 function post(contacts, messages)

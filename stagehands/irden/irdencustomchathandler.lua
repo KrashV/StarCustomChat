@@ -11,9 +11,8 @@ function iccstagehand_init()
   message.setHandler( "icc_savePortrait", simpleHandler(savePortrait) )
 
   self.debug = config.getParameter("debug") or false
-  self.aliveTime = 10
-  self.aliveTimer = 0
 
+  stagehand.setUniqueId("irdencustomchat")
   self.alertedPlayers = {}
 end
 
@@ -170,10 +169,6 @@ end
 
 function iccstagehand_update(dt)
   promises:update()
-  self.aliveTimer = self.aliveTimer + dt 
-  if self.aliveTimer > self.aliveTime then
-    stagehand.die()
-  end
 end
 
 function uninit()
