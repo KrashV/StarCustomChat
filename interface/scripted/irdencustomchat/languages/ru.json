@@ -28,7 +28,7 @@
   "settings.reset_avatar": "Сбросить",
 
   "settings.modes.compact": "Компактный",
-  "settings.modes.full": "Полный",
+  "settings.modes.modern": "Полный",
 
   "textspecific.weather": "^orange;Погода"
 }

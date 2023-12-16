@@ -31,7 +31,7 @@ IrdenChat = {
   totalHeight = 0,
   config = {},
   expanded = false,
-  chatMode = "full",
+  chatMode = "modern",
   savedPortraits = {},
   connectionToUuid = {},
   proximityRadius = 100,
@@ -159,7 +159,7 @@ end
 
 function IrdenChat:resetChat()
   localeChat()
-  self.chatMode = root.getConfiguration("iccMode") or "full"
+  self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
   icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
     entityId = player.id(),
@@ -307,7 +307,7 @@ function IrdenChat:selectMessage()
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]
-    if pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
+    if message.offset and pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
       self:highlightMessage(message.offset, message.offset + message.height + self.config.spacings.messages)
       return message
     end
@@ -345,7 +345,7 @@ function IrdenChat:processQueue()
   self.drawnMessageIndexes = filterMessages(self.messages)
   
   local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
-    return (self.chatMode == "full" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
+    return (self.chatMode == "modern" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
       or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
   end
 
@@ -377,8 +377,8 @@ function IrdenChat:processQueue()
     message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname)
 
     -- Get amount of lines in the message and its length
-    local labelToCheck = self.chatMode == "full" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
-    local text = self.chatMode == "full" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text)
+    local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
+    local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text)
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
     message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.font.baseSize + self.config.spacings.lines)
@@ -396,7 +396,7 @@ function IrdenChat:processQueue()
 
 
     -- Draw the actual message unless it's outside of drawing area
-    if self.chatMode == "full" then
+    if self.chatMode == "modern" then
       if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
         self.canvas:drawText(message.text, {
           position = vec2.add(self.config.textOffsetFullMode, {0, messageOffset}),

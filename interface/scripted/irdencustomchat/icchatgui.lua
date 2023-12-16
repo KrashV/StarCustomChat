@@ -162,7 +162,9 @@ end
 
 function localeChat()
   
-  self.chatMode = root.getConfiguration("iccMode") or "full"
+  self.chatMode = root.getConfiguration("iccMode") or "modern"
+  if self.chatMode ~= "compact" then self.chatMode = "modern" end
+  
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do 

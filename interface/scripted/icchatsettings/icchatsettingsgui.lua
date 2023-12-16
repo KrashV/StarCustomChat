@@ -13,7 +13,7 @@ function init()
   localeSettings(self.locale)
   drawCharacter()
   self.availableLocales = root.assetJson("/interface/scripted/irdencustomchat/languages/locales.json")
-  self.availableModes = {"compact", "full"}
+  self.availableModes = {"compact", "modern"}
   setCoordinates()
 
   widget.setSliderRange("sldProxRadius", 0, 90, 1)

@@ -28,7 +28,7 @@
   "settings.reset_avatar": "Reset",
 
   "settings.modes.compact": "Compact",
-  "settings.modes.full": "Full",
+  "settings.modes.modern": "Modern",
 
   "textspecific.weather": "^orange;Weather"
 }
