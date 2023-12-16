@@ -56,7 +56,7 @@ function drawCharacter()
   self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
 
-  local portrait = world.entityPortrait(player.id(), "full")
+  local portrait = world.entityPortrait(player.id(), "bust")
   for _, layer in ipairs(portrait) do
     self.portraitCanvas:drawImageRect(layer.image, self.cropArea, {0, 0, canvasSize[1], canvasSize[2]})
   end

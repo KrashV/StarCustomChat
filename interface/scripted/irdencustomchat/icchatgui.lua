@@ -313,7 +313,7 @@ function populateList()
         id = player,
         name = world.entityName(player),
         data = {
-          portrait = world.entityPortrait(player, "full")
+          portrait = world.entityPortrait(player, "bust")
         }
       })
     end
@@ -333,7 +333,7 @@ function drawIcon(canvasName, args)
   playerCanvas:clear()
   
   if type(args) == "number" then
-    local playerPortrait = world.entityPortrait(args, "full")
+    local playerPortrait = world.entityPortrait(args, "bust")
     for _, layer in ipairs(playerPortrait) do
       playerCanvas:drawImage(layer.image, {-14, -18})
     end

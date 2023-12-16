@@ -118,10 +118,10 @@ function IrdenChat:addMessage(msg)
       local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(message.connection)]
 
       if uuid and not self.savedPortraits[uuid] then
-        if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "full") then
+        if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then
           self.connectionToUuid[tostring(message.connection)] = uuid
           self.savedPortraits[uuid] = {
-            portrait = world.entityPortrait(entityId, "full"),
+            portrait = world.entityPortrait(entityId, "bust"),
             cropArea = self.config.portraitCropArea
           }
           self:processQueue()

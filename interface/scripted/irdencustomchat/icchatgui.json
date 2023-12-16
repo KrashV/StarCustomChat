@@ -24,7 +24,7 @@
 
     "portraitSize" : [22, 22],
     "portraitImageOffset" : [6, -10],
-    "portraitCropArea": [10, 14, 32, 36],
+    "portraitCropArea": [10, 16, 32, 38],
     "portraitFrameScale" : 1,
     
     "iconImageOffset" : [6, -10],

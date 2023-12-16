@@ -18,7 +18,7 @@ function init()
   message.setHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and world.entityExists(player.id()) then
       return {
-        portrait = world.entityPortrait(player.id(), "full"),
+        portrait = world.entityPortrait(player.id(), "bust"),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = player.id() // -65536,
