@@ -253,7 +253,7 @@ function checkGroup()
   if #player.teamMembers() == 0 then
     widget.setButtonEnabled("rgChatMode." .. id, false)
     if widget.getSelectedData("rgChatMode").mode == "Party" then
-      widget.setSelectedOption("rgChatMode", -1)
+      widget.setSelectedOption("rgChatMode", 1)
     end
   else
     widget.setButtonEnabled("rgChatMode." .. id, true)
@@ -265,7 +265,7 @@ function checkFight()
   if not player.hasActiveQuest(self.fightQuestName) then
     widget.setButtonEnabled("rgChatMode." .. id, false)
     if widget.getSelectedData("rgChatMode").mode == "Fight" then
-      widget.setSelectedOption("rgChatMode", -1)
+      widget.setSelectedOption("rgChatMode", 1)
     end
   else
     widget.setButtonEnabled("rgChatMode." .. id, true)
