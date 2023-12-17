@@ -1,6 +1,10 @@
 require "/stagehands/irden/irdencustomchathandler.lua"
 
 function init()
+  if not Outbox then
+    stagehand.die()
+  end
+  
   self.outbox = Outbox.new("outbox", ContactList.new("contacts"))
   self.irdenStagehand = stagehand.typeName() == "irdencustomchat"
   if self.irdenStagehand then
