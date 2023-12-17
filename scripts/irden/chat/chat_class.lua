@@ -417,8 +417,11 @@ function IrdenChat:processQueue()
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
         }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
 
-        local squareSize = self.config.modeIndicatorSize
-        self.canvas:drawRect({offset[1], offset[2] + message.height + self.config.spacings.name - 1, offset[1] + squareSize, offset[2] + message.height + self.config.spacings.name - squareSize - 1}, self.config.nameColors[messageMode])
+        if message.avatar then
+          local squareSize = self.config.modeIndicatorSize
+          local iconOffset = vec2.add(offset, {0, message.height + self.config.spacings.name - 2})
+          self.canvas:drawRect({iconOffset[1], iconOffset[2] , iconOffset[1] + squareSize, iconOffset[2] - squareSize}, self.config.nameColors[messageMode])
+        end
       end
     end
     
