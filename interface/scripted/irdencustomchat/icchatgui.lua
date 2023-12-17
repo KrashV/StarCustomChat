@@ -164,7 +164,8 @@ function findButtonByMode(mode)
 end
 
 function localeChat()
-  
+  local savedText = widget.getText("tbxInput")
+  local hasFocus = widget.hasFocus("tbxInput")
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   if self.chatMode ~= "compact" then self.chatMode = "modern" end
 
@@ -180,6 +181,11 @@ function localeChat()
 
   pane.removeWidget("tbxInput")
   pane.addWidget(standardTbx, "tbxInput")
+  widget.setText("tbxInput", savedText)
+
+  if hasFocus then
+    widget.focus("tbxInput")
+  end
 end
 
 function update(dt)

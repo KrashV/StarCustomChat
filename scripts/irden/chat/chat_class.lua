@@ -5,7 +5,6 @@
     6. Set avatar: image
     8. On message receive play a sound
     9. Collapse long messages
-    10. Time on message
 ]]
 
 require "/scripts/irden/chat/message_class.lua"
