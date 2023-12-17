@@ -17,6 +17,7 @@
     "spaceBetweenMessages": 4,
     "chatHistoryLimit" : 64,
 
+    "timeOffset": [4, 3],
     "textOffsetFullMode": [35, 0],
     "textOffsetCompactMode": [5, 0],
     "nameOffset": [35, 0],
@@ -70,7 +71,8 @@
       "baseSize" : 9,
       "itemSize" : 8,
       "nameSize" : 10,
-      "previewCommandSize": 8
+      "previewCommandSize": 8,
+      "timeSize": 6
     },
     "nameColors": {
       "default": "white",
@@ -87,6 +89,7 @@
     },
     "colors" : {
       "default": "white",
+      "time": "gray",
       "Local" : "white",
       "Party" : "white",
       "Broadcast" : "white",
