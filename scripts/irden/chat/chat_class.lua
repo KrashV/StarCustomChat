@@ -115,7 +115,6 @@ function IrdenChat:addMessage(msg)
       if uuid and not self.savedPortraits[uuid] then
         if entityId and world.entityExists(entityId) then
           promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
-            sb.logInfo("WE GOTTEM")
             self.savedPortraits[data.uuid] = {
               portrait = data.portrait,
               cropArea = data.cropArea

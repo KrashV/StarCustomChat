@@ -322,7 +322,7 @@ function populateList()
     for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do 
       table.insert(playersAround, {
         id = player,
-        name = world.entityName(player),
+        name = world.entityName(player) or "Unknown",
         data = {
           portrait = world.entityPortrait(player, "bust")
         }
