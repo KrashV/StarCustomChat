@@ -57,7 +57,7 @@ function getAllPlayers()
     table.insert(players, {
       id = player,
       name = world.entityName(player),
-      data = requestPortrait(player)
+      data = {} --requestPortrait(player)
     })
   end
   return players
@@ -83,7 +83,7 @@ function requestPortrait(entityId)
     local uuid = world.entityUniqueId(entityId)
 
     if uuid then
-      local portrait = getPortraitSafely(entityId)
+      --local portrait = getPortraitSafely(entityId)
       if world.entityExists(entityId) and portrait then
 
         return {
@@ -109,7 +109,7 @@ function requestAsyncPortrait(data)
         self.stagehand:sendDataToPlayer(author, res_data, "icc_send_player_portrait")
       end, function() 
         if world.entityExists(entityId) then
-          local portrait = getPortraitSafely(entityId)
+          --local portrait = getPortraitSafely(entityId)
 
           if portrait then
             local res_data = {

@@ -135,6 +135,8 @@ function removeChatBindings()
   bindings["ChatPageUp"] = jarray()
   bindings["ChatPreviousLine"] = jarray()
   bindings["ChatSendLine"] = jarray()
+  bindings["ChatSendLine"] = jarray()
+  bindings["InterfaceRepeatCommand"] = jarray()
   root.setConfiguration("bindings", bindings)
 end
 
@@ -288,7 +290,7 @@ function populateList()
 
       if index(self.contacts, player.id) == 0 and player.data then
         local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
-        if mode == "letter" then
+        if mode == "letter" or not player.data.portrait then
           drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", string.sub(player.name, 1, 2))
         elseif player.data.portrait then
           drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
@@ -331,10 +333,12 @@ function populateList()
   drawCharacters(playersAround, not self.receivedMessageFromStagehand)
 
 
+  --[[
   icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)
     self.receivedMessageFromStagehand = true
     drawCharacters(players, true)
   end)
+  ]]
 end
 
 function drawIcon(canvasName, args)

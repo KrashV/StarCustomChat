@@ -113,17 +113,24 @@ function IrdenChat:addMessage(msg)
       local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(message.connection)]
 
       if uuid and not self.savedPortraits[uuid] then
-        if entityId and world.entityExists(entityId) and world.entityPortrait(entityId, "bust") then
-          self.connectionToUuid[tostring(message.connection)] = uuid
-          self.savedPortraits[uuid] = {
-            portrait = world.entityPortrait(entityId, "bust"),
-            cropArea = self.config.portraitCropArea
-          }
-          self:processQueue()
+        if entityId and world.entityExists(entityId) then
+          promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
+            sb.logInfo("WE GOTTEM")
+            self.savedPortraits[data.uuid] = {
+              portrait = data.portrait,
+              cropArea = data.cropArea
+            }
+            self.connectionToUuid[tostring(message.connection)] = uuid
+            self:processQueue()
+          end, function()
+            self.connectionToUuid[tostring(message.connection)] = uuid
+            self.savedPortraits[uuid] = {
+              portrait = world.entityExists(entityId) and world.entityPortrait(entityId, "bust"),
+              cropArea = self.config.portraitCropArea
+            }
+            self:processQueue()
+          end)
         end
-        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {entityId= entityId, author = player.id() })
-      else
-        icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_requestAsyncPortrait", {entityId= entityId, author = player.id() })
       end
       
     end
@@ -156,11 +163,20 @@ function IrdenChat:resetChat()
   localeChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
-  icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
+  --[[
+    icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
     entityId = player.id(),
     portrait = nil,
     cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
   })
+  --]]
+
+  if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
+    self.savedPortraits[player.uniqueId()] = {
+      portrait = world.entityPortrait(player.id(), "bust"),
+      cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
+    }
+  end
   self:processQueue()
 end
 
