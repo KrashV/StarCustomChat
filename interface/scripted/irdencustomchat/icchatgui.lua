@@ -86,6 +86,9 @@ function init()
   local currentMessageMode = config.getParameter("currentMessageMode")
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
+    widget.setFontColor("rgChatMode." .. currentMessageMode, chatConfig.nameColors[widget.getData("rgChatMode." .. currentMessageMode).mode])
+  else
+    widget.setFontColor("rgChatMode.1", chatConfig.nameColors[widget.getData("rgChatMode.1").mode])
   end
 
   registerCallbacks()
@@ -154,7 +157,7 @@ function findButtonByMode(mode)
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do 
     if button.data.mode == mode then
-      return i - 2
+      return i
     end
   end
   return -1
@@ -168,7 +171,7 @@ function localeChat()
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do 
-    widget.setText("rgChatMode." .. i - 2, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
+    widget.setText("rgChatMode." .. i, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
   -- Unfortunately, to reset HINT we have to recreate the textbox
@@ -525,14 +528,12 @@ function sendMessage(widgetName)
 end
 
 
-function setMode(_, data)
+function setMode(id, data)
   local modeButtons = config.getParameter("gui")["rgChatMode"]["buttons"]
-  local selectedMode = -1
   for i, btn in ipairs(modeButtons) do 
-    widget.setFontColor("rgChatMode." .. i - 2, self.irdenChat.config.unselectedModeColor)
-    selectedMode = data.mode == btn.data.mode and i or selectedMode
+    widget.setFontColor("rgChatMode." .. i, self.irdenChat.config.unselectedModeColor)
   end
-  widget.setFontColor("rgChatMode." .. selectedMode - 2, self.irdenChat.config.selectedModeColor)
+  widget.setFontColor("rgChatMode." .. id, self.irdenChat.config.nameColors[data.mode])
 
   widget.setVisible("lytCharactersToDM", data.mode == "Whisper")
 end

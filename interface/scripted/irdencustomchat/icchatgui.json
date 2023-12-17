@@ -227,6 +227,7 @@
       "callback": "setMode",
       "buttons": [
         {
+          "id": 1,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
@@ -239,6 +240,7 @@
           }
         },
         {
+          "id": 2,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
@@ -250,6 +252,7 @@
           }
         },
         {
+          "id": 3,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
@@ -261,6 +264,7 @@
           }
         },
         {
+          "id": 4,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
@@ -273,6 +277,7 @@
           }
         },
         {
+          "id": 5,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",
@@ -284,6 +289,7 @@
           }
         },
         {
+          "id": 6,
           "baseImage": "/interface/scripted/irdencustomchat/chatmode.png",
           "hoverImage": "/interface/scripted/irdencustomchat/chatmode.png?brightness=30",
           "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png",

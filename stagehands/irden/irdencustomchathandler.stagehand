@@ -2,6 +2,7 @@
   "type" : "irdencustomchat",
 
   "scripts" : [
+    "/scripts/quest/messaging.lua",
   	"/stagehands/mailbox.lua"
   ],
   "scriptDelta" : 1,

@@ -1,39 +1,33 @@
 require "/stagehands/irden/irdencustomchathandler.lua"
 
 function init()
-  if Outbox then
-    self.outbox = Outbox.new("outbox", ContactList.new("contacts"))
-  else
-    -- That's new
+  self.outbox = Outbox.new("outbox", ContactList.new("contacts"))
+  self.irdenStagehand = stagehand.typeName() == "irdencustomchat"
+  if self.irdenStagehand then
     iccstagehand_init()
   end
-
 end
 
 function uninit()
-  if self.outbox then
-    self.outbox:uninit()
-  end
+  self.outbox:uninit()
 end
 
 function update(dt)
-  if self.outbox then
-    self.outbox:update()
+  self.outbox:update()
 
-    if self.outbox:empty() or not(iccstagehand_update) then
-      stagehand.die()
-    end
-  else
+  if self.outbox:empty() and not self.irdenStagehand then
+    stagehand.die()
+  end
+
+  if self.irdenStagehand then
     iccstagehand_update(dt)
   end
 end
 
 function post(contacts, messages)
-  if self.outbox then
-    self.outbox.contactList:registerContacts(contacts)
-    for _,messageData in ipairs(messages) do
-      self.outbox:logMessage(messageData, "mailbox received")
-      self.outbox:postpone(messageData)
-    end
+  self.outbox.contactList:registerContacts(contacts)
+  for _,messageData in ipairs(messages) do
+    self.outbox:logMessage(messageData, "mailbox received")
+    self.outbox:postpone(messageData)
   end
 end

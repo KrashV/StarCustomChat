@@ -360,7 +360,7 @@ function IrdenChat:processQueue()
       icon = self.config.icons.console
       name = "Console"         
     elseif messageMode == "RadioMessage" then
-      icon = message.portrait or "/ai/portraits/humanportrait.png:idle"
+      icon = message.portrait or self.config.icons.server
       name = message.nickname or "Server"
     elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight" then
       if message.connection == 0 then
