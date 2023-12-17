@@ -14,6 +14,8 @@
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
   "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
   "chat.alerts.copied_to_clipboard": "Copied to clipboard",
+  "chat.alerts.cannot_start_two_slashes": "Command cannot start with two slashes",
+
 
   "settings.title": "Chat settings",
   "settings.subtitle": "Proximity raduis shows on /debug",

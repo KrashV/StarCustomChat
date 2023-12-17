@@ -507,6 +507,13 @@ function sendMessage(widgetName)
       return
     end
 
+    if string.sub(message, 1, 2) == "//" then
+      icchat.utils.alert("chat.alerts.cannot_start_two_slashes")
+      --blurTextbox(widgetName)
+      return
+    end
+
+
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" then
       widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
       return
