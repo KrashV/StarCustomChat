@@ -2,16 +2,10 @@
   Chat Class instance
 
   TODO:
-    2. Store chat messages
-    3. Handle Irden-Specific messages
-    5. Showcase commands
-    6. Set avatar: image and offset
-    7. Whisper should show the author / recepient
+    6. Set avatar: image
     8. On message receive play a sound
     9. Collapse long messages
     10. Time on message
-    11. Weather
-    12. Fight chat
 ]]
 
 require "/scripts/irden/chat/message_class.lua"
@@ -69,6 +63,8 @@ function IrdenChat:addMessage(msg)
   function formatMessage(message)
     local text = message.text
     
+    message.time = message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;") or text:match("%^%a+;(%d+:%d+)%^reset;")
+
     if message.connection == 0 then
 
       local fightPattern = "^%[%^red;(.-)%^reset;%]"
@@ -334,7 +330,7 @@ function filterMessages(messages)
 end
 
 function createNameForCompactMode(name, color, text)
-  return "<^" .. color .. ";" .. icchat.utils.cleanNickname(name) .."^reset;>: "  .. text
+  return "   <^" .. color .. ";" .. icchat.utils.cleanNickname(name) .."^reset;>: "  .. text
 end
 
 --TODO: instead of all messages we need to look at the messages that are drawn
@@ -413,12 +409,16 @@ function IrdenChat:processQueue()
     
     else -- compact mode
       if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
+        local offset = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset})
         self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text), {
-          position = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset}),
+          position = offset,
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
         }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
+
+        local squareSize = self.config.modeIndicatorSize
+        self.canvas:drawRect({offset[1], offset[2] + message.height + self.config.spacings.name - 1, offset[1] + squareSize, offset[2] + message.height + self.config.spacings.name - squareSize - 1}, self.config.nameColors[messageMode])
       end
     end
     
