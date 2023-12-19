@@ -66,11 +66,15 @@ function IrdenChat:addMessage(msg)
 
     if message.connection == 0 then
 
+      local proximityPattern = "^%[%^green;L%^reset;%]"
       local fightPattern = "^%[%^red;(.-)%^reset;%]"
       local discordPattern = "<%^orange;(.-)%^reset;> (.+)$"
 
       local ismCurrentRollMode = player.getProperty("icc_current_roll_mode") or ""
-      if string.find(text, "%[%^orange;DC%^reset;%]") then
+
+      if string.find(text, proximityPattern) then
+        message.mode = "Proximity"
+      elseif string.find(text, "%[%^orange;DC%^reset;%]") then
         local username, restOfText = string.match(text, discordPattern)
   
         if username and restOfText then
