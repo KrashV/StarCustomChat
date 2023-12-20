@@ -70,7 +70,7 @@
     "font" : {
       "baseSize" : 9,
       "itemSize" : 8,
-      "nameSize" : 10,
+      "nameSize" : 15,
       "previewCommandSize": 8,
       "timeSize": 6
     },

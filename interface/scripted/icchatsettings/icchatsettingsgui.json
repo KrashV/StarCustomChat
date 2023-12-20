@@ -25,156 +25,262 @@
         "zlevel" : -1
       }
     },
-    "portraitCanvas": {
-      "type": "canvas",
-      "rect": [10, 50, 80, 120]
-    },
 
-    "lblCornersHint": {
-      "type": "label",
-      "position":[45, 50],
-      "value": "Select corners to adjust",
-      "fontSize": 7,
-      "hAnchor": "mid",
-      "vAnchor": "top",
-      "wrapWidth": 80
-    },
-
-    "rgAvatarCorners": {
+    "layouts": {
       "type": "radioGroup",
-      "position": [10, 50],
-      "zlevel": 4,
-      "callback": "changeCorner",
-      "buttons": [
-        {
-          "id" : 1,
-          "baseImage": "/interface/scripted/icchatsettings/corner.png",
-          "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
-          "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
-          "pressedOffset": [ 0, 0 ],
-          "position": [ 0, 0 ],
-          "selected": true
-        },
-        {
-          "id" : 3,
-          "baseImage": "/interface/scripted/icchatsettings/corner.png",
-          "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
-          "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
-          "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
-          "pressedOffset": [ 0, 0 ],
-          "position": [ 62, 62 ]
-        }
+      "callback": "updateLayouts",
+      "position": [237, 124],
+      "buttons": [{
+              "baseImage": "/interface/scripted/icchatsettings/tab_settings.png",
+              "hoverImage": "/interface/scripted/icchatsettings/tab_settings.png?replace;ffffff=e6f316;c2c0c0=a3ac15",
+              "baseImageChecked": "/interface/scripted/icchatsettings/tab_settings.png?replace;ffffff=19b105;c2c0c0=148f03;626261=000000",
+              "hoverImageChecked": "/interface/scripted/icchatsettings/tab_settings.png?replace;ffffff=19b105;c2c0c0=148f03;626261=000000",
+              "position": [0, 0],
+              "pressedOffset": [0, 0],
+              "selected": true,
+              "data": "main"
+          },
+          {
+            "baseImage": "/interface/scripted/icchatsettings/tab_chat.png",
+            "hoverImage": "/interface/scripted/icchatsettings/tab_chat.png?replace;ffffff=e6f316;c2c0c0=a3ac15",
+            "baseImageChecked": "/interface/scripted/icchatsettings/tab_chat.png?replace;ffffff=19b105;c2c0c0=148f03;626261=000000",
+            "hoverImageChecked": "/interface/scripted/icchatsettings/tab_chat.png?replace;ffffff=19b105;c2c0c0=148f03;626261=000000",
+              "position": [0, -12],
+              "pressedOffset": [0, 0],
+              "data": "text"
+          }
       ]
     },
-    "lblCrop": {
-      "type": "label",
-      "position": [100, 115],
-      "value": "Crop avatar area"
-    },
-    "btnResetAvatar": {
-      "type": "button",
-      "position": [99, 100],
-      "callback": "resetAvatar",
-      "caption": "",
-      "base" : "/interface/buttonred.png",
-      "hover" : "/interface/buttonredhover.png"
-    },
-    "xPosition": {
-      "type": "label",
-      "position": [160, 115],
-      "value": "X: "
-    },
-    "yPosition": {
-      "type": "label",
-      "position": [190, 115],
-      "value": "Y: "
-    },
-    "btnLeft": {
-      "type": "button",
-      "position": [160, 105],
-      "base": "/interface/scrollarea/harrow-backward.png",
-      "hover": "/interface/scrollarea/harrow-backwardhover.png",
-      "callback": "moveCorner",
-      "data": [1, 0]
-    },
-    "btnRight": {
-      "type": "button",
-      "position": [170, 105],
-      "base": "/interface/scrollarea/harrow-forward.png",
-      "hover": "/interface/scrollarea/harrow-forwardhover.png",
-      "callback": "moveCorner",
-      "data": [-1, 0]
-    },
-    "btnDown": {
-      "type": "button",
-      "position": [190, 105],
-      "base": "/interface/scrollarea/harrow-backward.png",
-      "hover": "/interface/scrollarea/harrow-backwardhover.png",
-      "callback": "moveCorner",
-      "data": [0, 1]
-    },
-    "btnUp": {
-      "type": "button",
-      "position": [200, 105],
-      "base": "/interface/scrollarea/harrow-forward.png",
-      "hover": "/interface/scrollarea/harrow-forwardhover.png",
-      "callback": "moveCorner",
-      "data": [0, -1]
-    },
-    "lblLanguage": {
-      "type": "label",
-      "value": "Language: ",
-      "position": [100, 60]
-    },
-    "btnLanguage": {
-      "type": "button",
-      "base" : "/interface/button.png",
-      "hover" : "/interface/buttonhover.png",
-      "position": [150, 57],
-      "callback": "changeLanguage"
-    },
 
-    "lblMode": {
-      "type": "label",
-      "value": "Mode: ",
-      "position": [100, 40]
-    },
-    "btnMode": {
-      "type": "button",
-      "base" : "/interface/button.png",
-      "hover" : "/interface/buttonhover.png",
-      "position": [150, 37],
-      "callback": "changeMode"
-    },
-
-    "lblProxRadiusHint" : {
-      "type": "label",
-      "position": [100, 90],
-      "value": ""
-    },
+    "main": {
+      "type": "layout",
+      "layoutType": "basic",
+      "position": [0, 0],
+      "size": [250, 150],
+      "zlevel": 20,
+      "children":{
+        "portraitCanvas": {
+          "type": "canvas",
+          "rect": [8, 58, 78, 128]
+        },
     
-    "sldProxRadius" : {
-      "type": "slider",
-      "gridImage" : "/interface/optionsmenu/largeselection.png",
-      "position": [100, 80],
-      "callback": "updateProxRadius"
+        "lblCornersHint": {
+          "type": "label",
+          "position":[44, 56],
+          "value": "Select corners to adjust",
+          "fontSize": 7,
+          "hAnchor": "mid",
+          "vAnchor": "top",
+          "wrapWidth": 80
+        },
+    
+        "rgAvatarCorners": {
+          "type": "radioGroup",
+          "position": [8, 58],
+          "zlevel": 4,
+          "callback": "changeCorner",
+          "buttons": [
+            {
+              "id" : 1,
+              "baseImage": "/interface/scripted/icchatsettings/corner.png",
+              "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
+              "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
+              "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
+              "pressedOffset": [ 0, 0 ],
+              "position": [ 0, 0 ],
+              "selected": true
+            },
+            {
+              "id" : 3,
+              "baseImage": "/interface/scripted/icchatsettings/corner.png",
+              "hoverImage": "/interface/scripted/icchatsettings/corner.png?brightness=30",
+              "baseImageChecked": "/interface/scripted/icchatsettings/cornerselected.png",
+              "hoverImageChecked": "/interface/scripted/icchatsettings/cornerselected.png?brightness=30",
+              "pressedOffset": [ 0, 0 ],
+              "position": [ 62, 62 ]
+            }
+          ]
+        },
+        "btnResetAvatar": {
+          "type": "button",
+          "position": [1, 21],
+          "callback": "resetAvatar",
+          "caption": "",
+          "base" : "/interface/scripted/icchatsettings/button.png?flipx;",
+          "hover" : "/interface/scripted/icchatsettings/button.png?flipx;?brightness=90"
+        },
+        "xPosition": {
+          "type": "label",
+          "position": [20, 137],
+          "value": "X: "
+        },
+        "yPosition": {
+          "type": "label",
+          "position": [50, 137],
+          "value": "Y: "
+        },
+        "btnLeft": {
+          "type": "button",
+          "position": [20, 129],
+          "base": "/interface/scrollarea/harrow-backward.png",
+          "hover": "/interface/scrollarea/harrow-backwardhover.png",
+          "callback": "moveCorner",
+          "data": [1, 0]
+        },
+        "btnRight": {
+          "type": "button",
+          "position": [30, 129],
+          "base": "/interface/scrollarea/harrow-forward.png",
+          "hover": "/interface/scrollarea/harrow-forwardhover.png",
+          "callback": "moveCorner",
+          "data": [-1, 0]
+        },
+        "btnDown": {
+          "type": "button",
+          "position": [50, 129],
+          "base": "/interface/scrollarea/harrow-backward.png",
+          "hover": "/interface/scrollarea/harrow-backwardhover.png",
+          "callback": "moveCorner",
+          "data": [0, 1]
+        },
+        "btnUp": {
+          "type": "button",
+          "position": [60, 129],
+          "base": "/interface/scrollarea/harrow-forward.png",
+          "hover": "/interface/scrollarea/harrow-forwardhover.png",
+          "callback": "moveCorner",
+          "data": [0, -1]
+        },
+        "btnLanguage": {
+          "type": "button",
+          "base" : "/interface/scripted/icchatsettings/bt.png",
+          "hover" : "/interface/scripted/icchatsettings/bt.png?brightness=90",
+          "position": [75, 21],
+          "callback": "changeLanguage"
+        },
+    
+        "btnMode": {
+          "type": "button",
+          "base" : "/interface/scripted/icchatsettings/bt.png",
+          "hover" : "/interface/scripted/icchatsettings/bt.png?brightness=90",
+          "position": [119, 21],
+          "callback": "changeMode"
+        },
+    
+        "lblProxRadiusHint" : {
+          "type": "label",
+          "position": [100, 125],
+          "value": ""
+        },
+        
+        "sldProxRadius" : {
+          "type": "slider",
+          "gridImage" : "/interface/optionsmenu/largeselection.png",
+          "position": [97, 135],
+          "callback": "updateProxRadius"
+        },
+    
+        "lblProxRadiusValue" : {
+          "type": "label",
+          "position": [148, 115],
+          "value": ""
+        },
+    
+    
+        "btnDeleteChat" : {
+          "type" : "button",
+          "base" : "/interface/scripted/icchatsettings/button.png",
+          "hover" : "/interface/scripted/icchatsettings/button.png?brightness=90",
+          "position" : [162, 21],
+          "caption" : "Cancel",
+          "callback": "clearHistory"
+        }
+      },
+      "visible": true
     },
 
-    "lblProxRadiusValue" : {
-      "type": "label",
-      "position": [150, 70],
-      "value": ""
-    },
-
-
-    "btnDeleteChat" : {
-      "type" : "button",
-      "base" : "/interface/buttonred.png",
-      "hover" : "/interface/buttonredhover.png",
-      "position" : [10, 21],
-      "caption" : "Cancel",
-      "callback": "clearHistory"
+    "text": {
+      "type": "layout",
+      "layoutType": "basic",
+      "position": [0, 0],
+      "size": [250, 150],
+      "zlevel": 20,
+      "children":{
+        "background": {
+          "type": "image",
+          "file": "/interface/scripted/icchatsettings/param_list.png",
+          "position": [1, 34],
+          "zlevel": 1
+        },
+        "cat": {
+          "type": "image",
+          "file": "/interface/scripted/icchatsettings/CatJustCat.png",
+          "position": [84, 79],
+          "zlevel": 1
+        },
+        "btnResetConfig": {
+          "type": "button",
+          "position": [162, 21],
+          "callback": "resetSettings",
+          "caption": "заводские",
+          "base" : "/interface/scripted/icchatsettings/button.png",
+          "hover" : "/interface/scripted/icchatsettings/button.png?brightness=90"
+        },
+        "lblParamDesc": {
+          "type": "label",
+          "value": "*param-pam-description*",
+          "position": [110, 62]
+        },
+        "lblParamName": {
+          "type": "label",
+          "value": "*pam-pam-name*",
+          "position": [88, 40]
+        },
+        "tbParam": {
+          "type": "textbox",
+          "position": [120, 40],
+          "hint": "*par-pam-pam*",
+          "textAlign" : "center",
+          "hAnchor": "left",
+          "enterKey": "updateParam",
+          "callback": "updateParam",
+          "zlevel": 10
+        },
+        "paramList": {
+          "type": "scrollArea",
+          "rect": [2, 35, 82, 146],
+          "zlevel": 2,
+          "children": {
+              "list": {
+                  "type": "list",
+                  "callback": "paramSelected",
+                  "schema": {
+                      "selectedBG": "/interface/scripted/icchatsettings/param_element.png?replace;700005=05c900",
+                      "unselectedBG": "/interface/scripted/icchatsettings/param_element.png",
+                      "spacing": [0, 1],
+                      "memberSize": [70, 11],
+                      "listTemplate": {
+                          "background": {
+                              "type": "image",
+                              "file": "/interface/scripted/icchatsettings/param_element.png",
+                              "position": [0, 0],
+                              "zlevel": 2
+                          },
+                          "Name": {
+                              "type": "label",
+                              "position": [18, 5],
+                              "wrapWidth": 58,
+                              "fontSize": 7,
+                              "vAnchor": "mid",
+                              "value": "Name Here"
+                          }
+                      }
+                  }
+              }
+          }
+      }
+      },
+      "visible": false
     },
     
     "close" : {
@@ -183,10 +289,10 @@
       "hover" : "/interface/xhover.png",
       "pressed" : "/interface/xpress.png",
       "pressedOffset" : [0, 0],
-      "position" : [220, 132]
+      "position" : [220, 152]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar", "updateLayouts", "paramSelected", "resetSettings", "updateParam"],
   "canvasClickCallbacks" : {
 
   },

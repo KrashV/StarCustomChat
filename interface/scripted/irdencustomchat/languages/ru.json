@@ -19,16 +19,14 @@
   "settings.title": "Настройки чата",
   "settings.subtitle": "/debug показывает радиус близких сообщений",
   "settings.corners_hint": "Выбери углы портрета",
-  "settings.locale": "Язык",
   "settings.chat_mode": "Режим чата",
-  "settings.crop_area": "Вырез",
   "settings.ok": "Принять",
   "settings.cancel": "Отменить",
   "settings.prox_radius": "Радиус близких сообщений",
   "settings.clear_chat_history": "Очистить чат",
-  "settings.reset_avatar": "Сбросить",
+  "settings.reset_avatar": "Сброс. портерт",
 
-  "settings.modes.compact": "Компактный",
+  "settings.modes.compact": "Компакт.",
   "settings.modes.modern": "Полный",
 
   "textspecific.weather": "^orange;Погода"
