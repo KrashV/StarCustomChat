@@ -148,6 +148,9 @@ function IrdenChat:addMessage(msg)
     end
   end
 
+  if msg.connection ~= 0 and (msg.mode == "Proximity" or msg.mode == "Fight") then
+    sb.logInfo("Chat: <%s> %s", msg.nickname, msg.text)
+  end
   self:processQueue()
 end
 
