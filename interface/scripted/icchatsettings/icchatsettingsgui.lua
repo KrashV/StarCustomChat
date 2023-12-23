@@ -1,4 +1,5 @@
 require "/scripts/vec2.lua"
+require "/scripts/util.lua"
 
 function init()
   self.cropArea = config.getParameter("portraitFrame")
@@ -42,7 +43,7 @@ function localeSettings(locale)
 end
 
 function resetAvatar()
-  self.cropArea = self.defaultCropArea
+  self.cropArea = copy(self.defaultCropArea)
   setCoordinates()
   drawCharacter()
   save()

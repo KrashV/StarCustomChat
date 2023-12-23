@@ -169,7 +169,8 @@
     
         "lblProxRadiusHint" : {
           "type": "label",
-          "position": [100, 125],
+          "position": [155, 125],
+          "hAnchor": "mid",
           "value": ""
         },
         
@@ -289,7 +290,7 @@
       "hover" : "/interface/xhover.png",
       "pressed" : "/interface/xpress.png",
       "pressedOffset" : [0, 0],
-      "position" : [220, 152]
+      "position" : [223, 152]
     }
   },
   "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar", "updateLayouts", "paramSelected", "resetSettings", "updateParam"],
