@@ -110,13 +110,9 @@ function IrdenChat:addMessage(msg)
         end
       end
     else
-      if message.mode == "Whisper" then
-        if self.lastWhisper and message.text == self.lastWhisper.text then
-          message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
-          self.lastWhisper = nil
-        else
-          message.nickname = string.format("-> %s", message.nickname)
-        end
+      if message.mode == "Whisper" and self.lastWhisper and message.text == self.lastWhisper.text then
+        message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
+        self.lastWhisper = nil
       end
 
       local entityId = message.connection * -65536
