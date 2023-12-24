@@ -58,11 +58,10 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
 end
 
 function IrdenChat:addMessage(msg)
-
   function formatMessage(message)
     local text = message.text
     
-    message.time = message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;") or text:match("%^%a+;(%d+:%d+)%^reset;")
+    message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or text:match("%^%a+;(%d+:%d+)%^reset;")
 
     if message.connection == 0 then
 
@@ -107,7 +106,6 @@ function IrdenChat:addMessage(msg)
         end
       end
     else
-
       if message.mode == "Whisper" and self.lastWhisper and message.text == self.lastWhisper.text then
         message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
         self.lastWhisper = nil

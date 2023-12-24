@@ -31,8 +31,16 @@ function handleMessage(data)
     fight = data.fight
   })
 
+  sb.logInfo("Chat: <%s> %s", data.nickname, data.text)
+  local currentTime = os.date("*t")
+
+  -- Format the time as HH:MM
+  local formattedTime = string.format("%02d:%02d", currentTime.hour, currentTime.min)
+
   if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
+    data.time = formattedTime
+
     for _, pId in ipairs(world.players()) do 
       local distance = world.magnitude(authorPos, world.entityPosition(pId))
       if distance <= data.proximityRadius then
@@ -40,6 +48,7 @@ function handleMessage(data)
       end
     end
   elseif data.mode == "Fight" and data.fight then
+    data.time = formattedTime
     promises:add(world.sendEntityMessage("irdenfighthandler_" .. data.fight, "getFight"), function(fight) 
       if fight and not fight.done then
         for uuid, player in pairs(fight.players) do

@@ -1,6 +1,7 @@
 icchat = {
   utils = {}
 }
+
 function icchat.utils.cleanNickname(nick)
   return string.gsub(nick, ".*<(.*)",  "%1")
 end
