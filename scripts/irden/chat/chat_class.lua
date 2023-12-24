@@ -61,12 +61,11 @@ function IrdenChat:addMessage(msg)
   function formatMessage(message)
     local text = message.text
 
+    message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or text:match("%^%a+;(%d+:%d+)%^reset;")
+
     if message.nickname then
-      sb.logInfo(message.nickname)
       message.nickname = icchat.utils.cleanNickname(message.nickname)
     end
-
-    message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or text:match("%^%a+;(%d+:%d+)%^reset;")
 
     if message.connection == 0 then
 
