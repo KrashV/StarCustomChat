@@ -15,7 +15,7 @@
     },
 
     "spaceBetweenMessages": 4,
-    "chatHistoryLimit" : 64,
+    "chatHistoryLimit" : 128,
 
     "timeOffset": [4, 3],
     "textOffsetFullMode": [35, 0],
@@ -76,12 +76,12 @@
     },
     "nameColors": {
       "default": "white",
-      "Local" : "cyan",
-      "Party" : "blue",
-      "Broadcast" : "red",
+      "Local" : "darkcyan",
+      "Party" : "cornflowerblue",
+      "Broadcast" : "blue",
       "Whisper" : "pink",
       "CommandResult" : "lightgray",
-      "RadioMessage" : "yellow",
+      "RadioMessage" : "red",
       "World" : "cyan",
       "Proximity" : "darkgreen",
       "Announcement" : "red",
