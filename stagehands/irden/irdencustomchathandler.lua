@@ -37,6 +37,11 @@ function handleMessage(data)
   -- Format the time as HH:MM
   local formattedTime = string.format("%02d:%02d", currentTime.hour, currentTime.min)
 
+  -- Add some decorations
+
+  -- Pattern 1: ((...))
+  data.text = string.gsub(data.text, "(%(%(.*%)%))", "^gray;%1^reset;")
+
   if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
     data.time = formattedTime
