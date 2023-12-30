@@ -326,7 +326,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
     self.canvas:drawText(time, {
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
-      verticalAnchor = "bottom" -- top, mid, bottom
+      verticalAnchor = "top" -- top, mid, bottom
     }, self.config.fontSize - 3, self.config.colors.time)
   end
 end
@@ -466,7 +466,7 @@ function IrdenChat:processQueue()
         }, self.config.fontSize, self.config.colors[messageMode] or self.config.colors.default)
 
         if message.avatar then
-          local offset = {0, messageOffset + self.config.textOffsetFullMode[2]}
+          local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
           self:drawIcon(icon, name, offset, self.config.nameColors[messageMode], message.time)
           message.height = message.height + self.config.spacings.name + self.config.fontSize + 1
         end

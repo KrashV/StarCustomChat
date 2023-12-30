@@ -17,10 +17,10 @@
     "spaceBetweenMessages": 4,
     "chatHistoryLimit" : 128,
 
-    "timeOffset": [4, 3],
+    "timeOffset": [4, 0],
     "textOffsetFullMode": [35, 0],
     "textOffsetCompactMode": [5, 0],
-    "nameOffset": [12, 0],
+    "nameOffset": [12, -1],
     "nameWrapWidth": 30,
 
     "portraitSize" : [22, 22],
