@@ -50,22 +50,58 @@
       "frame": "/interface/scripted/irdencustomchat/icons/frame.png"
     },
 
-    // The names of these should be located at <language>.json
-    "serverTextSpecific": {
-      "Погода%^reset;": {
+    // The names of these should be located at <language>.json. This is an array to keep the priority
+    "serverTextSpecific": [
+      {
+        "text": "Погода%^reset;",
         "icon": "/interface/scripted/irdencustomchat/icons/weather.png",
         "nickname": "textspecific.weather"
       },
-      "%^red;КРИТ ПРОВАЛ!%^reset;": {
+      {
+        "text": "%^red;КРИТ ПРОВАЛ!%^reset;",
         "icon": "/interface/scripted/irdencustomchat/icons/critfail.png"
       },
-      "%^green;КРИТ УСПЕХ!%^reset;": {
+      {
+        "text": "%^green;КРИТ УСПЕХ!%^reset;",
         "icon": "/interface/scripted/irdencustomchat/icons/critsuccess.png"
       },
-      "совершает": {
+      {
+        "text": "%^orange;Добычу руды%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/mining.png"
+      },
+      {
+        "text": "%^orange;Добычу камня%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/quarry.png"
+      },
+      {
+        "text": "%^orange;Поиск драгоценностей%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/minerals.png"
+      },
+      {
+        "text": "%^orange;Охоту%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/hunting.png"
+      },
+      {
+        "text": "%^orange;Рыбалку%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/fishing.png"
+      },
+      {
+        "text": "%^orange;Травничество%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/herbalism.png"
+      },
+      {
+        "text": "%^orange;Рубку деревьев%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/chopping.png"
+      },
+      {
+        "text": "%^orange;Обработку дерева%^reset;",
+        "icon": "/interface/scripted/irdencustomchat/icons/resources/wooddoing.png"
+      },
+      {
+        "text": "совершает",
         "icon": "/interface/scripted/irdencustomchat/icons/dice.png"
       }
-    },
+    ],
 
     "selectedModeColor": "#2e691eF8",
     "unselectedModeColor": "white",

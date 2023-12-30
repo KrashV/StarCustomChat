@@ -101,8 +101,8 @@ function IrdenChat:addMessage(msg)
           message.portrait = self.config.icons.fight
         end
       else
-        for substr, settings in pairs(self.config.serverTextSpecific) do 
-          if string.find(text, substr) then
+        for _, settings in ipairs(self.config.serverTextSpecific) do 
+          if string.find(text, settings.text) then
             if settings.icon then
               message.portrait = settings.icon
             end
@@ -421,7 +421,7 @@ function IrdenChat:processQueue()
 
     -- If the message should contain an avatar and name:
     local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
-    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname)
+    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait)
 
     -- Get amount of lines in the message and its length
     local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
