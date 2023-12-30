@@ -29,7 +29,7 @@
     "portraitFrameScale" : 1,
     
     "iconImageOffset" : [6, -10],
-    "modeIndicatorSize": 6,
+    "modeIndicatorSize": 1,
 
     "bodyHeight" : 60,
     "expandedBodyHeight" : 289,

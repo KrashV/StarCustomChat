@@ -259,7 +259,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
     local squareSize = self.config.modeIndicatorSize
-    self.canvas:drawRect({offset[1], offset[2], offset[1] + 3, offset[2] + frameSize[2] - 3}, color)
+    self.canvas:drawRect({offset[1] - squareSize - 1, offset[2], offset[1] - 1, offset[2] + frameSize[2] - squareSize}, color)
   end
 
   local function drawImage(image, offset)
@@ -379,7 +379,7 @@ end
 
 function createNameForCompactMode(name, color, text, time, timeColor)
   local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
-  local formattedString = string.format("   %s^reset;<^%s;%s^reset;>: %s", timeString, color, icchat.utils.cleanNickname(name), text)
+  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, icchat.utils.cleanNickname(name), text)
 
   return formattedString
 end
@@ -470,8 +470,8 @@ function IrdenChat:processQueue()
 
         if message.avatar then
           local squareSize = self.config.modeIndicatorSize
-          local iconOffset = vec2.add(offset, {0, message.height + self.config.spacings.name - 2})
-          self.canvas:drawRect({iconOffset[1], iconOffset[2] , iconOffset[1] + squareSize, iconOffset[2] - squareSize}, self.config.nameColors[messageMode])
+          local iconOffset = vec2.add(offset, {-1, message.height + self.config.spacings.name - 1})
+          self.canvas:drawRect({iconOffset[1], iconOffset[2], iconOffset[1] + squareSize, iconOffset[2] - self.config.font.baseSize + 2}, self.config.nameColors[messageMode])
         end
       end
     end
