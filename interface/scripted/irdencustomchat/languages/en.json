@@ -1,7 +1,9 @@
 {
+  "name": "ENG",
+  
   "chat.modes.Local": "Local",
-  "chat.modes.Broadcast": "Broad",
-  "chat.modes.Proximity": "Close",
+  "chat.modes.Broadcast": "Broadcast",
+  "chat.modes.Proximity": "Proximity",
   "chat.modes.Party": "Party",
   "chat.modes.Whisper": "Whisper",
   "chat.modes.Fight": "Fight",
@@ -25,6 +27,7 @@
   "settings.ok": "Okay",
   "settings.cancel": "Cancel",
   "settings.prox_radius": "Proximity radius",
+  "settings.font_size": "Chat size",
   "settings.clear_chat_history": "Clear chat",
   "settings.reset_avatar": "Reset avatar",
 

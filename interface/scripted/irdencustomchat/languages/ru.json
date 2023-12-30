@@ -1,4 +1,6 @@
 {
+  "name": "RUS",
+  
   "chat.modes.Local": "Локал",
   "chat.modes.Broadcast": "Общий",
   "chat.modes.Proximity": "Близкий",
@@ -20,6 +22,7 @@
   "settings.title": "Настройки чата",
   "settings.subtitle": "/debug показывает радиус близких сообщений",
   "settings.corners_hint": "Выбери углы портрета",
+  "settings.font_size": "Размер чата",
   "settings.chat_mode": "Режим чата",
   "settings.ok": "Принять",
   "settings.cancel": "Отменить",
