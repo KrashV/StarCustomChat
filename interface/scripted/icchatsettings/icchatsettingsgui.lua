@@ -9,7 +9,8 @@ function init()
   self.locale = config.getParameter("locale")
   self.chatMode = config.getParameter("chatMode")
   self.proximityRadius = config.getParameter("proximityRadius")
-  
+  self.fontSize = config.getParameter("fontSize")
+
   self.portraitCanvas = widget.bindCanvas("portraitCanvas")
   localeSettings(self.locale)
   drawCharacter()
@@ -20,6 +21,12 @@ function init()
   widget.setSliderRange("sldProxRadius", 0, 90, 1)
   widget.setSliderValue("sldProxRadius", self.proximityRadius - 10)
 
+  
+  widget.setSliderRange("sldFontSize", 0, 5, 1)
+  widget.setSliderValue("sldFontSize", self.fontSize - 5)
+
+  
+  widget.setText("lblFontSizeValue", self.fontSize)
   widget.setText("lblProxRadiusValue", self.proximityRadius)
 end
 
@@ -108,6 +115,12 @@ function updateProxRadius(widgetName)
   save()
 end
 
+function updateFontSize(widgetName)
+  self.fontSize = widget.getSliderValue(widgetName) + 5
+  widget.setText("lblFontSizeValue", self.fontSize)
+  save()
+end
+
 function clearHistory()
   world.sendEntityMessage(player.id(), "icc_clear_history")
 end
@@ -124,6 +137,7 @@ function save()
   root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   root.setConfiguration("icc_proximity_radius", self.proximityRadius)
+  root.setConfiguration("icc_font_size", self.fontSize)
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")

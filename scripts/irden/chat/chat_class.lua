@@ -9,6 +9,7 @@
 
 require "/scripts/irden/chat/message_class.lua"
 require "/scripts/vec2.lua"
+require "/scripts/util.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
 
@@ -185,6 +186,7 @@ function IrdenChat:resetChat()
   localeChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
+  self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   --[[
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
     entityId = player.id(),
@@ -199,6 +201,7 @@ function IrdenChat:resetChat()
       cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
     }
   end
+
   self:processQueue()
 end
 
@@ -240,6 +243,10 @@ function IrdenChat:sendMessage(text, mode)
   end
 end
 
+function portraitSizeFromBaseFont(font)
+  return math.floor(font * 2.5)
+end
+
 function IrdenChat:previewCommands(commands, selected)
   self.commandPreviewCanvas:clear()
 
@@ -252,28 +259,29 @@ function IrdenChat:previewCommands(commands, selected)
     position = {0, 0},
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "bottom" -- top, mid, bottom
-  }, self.config.font.previewCommandSize)
+  }, self.config.previewCommandFontSize)
 end
 
 function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
     local squareSize = self.config.modeIndicatorSize
-    self.canvas:drawRect({offset[1] - squareSize - 1, offset[2], offset[1] - 1, offset[2] + frameSize[2] - squareSize}, color)
+    self.canvas:drawRect({offset[1] - squareSize - 1, offset[2], offset[1] - 1, offset[2] + portraitSizeFromBaseFont(self.config.fontSize) - squareSize}, color)
   end
 
   local function drawImage(image, offset)
     local frameSize = root.imageSize(image)
-
-    self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
+    local size = portraitSizeFromBaseFont(self.config.fontSize)
+    self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + size, offset[2] + size})
   end
 
   local function drawPortrait(portrait, messageOffset, cropArea, color)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
+    local size = portraitSizeFromBaseFont(self.config.fontSize)
 
     for _, layer in ipairs(portrait) do
-      self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + self.config.portraitSize[1], offset[2] + self.config.portraitSize[2]})
+      self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + size, offset[2] + size})
     end
     drawModeIcon(offset)
     drawImage(self.config.icons.frame, offset)
@@ -303,20 +311,23 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
     drawImage(self.config.icons.frame, offset)
   end
   
+  local size = portraitSizeFromBaseFont(self.config.fontSize)
+  local nameOffset = vec2.add(self.config.nameOffset, {size, size})
+
   self.canvas:drawText(icchat.utils.cleanNickname(nickname), {
-    position = vec2.add(self.config.nameOffset, messageOffset),
+    position = vec2.add(nameOffset, messageOffset),
     horizontalAnchor = "left", -- left, mid, right
-    verticalAnchor = "bottom" -- top, mid, bottom
-  }, self.config.font.nameSize, (color or self.config.colors.default))
+    verticalAnchor = "top" -- top, mid, bottom
+  }, self.config.fontSize + 1, (color or self.config.colors.default))
 
   if time then
-    local timePosition = vec2.add(self.config.nameOffset, messageOffset)
+    local timePosition = vec2.add(nameOffset, messageOffset)
     timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], timePosition[2] + self.config.timeOffset[2]}
     self.canvas:drawText(time, {
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
       verticalAnchor = "bottom" -- top, mid, bottom
-    }, self.config.font.timeSize, self.config.colors.time)
+    }, self.config.fontSize - 3, self.config.colors.time)
   end
 end
 
@@ -428,33 +439,36 @@ function IrdenChat:processQueue()
     local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.colors.time)
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
-    message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.font.baseSize + self.config.spacings.lines)
+    message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
     message.height = sizeOfText[2]
     widget.setText(labelToCheck, "")
 
     -- Calculate message offset
-    local messageOffset = self.lineOffset * (self.config.font.baseSize + self.config.spacings.lines)
+    local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
 
     if i ~= #self.drawnMessageIndexes then
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
     end
 
-    local offset = {0, messageOffset + message.height + self.config.spacings.name}
-
 
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "modern" then
-      if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.font.nameSize, self.canvas:size()) then
+      if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+        local size = portraitSizeFromBaseFont(self.config.fontSize)
+        local nameOffset = vec2.add(self.config.nameOffset, {size, size})
+
+        
         self.canvas:drawText(message.text, {
-          position = vec2.add(self.config.textOffsetFullMode, {0, messageOffset}),
+          position = {nameOffset[1], messageOffset},
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
+        }, self.config.fontSize, self.config.colors[messageMode] or self.config.colors.default)
 
         if message.avatar then
+          local offset = {0, messageOffset + self.config.textOffsetFullMode[2]}
           self:drawIcon(icon, name, offset, self.config.nameColors[messageMode], message.time)
-          message.height = message.height + self.config.spacings.name + self.config.font.nameSize
+          message.height = message.height + self.config.spacings.name + self.config.fontSize + 1
         end
       end
     
@@ -466,12 +480,12 @@ function IrdenChat:processQueue()
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-        }, self.config.font.baseSize, self.config.colors[messageMode] or self.config.colors.default)
+        }, self.config.fontSize, self.config.colors[messageMode] or self.config.colors.default)
 
         if message.avatar then
           local squareSize = self.config.modeIndicatorSize
           local iconOffset = vec2.add(offset, {-1, message.height + self.config.spacings.name - 1})
-          self.canvas:drawRect({iconOffset[1], iconOffset[2], iconOffset[1] + squareSize, iconOffset[2] - self.config.font.baseSize + 2}, self.config.nameColors[messageMode])
+          self.canvas:drawRect({iconOffset[1], iconOffset[2], iconOffset[1] + squareSize, iconOffset[2] - self.config.fontSize + 2}, self.config.nameColors[messageMode])
         end
       end
     end

@@ -167,6 +167,19 @@
       "value": ""
     },
 
+    
+    "sldFontSize" : {
+      "type": "slider",
+      "gridImage" : "/interface/optionsmenu/largeselection.png",
+      "position": [100, 75],
+      "callback": "updateFontSize"
+    },
+
+    "lblFontSizeValue" : {
+      "type": "label",
+      "position": [150, 70],
+      "value": ""
+    },
 
     "btnDeleteChat" : {
       "type" : "button",
@@ -186,7 +199,7 @@
       "position" : [220, 132]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar"],
+  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "updateFontSize", "clearHistory", "resetAvatar"],
   "canvasClickCallbacks" : {
 
   },

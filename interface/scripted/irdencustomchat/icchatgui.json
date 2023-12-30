@@ -20,15 +20,15 @@
     "timeOffset": [4, 3],
     "textOffsetFullMode": [35, 0],
     "textOffsetCompactMode": [5, 0],
-    "nameOffset": [35, 0],
+    "nameOffset": [12, 0],
     "nameWrapWidth": 30,
 
     "portraitSize" : [22, 22],
-    "portraitImageOffset" : [6, -10],
+    "portraitImageOffset" : [6, 0],
     "portraitCropArea": [10, 16, 32, 38],
     "portraitFrameScale" : 1,
     
-    "iconImageOffset" : [6, -10],
+    "iconImageOffset" : [6, 0],
     "modeIndicatorSize": 1,
 
     "bodyHeight" : 60,
@@ -38,6 +38,8 @@
     "pageSkip": 3,
 
     "fightQuestName": "irdeninitiative",
+
+    "fontSize": 9,
     
     "icons": {
       "empty": "/interface/scripted/irdencustomchat/icons/empty.png",
@@ -112,13 +114,9 @@
     "commandPreviewSelectedColor": "yellow",
 
 
-    "font" : {
-      "baseSize" : 9,
-      "itemSize" : 8,
-      "nameSize" : 10,
-      "previewCommandSize": 8,
-      "timeSize": 6
-    },
+    
+    "previewCommandFontSize": 8,
+
     "nameColors": {
       "default": "white",
       "Local" : "darkcyan",

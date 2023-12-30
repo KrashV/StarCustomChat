@@ -28,11 +28,12 @@ function init()
   self.chatting = nil
 
   local chatConfig = config.getParameter("config")
+  chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = config.getParameter("expanded")
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   self.fightQuestName = chatConfig.fightQuestName
-  createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.font.baseSize)
+  createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
   
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
@@ -118,6 +119,7 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
+    createTotallyFakeWidgets(self.irdenChat.config.wrapWidthFullMode, self.irdenChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.irdenChat.config.fontSize)
     self.irdenChat:resetChat(message)
   end))
 
@@ -360,7 +362,7 @@ function drawIcon(canvasName, args)
       horizontalAnchor = "mid", -- left, mid, right
       verticalAnchor = "bottom", -- top, mid, bottom
       wrapWidth = nil -- wrap width in pixels or nil
-    }, self.irdenChat.config.font.nameSize)
+    }, self.irdenChat.config.fontSize + 1)
   elseif type(args) == "string" then
     playerCanvas:drawImage(args, {-1, 0})
   end
@@ -578,7 +580,9 @@ function openSettings()
   chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
   chatConfigInterface.proximityRadius = self.irdenChat.proximityRadius
   chatConfigInterface.defaultCropArea = self.irdenChat.config.portraitCropArea
+  chatConfigInterface.proximityRadius = self.irdenChat.config.fontSize
   chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame",  self.irdenChat.config.portraitCropArea)
+  chatConfigInterface.fontSize = self.irdenChat.config.fontSize
   player.interact("ScriptPane", chatConfigInterface)
 end
 
