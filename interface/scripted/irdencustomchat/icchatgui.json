@@ -55,6 +55,15 @@
       "Погода%^reset;": {
         "icon": "/interface/scripted/irdencustomchat/icons/weather.png",
         "nickname": "textspecific.weather"
+      },
+      "%^red;КРИТ ПРОВАЛ!%^reset;": {
+        "icon": "/interface/scripted/irdencustomchat/icons/critfail.png"
+      },
+      "%^green;КРИТ УСПЕХ!%^reset;": {
+        "icon": "/interface/scripted/irdencustomchat/icons/critsuccess.png"
+      },
+      "совершает": {
+        "icon": "/interface/scripted/irdencustomchat/icons/dice.png"
       }
     },
 
