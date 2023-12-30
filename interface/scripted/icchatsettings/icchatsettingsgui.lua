@@ -1,5 +1,6 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
+require "/scripts/util.lua"
 
 function init()
   self.cropArea = config.getParameter("portraitFrame")
@@ -18,8 +19,8 @@ function init()
   self.availableModes = {"compact", "modern"}
   setCoordinates()
 
-  widget.setSliderRange("sldProxRadius", 0, 90, 1)
-  widget.setSliderValue("sldProxRadius", self.proximityRadius - 10)
+  widget.setSliderRange("main.sldProxRadius", 0, 90, 1)
+  widget.setSliderValue("main.sldProxRadius", self.proximityRadius - 10)
 
   
   widget.setSliderRange("sldFontSize", 0, 5, 1)
@@ -34,22 +35,23 @@ function localeSettings(locale)
   local localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", locale or "en"))
 
   pane.setTitle(localeConfig["settings.title"], localeConfig["settings.subtitle"])
-  widget.setText("btnLanguage", locale)
-  widget.setData("btnLanguage", locale)
-  widget.setText("btnMode", localeConfig["settings.modes." .. self.chatMode])
-  widget.setData("btnMode", self.chatMode)
-  widget.setText("ok", localeConfig["settings.ok"])
-  widget.setText("cancel", localeConfig["settings.cancel"])
-  widget.setText("lblCrop", localeConfig["settings.crop_area"])
-  widget.setText("lblLanguage", localeConfig["settings.locale"])
-  widget.setText("lblMode", localeConfig["settings.chat_mode"])
-  widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
-  widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
-  widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
-  widget.setText("btnResetAvatar", localeConfig["settings.reset_avatar"])
+  widget.setText("main.btnLanguage", locale)
+  widget.setData("main.btnLanguage", locale)
+  widget.setText("main.btnMode", localeConfig["settings.modes." .. self.chatMode])
+  widget.setData("main.btnMode", self.chatMode)
+  widget.setText("main.ok", localeConfig["settings.ok"])
+  widget.setText("main.cancel", localeConfig["settings.cancel"])
+  -- widget.setText("main.lblCrop", localeConfig["settings.crop_area"])
+  -- widget.setText("main.lblLanguage", localeConfig["settings.locale"])
+  -- widget.setText("main.lblMode", localeConfig["settings.chat_mode"])
+  widget.setText("main.lblCornersHint", localeConfig["settings.corners_hint"])
+  widget.setText("main.lblProxRadiusHint", localeConfig["settings.prox_radius"])
+  widget.setText("main.btnDeleteChat", localeConfig["settings.clear_chat_history"])
+  widget.setText("main.btnResetAvatar", localeConfig["settings.reset_avatar"])
 end
 
 function resetAvatar()
+  self.cropArea = copy(self.defaultCropArea)
   self.cropArea = copy(self.defaultCropArea)
   setCoordinates()
   drawCharacter()
@@ -58,7 +60,7 @@ end
 
 function drawCharacter()
   self.portraitCanvas:clear()
-  local canvasPosition = widget.getPosition("portraitCanvas")
+  local canvasPosition = widget.getPosition("main.portraitCanvas")
   local canvasSize =  self.portraitCanvas:size()
   local backImageSize = root.imageSize(self.backImage)
   self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
@@ -73,13 +75,13 @@ function drawCharacter()
 end
 
 function setCoordinates()
-  widget.setText("xPosition", "X: " .. self.cropArea[widget.getSelectedOption("rgAvatarCorners")])
-  widget.setText("yPosition", "Y: " .. self.cropArea[widget.getSelectedOption("rgAvatarCorners") + 1])
+  widget.setText("main.xPosition", "X: " .. self.cropArea[widget.getSelectedOption("main.rgAvatarCorners")])
+  widget.setText("main.yPosition", "Y: " .. self.cropArea[widget.getSelectedOption("main.rgAvatarCorners") + 1])
 end
 
 function moveCorner(btn, direction)
-  self.cropArea[widget.getSelectedOption("rgAvatarCorners")] = self.cropArea[widget.getSelectedOption("rgAvatarCorners")] + direction[1]
-  self.cropArea[widget.getSelectedOption("rgAvatarCorners") + 1] = self.cropArea[widget.getSelectedOption("rgAvatarCorners") + 1] + direction[2]
+  self.cropArea[widget.getSelectedOption("main.rgAvatarCorners")] = self.cropArea[widget.getSelectedOption("main.rgAvatarCorners")] + direction[1]
+  self.cropArea[widget.getSelectedOption("main.rgAvatarCorners") + 1] = self.cropArea[widget.getSelectedOption("main.rgAvatarCorners") + 1] + direction[2]
   setCoordinates()
   drawCharacter()
 
@@ -91,7 +93,7 @@ function changeCorner()
 end
 
 function changeLanguage()
-  local currentLocale = widget.getData("btnLanguage")
+  local currentLocale = widget.getData("main.btnLanguage")
   local i = index(self.availableLocales, currentLocale)
   self.locale = self.availableLocales[(i % #self.availableLocales) + 1]
   localeSettings(self.locale)
@@ -101,7 +103,7 @@ end
 
 
 function changeMode()
-  local currentMode = widget.getData("btnMode")
+  local currentMode = widget.getData("main.btnMode")
   local i = index(self.availableModes, currentMode)
   self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
   localeSettings(self.locale)
@@ -110,8 +112,8 @@ function changeMode()
 end
 
 function updateProxRadius(widgetName)
-  self.proximityRadius = widget.getSliderValue(widgetName) + 10
-  widget.setText("lblProxRadiusValue", self.proximityRadius)
+  self.proximityRadius = widget.getSliderValue("main."..widgetName) + 10
+  widget.setText("main.lblProxRadiusValue", self.proximityRadius)
   save()
 end
 
@@ -134,8 +136,8 @@ function index(tab, value)
 end
 
 function save()
-  root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
-  root.setConfiguration("iccMode", widget.getData("btnMode"))
+  root.setConfiguration("iccLocale", widget.getData("main.btnLanguage"))
+  root.setConfiguration("iccMode", widget.getData("main.btnMode"))
   root.setConfiguration("icc_proximity_radius", self.proximityRadius)
   root.setConfiguration("icc_font_size", self.fontSize)
   player.setProperty("icc_portrait_frame",  self.cropArea)
