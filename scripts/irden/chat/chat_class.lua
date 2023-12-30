@@ -245,7 +245,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
     local squareSize = self.config.modeIndicatorSize
-    self.canvas:drawRect({offset[1] + frameSize[1] - squareSize , offset[2] + frameSize[1] - squareSize , offset[1] + frameSize[1] - 1, offset[2] + frameSize[1] - 1}, color)
+    self.canvas:drawRect({offset[1], offset[2], offset[1] + 3, offset[2] + frameSize[2] - 3}, color)
   end
 
   local function drawImage(image, offset)
