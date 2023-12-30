@@ -94,7 +94,8 @@
       "World" : "cyan",
       "Proximity" : "darkgreen",
       "Announcement" : "red",
-      "Fight" : "gray"
+      "Fight" : "gray",
+      "OOC" : "darkgray"
     },
     "colors" : {
       "default": "white",
@@ -107,7 +108,8 @@
       "RadioMessage" : "white",
       "World" : "white",
       "Proximity" : "white",
-      "Announcement" : "white"
+      "Announcement" : "white",
+      "OOC" : "darkgray"
     }
   },
 
@@ -260,7 +262,7 @@
           "pressedOffset": [ 0, 0 ],
           "position": [45, 0],
           "data": {
-            "mode": "Local"
+            "mode": "Proximity"
           }
         },
         {
@@ -272,7 +274,7 @@
           "pressedOffset": [ 0, 0 ],
           "position": [90, 0],
           "data": {
-            "mode": "Proximity"
+            "mode": "Party"
           }
         },
         {
@@ -283,9 +285,8 @@
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "position": [135, 0],
-          "disabled": true,
           "data": {
-            "mode": "Party"
+            "mode": "Whisper"
           }
         },
         {
@@ -297,7 +298,7 @@
           "pressedOffset": [ 0, 0 ],
           "position": [180, 0],
           "data": {
-            "mode": "Whisper"
+            "mode": "Fight"
           }
         },
         {
@@ -308,9 +309,8 @@
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "position": [225, 0],
-          "disabled": true,
           "data": {
-            "mode": "Fight"
+            "mode": "OOC"
           }
         }
       ]
@@ -333,28 +333,11 @@
       }
     },
 
-
-    "btnCkLocal": {
-      "type": "button",
-      "checkable": true,
-      "checked": true,
-      "position": [289, 51],
-      "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
-      "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
-      "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
-      "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
-      "callback": "redrawChat",
-      "data": {
-        "mode": "Local",
-        "displayText": "Local"
-      }
-    },
-
     "btnCkProximity": {
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 36],
+      "position": [289, 51],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -370,7 +353,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 21],
+      "position": [289, 36],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -386,7 +369,7 @@
       "type": "button",
       "checkable": true,
       "checked": true,
-      "position": [289, 6],
+      "position": [289, 21],
       "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
       "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
@@ -395,6 +378,22 @@
       "data": {
         "mode": "CommandResult",
         "displayText": "CommandResult"
+      }
+    },
+
+    "btnCkOOC": {
+      "type": "button",
+      "checkable": true,
+      "checked": true,
+      "position": [289, 6],
+      "base": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "hover": "/interface/scripted/irdencustomchat/chatmodedisabled.png",
+      "baseImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeenabled.png",
+      "callback": "redrawChat",
+      "data": {
+        "mode": "OOC",
+        "displayText": "OOC"
       }
     },
 

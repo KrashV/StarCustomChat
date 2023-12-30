@@ -494,20 +494,20 @@ function blurTextbox(widgetName)
 end
 
 function sendMessage(widgetName)
-  local message = widget.getText(widgetName)
+  local text = widget.getText(widgetName)
 
-  if message == "" then 
+  if text == "" then 
     blurTextbox(widgetName)
     return 
   end
 
-  if string.sub(message, 1, 1) == "/" then
-    if string.len(message) == 1 then
+  if string.sub(text, 1, 1) == "/" then
+    if string.len(text) == 1 then
       blurTextbox(widgetName)
       return
     end
 
-    if string.sub(message, 1, 2) == "//" then
+    if string.sub(text, 1, 2) == "//" then
       icchat.utils.alert("chat.alerts.cannot_start_two_slashes")
       --blurTextbox(widgetName)
       return
@@ -518,9 +518,9 @@ function sendMessage(widgetName)
       widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
       return
     else
-      self.irdenChat:processCommand(message)
-      self.lastCommand = message
-      icchat.utils.saveMessage(message)
+      self.irdenChat:processCommand(text)
+      self.lastCommand = text
+      icchat.utils.saveMessage(text)
     end
   elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
     local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
@@ -530,16 +530,23 @@ function sendMessage(widgetName)
     if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
 
     local whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText
-    local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message or "/w " .. whisperName .. " " .. message
+    local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. text or "/w " .. whisperName .. " " .. text
     self.irdenChat:processCommand(whisper)
     self.irdenChat.lastWhisper = {
       recepient = whisperName,
-      text = message
+      text = text
     }
     icchat.utils.saveMessage(whisper)
   else
-    self.irdenChat:sendMessage(message, widget.getSelectedData("rgChatMode").mode)
-    icchat.utils.saveMessage(message)
+    local mode = widget.getSelectedData("rgChatMode").mode
+
+    if mode == "OOC" then
+      text = "((" .. text .. "))"
+
+      mode = "Broadcast"
+    end
+    self.irdenChat:sendMessage(text, mode)
+    icchat.utils.saveMessage(text)
   end
   blurTextbox(widgetName)
 end

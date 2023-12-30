@@ -61,6 +61,10 @@ function IrdenChat:addMessage(msg)
   function formatMessage(message)
     local text = message.text
 
+    if message.mode == "Local" then
+      message.mode = "Broadcast"
+    end
+
     message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or text:match("%^%a+;(%d+:%d+)%^reset;")
 
     if message.nickname then
@@ -110,10 +114,20 @@ function IrdenChat:addMessage(msg)
         end
       end
     else
-      if message.mode == "Whisper" and self.lastWhisper and message.text == self.lastWhisper.text then
-        message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
-        self.lastWhisper = nil
+      if message.mode == "Whisper" then
+        if self.lastWhisper and message.text == self.lastWhisper.text then
+          message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
+          self.lastWhisper = nil
+        end
+      else
+        if message.mode == "Broadcast" or message.mode == "Local" then
+          if string.find(message.text, "^%^?g?r?a?y?;?%(%(.*%)?%)?%^?r?e?s?e?t?;?$") then
+            message.mode = "OOC"
+          end
+        end
       end
+
+
 
       local entityId = message.connection * -65536
       local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(message.connection)]
@@ -350,11 +364,12 @@ function filterMessages(messages)
     --filter messages by mode availability
     local mode = message.mode
     if mode == "Party" or mode == "Whisper" or mode == "Fight"
-      or (mode == "Local" and widget.getChecked("btnCkLocal")) 
+      or (mode == "Local" and widget.getChecked("btnCkBroadcast")) 
       or (mode == "Broadcast" and widget.getChecked("btnCkBroadcast")) 
       or (mode == "Proximity" and widget.getChecked("btnCkProximity"))
       or (mode == "RadioMessage" and widget.getChecked("btnCkRadioMessage"))
       or (mode == "CommandResult" and widget.getChecked("btnCkCommandResult"))
+      or (mode == "OOC" and widget.getChecked("btnCkOOC"))
     then
       table.insert(drawnMessageIndexes, i)
     end
@@ -394,7 +409,7 @@ function IrdenChat:processQueue()
     elseif messageMode == "RadioMessage" then
       icon = message.portrait or self.config.icons.server
       name = message.nickname or "Server"
-    elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight" then
+    elseif messageMode == "Whisper" or messageMode == "Proximity" or messageMode == "Local" or messageMode == "Broadcast" or messageMode == "Party" or messageMode == "Fight"  or messageMode == "OOC" then
       if message.connection == 0 then
         icon = message.portrait or self.config.icons.server
         name = message.nickname or "Server"
