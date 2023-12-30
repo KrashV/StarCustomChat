@@ -3,6 +3,9 @@ require "/scripts/util.lua"
 require "/scripts/util.lua"
 
 function init()
+  self.cropAreaRestrictions = {17, 23, 24, 30}
+  self.sizeRestrictions = {15, 25}
+
   self.cropArea = config.getParameter("portraitFrame")
   self.defaultCropArea = config.getParameter("defaultCropArea")
   self.backImage = config.getParameter("backImage")
@@ -28,6 +31,7 @@ function init()
   
   widget.setText("lblFontSizeValue", self.fontSize)
   widget.setText("lblProxRadiusValue", self.proximityRadius)
+
 end
 
 function localeSettings(locale)
@@ -38,9 +42,6 @@ function localeSettings(locale)
   widget.setData("btnLanguage", locale)
   widget.setText("btnMode", localeConfig["settings.modes." .. self.chatMode])
   widget.setData("btnMode", self.chatMode)
-  widget.setText("ok", localeConfig["settings.ok"])
-  widget.setText("cancel", localeConfig["settings.cancel"])
-  widget.setText("lblCornersHint", localeConfig["settings.corners_hint"])
   widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
   widget.setText("lblFontSizeHint", localeConfig["settings.font_size"])
   widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
@@ -69,7 +70,12 @@ function drawCharacter()
     {0, 0, canvasSize[1], canvasSize[2]})
 end
 
-function moveCorner(btn, direction)
+function movePortrait(btn, direction)
+  if self.cropArea[1] + direction[1] > self.cropAreaRestrictions[1] or self.cropArea[3] + direction[1] < self.cropAreaRestrictions[3] 
+  or self.cropArea[2] + direction[2] > self.cropAreaRestrictions[2] or self.cropArea[4] + direction[2] < self.cropAreaRestrictions[4] then
+    return
+  end
+
   self.cropArea[1] = self.cropArea[1] + direction[1]
   self.cropArea[2] = self.cropArea[2] + direction[2]
   self.cropArea[3] = self.cropArea[3] + direction[1]
@@ -79,6 +85,19 @@ function moveCorner(btn, direction)
   save()
 end
 
+function zoom(btn, zoom)
+  local newDiff = self.cropArea[3] - zoom - self.cropArea[1] - zoom
+  if newDiff < self.sizeRestrictions[1] or newDiff > self.sizeRestrictions[2] then
+    return
+  end
+  self.cropArea[1] = self.cropArea[1] + zoom
+  self.cropArea[2] = self.cropArea[2] + zoom
+  self.cropArea[3] = self.cropArea[3] - zoom
+  self.cropArea[4] = self.cropArea[4] - zoom
+  drawCharacter()
+
+  save()
+end
 
 function changeLanguage()
   local currentLocale = widget.getData("btnLanguage")

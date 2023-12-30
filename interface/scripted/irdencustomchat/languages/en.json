@@ -22,7 +22,6 @@
 
   "settings.title": "Chat settings",
   "settings.subtitle": "Proximity raduis shows on /debug",
-  "settings.corners_hint": "Select corners to adjust",
   "settings.chat_mode": "Chat mode",
   "settings.ok": "Okay",
   "settings.cancel": "Cancel",

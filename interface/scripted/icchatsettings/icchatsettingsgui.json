@@ -31,16 +31,6 @@
       "rect": [8, 58, 78, 128]
     },
 
-    "lblCornersHint": {
-      "type": "label",
-      "position":[44, 56],
-      "value": "Select corners to adjust",
-      "fontSize": 7,
-      "hAnchor": "mid",
-      "vAnchor": "top",
-      "wrapWidth": 80
-    },
-
     "btnResetAvatar": {
       "type": "button",
       "position": [1, 21],
@@ -50,38 +40,60 @@
       "hover" : "/interface/scripted/icchatsettings/button.png?flipx;?brightness=90"
     },
 
+
+
     "btnLeft": {
       "type": "button",
-      "position": [20, 129],
-      "base": "/interface/scrollarea/harrow-backward.png",
-      "hover": "/interface/scrollarea/harrow-backwardhover.png",
-      "callback": "moveCorner",
+      "position": [10, 129],
+      "base": "/interface/scripted/icchatsettings/left.png",
+      "hover": "/interface/scripted/icchatsettings/lefthover.png",
+      "callback": "movePortrait",
       "data": [1, 0]
     },
     "btnRight": {
       "type": "button",
-      "position": [30, 129],
-      "base": "/interface/scrollarea/harrow-forward.png",
-      "hover": "/interface/scrollarea/harrow-forwardhover.png",
-      "callback": "moveCorner",
+      "position": [20, 129],
+      "base": "/interface/scripted/icchatsettings/right.png",
+      "hover": "/interface/scripted/icchatsettings/righthover.png",
+      "callback": "movePortrait",
       "data": [-1, 0]
     },
+
     "btnDown": {
       "type": "button",
-      "position": [50, 129],
-      "base": "/interface/scrollarea/varrow-backward.png",
-      "hover": "/interface/scrollarea/varrow-backwardhover.png",
-      "callback": "moveCorner",
+      "position": [35, 129],
+      "base": "/interface/scripted/icchatsettings/down.png",
+      "hover": "/interface/scripted/icchatsettings/downhover.png",
+      "callback": "movePortrait",
       "data": [0, 1]
     },
     "btnUp": {
       "type": "button",
-      "position": [60, 129],
-      "base": "/interface/scrollarea/varrow-forward.png",
-      "hover": "/interface/scrollarea/varrow-forwardhover.png",
-      "callback": "moveCorner",
+      "position": [45, 129],
+      "base": "/interface/scripted/icchatsettings/up.png",
+      "hover": "/interface/scripted/icchatsettings/uphover.png",
+      "callback": "movePortrait",
       "data": [0, -1]
     },
+
+    "btnPlus": {
+      "type": "button",
+      "position": [60, 129],
+      "base": "/interface/scripted/icchatsettings/plus.png",
+      "hover": "/interface/scripted/icchatsettings/plushover.png",
+      "callback": "zoom",
+      "data": 1
+    },
+    "btnMinus": {
+      "type": "button",
+      "position": [70, 129],
+      "base": "/interface/scripted/icchatsettings/minus.png",
+      "hover": "/interface/scripted/icchatsettings/minushover.png",
+      "callback": "zoom",
+      "data": -1
+    },
+
+
     "btnLanguage": {
       "type": "button",
       "base" : "/interface/scripted/icchatsettings/bt.png",
@@ -89,6 +101,8 @@
       "position": [75, 21],
       "callback": "changeLanguage"
     },
+
+
 
     "btnMode": {
       "type": "button",
@@ -159,7 +173,7 @@
       "position" : [223, 152]
     }
   },
-  "scriptWidgetCallbacks": ["moveCorner", "changeCorner", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar", "resetSettings", "updateFontSize"],
+  "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar", "resetSettings", "updateFontSize", "zoom"],
   "canvasClickCallbacks" : {
 
   },
