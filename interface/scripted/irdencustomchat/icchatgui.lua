@@ -580,7 +580,6 @@ function openSettings()
   chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
   chatConfigInterface.proximityRadius = self.irdenChat.proximityRadius
   chatConfigInterface.defaultCropArea = self.irdenChat.config.portraitCropArea
-  chatConfigInterface.proximityRadius = self.irdenChat.config.fontSize
   chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame",  self.irdenChat.config.portraitCropArea)
   chatConfigInterface.fontSize = self.irdenChat.config.fontSize
   player.interact("ScriptPane", chatConfigInterface)
