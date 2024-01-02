@@ -104,6 +104,7 @@
     "capturable": false,
     "aggressive": false,
     "scale": 1,
+    "renderLayer" : "Player+1",
     "movementSettings": {
         "airFriction": 0,
         "collisionPoly" : [[0,0]],
