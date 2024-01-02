@@ -31,7 +31,7 @@
     "iconImageOffset" : [6, 0],
     "modeIndicatorSize": 1,
 
-    "bodyHeight" : 60,
+    "bodyHeight" : 101,
     "expandedBodyHeight" : 289,
 
     "pageSkipExpanded": 20,
