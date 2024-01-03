@@ -318,7 +318,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
     position = vec2.add(nameOffset, messageOffset),
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "top" -- top, mid, bottom
-  }, self.config.fontSize + 1, (color or self.config.colors.default))
+  }, self.config.fontSize + 1, (color or self.config.textColors.default))
 
   if time then
     local timePosition = vec2.add(nameOffset, messageOffset)
@@ -327,7 +327,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
       verticalAnchor = "top" -- top, mid, bottom
-    }, self.config.fontSize - 3, self.config.colors.time)
+    }, self.config.fontSize - 3, self.config.textColors.time)
   end
 end
 
@@ -436,7 +436,7 @@ function IrdenChat:processQueue()
 
     -- Get amount of lines in the message and its length
     local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
-    local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.colors.time)
+    local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time)
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
     message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
@@ -463,7 +463,7 @@ function IrdenChat:processQueue()
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self.config.colors[messageMode] or self.config.colors.default)
+        }, self.config.fontSize, self.config.textColors[messageMode] or self.config.textColors.default)
 
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
@@ -475,12 +475,12 @@ function IrdenChat:processQueue()
     else -- compact mode
       if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
         local offset = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset})
-        self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.colors.time), {
+        self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time), {
           position = offset,
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self.config.colors[messageMode] or self.config.colors.default)
+        }, self.config.fontSize, self.config.textColors[messageMode] or self.config.textColors.default)
 
         if message.avatar then
           local squareSize = self.config.modeIndicatorSize

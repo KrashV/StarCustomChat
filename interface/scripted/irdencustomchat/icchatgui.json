@@ -112,8 +112,6 @@
 
     "commandPreviewColor": "white",
     "commandPreviewSelectedColor": "yellow",
-
-
     
     "previewCommandFontSize": 8,
 
@@ -131,7 +129,7 @@
       "Fight" : "gray",
       "OOC" : "darkgray"
     },
-    "colors" : {
+    "textColors" : {
       "default": "white",
       "time": "gray",
       "Local" : "white",
