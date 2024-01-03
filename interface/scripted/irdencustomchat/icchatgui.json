@@ -280,7 +280,6 @@
           "hoverImageChecked": "/interface/scripted/irdencustomchat/chatmodeselected.png?brightness=30",
           "pressedOffset": [ 0, 0 ],
           "selected": true,
-          "fontColor": "#2e691eF8",
           "data": {
             "mode": "Broadcast"
           }
