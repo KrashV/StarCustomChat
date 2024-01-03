@@ -13,7 +13,6 @@ end
 
 ICChatTimer = TimerKeeper.new()
 function init()
-
   shared.chatIsOpen = true
   localeChat()
   self.stagehandName = "irdencustomchat"
@@ -31,6 +30,14 @@ function init()
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = config.getParameter("expanded")
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
+
+  
+  -- I'm sorry, but it had to be done:
+  if not player.getProperty("icc_portrait_was_reset") then
+    player.setProperty("icc_portrait_frame",  chatConfig.portraitCropArea)
+    player.setProperty("icc_portrait_was_reset",  true)
+  end
+
 
   self.fightQuestName = chatConfig.fightQuestName
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
@@ -590,7 +597,7 @@ function openSettings()
   chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
   chatConfigInterface.proximityRadius = self.irdenChat.proximityRadius
   chatConfigInterface.defaultCropArea = self.irdenChat.config.portraitCropArea
-  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame",  self.irdenChat.config.portraitCropArea)
+  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame") or self.irdenChat.config.portraitCropArea
   chatConfigInterface.fontSize = self.irdenChat.config.fontSize
   player.interact("ScriptPane", chatConfigInterface)
 end
