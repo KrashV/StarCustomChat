@@ -11,8 +11,6 @@ end
 
 
 function init()
-  self.checkChatTimer = 0
-
   shared.setMessageHandler = message.setHandler
   
   message.setHandler( "icc_request_player_portrait", simpleHandler(function()
@@ -27,20 +25,15 @@ function init()
       }
     end
   end))
-
-  ChatHandlerTimers:add(self.checkChatTimer, function()
-    if not shared.chatIsOpen then
-      local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
-      player.interact("ScriptPane", root.assetJson(interfacePath))
-    end
-  end)
 end
 
--- We will wait self.lastCheckedQueueTimer seconds to check for the message to be read.
--- If we don't receive the request for the message, consider the chat dead.
+
 function update(dt)
-  ChatHandlerTimers:update(dt)
-  promises:update()
+  if not shared.chatIsOpen then
+    local interfacePath = "/interface/scripted/irdencustomchat/icchatgui.json"
+    player.interact("ScriptPane", root.assetJson(interfacePath))
+    shared.chatIsOpen = true
+  end
 end
 
 function uninit()

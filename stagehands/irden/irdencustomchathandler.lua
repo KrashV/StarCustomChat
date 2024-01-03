@@ -32,12 +32,14 @@ function handleMessage(data)
   })
 
   sb.logInfo("Chat: <%s> %s", data.nickname, data.text)
-  local currentTime = os.date("*t")
 
-  -- Format the time as HH:MM
-  local formattedTime = string.format("%02d:%02d", currentTime.hour, currentTime.min)
+  local formattedTime = nil
+  if os.date then
+    local currentTime = os.date("*t")
 
-  -- Add some decorations
+    -- Format the time as HH:MM
+    formattedTime = string.format("%02d:%02d", currentTime.hour, currentTime.min)
+  end
 
   -- Pattern 1: ((...))
   data.text = string.gsub(data.text, "(%(%(.*%)%))", "^gray;%1^reset;")

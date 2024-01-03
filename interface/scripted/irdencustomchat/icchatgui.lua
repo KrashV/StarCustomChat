@@ -206,6 +206,7 @@ function update(dt)
   processButtonEvents(dt)
 
   if not player.id() or not world.entityExists(player.id()) then
+    shared.chatIsOpen = false
     pane.dismiss()
   end
 end
