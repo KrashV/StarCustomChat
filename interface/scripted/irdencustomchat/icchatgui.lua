@@ -92,11 +92,14 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.nameColors[widget.getData("rgChatMode.1").mode])
   end
 
-  registerCallbacks()
-
+  self.callbacksRegistered = false
 end
 
 function registerCallbacks()
+  if not shared.setMessageHandler then
+    return false
+  end
+
   shared.setMessageHandler("newChatMessage", localHandler(function(message)
     self.irdenChat:addMessage(message)
   end))
@@ -126,6 +129,8 @@ function registerCallbacks()
   shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
     self.irdenChat:clearHistory(message)
   end))
+
+  return true
 end
 
 function removeChatBindings()
@@ -193,6 +198,10 @@ function localeChat()
 end
 
 function update(dt)
+  if not self.callbacksRegistered then
+    self.callbacksRegistered = registerCallbacks()
+  end
+  
   shared.chatIsOpen = true
   ICChatTimer:update(dt)
   promises:update()
