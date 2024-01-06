@@ -31,7 +31,7 @@ function init()
   local expanded = config.getParameter("expanded")
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
-  
+
   -- I'm sorry, but it had to be done:
   if not player.getProperty("icc_portrait_was_reset") then
     player.setProperty("icc_portrait_frame",  chatConfig.portraitCropArea)
@@ -257,7 +257,7 @@ function checkTyping()
   if widget.hasFocus("tbxInput") then
     if self.chatting == nil then
       self.chatmonster.parentEntity = player.id()
-      self.chatting = world.spawnMonster("punchy", world.entityPosition(player.id()), self.chatmonster)
+      self.chatting = world.spawnMonster("punchy", vec2.add(world.entityMouthPosition(player.id()), {- 0.125, 2.5}), self.chatmonster)
     end
   else
     if self.chatting ~= nil then
@@ -407,7 +407,7 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize(self.highlightCanvasName, currentSizes and currentSizes.highligtCanvasSize or defaultSizes.highligtCanvasSize)
   widget.setSize("lytCharactersToDM.background", currentSizes and currentSizes.playersDMBackground or defaultSizes.playersDMBackground)
   widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
-  widget.setSize("saScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
+  widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
   widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)  
 end
 
