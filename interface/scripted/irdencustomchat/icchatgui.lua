@@ -353,6 +353,10 @@ function populateList()
   ]]
 end
 
+function selectPlayer()
+  widget.focus("tbxInput")
+end
+
 function drawIcon(canvasName, args)
 	local playerCanvas = widget.bindCanvas(canvasName)
   playerCanvas:clear()

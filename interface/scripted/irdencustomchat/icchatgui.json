@@ -14,7 +14,7 @@
       "name": 1
     },
 
-    "notificationSound": "/sfx/interface/item_pickup.ogg",
+    "notificationSound": "/sfx/instruments/bones/a4.ogg",
 
     "spaceBetweenMessages": 4,
     "chatHistoryLimit" : 128,
@@ -478,7 +478,7 @@
           "children": {
             "lytPlayers": {
               "type": "list",
-              "callback": "null",
+              "callback": "selectPlayer",
               "schema": {
                 "selectedBG": "/interface/scripted/irdencustomchat/characterselected.png",
                 "unselectedBG": "/interface/scripted/irdencustomchat/characterunselected.png",
@@ -525,7 +525,7 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["sendMessage", "blurTextbox", "setMode", "redrawChat", "toBottom", "openSettings"],
+  "scriptWidgetCallbacks": ["sendMessage", "blurTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
