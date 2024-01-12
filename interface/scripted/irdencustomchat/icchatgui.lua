@@ -552,13 +552,13 @@ function sendMessage(widgetName)
   else
     local mode = widget.getSelectedData("rgChatMode").mode
 
+    icchat.utils.saveMessage(text)
     if mode == "OOC" then
       text = "((" .. text .. "))"
 
       mode = "Broadcast"
     end
     self.irdenChat:sendMessage(text, mode)
-    icchat.utils.saveMessage(text)
   end
   blurTextbox(widgetName)
 end

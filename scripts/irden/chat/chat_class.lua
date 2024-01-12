@@ -119,6 +119,8 @@ function IrdenChat:addMessage(msg)
         if self.lastWhisper and message.text == self.lastWhisper.text then
           message.nickname = string.format("%s -> %s", message.nickname, self.lastWhisper.recepient)
           self.lastWhisper = nil
+        else
+          pane.playSound(self.config.notificationSound)
         end
       else
         if message.mode == "Broadcast" or message.mode == "Local" then
@@ -334,6 +336,8 @@ end
 
 --TODO: instead of all messages we need to look at the messages that are drawn
 function IrdenChat:offsetCanvas(offset)
+  if not offset then return end
+  
   if #self.drawnMessageIndexes > 0 and self.messages[self.drawnMessageIndexes[1]].offset + self.messages[self.drawnMessageIndexes[1]].height - 20 < 0 and offset < 0 then
     return
   else
