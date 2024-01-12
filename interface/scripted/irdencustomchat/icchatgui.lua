@@ -32,13 +32,6 @@ function init()
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
 
-  -- I'm sorry, but it had to be done:
-  if not player.getProperty("icc_portrait_was_reset") then
-    player.setProperty("icc_portrait_frame",  chatConfig.portraitCropArea)
-    player.setProperty("icc_portrait_was_reset",  true)
-  end
-
-
   self.fightQuestName = chatConfig.fightQuestName
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
   

@@ -327,7 +327,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time)
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
       verticalAnchor = "top" -- top, mid, bottom
-    }, self.config.fontSize - 3, self.config.textColors.time)
+    }, self.config.fontSize - 2, self.config.textColors.time)
   end
 end
 
