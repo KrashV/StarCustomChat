@@ -124,7 +124,7 @@ function IrdenChat:addMessage(msg)
         end
       else
         if message.mode == "Broadcast" or message.mode == "Local" then
-          if string.find(message.text, "^%^?g?r?a?y?;?%(%(.*%)?%)?%^?r?e?s?e?t?;?$") then
+          if text:find("^%^?g?r?a?y?;?%(%(") and (text:find("^%^?g?r?a?y?;?%(%b()%)%^?r?e?s?e?t?;?$") or not text:find("%)%)")) then
             message.mode = "OOC"
           end
         end

@@ -42,7 +42,8 @@ function handleMessage(data)
   end
 
   -- Pattern 1: ((...))
-  data.text = string.gsub(data.text, "(%(%(.*%)%))", "^gray;%1^reset;")
+  data.text = string.gsub(data.text, "%(%(", "^gray;((")
+  data.text = string.gsub(data.text, "%)%)", "))^reset;")
 
   if data.mode == "Proximity" and data.proximityRadius then
     local authorPos = world.entityPosition(author)
