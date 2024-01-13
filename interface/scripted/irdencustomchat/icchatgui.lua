@@ -26,7 +26,7 @@ function init()
   self.chatmonster = root.assetJson("/monsters/unsorted/chattingmonster/chatmonster.json")
   self.chatting = nil
 
-  local chatConfig = config.getParameter("config")
+  local chatConfig = root.assetJson("/interface/scripted/irdencustomchat/iccchat.config")
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = config.getParameter("expanded")
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
