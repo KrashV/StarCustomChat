@@ -19,9 +19,9 @@ function icchat.utils.getTranslation(key)
   end
 end
 
-function icchat.utils.alert(key)
+function icchat.utils.alert(key, format)
   local text = icchat.utils.getTranslation(key)
-  interface.queueMessage(text)
+  interface.queueMessage(format and string.format(text, format) or text)
 end
 
 function icchat.utils.saveMessage(message)

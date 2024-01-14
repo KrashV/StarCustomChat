@@ -3,7 +3,6 @@ require "/scripts/icctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
-require "/tech/doubletap.lua"
 
 local shared = getmetatable('').shared
 if type(shared) ~= "table" then
@@ -34,19 +33,19 @@ function init()
 
   self.fightQuestName = chatConfig.fightQuestName
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
-  
+
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
 
   local storedMessages = root.getConfiguration("icc_last_messages", jarray())
-  
+
   for btn, isChecked in pairs(config.getParameter("selectedModes") or {}) do
     widget.setChecked(btn, isChecked)
   end
 
 
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(), 
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(),
     storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
-  
+
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
@@ -55,6 +54,7 @@ function init()
 
   self.savedCommandSelection = 0
 
+  self.selectedMessage = nil
   self.sentMessages = root.getConfiguration("icc_my_messages",{}) or {}
   self.sentMessagesLimit = 15
   self.currentSentMessage = #self.sentMessages
@@ -62,21 +62,13 @@ function init()
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
   self.DMTimer = 2
+  self.ReplyTimer = 5
+  self.ReplyTime = 0
   checkDMs()
   self.irdenChat:processQueue()
 
   -- Debind chat opening
   removeChatBindings()
-
-  self.doubleTap = DoubleTap:new({"iccLeftMouseButton", "iccRightMouseButton"}, chatConfig.maximumDoubleTapTime, function(doubleTappedKey)
-    if doubleTappedKey == "iccRightMouseButton" then
-      local message = self.irdenChat:selectMessage()
-      if message then
-        clipboard.setText(message.text)
-        icchat.utils.alert("chat.alerts.copied_to_clipboard")
-      end
-    end
-  end)
 
   local lastText = config.getParameter("lastInputMessage")
   if lastText and lastText ~= "" then
@@ -91,6 +83,19 @@ function init()
   else
     widget.setFontColor("rgChatMode.1", chatConfig.nameColors[widget.getData("rgChatMode.1").mode])
   end
+
+
+  self.DMingTo = config.getParameter("DMingTo")
+
+  if self.DMingTo and not widget.active("lytDMingTo") then
+    widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
+    widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), {0, widget.getSize("lytDMingTo")[2]}))
+    widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
+
+    widget.setVisible("lytDMingTo", true)
+    widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
+  end
+
 
   self.callbacksRegistered = false
 end
@@ -130,6 +135,11 @@ function registerCallbacks()
     self.irdenChat:clearHistory(message)
   end))
 
+  shared.setMessageHandler( "icc_ping", simpleHandler(function(source)
+    icchat.utils.alert("chat.alerts.was_pinged", source)
+    pane.playSound(self.irdenChat.config.notificationSound)
+  end))
+
   return true
 end
 
@@ -164,7 +174,7 @@ end
 
 function findButtonByMode(mode)
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
-  for i, button in ipairs(buttons) do 
+  for i, button in ipairs(buttons) do
     if button.data.mode == mode then
       return i
     end
@@ -180,7 +190,7 @@ function localeChat()
 
   self.localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", icchat.utils.getLocale()))
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
-  for i, button in ipairs(buttons) do 
+  for i, button in ipairs(buttons) do
     widget.setText("rgChatMode." .. i, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
@@ -192,6 +202,9 @@ function localeChat()
   pane.addWidget(standardTbx, "tbxInput")
   widget.setText("tbxInput", savedText)
 
+  widget.setText("lytDMingTo.lblHint", icchat.utils.getTranslation("chat.dming.hint"))
+  widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))
+
   if hasFocus then
     widget.focus("tbxInput")
   end
@@ -201,13 +214,13 @@ function update(dt)
   if not self.callbacksRegistered then
     self.callbacksRegistered = registerCallbacks()
   end
-  
+
   shared.chatIsOpen = true
   ICChatTimer:update(dt)
   promises:update()
-  
+
   self.irdenChat:clearHighlights()
-  
+
   checkGroup()
   checkFight()
   checkTyping()
@@ -218,6 +231,8 @@ function update(dt)
     shared.chatIsOpen = false
     pane.dismiss()
   end
+
+  self.ReplyTime = math.max(self.ReplyTime - dt, 0)
 end
 
 function checkCommandsPreview()
@@ -310,7 +325,7 @@ function populateList()
 
         widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
           id = player.id,
-          displayText = player.name
+          tooltipMode = player.name
         })
         self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
         table.insert(self.contacts, player.id)
@@ -331,7 +346,7 @@ function populateList()
   local playersAround = {}
 
   if player.id() and world.entityPosition(player.id()) then
-    for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do 
+    for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do
       table.insert(playersAround, {
         id = player,
         name = world.entityName(player) or "Unknown",
@@ -360,7 +375,7 @@ end
 function drawIcon(canvasName, args)
 	local playerCanvas = widget.bindCanvas(canvasName)
   playerCanvas:clear()
-  
+
   if type(args) == "number" then
     local playerPortrait = world.entityPortrait(args, "bust")
     for _, layer in ipairs(playerPortrait) do
@@ -385,7 +400,7 @@ end
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
   local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
-  
+
   local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
 
   return {
@@ -394,7 +409,7 @@ function getSizes(expanded, chatParameters)
     bgStretchImageSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
     scrollAreaSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight} or {canvasSize[1], chatParameters.bodyHeight },
     playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight},
-    playersDMBackground = expanded and {charactersListWidth, chatParameters.expandedBodyHeight - 15} or {charactersListWidth, chatParameters.bodyHeight} 
+    playersDMBackground = expanded and {charactersListWidth, chatParameters.expandedBodyHeight - 15} or {charactersListWidth, chatParameters.bodyHeight}
   }
 end
 
@@ -405,7 +420,7 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize("lytCharactersToDM.background", currentSizes and currentSizes.playersDMBackground or defaultSizes.playersDMBackground)
   widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
   widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
-  widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)  
+  widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)
 end
 
 function canvasClickEvent(position, button, isButtonDown)
@@ -417,7 +432,7 @@ function canvasClickEvent(position, button, isButtonDown)
     pane.dismiss()
 
     local chatConfig = root.assetJson("/interface/scripted/irdencustomchat/icchatgui.json")
-    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/irdencustomchat/%s.png", self.irdenChat.expanded and "body" or "shortbody") 
+    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/irdencustomchat/%s.png", self.irdenChat.expanded and "body" or "shortbody")
     chatConfig.expanded = self.irdenChat.expanded
     chatConfig.currentSizes = chatParameters
     chatConfig.lastInputMessage = widget.getText("tbxInput")
@@ -426,6 +441,7 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
     chatConfig.reopened = true
+    chatConfig.DMingTo = self.DMingTo
     chatConfig.selectedModes = {
       btnCkBroadcast = widget.getChecked("btnCkBroadcast"),
       btnCkLocal = widget.getChecked("btnCkLocal"),
@@ -438,17 +454,14 @@ function canvasClickEvent(position, button, isButtonDown)
     player.interact("ScriptPane", chatConfig)
   end
 
-  self.doubleTap:update(script.updateDt(), {iccLeftMouseButton = button == 0 and isButtonDown,
-    iccRightMouseButton = button == 2 and isButtonDown})
-
   -- Defocus from the canvases or we can never leave lol :D
   widget.blur(self.canvasName)
   widget.blur(self.highlightCanvasName)
 end
 
 function processEvents(screenPosition)
-  for _, event in ipairs(input.events()) do 
-    if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then 
+  for _, event in ipairs(input.events()) do
+    if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
       self.irdenChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
     elseif event.type == "KeyDown" then
       if event.data.key == "PageUp" then
@@ -471,9 +484,9 @@ function processButtonEvents(dt)
 
 
   if widget.hasFocus("tbxInput") then
-    for _, event in ipairs(input.events()) do 
+    for _, event in ipairs(input.events()) do
       if event.type == "KeyDown" then
-        if event.data.key == "Tab" then 
+        if event.data.key == "Tab" then
           self.savedCommandSelection = self.savedCommandSelection + 1
         elseif event.data.key == "Up" and event.data.mods and event.data.mods.LShift then
           if #self.sentMessages > 0 then
@@ -496,11 +509,95 @@ function processButtonEvents(dt)
   end
 end
 
+function resetDMLayout()
+  if widget.active("lytDMingTo") then
+    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
+    widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), {0, widget.getSize("lytDMingTo")[2]}))
+    widget.setPosition(self.highlightCanvasName, vec2.sub(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
+  end
+
+  self.DMingTo = nil
+  widget.setVisible("lytDMingTo", false)
+end
+
+function copyMessage()
+  if self.selectedMessage then
+    clipboard.setText(self.selectedMessage.text)
+    icchat.utils.alert("chat.alerts.copied_to_clipboard")
+  end
+end
+
+function enableDM()
+  if self.selectedMessage then
+    if self.selectedMessage.connection == 0 then
+      icchat.utils.alert("chat.alerts.cannot_dm_server")
+    elseif self.selectedMessage.mode == "CommandResult" then
+      icchat.utils.alert("chat.alerts.cannot_dm_command_result")
+    elseif self.selectedMessage.connection and self.selectedMessage.nickname then
+      if not widget.active("lytDMingTo") then
+        widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
+        widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), {0, widget.getSize("lytDMingTo")[2]}))
+        widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
+      end
+      widget.setVisible("lytDMingTo", true)
+      widget.setText("lytDMingTo.lblRecepient", self.selectedMessage.nickname)
+      self.DMingTo = self.selectedMessage.nickname
+      widget.focus("tbxInput")
+    end
+  end
+end
+
+function ping()
+  if self.selectedMessage then
+    if self.selectedMessage.connection == 0 then
+      icchat.utils.alert("chat.alerts.cannot_ping_server")
+    elseif self.selectedMessage.mode == "CommandResult" then
+      icchat.utils.alert("chat.alerts.cannot_ping_command")
+    elseif self.selectedMessage.connection and self.selectedMessage.nickname then
+      if self.ReplyTime > 0 then
+        icchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
+      else
+        promises:add(world.sendEntityMessage(self.selectedMessage.connection * -65536, "icc_ping", player.name()), function()
+          icchat.utils.alert("chat.alerts.pinged", self.selectedMessage.nickname)
+        end, function()
+          icchat.utils.alert("chat.alerts.ping_failed", self.selectedMessage.nickname)
+        end)
+
+        self.ReplyTime = self.ReplyTimer
+      end
+    end
+  end
+end
+
 function cursorOverride(screenPosition)
   processEvents(screenPosition)
 
   if widget.inMember(self.highlightCanvasName, screenPosition) then
-    self.irdenChat:selectMessage()
+    self.selectedMessage = self.irdenChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
+  else
+    self.selectedMessage = nil
+  end
+
+  if widget.inMember("lytContext", screenPosition) then
+    return
+  end
+
+  if self.selectedMessage then
+    local canvasPosition = widget.getPosition(self.highlightCanvasName)
+    local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
+    widget.setPosition("lytContext", vec2.add({xOffset, self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]}, self.irdenChat.config.contextMenuOffset))
+    widget.setVisible("lytContext", true)
+  else
+    widget.setVisible("lytContext", false)
+  end
+end
+
+function escapeTextbox(widgetName)
+  if not self.DMingTo then
+    blurTextbox(widgetName)
+  else
+    resetDMLayout()
+    widget.focus(widgetName)
   end
 end
 
@@ -512,9 +609,9 @@ end
 function sendMessage(widgetName)
   local text = widget.getText(widgetName)
 
-  if text == "" then 
+  if text == "" then
     blurTextbox(widgetName)
-    return 
+    return
   end
 
   if string.sub(text, 1, 1) == "/" then
@@ -538,14 +635,21 @@ function sendMessage(widgetName)
       self.lastCommand = text
       icchat.utils.saveMessage(text)
     end
-  elseif widget.getSelectedData("rgChatMode").mode == "Whisper" then
-    local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-    if not li then icchat.utils.alert("chat.alerts.dm_not_specified") return end
+  elseif widget.getSelectedData("rgChatMode").mode == "Whisper" or self.DMingTo then
+    local whisperName
+    if self.DMingTo then
+      whisperName = self.DMingTo
+      resetDMLayout()
+    else
+      local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
+      if not li then icchat.utils.alert("chat.alerts.dm_not_specified") return end
 
-    local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-    if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
+      local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
+      if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
 
-    local whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).displayText
+      whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
+    end
+
     local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. text or "/w " .. whisperName .. " " .. text
     self.irdenChat:processCommand(whisper)
     self.irdenChat.lastWhisper = {
@@ -570,7 +674,7 @@ end
 
 function setMode(id, data)
   local modeButtons = config.getParameter("gui")["rgChatMode"]["buttons"]
-  for i, btn in ipairs(modeButtons) do 
+  for i, btn in ipairs(modeButtons) do
     widget.setFontColor("rgChatMode." .. i, self.irdenChat.config.unselectedModeColor)
   end
   widget.setFontColor("rgChatMode." .. id, self.irdenChat.config.nameColors[data.mode])
@@ -615,12 +719,16 @@ function createTooltip(screenPosition)
       end
     end
   end
-  
+
   if widget.getChildAt(screenPosition) then
     local w = widget.getChildAt(screenPosition)
     local wData = widget.getData(w:sub(2))
-    if wData and type(wData) == "table" and wData.displayText then
-      return wData.mode and icchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.displayText
+    if wData and type(wData) == "table" then
+      if wData.tooltipMode then
+        return wData.mode and icchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.tooltipMode
+      elseif wData.displayText then
+        return icchat.utils.getTranslation(wData.displayText)
+      end
     end
   end
 end

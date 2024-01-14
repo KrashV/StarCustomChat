@@ -360,8 +360,8 @@ function IrdenChat:clearHighlights()
 end
 
 
-function IrdenChat:selectMessage()
-  local pos = self.highlightCanvas:mousePosition()
+function IrdenChat:selectMessage(position)
+  local pos = position or self.highlightCanvas:mousePosition()
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]

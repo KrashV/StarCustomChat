@@ -32,6 +32,97 @@
         "begin": "/interface/scripted/irdencustomchat/bodyfooter.png"
       }
     },
+
+    "lytContext": {
+      "type": "layout",
+      "position": [0, 0],
+      "size": [60, 20],
+      "layoutType": "basic",
+      "zlevel": 15,
+      "visible": false,
+      "scissoring": false,
+      "children": {
+        "backgrond": {
+          "type": "image",
+          "file": "/interface/scripted/irdencustomchat/contextmenu/body.png",
+          "zlevel": 16
+        },
+        "btnDM": {
+          "type": "button",
+          "position": [0, 0],
+          "callback": "enableDM",
+          "base": "/interface/scripted/irdencustomchat/contextmenu/dm.png",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/dm_hover.png",
+          "zlevel": 17,
+          "data": {
+            "displayText": "chat.commands.dm"
+          }
+        },
+        "btnCopy": {
+          "type": "button",
+          "position": [20, 0],
+          "callback": "copyMessage",
+          "base": "/interface/scripted/irdencustomchat/contextmenu/copy.png",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/copy_hover.png",
+          "zlevel": 17,
+          "data": {
+            "displayText": "chat.commands.copy"
+          }
+        },
+        "btnReplyTo": {
+          "type": "button",
+          "position": [40, 0],
+          "callback": "ping",
+          "base": "/interface/scripted/irdencustomchat/contextmenu/reply.png",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/reply_hover.png",
+          "zlevel": 17,
+          "data": {
+            "displayText": "chat.commands.ping"
+          }
+        }
+      }
+    },
+
+    "lytDMingTo": {
+      "type": "layout",
+      "position": [22, 24],
+      "size": [265, 16],
+      "layoutType": "basic",
+      "zlevel": 15,
+      "visible": false,
+      "scissoring": false,
+      "children": {
+        "backgrond": {
+          "type": "image",
+          "file": "/interface/scripted/irdencustomchat/replying/body.png",
+          "zlevel": 16
+        },
+        "lblHint": {
+          "type": "label",
+          "position": [4, 8],
+          "value": "",
+          "zlevel": 17,
+          "fontSize": 7,
+          "vAnchor": "mid"
+        },
+        "lblRecepient": {
+          "type": "label",
+          "value": "",
+          "zlevel": 17,
+          "fontSize": 9,
+          "vAnchor": "mid"
+        },
+        "btnClose": {
+          "type": "button",
+          "position": [253, 5],
+          "callback": "resetDMLayout",
+          "base": "/interface/scripted/irdencustomchat/replying/close.png",
+          "hover": "/interface/scripted/irdencustomchat/replying/close_hover.png",
+          "zlevel": 17
+        }
+      }
+    },
+
     "cnvChatCanvas": {
       "type": "canvas",
       "zlevel": 10,
@@ -113,7 +204,7 @@
       "maxWidth": 263,
       "zlevel": 4,
       "enterKey": "sendMessage",
-      "escapeKey": "blurTextbox"
+      "escapeKey": "escapeTextbox"
     },
 
     "lblCommandPreview": {
@@ -218,7 +309,7 @@
       "callback": "redrawChat",
       "data": {
         "mode": "Broadcast",
-        "displayText": "Broadcast"
+        "tooltipMode": "Broadcast"
       }
     },
 
@@ -234,7 +325,7 @@
       "callback": "redrawChat",
       "data": {
         "mode": "Proximity",
-        "displayText": "Proximity"
+        "tooltipMode": "Proximity"
       }
     },
 
@@ -250,7 +341,7 @@
       "callback": "redrawChat",
       "data": {
         "mode": "RadioMessage",
-        "displayText": "RadioMessage"
+        "tooltipMode": "RadioMessage"
       }
     },
 
@@ -266,7 +357,7 @@
       "callback": "redrawChat",
       "data": {
         "mode": "CommandResult",
-        "displayText": "CommandResult"
+        "tooltipMode": "CommandResult"
       }
     },
 
@@ -282,7 +373,7 @@
       "callback": "redrawChat",
       "data": {
         "mode": "OOC",
-        "displayText": "OOC"
+        "tooltipMode": "OOC"
       }
     },
 
@@ -381,7 +472,7 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["sendMessage", "blurTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer"],
+  "scriptWidgetCallbacks": ["sendMessage", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", "copyMessage", "ping", "enableDM", "resetDMLayout"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

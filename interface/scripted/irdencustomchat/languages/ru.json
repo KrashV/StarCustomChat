@@ -11,13 +11,26 @@
   "chat.modes.RadioMessage": "Броски",
   "chat.modes.CommandResult": "Команды",
 
+  "chat.commands.copy": "Скопировать",
+  "chat.commands.ping": "Пингануть",
+  "chat.commands.dm": "Личное сообщение",
+
   "chat.textbox.hint": "Введите сообщение",
+  "chat.dming.hint": "Отправить ЛС:",
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
   "chat.alerts.dm_not_found": "Игрок не на планете",
   "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
   "chat.alerts.copied_to_clipboard": "Скопировано",
   "chat.alerts.cannot_start_two_slashes": "Команда не должна начинаться с двух слешей",
+  "chat.alerts.cannot_ping_server": "Нельзя упоминать сервер",
+  "chat.alerts.cannot_ping_command": "Нельзя упоминать результаты команд",
+  "chat.alerts.cannot_ping_time": "Жди ещё %d секунд перед пингом",
+  "chat.alerts.cannot_dm_server": "Нельзя отправить ЛС серверу",
+  "chat.alerts.cannot_dm_command_result": "Нельзя отправить ЛС результату команды",
+  "chat.alerts.pinged": "Пингануть %s",
+  "chat.alerts.ping_failed": "Не смогли пингануть %s",
+  "chat.alerts.was_pinged": "Вас пинганул %s",
 
   "settings.title": "Настройки чата",
   "settings.subtitle": "/debug показывает радиус близких сообщений",

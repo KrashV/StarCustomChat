@@ -11,13 +11,26 @@
   "chat.modes.RadioMessage": "RadioMessage",
   "chat.modes.CommandResult": "CommandResult",
 
+  "chat.commands.copy": "Copy message",
+  "chat.commands.ping": "Ping user",
+  "chat.commands.dm": "DM user",
+
   "chat.textbox.hint": "Type here",
+  "chat.dming.hint": "Send DM to:",
 
   "chat.alerts.dm_not_specified": "Select the recepient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
   "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
   "chat.alerts.copied_to_clipboard": "Copied to clipboard",
   "chat.alerts.cannot_start_two_slashes": "Command cannot start with two slashes",
+  "chat.alerts.cannot_ping_server": "Cannot ping server messages",
+  "chat.alerts.cannot_ping_command": "Cannot ping command results",
+  "chat.alerts.cannot_ping_time": "Wait %d more seconds before pinging",
+  "chat.alerts.cannot_dm_server": "Cannot send a DM to the server",
+  "chat.alerts.cannot_dm_command_result": "Cannot send a DM to the command result",
+  "chat.alerts.pinged": "Pinged %s",
+  "chat.alerts.ping_failed": "Couldn't ping the player %s",
+  "chat.alerts.was_pinged": "You were pinged by %s",
 
 
   "settings.title": "Chat settings",

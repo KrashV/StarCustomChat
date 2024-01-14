@@ -1,0 +1,14 @@
+{
+  "Lua.diagnostics.globals": [
+    "self",
+    "widget",
+    "root",
+    "config",
+    "localHandler",
+    "message"
+  ],
+  "Lua.diagnostics.disable": [
+    "undefined-global",
+    "lowercase-global"
+  ]
+}
