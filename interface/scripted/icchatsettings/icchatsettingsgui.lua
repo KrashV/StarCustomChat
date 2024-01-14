@@ -163,14 +163,25 @@ end
 
 
 function update()
-  local nPoints = 100
+  local nPoints = 20
 	local points = {}
 	
   if player.id() and world.entityPosition(player.id()) then
-    for i = 1, nPoints do
-      local angle = math.pi / 2 + 2 * math.pi * i / nPoints;
-      table.insert(points, vec2.add(world.entityPosition(player.id()), vec2.rotate({self.proximityRadius, 0}, angle)))
-    end
-    world.debugPoly(points, "blue")
+    drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green", nPoints)
+  end
+end
+
+function drawCircle(center, radius, color, sections)
+  sections = sections or 20
+  for i = 1, sections do
+    local startAngle = math.pi * 2 / sections * (i-1)
+    local endAngle = math.pi * 2 / sections * i
+    local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
+    local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
+    interface.drawDrawable({
+      line = {camera.worldToScreen(startLine), camera.worldToScreen(endLine)},
+      width = 1,
+      color = color
+    }, {0, 0}, 1, color)
   end
 end

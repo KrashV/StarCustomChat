@@ -34,7 +34,7 @@
 
 
   "settings.title": "Chat settings",
-  "settings.subtitle": "Proximity raduis shows on /debug",
+  "settings.subtitle": "Proximity and Fight chats are server specific",
   "settings.chat_mode": "Chat mode",
   "settings.ok": "Okay",
   "settings.cancel": "Cancel",

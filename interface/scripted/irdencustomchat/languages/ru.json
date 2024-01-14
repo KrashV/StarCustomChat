@@ -33,7 +33,7 @@
   "chat.alerts.was_pinged": "Вас пинганул %s",
 
   "settings.title": "Настройки чата",
-  "settings.subtitle": "/debug показывает радиус близких сообщений",
+  "settings.subtitle": "Боевой и близкий чаты работают не везде",
   "settings.font_size": "Размер чата",
   "settings.chat_mode": "Режим чата",
   "settings.ok": "Принять",
