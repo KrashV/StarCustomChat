@@ -26,9 +26,10 @@
   "chat.alerts.cannot_ping_server": "Нельзя упоминать сервер",
   "chat.alerts.cannot_ping_command": "Нельзя упоминать результаты команд",
   "chat.alerts.cannot_ping_time": "Жди ещё %d секунд перед пингом",
+  "chat.alerts.cannot_ping_yourself": "Зачем самого себя пинговать?",
   "chat.alerts.cannot_dm_server": "Нельзя отправить ЛС серверу",
   "chat.alerts.cannot_dm_command_result": "Нельзя отправить ЛС результату команды",
-  "chat.alerts.pinged": "Пингануть %s",
+  "chat.alerts.pinged": "Пинганули %s",
   "chat.alerts.ping_failed": "Не смогли пингануть %s",
   "chat.alerts.was_pinged": "Вас пинганул %s",
 

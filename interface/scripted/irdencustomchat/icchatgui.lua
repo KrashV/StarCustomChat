@@ -561,13 +561,19 @@ function ping()
       if self.ReplyTime > 0 then
         icchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
       else
-        promises:add(world.sendEntityMessage(self.selectedMessage.connection * -65536, "icc_ping", player.name()), function()
-          icchat.utils.alert("chat.alerts.pinged", self.selectedMessage.nickname)
-        end, function()
-          icchat.utils.alert("chat.alerts.ping_failed", self.selectedMessage.nickname)
-        end)
+        
+        local target = self.selectedMessage.connection * -65536
+        if target == player.id() then
+          icchat.utils.alert("chat.alerts.cannot_ping_yourself")
+        else
+          promises:add(world.sendEntityMessage(target, "icc_ping", player.name()), function()
+            icchat.utils.alert("chat.alerts.pinged", self.selectedMessage.nickname)
+          end, function()
+            icchat.utils.alert("chat.alerts.ping_failed", self.selectedMessage.nickname)
+          end)
 
-        self.ReplyTime = self.ReplyTimer
+          self.ReplyTime = self.ReplyTimer
+        end
       end
     end
   end

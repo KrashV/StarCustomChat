@@ -26,6 +26,7 @@
   "chat.alerts.cannot_ping_server": "Cannot ping server messages",
   "chat.alerts.cannot_ping_command": "Cannot ping command results",
   "chat.alerts.cannot_ping_time": "Wait %d more seconds before pinging",
+  "chat.alerts.cannot_ping_yourself": "Why would you ping yourself?",
   "chat.alerts.cannot_dm_server": "Cannot send a DM to the server",
   "chat.alerts.cannot_dm_command_result": "Cannot send a DM to the command result",
   "chat.alerts.pinged": "Pinged %s",
