@@ -221,6 +221,10 @@ function update(dt)
 
   self.irdenChat:clearHighlights()
 
+  if not self.selectedMessage then
+    widget.setVisible("lytContext", false)
+  end
+
   checkGroup()
   checkFight()
   checkTyping()
