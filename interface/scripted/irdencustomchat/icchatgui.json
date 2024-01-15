@@ -1,5 +1,5 @@
 {
-  "paneLayer" : "tooltip",
+  "paneLayer" : "window",
   "dismissable" : false,
   "expanded": true,
 
@@ -128,7 +128,7 @@
       "zlevel": 10,
       "rect": [20, 26, 289, 310],
       "mouseTransparent": true,
-      "captureMouseEvents": false
+      "captureMouseEvents": true
     },
     "cnvHighlightCanvas": {
       "type": "canvas",
