@@ -163,11 +163,20 @@ end
 
 
 function update()
-  local nPoints = 20
-	local points = {}
-	
-  if player.id() and world.entityPosition(player.id()) then
-    drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green", nPoints)
+
+end
+
+function cursorOverride(screenPosition)
+  if widget.inMember("sldProxRadius", screenPosition) 
+    or widget.inMember("lblProxRadiusValue", screenPosition) 
+    or widget.inMember("lblProxRadiusHint", screenPosition) then
+      
+    local nPoints = 20
+    local points = {}
+    
+    if player.id() and world.entityPosition(player.id()) then
+      drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green", nPoints)
+    end
   end
 end
 
