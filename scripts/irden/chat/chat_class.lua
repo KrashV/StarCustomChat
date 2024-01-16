@@ -66,6 +66,10 @@ function IrdenChat:addMessage(msg)
       message.mode = "Broadcast"
     end
 
+    if message.mode == "RadioMessage" and message.portrait then
+      message.portrait = message.portrait .. self.config.radioMessageCropDirective
+    end
+
     message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or text:match("%^%a+;(%d+:%d+)%^reset;")
 
     if message.nickname then
@@ -122,7 +126,7 @@ function IrdenChat:addMessage(msg)
         else
           pane.playSound(self.config.notificationSound)
         end
-      else
+      else -- Check for OOC
         if message.mode == "Broadcast" or message.mode == "Local" then
           if text:find("^%^?g?r?a?y?;?%(%(") and (text:find("^%^?g?r?a?y?;?%(%b()%)%^?r?e?s?e?t?;?$") or not text:find("%)%)")) then
             message.mode = "OOC"
@@ -147,7 +151,7 @@ function IrdenChat:addMessage(msg)
           end, function()
             self.connectionToUuid[tostring(message.connection)] = uuid
             self.savedPortraits[uuid] = {
-              portrait = world.entityExists(entityId) and world.entityPortrait(entityId, "bust") or {},
+              portrait = world.entityExists(entityId) and world.entityPortrait(entityId, "full") or {},
               cropArea = self.config.portraitCropArea
             }
             self:processQueue()
