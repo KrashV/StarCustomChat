@@ -1,0 +1,8 @@
+{
+  "name" : "icchatdots",
+  "animationConfig" : "/player/playereffects.animation",
+
+  "scripts" : [
+    "icchatdots.lua"
+  ]
+}

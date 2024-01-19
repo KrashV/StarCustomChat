@@ -22,9 +22,6 @@ function init()
 
   self.availableCommands = root.assetJson("/interface/scripted/irdencustomchat/commands.config")
 
-  self.chatmonster = root.assetJson("/monsters/unsorted/chattingmonster/chatmonster.json")
-  self.chatting = config.getParameter("chattingMonster")
-
   local chatConfig = root.assetJson("/interface/scripted/irdencustomchat/iccchat.config")
   
   self.stagehandName = chatConfig.stagehandName
@@ -292,15 +289,9 @@ end
 
 function checkTyping()
   if widget.hasFocus("tbxInput") or widget.getText("tbxInput") ~= "" then
-    if self.chatting == nil then
-      self.chatmonster.parentEntity = player.id()
-      self.chatting = world.spawnMonster("punchy", vec2.add(world.entityMouthPosition(player.id()), {- 0.125, 2.5}), self.chatmonster)
-    end
+    status.addPersistentEffect("icchatdots", "icchatdots")
   else
-    if self.chatting ~= nil then
-      world.sendEntityMessage(self.chatting, "dieplz")
-      self.chatting = nil
-    end
+    status.clearPersistentEffects("icchatdots")
   end
 end
 
@@ -472,7 +463,6 @@ function canvasClickEvent(position, button, isButtonDown)
     chatConfig.chatLineOffset = self.irdenChat.lineOffset
     chatConfig.reopened = true
     chatConfig.DMingTo = self.DMingTo
-    chatConfig.chattingMonster = self.chatting
     chatConfig.selectedModes = {
       btnCkBroadcast = widget.getChecked("btnCkBroadcast"),
       btnCkLocal = widget.getChecked("btnCkLocal"),
@@ -758,10 +748,6 @@ function saveEverythingDude()
 end
 
 function uninit()
-  if self.chatting ~= nil and not widget.getText("tbxInput") == "" then
-    world.sendEntityMessage(self.chatting, "dieplz")
-  end
-
   local text = widget.getText("tbxInput")
   if not self.reopening and text and text ~= "" then
     clipboard.setText(text)
