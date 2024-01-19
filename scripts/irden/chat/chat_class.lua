@@ -403,6 +403,15 @@ function createNameForCompactMode(name, color, text, time, timeColor)
   return formattedString
 end
 
+function cutStringFromEnd(inputString, MAX)
+  if utf8.len(inputString) > MAX then
+      local offset = utf8.offset(inputString, MAX + 1)
+      return string.sub(inputString, 1, offset - 1) .. "..."
+  else
+      return inputString
+  end
+end
+
 --TODO: instead of all messages we need to look at the messages that are drawn
 function IrdenChat:processQueue()
   self.canvas:clear()
@@ -445,6 +454,7 @@ function IrdenChat:processQueue()
     -- Get amount of lines in the message and its length
     local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
     local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time)
+
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
     message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
@@ -466,7 +476,7 @@ function IrdenChat:processQueue()
         local nameOffset = vec2.add(self.config.nameOffset, {size, size})
 
         
-        self.canvas:drawText(message.text, {
+        self.canvas:drawText(text, {
           position = {nameOffset[1], messageOffset},
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
@@ -483,7 +493,7 @@ function IrdenChat:processQueue()
     else -- compact mode
       if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
         local offset = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset})
-        self.canvas:drawText(createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time), {
+        self.canvas:drawText(text, {
           position = offset,
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom

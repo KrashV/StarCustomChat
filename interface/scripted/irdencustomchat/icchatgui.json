@@ -35,8 +35,7 @@
 
     "lytContext": {
       "type": "layout",
-      "position": [0, 0],
-      "size": [60, 20],
+      "rect": [0, 0, 60, 15],
       "layoutType": "basic",
       "zlevel": 15,
       "visible": false,

@@ -1,6 +1,7 @@
 require "/scripts/messageutil.lua"
 require "/scripts/icctimer.lua"
 require "/scripts/util.lua"
+require "/scripts/rect.lua"
 require "/scripts/irden/chat/chat_class.lua"
 require "/interface/scripted/irdencustomchat/icchatutils.lua"
 
@@ -222,9 +223,7 @@ function update(dt)
 
   self.irdenChat:clearHighlights()
 
-  if not self.selectedMessage then
-    widget.setVisible("lytContext", false)
-  end
+  widget.setVisible("lytContext", false)
 
   checkGroup()
   checkFight()
@@ -238,6 +237,31 @@ function update(dt)
   end
 
   self.ReplyTime = math.max(self.ReplyTime - dt, 0)
+end
+
+function cursorOverride(screenPosition)
+  processEvents(screenPosition)
+
+  sb.setLogMap("_Position: ours", sb.print(screenPosition))
+  sb.setLogMap("_Position: layout", sb.print(widget.getPosition("lytContext")))
+  sb.setLogMap("_Position: contains", sb.print(rect.contains(rect.withSize(widget.getPosition("lytContext"), widget.getSize("lytContext")), screenPosition)))
+
+  if self.selectedMessage then
+    local canvasPosition = widget.getPosition(self.highlightCanvasName)
+    local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
+    widget.setPosition("lytContext", vec2.add({xOffset, self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]}, self.irdenChat.config.contextMenuOffset))
+    widget.setVisible("lytContext", true)
+  else
+    widget.setVisible("lytContext", false)
+  end
+  
+  if widget.inMember(self.highlightCanvasName, screenPosition) then
+    self.selectedMessage = self.irdenChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
+  else
+    self.selectedMessage = nil
+  end
+
+
 end
 
 function checkCommandsPreview()
@@ -579,29 +603,6 @@ function ping()
         end
       end
     end
-  end
-end
-
-function cursorOverride(screenPosition)
-  processEvents(screenPosition)
-
-  if widget.inMember(self.highlightCanvasName, screenPosition) then
-    self.selectedMessage = self.irdenChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
-  else
-    self.selectedMessage = nil
-  end
-
-  if widget.inMember("lytContext", screenPosition) then
-    return
-  end
-
-  if self.selectedMessage then
-    local canvasPosition = widget.getPosition(self.highlightCanvasName)
-    local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
-    widget.setPosition("lytContext", vec2.add({xOffset, self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]}, self.irdenChat.config.contextMenuOffset))
-    widget.setVisible("lytContext", true)
-  else
-    widget.setVisible("lytContext", false)
   end
 end
 
