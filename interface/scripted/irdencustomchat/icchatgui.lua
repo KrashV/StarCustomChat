@@ -14,7 +14,6 @@ ICChatTimer = TimerKeeper.new()
 function init()
   shared.chatIsOpen = true
   localeChat()
-  self.stagehandName = "irdencustomchat"
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
   self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
@@ -26,6 +25,8 @@ function init()
   self.chatting = nil
 
   local chatConfig = root.assetJson("/interface/scripted/irdencustomchat/iccchat.config")
+  
+  self.stagehandName = chatConfig.stagehandName
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = config.getParameter("expanded")
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
