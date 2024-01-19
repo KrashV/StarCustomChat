@@ -455,6 +455,8 @@ function IrdenChat:processQueue()
     local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
     local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time)
 
+    text = cutStringFromEnd(text, self.config.maxMessageLength)
+
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)
     message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
