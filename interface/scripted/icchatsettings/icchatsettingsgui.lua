@@ -1,6 +1,5 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
-require "/scripts/util.lua"
 
 function init()
   self.cropAreaRestrictions = {17, 23, 24, 30}
@@ -183,12 +182,9 @@ function cursorOverride(screenPosition)
   if widget.inMember("sldProxRadius", screenPosition) 
     or widget.inMember("lblProxRadiusValue", screenPosition) 
     or widget.inMember("lblProxRadiusHint", screenPosition) then
-      
-    local nPoints = 20
-    local points = {}
     
     if player.id() and world.entityPosition(player.id()) then
-      drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green", nPoints)
+      drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green")
     end
   end
 end
