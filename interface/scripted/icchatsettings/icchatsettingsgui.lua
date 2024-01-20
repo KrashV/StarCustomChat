@@ -14,6 +14,7 @@ function init()
   self.chatMode = config.getParameter("chatMode")
   self.proximityRadius = config.getParameter("proximityRadius")
   self.fontSize = config.getParameter("fontSize")
+  self.maxCharactersAllowed = config.getParameter("maxCharactersAllowed")
 
   self.portraitCanvas = widget.bindCanvas("portraitCanvas")
   localeSettings(self.locale)
@@ -28,9 +29,13 @@ function init()
   widget.setSliderRange("sldFontSize", 0, 5, 1)
   widget.setSliderValue("sldFontSize", self.fontSize - 5)
 
-  
+  self.maxCharactersStep = 300
+  widget.setSliderRange("sldMessageLength", 0, 10, 1)
+  widget.setSliderValue("sldMessageLength", self.maxCharactersAllowed // self.maxCharactersStep)
+
   widget.setText("lblFontSizeValue", self.fontSize)
   widget.setText("lblProxRadiusValue", self.proximityRadius)
+  widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
 
 end
 
@@ -44,6 +49,7 @@ function localeSettings(locale)
   widget.setData("btnMode", self.chatMode)
   widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
   widget.setText("lblFontSizeHint", localeConfig["settings.font_size"])
+  widget.setText("lblMessageLengthHint", localeConfig["settings.chat_collapse"])
   widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
   widget.setText("btnResetAvatar", localeConfig["settings.reset_avatar"])
 end
@@ -130,6 +136,12 @@ function updateFontSize(widgetName)
   save()
 end
 
+function updateMessageLength(widgetName)
+  self.maxCharactersAllowed = widget.getSliderValue(widgetName) * self.maxCharactersStep
+  widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
+  save()
+end
+
 function clearHistory()
   world.sendEntityMessage(player.id(), "icc_clear_history")
 end
@@ -147,6 +159,7 @@ function save()
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   root.setConfiguration("icc_proximity_radius", self.proximityRadius)
   root.setConfiguration("icc_font_size", self.fontSize)
+  root.setConfiguration("icc_max_allowed_characters", self.maxCharactersAllowed)
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")

@@ -41,9 +41,11 @@ function init()
     widget.setChecked(btn, isChecked)
   end
 
+  local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, chatConfig, player.id(),
-    storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"))
+  self.irdenChat = IrdenChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName, self.stagehandName, 
+    chatConfig, player.id(), storedMessages, self.chatMode, root.getConfiguration("icc_proximity_radius") or 100, 
+    expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed)
 
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -82,7 +84,6 @@ function init()
   else
     widget.setFontColor("rgChatMode.1", chatConfig.nameColors[widget.getData("rgChatMode.1").mode])
   end
-
 
   self.DMingTo = config.getParameter("DMingTo")
 
@@ -127,7 +128,7 @@ function registerCallbacks()
 
   shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
     createTotallyFakeWidgets(self.irdenChat.config.wrapWidthFullMode, self.irdenChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.irdenChat.config.fontSize)
-    self.irdenChat:resetChat(message)
+    self.irdenChat:resetChat()
   end))
 
   shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
@@ -219,7 +220,6 @@ function update(dt)
   promises:update()
 
   self.irdenChat:clearHighlights()
-
   widget.setVisible("lytContext", false)
 
   checkGroup()
@@ -239,18 +239,7 @@ end
 function cursorOverride(screenPosition)
   processEvents(screenPosition)
 
-  sb.setLogMap("_Position: ours", sb.print(screenPosition))
-  sb.setLogMap("_Position: layout", sb.print(widget.getPosition("lytContext")))
-  sb.setLogMap("_Position: contains", sb.print(rect.contains(rect.withSize(widget.getPosition("lytContext"), widget.getSize("lytContext")), screenPosition)))
-
-  if self.selectedMessage then
-    local canvasPosition = widget.getPosition(self.highlightCanvasName)
-    local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
-    widget.setPosition("lytContext", vec2.add({xOffset, self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]}, self.irdenChat.config.contextMenuOffset))
-    widget.setVisible("lytContext", true)
-  else
-    widget.setVisible("lytContext", false)
-  end
+  widget.setVisible("lytContext", not not self.selectedMessage)
 
   if widget.inMember(self.highlightCanvasName, screenPosition) then
     self.selectedMessage = self.irdenChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
@@ -258,7 +247,43 @@ function cursorOverride(screenPosition)
     self.selectedMessage = nil
   end
 
+  if widget.inMember("lytContext", screenPosition) then
+    widget.setVisible("lytContext.btnMenu", false)
+    widget.setVisible("lytContext.btnDM", true)
+    widget.setVisible("lytContext.btnCopy", true)
+    widget.setVisible("lytContext.btnPing", true)
+    widget.setSize("lytContext", {60, 15})
+  else
+    widget.setVisible("lytContext.btnMenu", true)
+    widget.setVisible("lytContext.btnDM", false)
+    widget.setVisible("lytContext.btnCopy", false)
+    widget.setVisible("lytContext.btnPing", false)
+    widget.setSize("lytContext", {20, 15})
+  end
 
+  if self.selectedMessage then
+    local allowCollapse = self.irdenChat.maxCharactersAllowed ~= 0 and self.selectedMessage.isLong
+    widget.setVisible("lytContext.btnCollapse", widget.inMember("lytContext", screenPosition) and allowCollapse)
+
+    if allowCollapse then
+      widget.setButtonImages("lytContext.btnCollapse", {
+        base = string.format("/interface/scripted/irdencustomchat/contextmenu/%s.png:base", self.selectedMessage.collapsed and "uncollapse" or "collapse"),
+        hover = string.format("/interface/scripted/irdencustomchat/contextmenu/%s.png:hover", self.selectedMessage.collapsed and "uncollapse" or "collapse")
+      })
+      widget.setData("lytContext.btnCollapse", {
+        displayText = string.format("chat.commands.%s", self.selectedMessage.collapsed and "uncollapse" or "collapse")
+      })
+    end
+    
+    local canvasPosition = widget.getPosition(self.highlightCanvasName)
+    local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
+    local yOffset = self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]
+    local newOffset = vec2.add({xOffset, yOffset}, self.irdenChat.config.contextMenuOffset)
+
+    -- And now we don't want the context menu to fly away somewhere else: we always want to draw it within the canvas
+    newOffset[2] = math.min(newOffset[2], self.irdenChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2] - widget.getSize("lytContext")[2])
+    widget.setPosition("lytContext", newOffset)
+  end
 end
 
 function checkCommandsPreview()
@@ -597,6 +622,12 @@ function ping()
   end
 end
 
+function collapse()
+  if self.selectedMessage then
+    self.irdenChat:collapseMessage({0, self.selectedMessage.offset + 1})
+  end
+end
+
 function escapeTextbox(widgetName)
   if not self.DMingTo then
     blurTextbox(widgetName)
@@ -705,6 +736,7 @@ function openSettings()
   chatConfigInterface.defaultCropArea = self.irdenChat.config.portraitCropArea
   chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame") or self.irdenChat.config.portraitCropArea
   chatConfigInterface.fontSize = self.irdenChat.config.fontSize
+  chatConfigInterface.maxCharactersAllowed = self.irdenChat.maxCharactersAllowed
   player.interact("ScriptPane", chatConfigInterface)
 end
 

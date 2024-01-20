@@ -3,8 +3,6 @@
 
   TODO:
     6. Set avatar: image
-    8. On message receive play a sound
-    9. Collapse long messages
 ]]
 
 require "/scripts/irden/chat/message_class.lua"
@@ -32,12 +30,15 @@ IrdenChat = {
 
   queueTimer = 0.5,
   queueTime = 0,
-  lastWhisper = nil
+  lastWhisper = nil,
+  maxCharactersAllowed = 0
 }
 
 IrdenChat.__index = IrdenChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, chatMode, proximityRadius, expanded, savedPortraits, connectionToUuid, lineOffset)
+function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, stagehandType, config, playerId, messages, 
+  chatMode, proximityRadius, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed)
+
   local o = {}
   setmetatable(o, self)
   self.__index = self
@@ -55,6 +56,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, sta
   o.savedPortraits = savedPortraits or {}
   o.connectionToUuid = connectionToUuid or {}
   o.lineOffset = lineOffset or 0
+  o.maxCharactersAllowed = maxCharactersAllowed
   return o
 end
 
@@ -193,6 +195,8 @@ function IrdenChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
   self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
+  self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
+  
   --[[
     icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
     entityId = player.id(),
@@ -363,6 +367,17 @@ function IrdenChat:clearHighlights()
   self.highlightCanvas:clear()
 end
 
+function IrdenChat:collapseMessage(position)
+  local pos = position or self.highlightCanvas:mousePosition()
+
+  for i = #self.drawnMessageIndexes, 1, -1 do 
+    local message = self.messages[self.drawnMessageIndexes[i]]
+    if message.offset and pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
+      self.messages[self.drawnMessageIndexes[i]].collapsed = not self.messages[self.drawnMessageIndexes[i]].collapsed
+      self:processQueue()
+    end
+  end
+end
 
 function IrdenChat:selectMessage(position)
   local pos = position or self.highlightCanvas:mousePosition()
@@ -403,12 +418,13 @@ function createNameForCompactMode(name, color, text, time, timeColor)
   return formattedString
 end
 
-function cutStringFromEnd(inputString, MAX)
-  if utf8.len(inputString) > MAX then
+function cutStringFromEnd(toCollapse, inputString, MAX)
+  local is_long = utf8.len(inputString) > MAX
+  if toCollapse and is_long then
       local offset = utf8.offset(inputString, MAX + 1)
-      return string.sub(inputString, 1, offset - 1) .. "..."
+      return string.sub(inputString, 1, offset - 1) .. "...", is_long, true
   else
-      return inputString
+      return inputString, is_long, false
   end
 end
 
@@ -455,7 +471,12 @@ function IrdenChat:processQueue()
     local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
     local text = self.chatMode == "modern" and message.text or createNameForCompactMode(name, self.config.nameColors[messageMode] or self.config.nameColors.default, message.text, message.time, self.config.textColors.time)
 
-    text = cutStringFromEnd(text, self.config.maxMessageLength)
+    if self.maxCharactersAllowed ~= 0 then
+      local toCheckLength = message.collapsed == nil and true or message.collapsed
+      text, message.isLong, message.collapsed = cutStringFromEnd(toCheckLength, text, self.maxCharactersAllowed)
+    else
+      message.collapsed = nil
+    end
 
     widget.setText(labelToCheck, text)
     local sizeOfText = widget.getSize(labelToCheck)

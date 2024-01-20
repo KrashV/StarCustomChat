@@ -128,7 +128,7 @@
 
     "lblProxRadiusValue" : {
       "type": "label",
-      "position": [155, 115],
+      "position": [225, 135],
       "hAnchor": "mid",
       "value": ""
     },
@@ -149,7 +149,30 @@
 
     "lblFontSizeValue" : {
       "type": "label",
-      "position": [155, 80],
+      "position": [225, 100],
+      "hAnchor": "mid",
+      "value": ""
+    },    
+    
+
+    "sldMessageLength" : {
+      "type": "slider",
+      "gridImage" : "/interface/optionsmenu/largeselection.png",
+      "position": [97, 65],
+      "callback": "updateMessageLength"
+    },
+
+    "lblMessageLengthHint" : {
+      "type": "label",
+      "position": [155, 60],
+      "hAnchor": "mid",
+      "vAnchor": "top",
+      "value": ""
+    },
+
+    "lblMessageLengthValue" : {
+      "type": "label",
+      "position": [225, 65],
       "hAnchor": "mid",
       "value": ""
     },
@@ -173,7 +196,8 @@
       "position" : [223, 152]
     }
   },
-  "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", "resetAvatar", "resetSettings", "updateFontSize", "zoom"],
+  "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", 
+    "resetAvatar", "resetSettings", "updateFontSize", "updateMessageLength", "zoom"],
   "canvasClickCallbacks" : {
 
   },

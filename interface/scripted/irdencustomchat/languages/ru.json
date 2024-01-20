@@ -14,6 +14,8 @@
   "chat.commands.copy": "Скопировать",
   "chat.commands.ping": "Пингануть",
   "chat.commands.dm": "Личное сообщение",
+  "chat.commands.collapse": "Свернуть сообщение",
+  "chat.commands.uncollapse": "Развернуть сообщение",
 
   "chat.textbox.hint": "Введите сообщение",
   "chat.dming.hint": "Отправить ЛС:",
@@ -42,6 +44,7 @@
   "settings.prox_radius": "Радиус близких сообщений",
   "settings.clear_chat_history": "Очистить чат",
   "settings.reset_avatar": "Сброс портрета",
+  "settings.chat_collapse": "Макс. символов в сообщении\n0 = не сворачивать",
 
   "settings.modes.compact": "Компакт.",
   "settings.modes.modern": "Полный",

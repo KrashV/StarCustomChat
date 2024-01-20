@@ -35,24 +35,43 @@
 
     "lytContext": {
       "type": "layout",
-      "rect": [0, 0, 60, 15],
+      "position": [0, 0],
+      "size": [20, 15],
       "layoutType": "basic",
       "zlevel": 15,
       "visible": false,
       "scissoring": false,
       "children": {
-        "backgrond": {
-          "type": "image",
-          "file": "/interface/scripted/irdencustomchat/contextmenu/body.png",
-          "zlevel": 16
+        "btnMenu": {
+          "type": "button",
+          "position": [0, 0],
+          "callback": "null",
+          "base": "/interface/scripted/irdencustomchat/contextmenu/menu.png:base",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/menu.png:hover",
+          "zlevel": 17
         },
+
+        "btnCollapse": {
+          "type": "button",
+          "position": [-20, 0],
+          "callback": "collapse",
+          "base": "/interface/scripted/irdencustomchat/contextmenu/collapse.png:base",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/collapse.png:hover",
+          "visible": false,
+          "zlevel": 18,
+          "data": {
+            "displayText": "chat.commands.collapse"
+          }
+        },
+
         "btnDM": {
           "type": "button",
           "position": [0, 0],
           "callback": "enableDM",
-          "base": "/interface/scripted/irdencustomchat/contextmenu/dm.png",
-          "hover": "/interface/scripted/irdencustomchat/contextmenu/dm_hover.png",
-          "zlevel": 17,
+          "base": "/interface/scripted/irdencustomchat/contextmenu/dm.png:base",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/dm.png:hover",
+          "visible": false,
+          "zlevel": 18,
           "data": {
             "displayText": "chat.commands.dm"
           }
@@ -61,20 +80,22 @@
           "type": "button",
           "position": [20, 0],
           "callback": "copyMessage",
-          "base": "/interface/scripted/irdencustomchat/contextmenu/copy.png",
-          "hover": "/interface/scripted/irdencustomchat/contextmenu/copy_hover.png",
-          "zlevel": 17,
+          "base": "/interface/scripted/irdencustomchat/contextmenu/copy.png:base",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/copy.png:hover",
+          "visible": false,
+          "zlevel": 18,
           "data": {
             "displayText": "chat.commands.copy"
           }
         },
-        "btnReplyTo": {
+        "btnPing": {
           "type": "button",
           "position": [40, 0],
           "callback": "ping",
-          "base": "/interface/scripted/irdencustomchat/contextmenu/reply.png",
-          "hover": "/interface/scripted/irdencustomchat/contextmenu/reply_hover.png",
-          "zlevel": 17,
+          "base": "/interface/scripted/irdencustomchat/contextmenu/ping.png:base",
+          "hover": "/interface/scripted/irdencustomchat/contextmenu/ping.png:hover",
+          "visible": false,
+          "zlevel": 18,
           "data": {
             "displayText": "chat.commands.ping"
           }
@@ -471,7 +492,8 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["sendMessage", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", "copyMessage", "ping", "enableDM", "resetDMLayout"],
+  "scriptWidgetCallbacks": ["sendMessage", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", 
+    "copyMessage", "ping", "collapse", "enableDM", "resetDMLayout"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
