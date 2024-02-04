@@ -1,4 +1,4 @@
-require "/interface/scripted/degscustomchat/plugin.lua"
+require "/interface/scripted/starcustomchat/plugin.lua"
 
 proximitychat = PluginClass:new(
   { name = "proximitychat" }
@@ -59,7 +59,7 @@ end
 
 function proximitychat:formatIncomingMessage(message)
   if message.mode == "Proximity" then
-    message.portrait = message.portrait ~= "" and message.portrait or message.connection
+    message.portrait = message.portrait and message.portrait ~= "" and message.portrait or message.connection
   end
   return message
 end

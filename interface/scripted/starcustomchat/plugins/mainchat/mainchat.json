@@ -28,10 +28,10 @@
 
   "parameters": {
     "modeIcons": {
-      "server": "/interface/scripted/degscustomchat/base/icons/server.png",
-      "console": "/interface/scripted/degscustomchat/base/icons/console.png"
+      "server": "/interface/scripted/starcustomchat/base/icons/server.png",
+      "console": "/interface/scripted/starcustomchat/base/icons/console.png"
     }
   },
 
-  "script": "/interface/scripted/degscustomchat/plugins/mainchat/mainchat.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/mainchat/mainchat.lua"
 }

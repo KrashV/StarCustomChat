@@ -2,9 +2,9 @@ require "/scripts/messageutil.lua"
 require "/scripts/icctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
-require "/interface/scripted/degscustomchat/base/chat_class.lua"
-require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
-require "/interface/scripted/degscustomchat/chatbuilder.lua"
+require "/interface/scripted/starcustomchat/base/chat_class.lua"
+require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
+require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require("/scripts/starextensions/lib/chat_callback.lua")
 
 local shared = getmetatable('').shared
@@ -23,16 +23,16 @@ function init()
   self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
   self.chatWindowWidth = widget.getSize("backgroundImage")[1]
 
-  self.availableCommands = root.assetJson("/interface/scripted/degscustomchat/base/commands.config")
+  self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
 
-  local chatConfig = root.assetJson("/interface/scripted/degscustomchat/base/chat.config")
+  local chatConfig = root.assetJson("/interface/scripted/starcustomchat/base/chat.config")
 
   local plugins = {}
   self.localePluginConfig = {}
 
   -- Load plugins
   for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
-    local pluginConfig = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", pluginName, pluginName))
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
 
     if pluginConfig.script then
       require(pluginConfig.script)
@@ -321,8 +321,8 @@ function processContextMenu(screenPosition)
 
     if allowCollapse then
       widget.setButtonImages("lytContext.btnCollapse", {
-        base = string.format("/interface/scripted/degscustomchat/base/contextmenu/%s.png:base", self.selectedMessage.collapsed and "uncollapse" or "collapse"),
-        hover = string.format("/interface/scripted/degscustomchat/base/contextmenu/%s.png:hover", self.selectedMessage.collapsed and "uncollapse" or "collapse")
+        base = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:base", self.selectedMessage.collapsed and "uncollapse" or "collapse"),
+        hover = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:hover", self.selectedMessage.collapsed and "uncollapse" or "collapse")
       })
       widget.setData("lytContext.btnCollapse", {
         displayText = string.format("chat.commands.%s", self.selectedMessage.collapsed and "uncollapse" or "collapse")
@@ -509,7 +509,7 @@ function canvasClickEvent(position, button, isButtonDown)
     pane.dismiss()
 
     local chatConfig = buildChatInterface()
-    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/degscustomchat/base/%s.png", self.irdenChat.expanded and "body" or "shortbody")
+    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.irdenChat.expanded and "body" or "shortbody")
     chatConfig.expanded = self.irdenChat.expanded
     chatConfig.currentSizes = chatParameters
     chatConfig.lastInputMessage = widget.getText("tbxInput")

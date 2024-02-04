@@ -1,4 +1,4 @@
-require "/interface/scripted/degscustomchat/plugin.lua"
+require "/interface/scripted/starcustomchat/plugin.lua"
 
 oocchat = PluginClass:new(
   { name = "oocchat" }

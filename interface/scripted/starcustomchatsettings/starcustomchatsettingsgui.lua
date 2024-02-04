@@ -1,6 +1,6 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
-require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
+require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
   self.cropAreaRestrictions = {17, 23, 24, 30}
@@ -22,7 +22,7 @@ function init()
 
   -- Load plugins
   for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
-    local pluginConfig = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", pluginName, pluginName))
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
 
     if pluginConfig.script then
       require(pluginConfig.script)
@@ -50,7 +50,7 @@ function init()
   self.runCallbackForPlugins("settings_init", starcustomchat.locale)
   
   drawCharacter()
-  self.availableLocales = root.assetJson("/interface/scripted/degscustomchat/languages/locales.json")
+  self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
   self.availableModes = {"compact", "modern"}
 
   

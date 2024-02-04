@@ -14,7 +14,7 @@
     "background" : {
       "zlevel" : -10,
       "type" : "background",
-      "fileBody" : "/interface/scripted/degscustomchat/base/body.png"
+      "fileBody" : "/interface/scripted/starcustomchat/base/body.png"
     },
     "backgroundImage": {
       "type": "imageStretch",
@@ -23,9 +23,9 @@
       "size": [269, 0],
       "position": [20, 24],
       "stretchSet": {
-        "end": "/interface/scripted/degscustomchat/base/bodyheader.png",
-        "inner": "/interface/scripted/degscustomchat/base/bodyinner.png",
-        "begin": "/interface/scripted/degscustomchat/base/bodyfooter.png"
+        "end": "/interface/scripted/starcustomchat/base/bodyheader.png",
+        "inner": "/interface/scripted/starcustomchat/base/bodyinner.png",
+        "begin": "/interface/scripted/starcustomchat/base/bodyfooter.png"
       }
     },
 
@@ -42,8 +42,8 @@
           "type": "button",
           "position": [0, 0],
           "callback": "null",
-          "base": "/interface/scripted/degscustomchat/base/contextmenu/menu.png:base",
-          "hover": "/interface/scripted/degscustomchat/base/contextmenu/menu.png:hover",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:hover",
           "zlevel": 17
         },
 
@@ -51,8 +51,8 @@
           "type": "button",
           "position": [-20, 0],
           "callback": "collapse",
-          "base": "/interface/scripted/degscustomchat/base/contextmenu/collapse.png:base",
-          "hover": "/interface/scripted/degscustomchat/base/contextmenu/collapse.png:hover",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:hover",
           "visible": false,
           "zlevel": 18,
           "data": {
@@ -64,8 +64,8 @@
           "type": "button",
           "position": [0, 0],
           "callback": "enableDM",
-          "base": "/interface/scripted/degscustomchat/base/contextmenu/dm.png:base",
-          "hover": "/interface/scripted/degscustomchat/base/contextmenu/dm.png:hover",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
           "visible": false,
           "zlevel": 18,
           "data": {
@@ -76,8 +76,8 @@
           "type": "button",
           "position": [20, 0],
           "callback": "copyMessage",
-          "base": "/interface/scripted/degscustomchat/base/contextmenu/copy.png:base",
-          "hover": "/interface/scripted/degscustomchat/base/contextmenu/copy.png:hover",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
           "visible": false,
           "zlevel": 18,
           "data": {
@@ -88,8 +88,8 @@
           "type": "button",
           "position": [40, 0],
           "callback": "ping",
-          "base": "/interface/scripted/degscustomchat/base/contextmenu/ping.png:base",
-          "hover": "/interface/scripted/degscustomchat/base/contextmenu/ping.png:hover",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
           "visible": false,
           "zlevel": 18,
           "data": {
@@ -110,7 +110,7 @@
       "children": {
         "backgrond": {
           "type": "image",
-          "file": "/interface/scripted/degscustomchat/base/replying/body.png",
+          "file": "/interface/scripted/starcustomchat/base/replying/body.png",
           "zlevel": 16
         },
         "lblHint": {
@@ -132,8 +132,8 @@
           "type": "button",
           "position": [253, 5],
           "callback": "resetDMLayout",
-          "base": "/interface/scripted/degscustomchat/base/replying/close.png",
-          "hover": "/interface/scripted/degscustomchat/base/replying/close_hover.png",
+          "base": "/interface/scripted/starcustomchat/base/replying/close.png",
+          "hover": "/interface/scripted/starcustomchat/base/replying/close_hover.png",
           "zlevel": 17
         }
       }
@@ -163,7 +163,7 @@
       "children": {
         "imgBackground": {
           "type": "image",
-          "file": "/interface/scripted/degscustomchat/base/commandpreview.png",
+          "file": "/interface/scripted/starcustomchat/base/commandpreview.png",
           "zlevel": 11
         },
         "cnvCommandsCanvas": {
@@ -207,7 +207,7 @@
 
     "imgTextbox": {
       "type": "image",
-      "file": "/interface/scripted/degscustomchat/base/textbox.png",
+      "file": "/interface/scripted/starcustomchat/base/textbox.png",
       "zlevel": -8,
       "position": [20, 12]
     },
@@ -252,9 +252,9 @@
           "size": [18, 0],
           "position": [0, -1],
           "stretchSet": {
-            "end": "/interface/scripted/degscustomchat/base/charactersheader.png",
-            "inner": "/interface/scripted/degscustomchat/base/charactersinner.png",
-            "begin": "/interface/scripted/degscustomchat/base/charactersfooter.png"
+            "end": "/interface/scripted/starcustomchat/base/charactersheader.png",
+            "inner": "/interface/scripted/starcustomchat/base/charactersinner.png",
+            "begin": "/interface/scripted/starcustomchat/base/charactersfooter.png"
           }
         },
         "saPlayers": {
@@ -287,8 +287,8 @@
               "type": "list",
               "callback": "selectPlayer",
               "schema": {
-                "selectedBG": "/interface/scripted/degscustomchat/base/characterselected.png",
-                "unselectedBG": "/interface/scripted/degscustomchat/base/characterunselected.png",
+                "selectedBG": "/interface/scripted/starcustomchat/base/characterselected.png",
+                "unselectedBG": "/interface/scripted/starcustomchat/base/characterunselected.png",
                 "spacing": [0,
                 2],
                 "memberSize": [18,
@@ -296,7 +296,7 @@
                 "listTemplate": {
                   "background": {
                     "type": "image",
-                    "file": "/interface/scripted/degscustomchat/base/characterunselected.png",
+                    "file": "/interface/scripted/starcustomchat/base/characterunselected.png",
                     "position": [0,
                     0]
                   },
@@ -318,16 +318,16 @@
     "btnToBottom": {
       "type": "button",
       "position": [1, 0],
-      "base": "/interface/scripted/degscustomchat/base/tobottom.png",
-      "hover": "/interface/scripted/degscustomchat/base/tobottomhover.png",
+      "base": "/interface/scripted/starcustomchat/base/tobottom.png",
+      "hover": "/interface/scripted/starcustomchat/base/tobottomhover.png",
       "callback": "toBottom"
     },
 
     "btnSettings": {
       "type": "button",
       "position": [1, 13],
-      "base": "/interface/scripted/degscustomchat/base/settings.png",
-      "hover": "/interface/scripted/degscustomchat/base/settingshover.png",
+      "base": "/interface/scripted/starcustomchat/base/settings.png",
+      "hover": "/interface/scripted/starcustomchat/base/settingshover.png",
       "callback": "openSettings"
     }
 
@@ -337,5 +337,5 @@
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
-  "scripts": ["/interface/scripted/degscustomchat/base/starcustomchatgui.lua"]
+  "scripts": ["/interface/scripted/starcustomchat/base/starcustomchatgui.lua"]
 }

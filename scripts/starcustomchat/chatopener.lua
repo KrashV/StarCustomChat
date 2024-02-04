@@ -1,5 +1,4 @@
-require "/interface/scripted/degscustomchat/chatbuilder.lua"
-require("/scripts/starextensions/lib/chat_callback.lua")
+require "/interface/scripted/starcustomchat/chatbuilder.lua"
 
 local shared = getmetatable('').shared
 if type(shared) ~= "table" then
@@ -10,7 +9,7 @@ end
 function init()
   local reasonToNotStart = checkSEAndControls()
   if reasonToNotStart then
-    local sewarningConfig = root.assetJson("/interface/scripted/degscustomchat/sewarning/sewarning.json")
+    local sewarningConfig = root.assetJson("/interface/scripted/starcustomchat/sewarning/sewarning.json")
     sewarningConfig.reason = reasonToNotStart
     player.interact("ScriptPane", sewarningConfig)
   else
@@ -22,12 +21,17 @@ end
 function checkSEAndControls()
   if not _ENV["starExtensions"] then
     return "se_not_found"
-  elseif not setChatMessageHandler then
+  elseif not root.assetData("/scripts/starextensions/lib/chat_callback.lua") then
     return "se_version"
   else
-    local bindings = root.getConfiguration("bindings")
-    if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
-      return "unbind_controls"
+    require("/scripts/starextensions/lib/chat_callback.lua")
+    if not setChatMessageHandler then
+      return "se_version"
+    else
+      local bindings = root.getConfiguration("bindings")
+      if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
+        return "unbind_controls"
+      end
     end
   end
 end

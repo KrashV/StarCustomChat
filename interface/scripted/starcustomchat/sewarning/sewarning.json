@@ -39,6 +39,6 @@
       "position": [212, 25]
     }
   },
-  "scripts": ["/interface/scripted/degscustomchat/sewarning/sewarning.lua"],
+  "scripts": ["/interface/scripted/starcustomchat/sewarning/sewarning.lua"],
   "scriptWidgetCallbacks": ["changeLocale"]
 }

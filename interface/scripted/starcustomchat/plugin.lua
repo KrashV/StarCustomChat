@@ -12,7 +12,7 @@ function PluginClass:new(obj)
 end
 
 function PluginClass:_loadConfig()
-  local parms = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", self.name, self.name)).parameters
+  local parms = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", self.name, self.name)).parameters
   if parms then
     for name, value in pairs(parms) do 
       self[name] = value

@@ -4,16 +4,16 @@ require "/scripts/util.lua"
 
 
 function buildChatInterface()
-  local baseInterface = root.assetJson("/interface/scripted/degscustomchat/base/chatgui.json")
-  local enabledPlugins = root.assetJson("/scripts/degschat/enabledplugins.json")
-  local disabledModes = root.assetJson("/scripts/degschat/disabledmodes.json")
+  local baseInterface = root.assetJson("/interface/scripted/starcustomchat/base/chatgui.json")
+  local enabledPlugins = root.assetJson("/scripts/starcustomchat/enabledplugins.json")
+  local disabledModes = root.assetJson("/scripts/starcustomchat/disabledmodes.json")
 
   -- First, collect all the modes from the plugins
   local chatModes = {}
   baseInterface["chatModes"] = {}
   baseInterface["enabledPlugins"] = {}
   for _, pluginName in ipairs(enabledPlugins) do 
-    local pluginConfig = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", pluginName, pluginName))
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
     table.insert(baseInterface["enabledPlugins"], pluginName)
     
     if pluginConfig.modes then
@@ -46,16 +46,16 @@ function buildChatInterface()
   end
 
   local totalNModes = modesThatHaveTabs(chatModes)
-  local tabWidth = root.imageSize(string.format("/interface/scripted/degscustomchat/base/tabmodes/chatmode%d.png", totalNModes))[1]
+  local tabWidth = root.imageSize(string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%d.png", totalNModes))[1]
 
   for _, mode in ipairs(chatModes) do
     if mode.has_tab and (not mode.admin or player.isAdmin()) then
       table.insert(baseInterface["gui"]["rgChatMode"]["buttons"], {
         id = tab_id,
-        baseImage = string.format("/interface/scripted/degscustomchat/base/tabmodes/chatmode%d.png", totalNModes),
-        hoverImage = string.format("/interface/scripted/degscustomchat/base/tabmodes/chatmode%d.png?brightness=30", totalNModes),
-        baseImageChecked = string.format("/interface/scripted/degscustomchat/base/tabmodes/chatmode%dselected.png", totalNModes),
-        hoverImageChecked = string.format("/interface/scripted/degscustomchat/base/tabmodes/chatmode%dselected.png?brightness=30", totalNModes),
+        baseImage = string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%d.png", totalNModes),
+        hoverImage = string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%d.png?brightness=30", totalNModes),
+        baseImageChecked = string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%dselected.png", totalNModes),
+        hoverImageChecked = string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%dselected.png?brightness=30", totalNModes),
         pressedOffset = {0, 0},
         position = {(tab_id - 1) * tabWidth, 0},
         selected = tab_id == 1,
@@ -73,10 +73,10 @@ function buildChatInterface()
         checked = true,
         position = {289, 6 + 15 * (toggle_id - 1)},
         pressedOffset = {0, 0},
-        base = "/interface/scripted/degscustomchat/base/chatmodedisabled.png",
-        hover = "/interface/scripted/degscustomchat/base/chatmodedisabled.png",
-        baseImageChecked = "/interface/scripted/degscustomchat/base/chatmodeenabled.png",
-        hoverImageChecked = "/interface/scripted/degscustomchat/base/chatmodeenabled.png",
+        base = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
+        hover = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
+        baseImageChecked = "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
+        hoverImageChecked = "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
         callback = "redrawChat",
         data = {
           mode = mode.name,
@@ -100,10 +100,10 @@ function buildSettingsInterface()
 
   local baseSettingsInterface = root.assetJson("/interface/scripted/starcustomchatsettings/starcustomchatsettingsgui.json")
 
-  local enabledPlugins = root.assetJson("/scripts/degschat/enabledplugins.json")
+  local enabledPlugins = root.assetJson("/scripts/starcustomchat/enabledplugins.json")
 
   for _, pluginName in ipairs(enabledPlugins) do 
-    local pluginConfig = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", pluginName, pluginName))
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
     
     if pluginConfig.settingsAddons then
       local prevCallbacks = copy(baseSettingsInterface["scriptWidgetCallbacks"])

@@ -25,7 +25,7 @@ function starcustomchat.utils.buildLocale(localePluginConfig)
   end
 
   -- Get base locale
-  starcustomchat.locale = root.assetJson(string.format("/interface/scripted/degscustomchat/languages/%s.json", locale))
+  starcustomchat.locale = root.assetJson(string.format("/interface/scripted/starcustomchat/languages/%s.json", locale))
   -- Merge the plugin locale on top of it
   starcustomchat.locale = sb.jsonMerge(starcustomchat.locale, addLocaleKeys)
 end

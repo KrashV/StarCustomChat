@@ -29,7 +29,7 @@ This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensi
 
 # Plugins
 The base mod includes two exemplary plugins: for proximity based chat and OOC chat.
-They are disabled by default and require patching the **/scripts/degschat/enabledplugins.json** file. For example:
+They are disabled by default and require patching the **/scripts/starcustomchat/enabledplugins.json** file. For example:
 
     [  {"op": "add", "path": "/-", "value": "oocchat" },   { "op": "add", "path": "/-", "value": "proximitychat" } ]
 If you want to create your own plugins - which I strongly recommend you to do! - you can look at the configuration there.

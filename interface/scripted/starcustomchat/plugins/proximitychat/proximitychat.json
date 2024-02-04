@@ -60,5 +60,5 @@
     "scriptWidgetCallbacks": ["updateProxRadius"]
   },
 
-  "script": "/interface/scripted/degscustomchat/plugins/proximitychat/proximity.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/proximitychat/proximity.lua"
 }

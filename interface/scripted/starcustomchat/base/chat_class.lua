@@ -7,7 +7,7 @@
 
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
-require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
+require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 
 IrdenChat = {
@@ -393,6 +393,10 @@ function IrdenChat:processQueue()
 
     if not message.nickname then
       message.nickname = "Unknown"
+    end
+
+    if not message.portrait or message.portrait == '' then
+      message.portrait = self.config.icons.unknown
     end
     
     -- If the message should contain an avatar and name:
