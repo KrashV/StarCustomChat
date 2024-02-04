@@ -1,3 +1,3 @@
 [
-    {"op" : "add", "path": "/genericScriptContexts/irdencustomchat", "value": "/scripts/irdenchathandler.lua"}
+    {"op" : "add", "path": "/genericScriptContexts/degscustomchat", "value": "/scripts/degschat/chatopener.lua"}
 ]

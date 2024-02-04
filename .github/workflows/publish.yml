@@ -15,7 +15,7 @@ jobs:
 
       - name: Pak the repository
         run: |
-          .github/tools/asset_packer.exe . -c .github/tools/packing.config IrdenCustomChat.pak
+          .github/tools/asset_packer.exe . -c .github/tools/packing.config StarCustomChat.pak
 
       - name: Get version
         id: extract_version
@@ -25,7 +25,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: CHANGELOG.txt
-          files: IrdenCustomChat.pak       
+          files: StarCustomChat.pak       
           tag_name: v${{ steps.extract_version.outputs.version }}
           name: Release V${{ steps.extract_version.outputs.version }}
 
@@ -35,10 +35,16 @@ jobs:
         with:
           path: "CHANGELOG.txt"
 
-      - name: Discord Webhook Action
+      - name: Discord Webhook For Irden
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          thread-id:  ${{ vars.THREAD_ID }}
-          filename: IrdenCustomChat.pak  
-          content: "<@&${{ vars.ROLE_MENTION }}> IrdenCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+          filename: StarCustomChat.pak  
+          content: "<@&${{ vars.ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+
+      - name: Discord Webhook For Delivery
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.DELIVERY_DISCORD_URL }}
+          filename: StarCustomChat.pak  
+          content: "<@&${{ vars.ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"

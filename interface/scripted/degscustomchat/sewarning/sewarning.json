@@ -1,0 +1,44 @@
+{
+  "gui": {
+    "background": {
+      "type": "background",
+      "fileBody": "/interface/streamingvideo/body.png",
+      "fileHeader": "/interface/streamingvideo/header.png",
+      "fileFooter": "/interface/streamingvideo/footer.png"
+    },
+    "title": {
+			"icon" : {
+				"type" : "image",
+				"file" : "/interface/popup/warning.png",
+				"position" : [0, 1],
+				"zlevel" : -1
+			},
+      "type": "title",
+      "title": "Welcome to Degranon's Chat mod!",
+      "subtitle": "Now before we begin..."
+    },
+    "text": {
+      "type": "label",
+      "position": [10, 185],
+      "wrapWidth": 230,
+      "vAnchor": "top",
+      "value": ""
+    },
+    "btnChangeLocale": {
+      "type": "button",
+      "base": "/interface/button.png",
+      "hover": "/interface/buttonhover.png",
+      "callback": "changeLocale",
+      "position": [2, 25]
+    },
+    "close": {
+      "type": "button",
+      "base": "/interface/buttonactive.png",
+      "hover": "/interface/buttonactivehover.png",
+      "callback": "close",
+      "position": [212, 25]
+    }
+  },
+  "scripts": ["/interface/scripted/degscustomchat/sewarning/sewarning.lua"],
+  "scriptWidgetCallbacks": ["changeLocale"]
+}

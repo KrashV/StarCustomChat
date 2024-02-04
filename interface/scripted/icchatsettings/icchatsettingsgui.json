@@ -112,59 +112,38 @@
       "callback": "changeMode"
     },
     
-    "sldProxRadius" : {
+    "sldFontSize" : {
       "type": "slider",
       "gridImage" : "/interface/optionsmenu/largeselection.png",
       "position": [97, 135],
-      "callback": "updateProxRadius"
+      "callback": "updateFontSize"
     },
 
-    "lblProxRadiusHint" : {
+    "lblFontSizeHint" : {
       "type": "label",
       "position": [155, 125],
       "hAnchor": "mid",
       "value": ""
     },
 
-    "lblProxRadiusValue" : {
+    "lblFontSizeValue" : {
       "type": "label",
       "position": [225, 135],
       "hAnchor": "mid",
       "value": ""
     },
     
-    "sldFontSize" : {
-      "type": "slider",
-      "gridImage" : "/interface/optionsmenu/largeselection.png",
-      "position": [97, 100],
-      "callback": "updateFontSize"
-    },
-
-    "lblFontSizeHint" : {
-      "type": "label",
-      "position": [155, 90],
-      "hAnchor": "mid",
-      "value": ""
-    },
-
-    "lblFontSizeValue" : {
-      "type": "label",
-      "position": [225, 100],
-      "hAnchor": "mid",
-      "value": ""
-    },    
-    
 
     "sldMessageLength" : {
       "type": "slider",
       "gridImage" : "/interface/optionsmenu/largeselection.png",
-      "position": [97, 65],
+      "position": [97, 100],
       "callback": "updateMessageLength"
     },
 
     "lblMessageLengthHint" : {
       "type": "label",
-      "position": [155, 60],
+      "position": [155, 95],
       "hAnchor": "mid",
       "vAnchor": "top",
       "value": ""
@@ -172,7 +151,7 @@
 
     "lblMessageLengthValue" : {
       "type": "label",
-      "position": [225, 65],
+      "position": [225, 100],
       "hAnchor": "mid",
       "value": ""
     },
@@ -196,7 +175,7 @@
       "position" : [223, 152]
     }
   },
-  "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "updateProxRadius", "clearHistory", 
+  "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "clearHistory", 
     "resetAvatar", "resetSettings", "updateFontSize", "updateMessageLength", "zoom"],
   "canvasClickCallbacks" : {
 

@@ -1,0 +1,64 @@
+{
+  "name": "Proximity Chat",
+
+  "modes": [{
+    "name": "Proximity",
+    "has_tab": true,
+    "tab_priority": 15,
+    "has_toggle": true
+  }],
+
+  "baseConfigValues": {
+    "modeColors": {
+      "Proximity" : "darkgreen"
+    },
+    "textColors": {
+      "Proximity" : "white"
+    }
+  },
+
+  "parameters": {
+    "stagehandType": "",
+    // You can specify the stagehandType if you want to send the proximity messages to the stagehand instead of the players around
+    "proximityRadius": 100
+  },
+
+  "localeKeys": {
+    "chat.modes.Proximity": {
+      "ru": "Близкий",
+      "en": "Proximity"
+    },
+    "settings.prox_radius": {
+      "ru": "Радиус близких сообщений",
+      "en": "Proximity radius"
+    }
+  },
+
+  "settingsAddons": {
+    "gui": {
+      "sldProxRadius" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/largeselection.png",
+        "position": [97, 60],
+        "callback": "updateProxRadius"
+      },
+  
+      "lblProxRadiusHint" : {
+        "type": "label",
+        "position": [155, 50],
+        "hAnchor": "mid",
+        "value": ""
+      },
+  
+      "lblProxRadiusValue" : {
+        "type": "label",
+        "position": [225, 60],
+        "hAnchor": "mid",
+        "value": ""
+      }
+    },
+    "scriptWidgetCallbacks": ["updateProxRadius"]
+  },
+
+  "script": "/interface/scripted/degscustomchat/plugins/proximitychat/proximity.lua"
+}

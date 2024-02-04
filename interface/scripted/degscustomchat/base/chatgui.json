@@ -1,0 +1,341 @@
+{
+  "paneLayer" : "window",
+  "dismissable" : false,
+  "expanded": true,
+
+  "gui" : {
+    "panefeature" : {
+      "type" : "panefeature",
+      "anchor" : "bottomLeft",
+      "positionLocked" : true,
+      "offset": [3, 5]
+    },
+    
+    "background" : {
+      "zlevel" : -10,
+      "type" : "background",
+      "fileBody" : "/interface/scripted/degscustomchat/base/body.png"
+    },
+    "backgroundImage": {
+      "type": "imageStretch",
+      "direction" : "vertical",
+      "zlevel" : -9,
+      "size": [269, 0],
+      "position": [20, 24],
+      "stretchSet": {
+        "end": "/interface/scripted/degscustomchat/base/bodyheader.png",
+        "inner": "/interface/scripted/degscustomchat/base/bodyinner.png",
+        "begin": "/interface/scripted/degscustomchat/base/bodyfooter.png"
+      }
+    },
+
+    "lytContext": {
+      "type": "layout",
+      "position": [0, 0],
+      "size": [20, 15],
+      "layoutType": "basic",
+      "zlevel": 15,
+      "visible": false,
+      "scissoring": false,
+      "children": {
+        "btnMenu": {
+          "type": "button",
+          "position": [0, 0],
+          "callback": "null",
+          "base": "/interface/scripted/degscustomchat/base/contextmenu/menu.png:base",
+          "hover": "/interface/scripted/degscustomchat/base/contextmenu/menu.png:hover",
+          "zlevel": 17
+        },
+
+        "btnCollapse": {
+          "type": "button",
+          "position": [-20, 0],
+          "callback": "collapse",
+          "base": "/interface/scripted/degscustomchat/base/contextmenu/collapse.png:base",
+          "hover": "/interface/scripted/degscustomchat/base/contextmenu/collapse.png:hover",
+          "visible": false,
+          "zlevel": 18,
+          "data": {
+            "displayText": "chat.commands.collapse"
+          }
+        },
+
+        "btnDM": {
+          "type": "button",
+          "position": [0, 0],
+          "callback": "enableDM",
+          "base": "/interface/scripted/degscustomchat/base/contextmenu/dm.png:base",
+          "hover": "/interface/scripted/degscustomchat/base/contextmenu/dm.png:hover",
+          "visible": false,
+          "zlevel": 18,
+          "data": {
+            "displayText": "chat.commands.dm"
+          }
+        },
+        "btnCopy": {
+          "type": "button",
+          "position": [20, 0],
+          "callback": "copyMessage",
+          "base": "/interface/scripted/degscustomchat/base/contextmenu/copy.png:base",
+          "hover": "/interface/scripted/degscustomchat/base/contextmenu/copy.png:hover",
+          "visible": false,
+          "zlevel": 18,
+          "data": {
+            "displayText": "chat.commands.copy"
+          }
+        },
+        "btnPing": {
+          "type": "button",
+          "position": [40, 0],
+          "callback": "ping",
+          "base": "/interface/scripted/degscustomchat/base/contextmenu/ping.png:base",
+          "hover": "/interface/scripted/degscustomchat/base/contextmenu/ping.png:hover",
+          "visible": false,
+          "zlevel": 18,
+          "data": {
+            "displayText": "chat.commands.ping"
+          }
+        }
+      }
+    },
+
+    "lytDMingTo": {
+      "type": "layout",
+      "position": [22, 24],
+      "size": [265, 16],
+      "layoutType": "basic",
+      "zlevel": 15,
+      "visible": false,
+      "scissoring": false,
+      "children": {
+        "backgrond": {
+          "type": "image",
+          "file": "/interface/scripted/degscustomchat/base/replying/body.png",
+          "zlevel": 16
+        },
+        "lblHint": {
+          "type": "label",
+          "position": [4, 8],
+          "value": "",
+          "zlevel": 17,
+          "fontSize": 7,
+          "vAnchor": "mid"
+        },
+        "lblRecepient": {
+          "type": "label",
+          "value": "",
+          "zlevel": 17,
+          "fontSize": 9,
+          "vAnchor": "mid"
+        },
+        "btnClose": {
+          "type": "button",
+          "position": [253, 5],
+          "callback": "resetDMLayout",
+          "base": "/interface/scripted/degscustomchat/base/replying/close.png",
+          "hover": "/interface/scripted/degscustomchat/base/replying/close_hover.png",
+          "zlevel": 17
+        }
+      }
+    },
+
+    "cnvChatCanvas": {
+      "type": "canvas",
+      "zlevel": 10,
+      "rect": [20, 26, 289, 310],
+      "mouseTransparent": true,
+      "captureMouseEvents": true
+    },
+    "cnvHighlightCanvas": {
+      "type": "canvas",
+      "zlevel": 9,
+      "rect": [20, 26, 289, 310],
+      "mouseTransparent": false,
+      "captureMouseEvents": true
+    },
+
+    "lytCommandPreview": {
+      "type": "layout",
+      "layoutType": "basic",
+      "rect": [21, 25, 300, 53],
+      "zlevel": 10,
+      "visible": false,
+      "children": {
+        "imgBackground": {
+          "type": "image",
+          "file": "/interface/scripted/degscustomchat/base/commandpreview.png",
+          "zlevel": 11
+        },
+        "cnvCommandsCanvas": {
+          "type": "canvas",
+          "zlevel": 12,
+          "rect": [2, 1, 265, 12],
+          "mouseTransparent": false,
+          "captureMouseEvents": false
+        }
+      }
+    },
+
+    
+    "saScrollArea": {
+      "type": "scrollArea",
+      "rect": [20, 26, 289, 312],
+      "buttons" : {
+        "vertical" : {
+          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+        },
+        "horizontal" : {
+          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+        }
+      },
+      "thumbs" : {
+        "vertical" : {
+          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+        },
+        "horizontal" : {
+          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+        }
+      },
+      "children": {}
+    },
+
+    "imgTextbox": {
+      "type": "image",
+      "file": "/interface/scripted/degscustomchat/base/textbox.png",
+      "zlevel": -8,
+      "position": [20, 12]
+    },
+
+    "tbxInput": {
+      "type": "textbox",
+      "position": [23, 14],
+      "hint": "ПЕЧАТАТЬ ЗДЕСЬ",
+      "callback": "null",
+      "maxWidth": 263,
+      "zlevel": 4,
+      "enterKey": "textboxEnterKey",
+      "escapeKey": "escapeTextbox"
+    },
+
+    "lblCommandPreview": {
+      "type": "label",
+      "position": [23,14],
+      "value": "",
+      "mouseTransparent": true,
+      "zLevel": 3,
+      "color": "#bbbbbbAA"
+    },
+
+    "rgChatMode": {
+      "type": "radioGroup",
+      "position": [20, 0],
+      "callback": "setMode",
+      "buttons": [ //This will now be set dynamically
+      ]
+    },
+
+    "lytCharactersToDM": {
+      "type": "layout",
+			"rect": [1, 28, 27, 313],
+      "visible": false,
+			"layoutType": "basic",
+			"children": {
+        "background": {
+          "type": "imageStretch",
+          "direction" : "vertical",
+          "size": [18, 0],
+          "position": [0, -1],
+          "stretchSet": {
+            "end": "/interface/scripted/degscustomchat/base/charactersheader.png",
+            "inner": "/interface/scripted/degscustomchat/base/charactersinner.png",
+            "begin": "/interface/scripted/degscustomchat/base/charactersfooter.png"
+          }
+        },
+        "saPlayers": {
+          "type": "scrollArea",
+          "rect": [1, 1, 28, 270],
+          "buttons" : {
+            "vertical" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            }
+          },
+          "thumbs" : {
+            "vertical" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            }
+          },
+          "children": {
+            "lytPlayers": {
+              "type": "list",
+              "callback": "selectPlayer",
+              "schema": {
+                "selectedBG": "/interface/scripted/degscustomchat/base/characterselected.png",
+                "unselectedBG": "/interface/scripted/degscustomchat/base/characterunselected.png",
+                "spacing": [0,
+                2],
+                "memberSize": [18,
+                18],
+                "listTemplate": {
+                  "background": {
+                    "type": "image",
+                    "file": "/interface/scripted/degscustomchat/base/characterunselected.png",
+                    "position": [0,
+                    0]
+                  },
+                  "contactAvatar": {
+                    "type": "canvas",
+                    "zLevel": 3,
+                    "rect": [1, 0, 44, 43],
+                    "captureMouseEvents" : false,
+                    "captureKeyboardEvents" : false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "btnToBottom": {
+      "type": "button",
+      "position": [1, 0],
+      "base": "/interface/scripted/degscustomchat/base/tobottom.png",
+      "hover": "/interface/scripted/degscustomchat/base/tobottomhover.png",
+      "callback": "toBottom"
+    },
+
+    "btnSettings": {
+      "type": "button",
+      "position": [1, 13],
+      "base": "/interface/scripted/degscustomchat/base/settings.png",
+      "hover": "/interface/scripted/degscustomchat/base/settingshover.png",
+      "callback": "openSettings"
+    }
+
+  },
+  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", 
+    "copyMessage", "ping", "collapse", "enableDM", "resetDMLayout"],
+  "canvasClickCallbacks" : {
+    "cnvHighlightCanvas" : "canvasClickEvent"
+  },
+  "scripts": ["/interface/scripted/degscustomchat/base/icchatgui.lua"]
+}

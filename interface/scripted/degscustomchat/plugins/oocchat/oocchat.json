@@ -1,0 +1,25 @@
+{
+  "name": "OOC Chat",
+
+  "modes": [{
+    "name": "OOC",
+    "has_tab": true,
+    "tab_priority": 80,
+    "has_toggle": true
+  }],
+
+  "baseConfigValues": {
+    "modeColors": {
+      "OOC" : "darkgray"
+    },
+    "textColors": {
+      "OOC" : "darkgray"
+    }
+  },
+
+  "localeKeys": {
+    "chat.modes.OOC": "OOC"
+  },
+
+  "script": "/interface/scripted/degscustomchat/plugins/oocchat/oocchat.lua"
+}

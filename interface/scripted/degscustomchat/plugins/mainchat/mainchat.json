@@ -1,0 +1,37 @@
+{
+  "name": "Main Chat",
+
+  "modes": [{
+    "name": "Broadcast",
+    "has_tab": true,
+    "tab_priority": 0,
+    "has_toggle": true
+  },{
+    "name": "Local",
+    "has_tab": true,
+    "tab_priority": 10,
+    "has_toggle": true
+  },{
+    "name": "Party",
+    "has_tab": true,
+    "tab_priority": 20,
+    "has_toggle": false
+  },{
+    "name": "Whisper",
+    "has_tab": true,
+    "tab_priority": 30,
+    "has_toggle": false
+  },{
+    "name": "CommandResult",
+    "has_toggle": true
+  }],
+
+  "parameters": {
+    "modeIcons": {
+      "server": "/interface/scripted/degscustomchat/base/icons/server.png",
+      "console": "/interface/scripted/degscustomchat/base/icons/console.png"
+    }
+  },
+
+  "script": "/interface/scripted/degscustomchat/plugins/mainchat/mainchat.lua"
+}

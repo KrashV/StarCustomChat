@@ -1,0 +1,53 @@
+{
+  "name": "ENG",
+  
+  "chat.modes.Local": "Local",
+  "chat.modes.Broadcast": "Broadcast",
+  "chat.modes.Party": "Party",
+  "chat.modes.Whisper": "Whisper",
+  "chat.modes.RadioMessage": "RadioMessage",
+  "chat.modes.CommandResult": "CommandResult",
+
+  "chat.commands.copy": "Copy message",
+  "chat.commands.ping": "Ping user",
+  "chat.commands.dm": "DM user",
+  "chat.commands.collapse": "Collapse message",
+  "chat.commands.uncollapse": "Expand message",
+
+  "chat.textbox.hint": "Type here",
+  "chat.dming.hint": "Send DM to:",
+
+  "chat.alerts.dm_not_specified": "Select the recepient",
+  "chat.alerts.dm_not_found": "The player has to be on the same planet",
+  "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
+  "chat.alerts.copied_to_clipboard": "Copied to clipboard",
+  "chat.alerts.cannot_start_two_slashes": "Command cannot start with two slashes",
+  "chat.alerts.cannot_ping_server": "Cannot ping server messages",
+  "chat.alerts.cannot_ping_command": "Cannot ping command results",
+  "chat.alerts.cannot_ping_time": "Wait %d more seconds before pinging",
+  "chat.alerts.cannot_ping_yourself": "Why would you ping yourself?",
+  "chat.alerts.cannot_dm_server": "Cannot send a DM to the server",
+  "chat.alerts.cannot_dm_command_result": "Cannot send a DM to the command result",
+  "chat.alerts.pinged": "Pinged %s",
+  "chat.alerts.ping_failed": "Couldn't ping the player %s",
+  "chat.alerts.was_pinged": "You were pinged by %s",
+
+  "greeting.se_not_found": "Welcome to Advanced Chat by Degranon!\n\nThe advanced chat mod requires the StarExtensions version 1.9.24 or higher\nhttps://github.com/StarExtensions/StarExtensions",
+  "greeting.se_version": "Welcome to Advanced Chat by Degranon!\n\nPlease update the StarExtensions to version 1.9.24 or higher\nhttps://github.com/StarExtensions/StarExtensions",
+  "greeting.unbind_controls": "Welcome to Advanced Chat by Degranon!\n\nTo begin with, you need to manually unbound the following controls (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nClick Accept - and you should be good to go!",
+  "greeting.unknown": "Welcome to Advanced Chat by Degranon!\n\nSomething went wrong. Oops!",
+  "greeting.close": "Gotcha!",
+
+  "settings.title": "Chat settings",
+  "settings.subtitle": "Custom chat by Degranon",
+  "settings.chat_mode": "Chat mode",
+  "settings.ok": "Okay",
+  "settings.cancel": "Cancel",
+  "settings.font_size": "Chat size",
+  "settings.clear_chat_history": "Clear chat",
+  "settings.reset_avatar": "Reset avatar",
+  "settings.chat_collapse": "Max characters in message\n0 = do not collapse",
+
+  "settings.modes.compact": "Compact",
+  "settings.modes.modern": "Modern"
+}

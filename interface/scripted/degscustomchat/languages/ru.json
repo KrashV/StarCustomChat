@@ -1,0 +1,53 @@
+{
+  "name": "RUS",
+
+  "chat.modes.Local": "Локал",
+  "chat.modes.Broadcast": "Общий",
+  "chat.modes.Party": "Группа",
+  "chat.modes.Whisper": "Личные",
+  "chat.modes.RadioMessage": "Броски",
+  "chat.modes.CommandResult": "Команды",
+
+  "chat.commands.copy": "Скопировать",
+  "chat.commands.ping": "Пингануть",
+  "chat.commands.dm": "Личное сообщение",
+  "chat.commands.collapse": "Свернуть сообщение",
+  "chat.commands.uncollapse": "Развернуть сообщение",
+
+  "chat.textbox.hint": "Введите сообщение",
+  "chat.dming.hint": "Отправить ЛС:",
+
+  "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
+  "chat.alerts.dm_not_found": "Игрок не на планете",
+  "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
+  "chat.alerts.copied_to_clipboard": "Скопировано",
+  "chat.alerts.cannot_start_two_slashes": "Команда не должна начинаться с двух слешей",
+  "chat.alerts.cannot_ping_server": "Нельзя упоминать сервер",
+  "chat.alerts.cannot_ping_command": "Нельзя упоминать результаты команд",
+  "chat.alerts.cannot_ping_time": "Жди ещё %d секунд перед пингом",
+  "chat.alerts.cannot_ping_yourself": "Зачем самого себя пинговать?",
+  "chat.alerts.cannot_dm_server": "Нельзя отправить ЛС серверу",
+  "chat.alerts.cannot_dm_command_result": "Нельзя отправить ЛС результату команды",
+  "chat.alerts.pinged": "Пинганули %s",
+  "chat.alerts.ping_failed": "Не смогли пингануть %s",
+  "chat.alerts.was_pinged": "Вас пинганул %s",
+
+  "greeting.se_not_found": "Добро пожаловать в Кастомный Чат Дегранона!\n\nНовый чат требует StarExtensions версии 1.9.24 или выше\nhttps://github.com/StarExtensions/StarExtensions",
+  "greeting.se_version": "Добро пожаловать в Кастомный Чат Дегранона!\n\nПожалуйста, обнови StarExtensions до версии 1.9.24 или выше\nhttps://github.com/StarExtensions/StarExtensions",
+  "greeting.unbind_controls": "Добро пожаловать в Кастомный Чат Дегранона!\n\nЧтобы начать, вручную удали следующие кнопки из настроек игры (Нажми Esc - Опции - Управление - Игра):\n\n* Начало команды в чате\n* Чат\n* Повтор посл. команды ^gray;(для этого используй /binds - Repeat last command)^reset;\n\nНажми принять - и всё должно быть готово!",
+  "greeting.unknown": "Добро пожаловать в Кастомный Чат Дегранона!\n\nЧто-то пошло не так. Упс!",
+  "greeting.close": "Понял!",
+
+  "settings.title": "Настройки чата",
+  "settings.subtitle": "Кастомный чат Degranon",
+  "settings.font_size": "Размер чата",
+  "settings.chat_mode": "Режим чата",
+  "settings.ok": "Принять",
+  "settings.cancel": "Отменить",
+  "settings.clear_chat_history": "Очистить чат",
+  "settings.reset_avatar": "Сброс портрета",
+  "settings.chat_collapse": "Макс. символов в сообщении\n0 = не сворачивать",
+
+  "settings.modes.compact": "Компакт.",
+  "settings.modes.modern": "Полный"
+}

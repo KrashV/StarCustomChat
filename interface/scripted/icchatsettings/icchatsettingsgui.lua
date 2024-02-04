@@ -1,5 +1,6 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
+require "/interface/scripted/degscustomchat/base/icchatutils.lua"
 
 function init()
   self.cropAreaRestrictions = {17, 23, 24, 30}
@@ -9,48 +10,73 @@ function init()
   self.defaultCropArea = config.getParameter("defaultCropArea")
   self.backImage = config.getParameter("backImage")
   self.frameImage = config.getParameter("frameImage")
-  self.locale = config.getParameter("locale")
   self.chatMode = config.getParameter("chatMode")
   self.proximityRadius = config.getParameter("proximityRadius")
   self.fontSize = config.getParameter("fontSize")
   self.maxCharactersAllowed = config.getParameter("maxCharactersAllowed")
 
   self.portraitCanvas = widget.bindCanvas("portraitCanvas")
-  localeSettings(self.locale)
+
+  self.localePluginConfig = {}
+  local plugins = {}
+
+  -- Load plugins
+  for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/degscustomchat/plugins/%s/%s.json", pluginName, pluginName))
+
+    if pluginConfig.script then
+      require(pluginConfig.script)
+
+      local classInstance = _ENV[pluginName]:new()
+      table.insert(plugins, classInstance)
+    end
+
+    if pluginConfig.localeKeys then
+      self.localePluginConfig = sb.jsonMerge(self.localePluginConfig, pluginConfig.localeKeys)
+    end
+  end
+
+  self.runCallbackForPlugins = function(method, ...)
+    -- The logic here is actually strange and might need some more customisation
+    local result = nil
+    for _, plugin in ipairs(plugins) do 
+      result = plugin[method](plugin, ...)
+    end
+    return result
+  end
+
+
+  localeSettings(self.localePluginConfig)
+  self.runCallbackForPlugins("settings_init", icchat.locale)
+  
   drawCharacter()
-  self.availableLocales = root.assetJson("/interface/scripted/irdencustomchat/languages/locales.json")
+  self.availableLocales = root.assetJson("/interface/scripted/degscustomchat/languages/locales.json")
   self.availableModes = {"compact", "modern"}
 
-  widget.setSliderRange("sldProxRadius", 0, 90, 1)
-  widget.setSliderValue("sldProxRadius", self.proximityRadius - 10)
-
   
-  widget.setSliderRange("sldFontSize", 0, 5, 1)
-  widget.setSliderValue("sldFontSize", self.fontSize - 5)
+  widget.setSliderRange("sldFontSize", 0, 4, 1)
+  widget.setSliderValue("sldFontSize", self.fontSize - 6)
 
   self.maxCharactersStep = 300
   widget.setSliderRange("sldMessageLength", 0, 10, 1)
   widget.setSliderValue("sldMessageLength", self.maxCharactersAllowed // self.maxCharactersStep)
 
   widget.setText("lblFontSizeValue", self.fontSize)
-  widget.setText("lblProxRadiusValue", self.proximityRadius)
   widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
 
 end
 
-function localeSettings(locale)
-  local localeConfig = root.assetJson(string.format("/interface/scripted/irdencustomchat/languages/%s.json", locale or "en"))
-
-  pane.setTitle(localeConfig["settings.title"], localeConfig["settings.subtitle"])
-  widget.setText("btnLanguage", localeConfig["name"])
-  widget.setData("btnLanguage", locale)
-  widget.setText("btnMode", localeConfig["settings.modes." .. self.chatMode])
+function localeSettings(localePluginConfig)
+  icchat.utils.buildLocale(localePluginConfig)
+  pane.setTitle(icchat.utils.getTranslation("settings.title"), icchat.utils.getTranslation("settings.subtitle"))
+  widget.setText("btnLanguage", icchat.utils.getTranslation("name"))
+  widget.setData("btnLanguage", icchat.currentLocale)
+  widget.setText("btnMode", icchat.utils.getTranslation("settings.modes." .. self.chatMode))
   widget.setData("btnMode", self.chatMode)
-  widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
-  widget.setText("lblFontSizeHint", localeConfig["settings.font_size"])
-  widget.setText("lblMessageLengthHint", localeConfig["settings.chat_collapse"])
-  widget.setText("btnDeleteChat", localeConfig["settings.clear_chat_history"])
-  widget.setText("btnResetAvatar", localeConfig["settings.reset_avatar"])
+  widget.setText("lblFontSizeHint", icchat.utils.getTranslation("settings.font_size"))
+  widget.setText("lblMessageLengthHint", icchat.utils.getTranslation("settings.chat_collapse"))
+  widget.setText("btnDeleteChat", icchat.utils.getTranslation("settings.clear_chat_history"))
+  widget.setText("btnResetAvatar", icchat.utils.getTranslation("settings.reset_avatar"))
 end
 
 function resetAvatar()
@@ -107,8 +133,9 @@ end
 function changeLanguage()
   local currentLocale = widget.getData("btnLanguage")
   local i = index(self.availableLocales, currentLocale)
-  self.locale = self.availableLocales[(i % #self.availableLocales) + 1]
-  localeSettings(self.locale)
+  local locale = self.availableLocales[(i % #self.availableLocales) + 1]
+  root.setConfiguration("iccLocale", locale)
+  localeSettings(self.localePluginConfig)
 
   save()
 end
@@ -118,19 +145,13 @@ function changeMode()
   local currentMode = widget.getData("btnMode")
   local i = index(self.availableModes, currentMode)
   self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
-  localeSettings(self.locale)
+  localeSettings(self.localePluginConfig)
 
-  save()
-end
-
-function updateProxRadius(widgetName)
-  self.proximityRadius = widget.getSliderValue(""..widgetName) + 10
-  widget.setText("lblProxRadiusValue", self.proximityRadius)
   save()
 end
 
 function updateFontSize(widgetName)
-  self.fontSize = widget.getSliderValue(widgetName) + 5
+  self.fontSize = widget.getSliderValue(widgetName) + 6
   widget.setText("lblFontSizeValue", self.fontSize)
   save()
 end
@@ -154,14 +175,13 @@ function index(tab, value)
 end
 
 function save()
-  root.setConfiguration("iccLocale", widget.getData("btnLanguage"))
   root.setConfiguration("iccMode", widget.getData("btnMode"))
-  root.setConfiguration("icc_proximity_radius", self.proximityRadius)
   root.setConfiguration("icc_font_size", self.fontSize)
   root.setConfiguration("icc_max_allowed_characters", self.maxCharactersAllowed)
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")
+  self.runCallbackForPlugins("settings_onSave", icchat.locale)
 end
 
 function ok()
@@ -179,27 +199,5 @@ function update()
 end
 
 function cursorOverride(screenPosition)
-  if widget.inMember("sldProxRadius", screenPosition) 
-    or widget.inMember("lblProxRadiusValue", screenPosition) 
-    or widget.inMember("lblProxRadiusHint", screenPosition) then
-    
-    if player.id() and world.entityPosition(player.id()) then
-      drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green")
-    end
-  end
-end
-
-function drawCircle(center, radius, color, sections)
-  sections = sections or 20
-  for i = 1, sections do
-    local startAngle = math.pi * 2 / sections * (i-1)
-    local endAngle = math.pi * 2 / sections * i
-    local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
-    local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
-    interface.drawDrawable({
-      line = {camera.worldToScreen(startLine), camera.worldToScreen(endLine)},
-      width = 1,
-      color = color
-    }, {0, 0}, 1, color)
-  end
+  self.runCallbackForPlugins("settings_onCursorOverride", screenPosition)
 end
