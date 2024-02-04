@@ -40,11 +40,11 @@ jobs:
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: StarCustomChat.pak  
-          content: "<@&${{ vars.ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+          content: "<@&${{ vars.IRDEN_ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
 
       - name: Discord Webhook For Delivery
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DELIVERY_DISCORD_URL }}
           filename: StarCustomChat.pak  
-          content: "<@&${{ vars.ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+          content: "<@&${{ vars.DEG_ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
