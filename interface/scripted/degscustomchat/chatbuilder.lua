@@ -98,7 +98,7 @@ function buildSettingsInterface()
     return t1
   end
 
-  local baseSettingsInterface = root.assetJson("/interface/scripted/icchatsettings/icchatsettingsgui.json")
+  local baseSettingsInterface = root.assetJson("/interface/scripted/starcustomchatsettings/starcustomchatsettingsgui.json")
 
   local enabledPlugins = root.assetJson("/scripts/degschat/enabledplugins.json")
 

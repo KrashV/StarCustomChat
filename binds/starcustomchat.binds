@@ -1,6 +1,6 @@
 {
-  "icchat": {
-    "name": "Advanced Chat",
+  "starcustomchat": {
+    "name": "Star Custom Chat",
     "bannerName" : "Advanced chat by Degranon",
     "binds": {
       "repeatcommand": {

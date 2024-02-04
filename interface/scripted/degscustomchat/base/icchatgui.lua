@@ -184,7 +184,7 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler( "icc_ping", simpleHandler(function(source)
-    icchat.utils.alert("chat.alerts.was_pinged", source)
+    starcustomchat.utils.alert("chat.alerts.was_pinged", source)
     pane.playSound(self.irdenChat.config.notificationSound)
   end))
 
@@ -234,7 +234,7 @@ function findButtonByMode(mode)
 end
 
 function localeChat(localePluginConfig)
-  icchat.utils.buildLocale(localePluginConfig)
+  starcustomchat.utils.buildLocale(localePluginConfig)
 
   local savedText = widget.getText("tbxInput")
   local hasFocus = widget.hasFocus("tbxInput")
@@ -243,18 +243,18 @@ function localeChat(localePluginConfig)
 
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do
-    widget.setText("rgChatMode." .. i, icchat.utils.getTranslation("chat.modes." .. button.data.mode))
+    widget.setText("rgChatMode." .. i, starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
   -- Unfortunately, to reset HINT we have to recreate the textbox
   local standardTbx = config.getParameter("gui")["tbxInput"]
-  standardTbx.hint = icchat.utils.getTranslation("chat.textbox.hint")
+  standardTbx.hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
 
   pane.removeWidget("tbxInput")
   pane.addWidget(standardTbx, "tbxInput")
   widget.setText("tbxInput", savedText)
 
-  widget.setText("lytDMingTo.lblHint", icchat.utils.getTranslation("chat.dming.hint"))
+  widget.setText("lytDMingTo.lblHint", starcustomchat.utils.getTranslation("chat.dming.hint"))
   widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))
 
   if hasFocus then
@@ -344,7 +344,7 @@ function checkCommandsPreview()
   local text = widget.getText("tbxInput")
 
   if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
-    local availableCommands = icchat.utils.getCommands(self.availableCommands, text)
+    local availableCommands = starcustomchat.utils.getCommands(self.availableCommands, text)
 
     if #availableCommands > 0 then
       self.savedCommandSelection = math.max(self.savedCommandSelection % (#availableCommands + 1), 1)
@@ -437,7 +437,7 @@ function populateList()
 
 
   --[[
-  icchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)
+  starcustomchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)
     self.receivedMessageFromStagehand = true
     drawCharacters(players, true)
   end)
@@ -587,7 +587,7 @@ function processButtonEvents(dt)
   end
 
 
-  if input.bindDown("icchat", "repeatcommand") and self.lastCommand then
+  if input.bindDown("starcustomchat", "repeatcommand") and self.lastCommand then
     self.irdenChat:processCommand(self.lastCommand)
   end
 end
@@ -606,16 +606,16 @@ end
 function copyMessage()
   if self.selectedMessage then
     clipboard.setText(self.selectedMessage.text)
-    icchat.utils.alert("chat.alerts.copied_to_clipboard")
+    starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
   end
 end
 
 function enableDM()
   if self.selectedMessage then
     if self.selectedMessage.connection == 0 then
-      icchat.utils.alert("chat.alerts.cannot_dm_server")
+      starcustomchat.utils.alert("chat.alerts.cannot_dm_server")
     elseif self.selectedMessage.mode == "CommandResult" then
-      icchat.utils.alert("chat.alerts.cannot_dm_command_result")
+      starcustomchat.utils.alert("chat.alerts.cannot_dm_command_result")
     elseif self.selectedMessage.connection and self.selectedMessage.nickname then
       if not widget.active("lytDMingTo") then
         widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
@@ -634,22 +634,22 @@ function ping()
   if self.selectedMessage then
     local message = copy(self.selectedMessage)
     if message.connection == 0 then
-      icchat.utils.alert("chat.alerts.cannot_ping_server")
+      starcustomchat.utils.alert("chat.alerts.cannot_ping_server")
     elseif message.mode == "CommandResult" then
-      icchat.utils.alert("chat.alerts.cannot_ping_command")
+      starcustomchat.utils.alert("chat.alerts.cannot_ping_command")
     elseif message.connection and message.nickname then
       if self.ReplyTime > 0 then
-        icchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
+        starcustomchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
       else
         
         local target = message.connection * -65536
         if target == player.id() then
-          icchat.utils.alert("chat.alerts.cannot_ping_yourself")
+          starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
         else
           promises:add(world.sendEntityMessage(target, "icc_ping", player.name()), function()
-            icchat.utils.alert("chat.alerts.pinged", message.nickname)
+            starcustomchat.utils.alert("chat.alerts.pinged", message.nickname)
           end, function()
-            icchat.utils.alert("chat.alerts.ping_failed", message.nickname)
+            starcustomchat.utils.alert("chat.alerts.ping_failed", message.nickname)
           end)
 
           self.ReplyTime = self.ReplyTimer
@@ -699,7 +699,7 @@ function textboxEnterKey(widgetName)
     end
 
     if string.sub(text, 1, 2) == "//" then
-      icchat.utils.alert("chat.alerts.cannot_start_two_slashes")
+      starcustomchat.utils.alert("chat.alerts.cannot_start_two_slashes")
       return
     end
 
@@ -709,7 +709,7 @@ function textboxEnterKey(widgetName)
     else
       processCommand(text)
       self.lastCommand = text
-      icchat.utils.saveMessage(text)
+      starcustomchat.utils.saveMessage(text)
     end
   elseif message.mode == "Whisper" or self.DMingTo then
     local whisperName
@@ -718,10 +718,10 @@ function textboxEnterKey(widgetName)
       resetDMLayout()
     else
       local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-      if not li then icchat.utils.alert("chat.alerts.dm_not_specified") return end
+      if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
 
       local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-      if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then icchat.utils.alert("chat.alerts.dm_not_found") return end
+      if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
 
       whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
     end
@@ -733,9 +733,9 @@ function textboxEnterKey(widgetName)
       recepient = whisperName,
       text = text
     }
-    icchat.utils.saveMessage(whisper)
+    starcustomchat.utils.saveMessage(whisper)
   else
-    icchat.utils.saveMessage(message.text)
+    starcustomchat.utils.saveMessage(message.text)
     message = self.runCallbackForPlugins("formatOutcomingMessage", message)
     sendMessage(message)
     
@@ -805,9 +805,9 @@ function createTooltip(screenPosition)
     local wData = widget.getData(w:sub(2))
     if wData and type(wData) == "table" then
       if wData.tooltipMode then
-        return wData.mode and icchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.tooltipMode
+        return wData.mode and starcustomchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.tooltipMode
       elseif wData.displayText then
-        return icchat.utils.getTranslation(wData.displayText)
+        return starcustomchat.utils.getTranslation(wData.displayText)
       end
     end
   end

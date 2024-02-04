@@ -67,7 +67,7 @@ function IrdenChat:addMessage(msg)
     message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or message.text:match("%^%a+;(%d+:%d+)%^reset;")
 
     if message.nickname then
-      message.nickname = icchat.utils.cleanNickname(message.nickname)
+      message.nickname = starcustomchat.utils.cleanNickname(message.nickname)
     end
 
     message = self.callbackPlugins("formatIncomingMessage", message)
@@ -81,7 +81,7 @@ function IrdenChat:addMessage(msg)
             message.portrait = settings.icon
           end
           if settings.nickname then
-            message.nickname = icchat.utils.getTranslation(settings.nickname)
+            message.nickname = starcustomchat.utils.getTranslation(settings.nickname)
           end
           break
         end
@@ -157,7 +157,7 @@ function IrdenChat:resetChat()
   self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
   
   --[[
-    icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
+    starcustomchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
     entityId = player.id(),
     portrait = nil,
     cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
@@ -277,7 +277,7 @@ function IrdenChat:drawIcon(target, nickname, messageOffset, color, time, recepi
   local nameOffset = vec2.add(self.config.nameOffset, {size, size})
   nameOffset = vec2.add(nameOffset, messageOffset)
 
-  self.canvas:drawText(recepient and "-> " .. icchat.utils.cleanNickname(recepient) or icchat.utils.cleanNickname(nickname), {
+  self.canvas:drawText(recepient and "-> " .. starcustomchat.utils.cleanNickname(recepient) or starcustomchat.utils.cleanNickname(nickname), {
     position = nameOffset,
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "top" -- top, mid, bottom
@@ -359,7 +359,7 @@ end
 
 function createNameForCompactMode(name, color, text, time, timeColor)
   local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
-  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, icchat.utils.cleanNickname(name), text)
+  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, starcustomchat.utils.cleanNickname(name), text)
 
   return formattedString
 end
@@ -368,7 +368,7 @@ function cutStringFromEnd(toCollapse, inputString, MAX)
   local is_long = utf8.len(inputString) > MAX
   if toCollapse and is_long then
       local offset = utf8.offset(inputString, MAX + 1)
-      return string.sub(inputString, 1, offset - 1) .. "...", is_long, true
+      return string.sub(inputString, 1, offset - 1) .. "^gray;...", is_long, true
   else
       return inputString, is_long, false
   end

@@ -47,7 +47,7 @@ function init()
 
 
   localeSettings(self.localePluginConfig)
-  self.runCallbackForPlugins("settings_init", icchat.locale)
+  self.runCallbackForPlugins("settings_init", starcustomchat.locale)
   
   drawCharacter()
   self.availableLocales = root.assetJson("/interface/scripted/degscustomchat/languages/locales.json")
@@ -67,16 +67,16 @@ function init()
 end
 
 function localeSettings(localePluginConfig)
-  icchat.utils.buildLocale(localePluginConfig)
-  pane.setTitle(icchat.utils.getTranslation("settings.title"), icchat.utils.getTranslation("settings.subtitle"))
-  widget.setText("btnLanguage", icchat.utils.getTranslation("name"))
-  widget.setData("btnLanguage", icchat.currentLocale)
-  widget.setText("btnMode", icchat.utils.getTranslation("settings.modes." .. self.chatMode))
+  starcustomchat.utils.buildLocale(localePluginConfig)
+  pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle"))
+  widget.setText("btnLanguage", starcustomchat.utils.getTranslation("name"))
+  widget.setData("btnLanguage", starcustomchat.currentLocale)
+  widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
   widget.setData("btnMode", self.chatMode)
-  widget.setText("lblFontSizeHint", icchat.utils.getTranslation("settings.font_size"))
-  widget.setText("lblMessageLengthHint", icchat.utils.getTranslation("settings.chat_collapse"))
-  widget.setText("btnDeleteChat", icchat.utils.getTranslation("settings.clear_chat_history"))
-  widget.setText("btnResetAvatar", icchat.utils.getTranslation("settings.reset_avatar"))
+  widget.setText("lblFontSizeHint", starcustomchat.utils.getTranslation("settings.font_size"))
+  widget.setText("lblMessageLengthHint", starcustomchat.utils.getTranslation("settings.chat_collapse"))
+  widget.setText("btnDeleteChat", starcustomchat.utils.getTranslation("settings.clear_chat_history"))
+  widget.setText("btnResetAvatar", starcustomchat.utils.getTranslation("settings.reset_avatar"))
 end
 
 function resetAvatar()
@@ -181,7 +181,7 @@ function save()
   player.setProperty("icc_portrait_frame",  self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")
-  self.runCallbackForPlugins("settings_onSave", icchat.locale)
+  self.runCallbackForPlugins("settings_onSave", starcustomchat.locale)
 end
 
 function ok()

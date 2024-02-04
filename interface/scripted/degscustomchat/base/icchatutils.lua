@@ -1,22 +1,22 @@
-icchat = {
+starcustomchat = {
   utils = {},
   locale = {},
   currentLocale = "en"
 }
 
-function icchat.utils.cleanNickname(nick)
+function starcustomchat.utils.cleanNickname(nick)
   return string.gsub(nick, "^.*<.*;(.*)%^reset;$",  "%1")
 end
 
-function icchat.utils.getLocale()
+function starcustomchat.utils.getLocale()
   return root.getConfiguration("iccLocale") or "en"
 end
 
-function icchat.utils.buildLocale(localePluginConfig)
+function starcustomchat.utils.buildLocale(localePluginConfig)
   local addLocaleKeys = copy(localePluginConfig or {})
 
   local locale = root.getConfiguration("iccLocale") or "en"
-  icchat.currentLocale = locale
+  starcustomchat.currentLocale = locale
   
   for key, translates in pairs(addLocaleKeys) do 
     if type(translates) == "table" then 
@@ -25,26 +25,26 @@ function icchat.utils.buildLocale(localePluginConfig)
   end
 
   -- Get base locale
-  icchat.locale = root.assetJson(string.format("/interface/scripted/degscustomchat/languages/%s.json", locale))
+  starcustomchat.locale = root.assetJson(string.format("/interface/scripted/degscustomchat/languages/%s.json", locale))
   -- Merge the plugin locale on top of it
-  icchat.locale = sb.jsonMerge(icchat.locale, addLocaleKeys)
+  starcustomchat.locale = sb.jsonMerge(starcustomchat.locale, addLocaleKeys)
 end
 
-function icchat.utils.getTranslation(key)
-  if not icchat.locale[key] then
+function starcustomchat.utils.getTranslation(key)
+  if not starcustomchat.locale[key] then
     sb.logError("Can't get transaction of key: %s", key)
     return "???"
   else
-    return icchat.locale[key] 
+    return starcustomchat.locale[key] 
   end
 end
 
-function icchat.utils.alert(key, format)
-  local text = icchat.utils.getTranslation(key)
+function starcustomchat.utils.alert(key, format)
+  local text = starcustomchat.utils.getTranslation(key)
   interface.queueMessage(format and string.format(text, format) or text)
 end
 
-function icchat.utils.saveMessage(message)
+function starcustomchat.utils.saveMessage(message)
   table.insert(self.sentMessages, message)
 
   if #self.sentMessages > self.sentMessagesLimit then
@@ -53,7 +53,7 @@ function icchat.utils.saveMessage(message)
   self.currentSentMessage = #self.sentMessages
 end
 
-function icchat.utils.getCommands(allCommands, substr)
+function starcustomchat.utils.getCommands(allCommands, substr)
   local availableCommands = {}
 
   for type, commlist in pairs(allCommands) do 
@@ -70,7 +70,7 @@ function icchat.utils.getCommands(allCommands, substr)
   return availableCommands
 end
 
-function icchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
+function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
   local n_attempts = 10
   local findStagehandResult = false
 

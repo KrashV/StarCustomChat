@@ -31,7 +31,7 @@ function proximitychat:onSendMessage(data)
     data.proximityRadius = self.proximityRadius
     
     if self.stagehandType and self.stagehandType ~= "" then
-      icchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
+      starcustomchat.utils.sendMessageToStagehand(self.stagehandType, "icc_sendMessage", data)
     else
       
       local function sendMessageToPlayers()
