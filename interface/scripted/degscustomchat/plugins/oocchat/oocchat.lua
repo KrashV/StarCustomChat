@@ -13,8 +13,13 @@ function oocchat:formatIncomingMessage(message)
     if message.mode == "Broadcast" or message.mode == "Local" then
       message.mode = "OOC"
     end
-  elseif message.text:find("%(%(") then
-    message.text = string.gsub(message.text, "%(%b()%)", "^gray;%1^reset;")
+  end
+
+  if message.text:find("%(%(") then
+    if message.mode ~= "Broadcast" and message.mode ~= "Local" then
+      message.text = string.gsub(message.text, "%(%b()%)", "^gray;%1^reset;")
+      message.text = string.gsub(message.text, "%(%((.*)$", "^gray;((%1^reset;")
+    end
   end
   return message
 end

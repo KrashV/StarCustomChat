@@ -337,5 +337,5 @@
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
-  "scripts": ["/interface/scripted/degscustomchat/base/icchatgui.lua"]
+  "scripts": ["/interface/scripted/degscustomchat/base/starcustomchatgui.lua"]
 }

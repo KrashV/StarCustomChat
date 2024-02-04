@@ -35,7 +35,7 @@ function starcustomchat.utils.getTranslation(key)
     sb.logError("Can't get transaction of key: %s", key)
     return "???"
   else
-    return starcustomchat.locale[key] 
+    return starcustomchat.locale[key]
   end
 end
 

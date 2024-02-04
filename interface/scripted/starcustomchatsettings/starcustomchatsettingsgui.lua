@@ -1,6 +1,6 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
-require "/interface/scripted/degscustomchat/base/icchatutils.lua"
+require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
 
 function init()
   self.cropAreaRestrictions = {17, 23, 24, 30}

@@ -1,2 +1,1 @@
-- Fixed a startup crash
-- Don't forget to install the latest StarExtensions: [StarExtensions](https://github.com/StarExtensions/StarExtensions)
+- Fixed mod crash on accepting messages with no nickname

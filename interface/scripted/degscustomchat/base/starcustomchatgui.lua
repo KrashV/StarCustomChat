@@ -3,7 +3,7 @@ require "/scripts/icctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
 require "/interface/scripted/degscustomchat/base/chat_class.lua"
-require "/interface/scripted/degscustomchat/base/icchatutils.lua"
+require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/degscustomchat/chatbuilder.lua"
 require("/scripts/starextensions/lib/chat_callback.lua")
 

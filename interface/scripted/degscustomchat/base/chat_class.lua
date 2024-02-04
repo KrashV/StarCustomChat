@@ -7,7 +7,7 @@
 
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
-require "/interface/scripted/degscustomchat/base/icchatutils.lua"
+require "/interface/scripted/degscustomchat/base/starcustomchatutils.lua"
 
 
 IrdenChat = {
@@ -391,7 +391,10 @@ function IrdenChat:processQueue()
     local message = self.messages[self.drawnMessageIndexes[i]]
     local messageMode = message.mode
 
-
+    if not message.nickname then
+      message.nickname = "Unknown"
+    end
+    
     -- If the message should contain an avatar and name:
     local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
     message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait)

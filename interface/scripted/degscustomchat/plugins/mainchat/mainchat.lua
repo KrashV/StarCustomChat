@@ -33,7 +33,7 @@ function mainchat:formatIncomingMessage(message)
       message.nickname = message.nickname or "Server"
     else
       message.portrait = message.portrait ~= "" and message.portrait or message.connection
-      message.nickname = message.nickname
+      message.nickname = message.nickname or ""
     end
   end
 
