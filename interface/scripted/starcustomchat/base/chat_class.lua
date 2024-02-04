@@ -67,6 +67,8 @@ function IrdenChat:addMessage(msg)
 
     message = self.callbackPlugins("formatIncomingMessage", message)
 
+    if not message or not message.text or message.text == "" then return nil end
+
     if not message.nickname then
       message.nickname = "Unknown"
     end
