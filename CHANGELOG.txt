@@ -1,1 +1,2 @@
-This is an official initial release!
+- Fixed a startup crash
+- Don't forget to install the latest StarExtensions: [StarExtensions](https://github.com/StarExtensions/StarExtensions)
