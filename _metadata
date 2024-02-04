@@ -4,7 +4,7 @@
   "requires" : [],
   "description" : "Star Custom Chat",
   "path" : ".",
-  "name" : "degscustomchat",
+  "name" : "starcustomchat",
   "includes" : [],
   "permissions" : ["clipboard"]
 }
