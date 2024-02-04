@@ -63,14 +63,17 @@ function IrdenChat:addMessage(msg)
     if message.mode == "RadioMessage" and message.portrait then
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
     end
-
     message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or message.text:match("%^%a+;(%d+:%d+)%^reset;")
 
-    if message.nickname then
-      message.nickname = starcustomchat.utils.cleanNickname(message.nickname)
+    message = self.callbackPlugins("formatIncomingMessage", message)
+
+    if not message.nickname then
+      message.nickname = "Unknown"
     end
 
-    message = self.callbackPlugins("formatIncomingMessage", message)
+    if not message.portrait or message.portrait == '' then
+      message.portrait = self.config.icons.unknown
+    end
 
     if not message.text or message.text == "" then return nil end
 
