@@ -21,7 +21,7 @@ end
 function checkSEAndControls()
   if not _ENV["starExtensions"] then
     return "se_not_found"
-  elseif not root.assetData("/scripts/starextensions/lib/chat_callback.lua") then
+  elseif not root.assetData or not root.assetData("/scripts/starextensions/lib/chat_callback.lua") then
     return "se_version"
   else
     require("/scripts/starextensions/lib/chat_callback.lua")

@@ -1,2 +1,2 @@
-- Fixed mod crash on accepting messages with no portraits (still no idea how they get there)
-- Better check on starextentions version
+- Added a new way of sending the proximity chats
+- Better check for StarExtentions version

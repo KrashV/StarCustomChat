@@ -18,8 +18,10 @@
   },
 
   "parameters": {
-    "stagehandType": "",
     // You can specify the stagehandType if you want to send the proximity messages to the stagehand instead of the players around
+    "uniqueStagehandType": "",
+    // Otherwise, you can specify a "do your thing and die" stagehand. 
+    "stagehandType": "",
     "proximityRadius": 100
   },
 

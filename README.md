@@ -13,6 +13,7 @@ Custom chat provides you with several in-built functions like these:
  - Collapsing of long messages
  - Ability to copy messages
  - Message channel filtration
+ - Command autofill (press **TAB** to scroll through)
  - Plugin system that allows you to expand the functionality even more!
 ![Full avatar mode](https://i.imgur.com/yLO8qWg.png)
 ![Short mode with disabled commands showcase](https://i.imgur.com/oXtXDp7.png)
