@@ -10,7 +10,7 @@ require "/scripts/util.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 
-IrdenChat = {
+StarCustomChat = {
   messages = jarray(),
   drawnMessageIndexes = jarray(),
   author = 0,
@@ -32,9 +32,9 @@ IrdenChat = {
   callbackPlugins = function() end
 }
 
-IrdenChat.__index = IrdenChat
+StarCustomChat.__index = StarCustomChat
 
-function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, playerId, messages, 
+function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, playerId, messages, 
   chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, callbackPlugins)
 
   local o = {}
@@ -57,7 +57,7 @@ function IrdenChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, con
   return o
 end
 
-function IrdenChat:addMessage(msg)
+function StarCustomChat:addMessage(msg)
   function formatMessage(message)
 
     if message.mode == "RadioMessage" and message.portrait then
@@ -120,7 +120,7 @@ function IrdenChat:addMessage(msg)
   end
 end
 
-function IrdenChat:requestPortrait(connection)
+function StarCustomChat:requestPortrait(connection)
   local entityId = connection * -65536
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
@@ -145,18 +145,18 @@ function IrdenChat:requestPortrait(connection)
   end
 end
 
-function IrdenChat:updatePortrait(data)
+function StarCustomChat:updatePortrait(data)
   self.savedPortraits[data.uuid] = data
   self.connectionToUuid[tostring(data.connection)] = data.uuid
   self:processQueue()
 end
 
-function IrdenChat:clearHistory()
+function StarCustomChat:clearHistory()
   self.messages = jarray()
   self:processQueue()
 end
 
-function IrdenChat:resetChat()
+function StarCustomChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
@@ -179,11 +179,11 @@ function IrdenChat:resetChat()
   self:processQueue()
 end
 
-function IrdenChat:getMessages ()
+function StarCustomChat:getMessages ()
   return self.messages
 end
 
-function IrdenChat:processCommand(text)
+function StarCustomChat:processCommand(text)
   local commandResult = chat.command(text)
   for _, line in ipairs(commandResult) do 
     chat.addMessage(line)
@@ -196,7 +196,7 @@ function IrdenChat:processCommand(text)
   end
 end
 
-function IrdenChat:sendMessage(text, mode)
+function StarCustomChat:sendMessage(text, mode)
   if text == "" then return end
 
   local data = {
@@ -214,7 +214,7 @@ function portraitSizeFromBaseFont(font)
   return math.floor(font * 2.5)
 end
 
-function IrdenChat:previewCommands(commands, selected)
+function StarCustomChat:previewCommands(commands, selected)
   self.commandPreviewCanvas:clear()
 
   local result = ""
@@ -229,7 +229,7 @@ function IrdenChat:previewCommands(commands, selected)
   }, self.config.previewCommandFontSize)
 end
 
-function IrdenChat:drawIcon(target, nickname, messageOffset, color, time, recepient)
+function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, recepient)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
     local squareSize = self.config.modeIndicatorSize
@@ -300,7 +300,7 @@ end
 
 
 --TODO: instead of all messages we need to look at the messages that are drawn
-function IrdenChat:offsetCanvas(offset)
+function StarCustomChat:offsetCanvas(offset)
   if not offset then return end
   
   if #self.drawnMessageIndexes > 0 and self.messages[self.drawnMessageIndexes[1]].offset + self.messages[self.drawnMessageIndexes[1]].height - 20 < 0 and offset < 0 then
@@ -311,20 +311,20 @@ function IrdenChat:offsetCanvas(offset)
   end
 end
 
-function IrdenChat:resetOffset()
+function StarCustomChat:resetOffset()
   self.lineOffset = 0
   self:processQueue()
 end
 
-function IrdenChat:highlightMessage(y1, y2)
+function StarCustomChat:highlightMessage(y1, y2)
   self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, self.config.highlightColor)
 end
 
-function IrdenChat:clearHighlights()
+function StarCustomChat:clearHighlights()
   self.highlightCanvas:clear()
 end
 
-function IrdenChat:collapseMessage(position)
+function StarCustomChat:collapseMessage(position)
   local pos = position or self.highlightCanvas:mousePosition()
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
@@ -336,7 +336,7 @@ function IrdenChat:collapseMessage(position)
   end
 end
 
-function IrdenChat:selectMessage(position)
+function StarCustomChat:selectMessage(position)
   local pos = position or self.highlightCanvas:mousePosition()
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
@@ -380,7 +380,7 @@ function cutStringFromEnd(toCollapse, inputString, MAX)
 end
 
 --TODO: instead of all messages we need to look at the messages that are drawn
-function IrdenChat:processQueue()
+function StarCustomChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
 
