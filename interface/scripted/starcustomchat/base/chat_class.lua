@@ -282,7 +282,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
   local nameOffset = vec2.add(self.config.nameOffset, {size, size})
   nameOffset = vec2.add(nameOffset, messageOffset)
 
-  self.canvas:drawText(recipient and "-> " .. starcustomchat.utils.cleanNickname(recipient) or starcustomchat.utils.cleanNickname(nickname), {
+  self.canvas:drawText(recipient and "-> " .. recipient or nickname, {
     position = nameOffset,
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "top" -- top, mid, bottom
@@ -364,7 +364,7 @@ end
 
 function createNameForCompactMode(name, color, text, time, timeColor)
   local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
-  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, starcustomchat.utils.cleanNickname(name), text)
+  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, name, text)
 
   return formattedString
 end

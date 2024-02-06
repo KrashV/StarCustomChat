@@ -4,10 +4,6 @@ starcustomchat = {
   currentLocale = "en"
 }
 
-function starcustomchat.utils.cleanNickname(nick)
-  return string.gsub(nick, "^.*<.*;(.*)%^reset;$",  "%1")
-end
-
 function starcustomchat.utils.getLocale()
   return root.getConfiguration("iccLocale") or "en"
 end
