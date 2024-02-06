@@ -76,7 +76,7 @@ function init()
 
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.irdenChat = StarCustomChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName,
+  self.customChat = StarCustomChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName,
     chatConfig, player.id(), storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
@@ -126,13 +126,13 @@ function init()
   end
 
   self.chatFunctionCallback = function(message)
-    self.irdenChat:addMessage(message)
+    self.customChat:addMessage(message)
   end
 
   registerCallbacks()
 
   requestPortraits()
-  self.irdenChat:processQueue()
+  self.customChat:processQueue()
 
   ICChatTimer:add(0.5, registerCallbacks)
 end
@@ -148,14 +148,14 @@ function registerCallbacks()
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = player.id() // -65536,
-        cropArea = player.getProperty("icc_portrait_frame") or self.irdenChat.config.portraitCropArea,
+        cropArea = player.getProperty("icc_portrait_frame") or self.customChat.config.portraitCropArea,
         uuid = player.uniqueId()
       }
     end
   end))
 
   shared.setMessageHandler("icc_sendToUser", simpleHandler(function(message)
-    self.irdenChat:addMessage(message)
+    self.customChat:addMessage(message)
   end))
 
   shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
@@ -168,31 +168,31 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
-    self.irdenChat:updatePortrait(data)
+    self.customChat:updatePortrait(data)
   end))
 
   shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
-    createTotallyFakeWidgets(self.irdenChat.config.wrapWidthFullMode, self.irdenChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.irdenChat.config.fontSize)
+    createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
     self.runCallbackForPlugins("onSettingsUpdate", data)
     
     localeChat(self.localePluginConfig)
-    self.irdenChat:resetChat()
+    self.customChat:resetChat()
   end))
 
   shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
-    self.irdenChat:clearHistory(message)
+    self.customChat:clearHistory(message)
   end))
 
   shared.setMessageHandler( "icc_ping", simpleHandler(function(source)
     starcustomchat.utils.alert("chat.alerts.was_pinged", source)
-    pane.playSound(self.irdenChat.config.notificationSound)
+    pane.playSound(self.customChat.config.notificationSound)
   end))
 
   return true
 end
 
 function requestPortraits()
-  local messages = self.irdenChat:getMessages()
+  local messages = self.customChat:getMessages()
   local authors = {}
 
   -- First, gather the unique connetcions
@@ -204,7 +204,7 @@ function requestPortraits()
   end
 
   for conn, _ in pairs(authors) do 
-    self.irdenChat:requestPortrait(conn)
+    self.customChat:requestPortrait(conn)
   end
 end
 
@@ -269,7 +269,7 @@ function update(dt)
   ICChatTimer:update(dt)
   promises:update()
 
-  self.irdenChat:clearHighlights()
+  self.customChat:clearHighlights()
   widget.setVisible("lytContext", false)
 
   checkTyping()
@@ -296,7 +296,7 @@ function processContextMenu(screenPosition)
   widget.setVisible("lytContext", not not self.selectedMessage)
 
   if widget.inMember(self.highlightCanvasName, screenPosition) then
-    self.selectedMessage = self.irdenChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
+    self.selectedMessage = self.customChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
   else
     self.selectedMessage = nil
   end
@@ -316,7 +316,7 @@ function processContextMenu(screenPosition)
   end
 
   if self.selectedMessage then
-    local allowCollapse = self.irdenChat.maxCharactersAllowed ~= 0 and self.selectedMessage.isLong
+    local allowCollapse = self.customChat.maxCharactersAllowed ~= 0 and self.selectedMessage.isLong
     widget.setVisible("lytContext.btnCollapse", widget.inMember("lytContext", screenPosition) and allowCollapse)
 
     if allowCollapse then
@@ -332,10 +332,10 @@ function processContextMenu(screenPosition)
     local canvasPosition = widget.getPosition(self.highlightCanvasName)
     local xOffset = canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - widget.getSize("lytContext")[1]
     local yOffset = self.selectedMessage.offset + self.selectedMessage.height + canvasPosition[2]
-    local newOffset = vec2.add({xOffset, yOffset}, self.irdenChat.config.contextMenuOffset)
+    local newOffset = vec2.add({xOffset, yOffset}, self.customChat.config.contextMenuOffset)
 
     -- And now we don't want the context menu to fly away somewhere else: we always want to draw it within the canvas
-    newOffset[2] = math.min(newOffset[2], self.irdenChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2] - widget.getSize("lytContext")[2])
+    newOffset[2] = math.min(newOffset[2], self.customChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2] - widget.getSize("lytContext")[2])
     widget.setPosition("lytContext", newOffset)
   end
 end
@@ -351,7 +351,7 @@ function checkCommandsPreview()
       widget.setVisible("lytCommandPreview", true)
       widget.setText("lblCommandPreview", availableCommands[self.savedCommandSelection])
       widget.setData("lblCommandPreview", availableCommands[self.savedCommandSelection])
-      self.irdenChat:previewCommands(availableCommands, self.savedCommandSelection)
+      self.customChat:previewCommands(availableCommands, self.savedCommandSelection)
     else
       widget.setVisible("lytCommandPreview", false)
       widget.setText("lblCommandPreview", "")
@@ -467,7 +467,7 @@ function drawIcon(canvasName, args)
       horizontalAnchor = "mid", -- left, mid, right
       verticalAnchor = "bottom", -- top, mid, bottom
       wrapWidth = nil -- wrap width in pixels or nil
-    }, self.irdenChat.config.fontSize + 1)
+    }, self.customChat.config.fontSize + 1)
   elseif type(args) == "string" then
     playerCanvas:drawImage(args, {-1, 0})
   end
@@ -502,21 +502,21 @@ end
 
 function canvasClickEvent(position, button, isButtonDown)
   if button == 0 and isButtonDown then
-    self.irdenChat.expanded = not self.irdenChat.expanded
+    self.customChat.expanded = not self.customChat.expanded
 
-    local chatParameters = getSizes(self.irdenChat.expanded, self.irdenChat.config)
+    local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
     saveEverythingDude()
     pane.dismiss()
 
     local chatConfig = buildChatInterface()
-    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.irdenChat.expanded and "body" or "shortbody")
-    chatConfig.expanded = self.irdenChat.expanded
+    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
+    chatConfig.expanded = self.customChat.expanded
     chatConfig.currentSizes = chatParameters
     chatConfig.lastInputMessage = widget.getText("tbxInput")
-    chatConfig.portraits = self.irdenChat.savedPortraits
-    chatConfig.connectionToUuid =  self.irdenChat.connectionToUuid
+    chatConfig.portraits = self.customChat.savedPortraits
+    chatConfig.connectionToUuid =  self.customChat.connectionToUuid
     chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-    chatConfig.chatLineOffset = self.irdenChat.lineOffset
+    chatConfig.chatLineOffset = self.customChat.lineOffset
     chatConfig.reopened = true
     chatConfig.DMingTo = self.DMingTo
     chatConfig.selectedModes = {}
@@ -539,18 +539,18 @@ function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
     if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
       if input.key("LCtrl") then
-        self.irdenChat.config.fontSize = math.min(math.max(self.irdenChat.config.fontSize + event.data.mouseWheel, 6), 10)
-        root.setConfiguration("icc_font_size", self.irdenChat.config.fontSize)
-        createTotallyFakeWidgets(self.irdenChat.config.wrapWidthFullMode, self.irdenChat.config.wrapWidthCompactMode, self.irdenChat.config.fontSize)
-        self.irdenChat:processQueue()
+        self.customChat.config.fontSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
+        root.setConfiguration("icc_font_size", self.customChat.config.fontSize)
+        createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize)
+        self.customChat:processQueue()
       else
-        self.irdenChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
+        self.customChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
       end
     elseif event.type == "KeyDown" then
       if event.data.key == "PageUp" then
-        self.irdenChat:offsetCanvas(self.irdenChat.expanded and - self.irdenChat.config.pageSkipExpanded or - self.irdenChat.config.pageSkip)
+        self.customChat:offsetCanvas(self.customChat.expanded and - self.customChat.config.pageSkipExpanded or - self.customChat.config.pageSkip)
       elseif event.data.key == "PageDown" then
-        self.irdenChat:offsetCanvas(self.irdenChat.expanded and self.irdenChat.config.pageSkipExpanded or self.irdenChat.config.pageSkip)
+        self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
       end
     end
   end
@@ -588,7 +588,7 @@ function processButtonEvents(dt)
 
 
   if input.bindDown("starcustomchat", "repeatcommand") and self.lastCommand then
-    self.irdenChat:processCommand(self.lastCommand)
+    self.customChat:processCommand(self.lastCommand)
   end
 end
 
@@ -661,7 +661,7 @@ end
 
 function collapse()
   if self.selectedMessage then
-    self.irdenChat:collapseMessage({0, self.selectedMessage.offset + 1})
+    self.customChat:collapseMessage({0, self.selectedMessage.offset + 1})
   end
 end
 
@@ -729,7 +729,7 @@ function textboxEnterKey(widgetName)
     local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. text or "/w " .. whisperName .. " " .. text
 
     processCommand(whisper)
-    self.irdenChat.lastWhisper = {
+    self.customChat.lastWhisper = {
       recepient = whisperName,
       text = text
     }
@@ -744,42 +744,42 @@ function textboxEnterKey(widgetName)
 end
 
 function processCommand(command)
-  self.irdenChat:processCommand(command)
+  self.customChat:processCommand(command)
 end
 
 function sendMessage(message)
-  self.irdenChat:sendMessage(message.text, message.mode)
+  self.customChat:sendMessage(message.text, message.mode)
 end
 
 function setMode(id, data)
   local modeButtons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, btn in ipairs(modeButtons) do
-    widget.setFontColor("rgChatMode." .. i, self.irdenChat.config.unselectedModeColor)
+    widget.setFontColor("rgChatMode." .. i, self.customChat.config.unselectedModeColor)
   end
-  widget.setFontColor("rgChatMode." .. id, self.irdenChat.config.modeColors[data.mode])
+  widget.setFontColor("rgChatMode." .. id, self.customChat.config.modeColors[data.mode])
 
   self.runCallbackForPlugins("onModeChange", data.mode)
 end
 
 function redrawChat()
-  self.irdenChat:processQueue()
+  self.customChat:processQueue()
 end
 
 function toBottom()
-  self.irdenChat:resetOffset()
+  self.customChat:resetOffset()
 end
 
 function openSettings()
   local chatConfigInterface = buildSettingsInterface()
   chatConfigInterface.chatMode = self.chatMode
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
-  chatConfigInterface.backImage = self.irdenChat.config.icons.empty
-  chatConfigInterface.frameImage = self.irdenChat.config.icons.frame
-  chatConfigInterface.proximityRadius = self.irdenChat.proximityRadius
-  chatConfigInterface.defaultCropArea = self.irdenChat.config.portraitCropArea
-  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame") or self.irdenChat.config.portraitCropArea
-  chatConfigInterface.fontSize = self.irdenChat.config.fontSize
-  chatConfigInterface.maxCharactersAllowed = self.irdenChat.maxCharactersAllowed
+  chatConfigInterface.backImage = self.customChat.config.icons.empty
+  chatConfigInterface.frameImage = self.customChat.config.icons.frame
+  chatConfigInterface.proximityRadius = self.customChat.proximityRadius
+  chatConfigInterface.defaultCropArea = self.customChat.config.portraitCropArea
+  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame") or self.customChat.config.portraitCropArea
+  chatConfigInterface.fontSize = self.customChat.config.fontSize
+  chatConfigInterface.maxCharactersAllowed = self.customChat.maxCharactersAllowed
   player.interact("ScriptPane", chatConfigInterface)
 end
 
@@ -816,7 +816,7 @@ end
 
 function saveEverythingDude()
   -- Save messages and last command
-  local messages = self.irdenChat:getMessages()
+  local messages = self.customChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", self.sentMessages)
