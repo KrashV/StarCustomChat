@@ -623,7 +623,7 @@ function enableDM()
         widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
       end
       widget.setVisible("lytDMingTo", true)
-      self.DMingTo = self.selectedMessage.recepient or self.selectedMessage.nickname
+      self.DMingTo = self.selectedMessage.recipient or self.selectedMessage.nickname
       widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
       widget.focus("tbxInput")
     end
@@ -730,7 +730,7 @@ function textboxEnterKey(widgetName)
 
     processCommand(whisper)
     self.customChat.lastWhisper = {
-      recepient = whisperName,
+      recipient = whisperName,
       text = text
     }
     starcustomchat.utils.saveMessage(whisper)
