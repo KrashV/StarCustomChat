@@ -1,2 +1,2 @@
-- Added a new way of sending the proximity chats
-- Better check for StarExtentions version
+- Several names conversions (forgot to kill them before, oops!)
+- Fixed the portraits using ?crop directives being rendered weird
