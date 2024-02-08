@@ -90,3 +90,17 @@ end
 function starcustomchat.utils.createStagehandWithData(stagehandType, data)
   world.spawnStagehand(world.entityPosition(player.id()), stagehandType, {data = data})
 end
+
+function starcustomchat.utils.clearPortraitFromInvisibleLayers(portrait)
+  if portrait and type(portrait) == "table" then
+    local filteredPortrait = {}
+    for _, layer in ipairs(portrait) do 
+      if layer.image and (not string.find(layer.image, "?crop.?0;0;0") and not string.find(layer.image, "?multiply.?000")) then
+        table.insert(filteredPortrait, layer)
+      end
+    end
+    return filteredPortrait
+  end
+
+  return portrait
+end

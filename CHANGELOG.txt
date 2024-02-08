@@ -1,2 +1,1 @@
-- Several names conversions (forgot to kill them before, oops!)
-- Fixed the portraits using ?crop directives being rendered weird
+- Forgot to add the fix of empty bodies to the settings pane
