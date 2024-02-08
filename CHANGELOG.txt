@@ -1,1 +1,2 @@
-- Forgot to add the fix of empty bodies to the settings pane
+- Removed the arrow buttons from the settings pane - now you can adjust your portrait with your mouse
+- Fixed the hats done on 85x85px canvas not being rendered

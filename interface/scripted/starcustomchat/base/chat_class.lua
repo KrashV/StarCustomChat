@@ -124,7 +124,7 @@ function StarCustomChat:requestPortrait(connection)
   local entityId = connection * -65536
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
-  if uuid and not self.savedPortraits[uuid] then
+  if uuid then
     if entityId and world.entityExists(entityId) then
       promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
         self.savedPortraits[data.uuid] = {

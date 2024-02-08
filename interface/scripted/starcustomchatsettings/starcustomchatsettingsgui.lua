@@ -159,7 +159,7 @@ function save()
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   root.setConfiguration("icc_font_size", self.fontSize)
   root.setConfiguration("icc_max_allowed_characters", self.maxCharactersAllowed)
-  player.setProperty("icc_portrait_frame",  self.cropArea)
+  player.setProperty("icc_portrait_frame", self.cropArea)
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")
   self.runCallbackForPlugins("settings_onSave", starcustomchat.locale)
@@ -182,41 +182,47 @@ end
 function cursorOverride(screenPosition)
   self.runCallbackForPlugins("settings_onCursorOverride", screenPosition)
 
-  if self.portraitAnchor then
-    local currentPos = self.portraitCanvas:mousePosition()
-    local diff = vec2.sub(currentPos, self.portraitAnchor)
+  local canvasSize = self.portraitCanvas:size()
+  local canvasFactor = canvasSize[1]
+  local cropAreaFactor = self.cropArea[3] - self.cropArea[1]
 
-    -- We believe that both the canvas and the crop area are squares
-    local canvasSize = self.portraitCanvas:size()
-    local canvasFactor = canvasSize[1]
-    local cropAreaFactor = self.cropArea[3] - self.cropArea[1]
-
-    local factor = canvasFactor // cropAreaFactor
-
-    -- Update cropArea based on mouse movement
-    self.cropArea = {
-      self.cropArea[1] - (diff[1] / factor),
-      self.cropArea[2] - (diff[2] / factor),
-      self.cropArea[3] - (diff[1] / factor),
-      self.cropArea[4] - (diff[2] / factor)
-    }
-
-    -- Update dragStartPos for smooth dragging
-
-    self.portraitAnchor = currentPos
-    drawCharacter()
-  end
+  local factor = canvasFactor // cropAreaFactor
   
-  for _, event in ipairs(input.events()) do
-    if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
+  if factor > 0 then
+    if self.portraitAnchor then
+      local currentPos = self.portraitCanvas:mousePosition()
+      local diff = vec2.sub(currentPos, self.portraitAnchor)
+
+      -- We believe that both the canvas and the crop area are squares
+
       self.cropArea = {
-        self.cropArea[1] + event.data.mouseWheel,
-        self.cropArea[2] + event.data.mouseWheel,
-        self.cropArea[3] - event.data.mouseWheel,
-        self.cropArea[4] - event.data.mouseWheel
+        self.cropArea[1] - (diff[1] / factor),
+        self.cropArea[2] - (diff[2] / factor),
+        self.cropArea[3] - (diff[1] / factor),
+        self.cropArea[4] - (diff[2] / factor)
       }
-      save()
+
+
+      self.portraitAnchor = currentPos
       drawCharacter()
+    end
+    
+    for _, event in ipairs(input.events()) do
+      if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
+        local newCropArea = {
+          self.cropArea[1] + event.data.mouseWheel,
+          self.cropArea[2] + event.data.mouseWheel,
+          self.cropArea[3] - event.data.mouseWheel,
+          self.cropArea[4] - event.data.mouseWheel
+        }
+
+        local newFactor = canvasFactor // (newCropArea[3] - newCropArea[1])
+        if newFactor > 0 then
+          self.cropArea = copy(newCropArea)
+          save()
+          drawCharacter()
+        end
+      end
     end
   end
 end

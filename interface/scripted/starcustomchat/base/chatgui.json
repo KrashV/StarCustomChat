@@ -311,7 +311,7 @@
                   "contactAvatar": {
                     "type": "canvas",
                     "zLevel": 3,
-                    "rect": [1, 0, 44, 43],
+                    "rect": [1, 1, 15, 15],
                     "captureMouseEvents" : false,
                     "captureKeyboardEvents" : false
                   }
