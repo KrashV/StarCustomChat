@@ -252,9 +252,9 @@
           "size": [18, 0],
           "position": [0, -1],
           "stretchSet": {
-            "end": "/interface/scripted/starcustomchat/base/charactersheader.png",
-            "inner": "/interface/scripted/starcustomchat/base/charactersinner.png",
-            "begin": "/interface/scripted/starcustomchat/base/charactersfooter.png"
+            "end": "/interface/scripted/starcustomchat/base/dmtab/charactersheader.png",
+            "inner": "/interface/scripted/starcustomchat/dmtab/base/charactersinner.png",
+            "begin": "/interface/scripted/starcustomchat/dmtab/base/charactersfooter.png"
           }
         },
         "saPlayers": {
@@ -287,8 +287,8 @@
               "type": "list",
               "callback": "selectPlayer",
               "schema": {
-                "selectedBG": "/interface/scripted/starcustomchat/base/characterselected.png",
-                "unselectedBG": "/interface/scripted/starcustomchat/base/characterunselected.png",
+                "selectedBG": "/interface/scripted/starcustomchat/base/dmtab/characterselected.png",
+                "unselectedBG": "/interface/scripted/starcustomchat/base/dmtab/characterunselected.png",
                 "spacing": [0,
                 2],
                 "memberSize": [18,
@@ -296,7 +296,7 @@
                 "listTemplate": {
                   "background": {
                     "type": "image",
-                    "file": "/interface/scripted/starcustomchat/base/characterunselected.png",
+                    "file": "/interface/scripted/starcustomchat/base/dmtab/characterunselected.png",
                     "position": [0,
                     0]
                   },

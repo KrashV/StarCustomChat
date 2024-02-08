@@ -95,10 +95,16 @@ function starcustomchat.utils.clearPortraitFromInvisibleLayers(portrait)
   if portrait and type(portrait) == "table" then
     local filteredPortrait = {}
     for _, layer in ipairs(portrait) do 
-      if layer.image and (not string.find(layer.image, "?crop.?0;0;0") and not string.find(layer.image, "?multiply.?000")) then
+      local imageSize = root.imageSize(layer.image)
+      if layer.image and not vec2.eq(imageSize, {0, 0}) and not string.find(layer.image, "?crop.?0;0;0") and not string.find(layer.image, "?multiply.?000") then
+        
+        if vec2.eq(imageSize, {85, 85}) then
+          layer.image = layer.image .. "?crop;21;21;85;85"
+        end
         table.insert(filteredPortrait, layer)
       end
     end
+
     return filteredPortrait
   end
 

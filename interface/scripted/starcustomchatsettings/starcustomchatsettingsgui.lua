@@ -93,7 +93,7 @@ function drawCharacter()
   self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
 
-  local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "bust"))
+  local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
 
   for _, layer in ipairs(portrait) do
     self.portraitCanvas:drawImageRect(layer.image, self.cropArea, {0, 0, canvasSize[1], canvasSize[2]})
@@ -103,10 +103,7 @@ function drawCharacter()
 end
 
 function movePortrait(btn, direction)
-  if self.cropArea[1] + direction[1] > self.cropAreaRestrictions[1] or self.cropArea[3] + direction[1] < self.cropAreaRestrictions[3] 
-  or self.cropArea[2] + direction[2] > self.cropAreaRestrictions[2] or self.cropArea[4] + direction[2] < self.cropAreaRestrictions[4] then
-    return
-  end
+
 
   self.cropArea[1] = self.cropArea[1] + direction[1]
   self.cropArea[2] = self.cropArea[2] + direction[2]
@@ -119,9 +116,7 @@ end
 
 function zoom(btn, zoom)
   local newDiff = self.cropArea[3] - zoom - self.cropArea[1] - zoom
-  if newDiff < self.sizeRestrictions[1] or newDiff > self.sizeRestrictions[2] then
-    return
-  end
+
   self.cropArea[1] = self.cropArea[1] + zoom
   self.cropArea[2] = self.cropArea[2] + zoom
   self.cropArea[3] = self.cropArea[3] - zoom

@@ -128,7 +128,7 @@ function StarCustomChat:requestPortrait(connection)
     if entityId and world.entityExists(entityId) then
       promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
         self.savedPortraits[data.uuid] = {
-          portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait),
+          portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait, self.config.portraitBGColor),
           cropArea = data.cropArea
         }
         self.connectionToUuid[tostring(connection)] = uuid
@@ -136,7 +136,7 @@ function StarCustomChat:requestPortrait(connection)
       end, function()
         self.connectionToUuid[tostring(connection)] = uuid
         self.savedPortraits[uuid] = {
-          portrait = world.entityExists(entityId) and starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(entityId, "full")) or {},
+          portrait = world.entityExists(entityId) and starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(entityId, "full"), self.config.portraitBGColor) or {},
           cropArea = self.config.portraitCropArea
         }
         self:processQueue()
@@ -147,7 +147,7 @@ end
 
 function StarCustomChat:updatePortrait(data)
   self.savedPortraits[data.uuid] = data
-  self.savedPortraits[data.uuid].portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(self.savedPortraits[data.uuid].portrait)
+  self.savedPortraits[data.uuid].portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(self.savedPortraits[data.uuid].portrait, self.config.portraitBGColor)
 
   self.connectionToUuid[tostring(data.connection)] = data.uuid
   self:processQueue()
@@ -173,7 +173,7 @@ function StarCustomChat:resetChat()
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
     self.savedPortraits[player.uniqueId()] = {
-      portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "bust")),
+      portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"), self.config.portraitBGColor),
       cropArea = player.getProperty("icc_portrait_frame") or self.config.portraitCropArea
     }
   end

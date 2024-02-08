@@ -144,7 +144,7 @@ function registerCallbacks()
   shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and world.entityExists(player.id()) then
       return {
-        portrait = world.entityPortrait(player.id(), "bust"),
+        portrait =  starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = player.id() // -65536,
@@ -427,7 +427,7 @@ function populateList()
         id = player,
         name = world.entityName(player) or "Unknown",
         data = {
-          portrait = world.entityPortrait(player, "bust")
+          portrait = world.entityPortrait(player, "full")
         }
       })
     end
@@ -453,7 +453,7 @@ function drawIcon(canvasName, args)
   playerCanvas:clear()
 
   if type(args) == "number" then
-    local playerPortrait = world.entityPortrait(args, "bust")
+    local playerPortrait = world.entityPortrait(args, "full")
     for _, layer in ipairs(playerPortrait) do
       playerCanvas:drawImage(layer.image, {-14, -18})
     end
