@@ -64,6 +64,8 @@ function init()
   widget.setText("lblFontSizeValue", self.fontSize)
   widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
 
+
+  self.portraitAnchor = false
 end
 
 function localeSettings(localePluginConfig)
@@ -102,30 +104,6 @@ function drawCharacter()
     {0, 0, canvasSize[1], canvasSize[2]})
 end
 
-function movePortrait(btn, direction)
-
-
-  self.cropArea[1] = self.cropArea[1] + direction[1]
-  self.cropArea[2] = self.cropArea[2] + direction[2]
-  self.cropArea[3] = self.cropArea[3] + direction[1]
-  self.cropArea[4] = self.cropArea[4] + direction[2]
-  drawCharacter()
-
-  save()
-end
-
-function zoom(btn, zoom)
-  local newDiff = self.cropArea[3] - zoom - self.cropArea[1] - zoom
-
-  self.cropArea[1] = self.cropArea[1] + zoom
-  self.cropArea[2] = self.cropArea[2] + zoom
-  self.cropArea[3] = self.cropArea[3] - zoom
-  self.cropArea[4] = self.cropArea[4] - zoom
-  drawCharacter()
-
-  save()
-end
-
 function changeLanguage()
   local currentLocale = widget.getData("btnLanguage")
   local i = index(self.availableLocales, currentLocale)
@@ -162,6 +140,13 @@ function clearHistory()
   world.sendEntityMessage(player.id(), "icc_clear_history")
 end
 
+function clickCanvasCallback(position, button, isDown)
+  if button == 0 then
+    self.portraitAnchor = isDown and position or nil
+    save()
+  end
+end
+
 -- Utility function: return the index of a value in the given array
 function index(tab, value)
   for k, v in ipairs(tab) do
@@ -196,4 +181,46 @@ end
 
 function cursorOverride(screenPosition)
   self.runCallbackForPlugins("settings_onCursorOverride", screenPosition)
+
+  if self.portraitAnchor then
+    local currentPos = self.portraitCanvas:mousePosition()
+    local diff = vec2.sub(currentPos, self.portraitAnchor)
+
+    -- We believe that both the canvas and the crop area are squares
+    local canvasSize = self.portraitCanvas:size()
+    local canvasFactor = canvasSize[1]
+    local cropAreaFactor = self.cropArea[3] - self.cropArea[1]
+
+    local factor = canvasFactor // cropAreaFactor
+
+    -- Update cropArea based on mouse movement
+    self.cropArea = {
+      self.cropArea[1] - (diff[1] / factor),
+      self.cropArea[2] - (diff[2] / factor),
+      self.cropArea[3] - (diff[1] / factor),
+      self.cropArea[4] - (diff[2] / factor)
+    }
+
+    -- Update dragStartPos for smooth dragging
+
+    self.portraitAnchor = currentPos
+    drawCharacter()
+  end
+  
+  for _, event in ipairs(input.events()) do
+    if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
+      self.cropArea = {
+        self.cropArea[1] + event.data.mouseWheel,
+        self.cropArea[2] + event.data.mouseWheel,
+        self.cropArea[3] - event.data.mouseWheel,
+        self.cropArea[4] - event.data.mouseWheel
+      }
+      save()
+      drawCharacter()
+    end
+  end
+end
+
+function uninit()
+  save()
 end

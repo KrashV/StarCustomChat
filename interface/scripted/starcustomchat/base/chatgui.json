@@ -215,7 +215,6 @@
     "tbxInput": {
       "type": "textbox",
       "position": [23, 14],
-      "hint": "ПЕЧАТАТЬ ЗДЕСЬ",
       "callback": "null",
       "maxWidth": 263,
       "zlevel": 4,
@@ -224,6 +223,15 @@
     },
 
     "lblCommandPreview": {
+      "type": "label",
+      "position": [23,14],
+      "value": "",
+      "mouseTransparent": true,
+      "zLevel": 3,
+      "color": "#bbbbbbAA"
+    },
+
+    "lblTextboxHint": {
       "type": "label",
       "position": [23,14],
       "value": "",
@@ -253,8 +261,8 @@
           "position": [0, -1],
           "stretchSet": {
             "end": "/interface/scripted/starcustomchat/base/dmtab/charactersheader.png",
-            "inner": "/interface/scripted/starcustomchat/dmtab/base/charactersinner.png",
-            "begin": "/interface/scripted/starcustomchat/dmtab/base/charactersfooter.png"
+            "inner": "/interface/scripted/starcustomchat/base/dmtab/charactersinner.png",
+            "begin": "/interface/scripted/starcustomchat/base/dmtab/charactersfooter.png"
           }
         },
         "saPlayers": {

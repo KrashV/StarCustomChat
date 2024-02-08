@@ -28,8 +28,15 @@
 
     "portraitCanvas": {
       "type": "canvas",
+      "rect": [8, 58, 78, 128],
+      "captureMouseEvents": true
+    },
+
+    "saScrollArea": {
+      "type": "scrollArea",
       "rect": [8, 58, 78, 128]
     },
+
 
     "btnResetAvatar": {
       "type": "button",
@@ -41,59 +48,6 @@
     },
 
 
-
-    "btnLeft": {
-      "type": "button",
-      "position": [10, 129],
-      "base": "/interface/scripted/starcustomchatsettings/left.png",
-      "hover": "/interface/scripted/starcustomchatsettings/lefthover.png",
-      "callback": "movePortrait",
-      "data": [1, 0]
-    },
-    "btnRight": {
-      "type": "button",
-      "position": [20, 129],
-      "base": "/interface/scripted/starcustomchatsettings/right.png",
-      "hover": "/interface/scripted/starcustomchatsettings/righthover.png",
-      "callback": "movePortrait",
-      "data": [-1, 0]
-    },
-
-    "btnDown": {
-      "type": "button",
-      "position": [35, 129],
-      "base": "/interface/scripted/starcustomchatsettings/down.png",
-      "hover": "/interface/scripted/starcustomchatsettings/downhover.png",
-      "callback": "movePortrait",
-      "data": [0, 1]
-    },
-    "btnUp": {
-      "type": "button",
-      "position": [45, 129],
-      "base": "/interface/scripted/starcustomchatsettings/up.png",
-      "hover": "/interface/scripted/starcustomchatsettings/uphover.png",
-      "callback": "movePortrait",
-      "data": [0, -1]
-    },
-
-    "btnPlus": {
-      "type": "button",
-      "position": [60, 129],
-      "base": "/interface/scripted/starcustomchatsettings/plus.png",
-      "hover": "/interface/scripted/starcustomchatsettings/plushover.png",
-      "callback": "zoom",
-      "data": 1
-    },
-    "btnMinus": {
-      "type": "button",
-      "position": [70, 129],
-      "base": "/interface/scripted/starcustomchatsettings/minus.png",
-      "hover": "/interface/scripted/starcustomchatsettings/minushover.png",
-      "callback": "zoom",
-      "data": -1
-    },
-
-
     "btnLanguage": {
       "type": "button",
       "base" : "/interface/scripted/starcustomchatsettings/bt.png",
@@ -101,7 +55,6 @@
       "position": [75, 21],
       "callback": "changeLanguage"
     },
-
 
 
     "btnMode": {
@@ -177,8 +130,9 @@
   },
   "scriptWidgetCallbacks": ["movePortrait", "changeLanguage", "changeMode", "clearHistory", 
     "resetAvatar", "resetSettings", "updateFontSize", "updateMessageLength", "zoom"],
-  "canvasClickCallbacks" : {
 
+  "canvasClickCallbacks" : {
+    "portraitCanvas": "clickCanvasCallback"
   },
   "scripts": ["/interface/scripted/starcustomchatsettings/starcustomchatsettingsgui.lua"]
 }

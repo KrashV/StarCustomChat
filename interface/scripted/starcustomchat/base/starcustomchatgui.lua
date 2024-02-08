@@ -246,13 +246,13 @@ function localeChat(localePluginConfig)
     widget.setText("rgChatMode." .. i, starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
-  -- Unfortunately, to reset HINT we have to recreate the textbox
-  local standardTbx = config.getParameter("gui")["tbxInput"]
-  standardTbx.hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
+  local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
 
-  pane.removeWidget("tbxInput")
-  pane.addWidget(standardTbx, "tbxInput")
   widget.setText("tbxInput", savedText)
+
+  if not savedText or savedText == "" then
+    widget.setText("lblTextboxHint", hint)
+  end
 
   widget.setText("lytDMingTo.lblHint", starcustomchat.utils.getTranslation("chat.dming.hint"))
   widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))
@@ -367,7 +367,11 @@ function checkCommandsPreview()
 end
 
 function checkTyping()
-  if widget.hasFocus("tbxInput") or widget.getText("tbxInput") ~= "" then
+  local text = widget.getText("tbxInput")
+
+  widget.setText("lblTextboxHint", text ~= "" and "" or starcustomchat.utils.getTranslation("chat.textbox.hint"))
+
+  if widget.hasFocus("tbxInput") or text ~= "" then
     status.addPersistentEffect("icchatdots", "icchatdots")
   else
     status.clearPersistentEffects("icchatdots")
