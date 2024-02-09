@@ -148,7 +148,10 @@ function registerCallbacks()
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = player.id() // -65536,
-        cropArea = player.getProperty("icc_portrait_frame") or self.customChat.config.portraitCropArea,
+        settings = player.getProperty("icc_portrait_settings") or {
+          offset = self.customChat.config.defaultPortraitOffset,
+          scale = self.customChat.config.defaultPortraitScale
+        },
         uuid = player.uniqueId()
       }
     end
@@ -780,8 +783,14 @@ function openSettings()
   chatConfigInterface.backImage = self.customChat.config.icons.empty
   chatConfigInterface.frameImage = self.customChat.config.icons.frame
   chatConfigInterface.proximityRadius = self.customChat.proximityRadius
-  chatConfigInterface.defaultCropArea = self.customChat.config.portraitCropArea
-  chatConfigInterface.portraitFrame = player.getProperty("icc_portrait_frame") or self.customChat.config.portraitCropArea
+  chatConfigInterface.portraitSettings = player.getProperty("icc_portrait_settings") or {
+    offset = self.customChat.config.defaultPortraitOffset,
+    scale = self.customChat.config.defaultPortraitScale
+  }
+  chatConfigInterface.defaultPortraitSettings = {
+    offset = self.customChat.config.defaultPortraitOffset,
+    scale = self.customChat.config.defaultPortraitScale
+  }
   chatConfigInterface.fontSize = self.customChat.config.fontSize
   chatConfigInterface.maxCharactersAllowed = self.customChat.maxCharactersAllowed
   player.interact("ScriptPane", chatConfigInterface)

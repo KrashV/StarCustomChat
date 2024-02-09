@@ -3,11 +3,9 @@ require "/scripts/util.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
-  self.cropAreaRestrictions = {17, 23, 24, 30}
-  self.sizeRestrictions = {15, 25}
 
-  self.cropArea = config.getParameter("portraitFrame")
-  self.defaultCropArea = config.getParameter("defaultCropArea")
+  self.portraitSettings = config.getParameter("portraitSettings")
+  self.defaultPortraitSettings = config.getParameter("defaultPortraitSettings")
   self.backImage = config.getParameter("backImage")
   self.frameImage = config.getParameter("frameImage")
   self.chatMode = config.getParameter("chatMode")
@@ -48,7 +46,7 @@ function init()
 
   localeSettings(self.localePluginConfig)
   self.runCallbackForPlugins("settings_init", starcustomchat.locale)
-  
+
   drawCharacter()
   self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
   self.availableModes = {"compact", "modern"}
@@ -63,6 +61,7 @@ function init()
 
   widget.setText("lblFontSizeValue", self.fontSize)
   widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
+
 
 
   self.portraitAnchor = false
@@ -82,7 +81,8 @@ function localeSettings(localePluginConfig)
 end
 
 function resetAvatar()
-  self.cropArea = copy(self.defaultCropArea)
+  self.portraitSettings.offset = self.defaultPortraitSettings.offset
+  self.portraitSettings.scale = self.defaultPortraitSettings.scale
   drawCharacter()
   save()
 end
@@ -98,7 +98,7 @@ function drawCharacter()
   local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
 
   for _, layer in ipairs(portrait) do
-    self.portraitCanvas:drawImageRect(layer.image, self.cropArea, {0, 0, canvasSize[1], canvasSize[2]})
+    self.portraitCanvas:drawImage(layer.image, self.portraitSettings.offset, self.portraitSettings.scale)
   end
   self.portraitCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
@@ -142,7 +142,7 @@ end
 
 function clickCanvasCallback(position, button, isDown)
   if button == 0 then
-    self.portraitAnchor = isDown and position or nil
+    self.portraitAnchor = isDown and vec2.sub(position, self.portraitSettings.offset) or nil
     save()
   end
 end
@@ -159,7 +159,10 @@ function save()
   root.setConfiguration("iccMode", widget.getData("btnMode"))
   root.setConfiguration("icc_font_size", self.fontSize)
   root.setConfiguration("icc_max_allowed_characters", self.maxCharactersAllowed)
-  player.setProperty("icc_portrait_frame", self.cropArea)
+  player.setProperty("icc_portrait_settings", {
+    offset = self.portraitSettings.offset,
+    scale = self.portraitSettings.scale
+  })
 
   world.sendEntityMessage(player.id(), "icc_reset_settings")
   self.runCallbackForPlugins("settings_onSave", starcustomchat.locale)
@@ -182,49 +185,28 @@ end
 function cursorOverride(screenPosition)
   self.runCallbackForPlugins("settings_onCursorOverride", screenPosition)
 
-  local canvasSize = self.portraitCanvas:size()
-  local canvasFactor = canvasSize[1]
-  local cropAreaFactor = self.cropArea[3] - self.cropArea[1]
+  if self.portraitAnchor then
+    local currentPos = self.portraitCanvas:mousePosition()
+    local diff = vec2.sub(currentPos, self.portraitAnchor)
 
-  local factor = canvasFactor // cropAreaFactor
+    -- We believe that both the canvas and the crop area are squares
+
+    self.portraitSettings.offset = {
+      util.clamp(math.floor(diff[1]), -120, 120),
+      util.clamp(math.floor(diff[2]), -120, 120)
+    }
+    drawCharacter()
+  end
   
-  if factor > 0 then
-    if self.portraitAnchor then
-      local currentPos = self.portraitCanvas:mousePosition()
-      local diff = vec2.sub(currentPos, self.portraitAnchor)
+  for _, event in ipairs(input.events()) do
+    if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
+      self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 3)
 
-      -- We believe that both the canvas and the crop area are squares
-
-      self.cropArea = {
-        self.cropArea[1] - (diff[1] / factor),
-        self.cropArea[2] - (diff[2] / factor),
-        self.cropArea[3] - (diff[1] / factor),
-        self.cropArea[4] - (diff[2] / factor)
-      }
-
-
-      self.portraitAnchor = currentPos
+      save()
       drawCharacter()
     end
-    
-    for _, event in ipairs(input.events()) do
-      if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
-        local newCropArea = {
-          self.cropArea[1] + event.data.mouseWheel,
-          self.cropArea[2] + event.data.mouseWheel,
-          self.cropArea[3] - event.data.mouseWheel,
-          self.cropArea[4] - event.data.mouseWheel
-        }
-
-        local newFactor = canvasFactor // (newCropArea[3] - newCropArea[1])
-        if newFactor > 0 then
-          self.cropArea = copy(newCropArea)
-          save()
-          drawCharacter()
-        end
-      end
-    end
   end
+
 end
 
 function uninit()

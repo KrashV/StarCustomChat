@@ -128,16 +128,20 @@ function StarCustomChat:requestPortrait(connection)
     if entityId and world.entityExists(entityId) then
       promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
         self.savedPortraits[data.uuid] = {
-          portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait, self.config.portraitBGColor),
-          cropArea = data.cropArea
+          portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait),
+          cropArea = data.cropArea,
+          settings = data.settings
         }
         self.connectionToUuid[tostring(connection)] = uuid
         self:processQueue()
       end, function()
         self.connectionToUuid[tostring(connection)] = uuid
         self.savedPortraits[uuid] = {
-          portrait = world.entityExists(entityId) and starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(entityId, "full"), self.config.portraitBGColor) or {},
-          cropArea = self.config.portraitCropArea
+          portrait = world.entityExists(entityId) and starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(entityId, "full")) or {},
+          settings = {
+            offset = self.config.defaultPortraitOffset,
+            scale = self.config.defaultPortraitScale
+          }
         }
         self:processQueue()
       end)
@@ -147,7 +151,7 @@ end
 
 function StarCustomChat:updatePortrait(data)
   self.savedPortraits[data.uuid] = data
-  self.savedPortraits[data.uuid].portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(self.savedPortraits[data.uuid].portrait, self.config.portraitBGColor)
+  self.savedPortraits[data.uuid].portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(self.savedPortraits[data.uuid].portrait)
 
   self.connectionToUuid[tostring(data.connection)] = data.uuid
   self:processQueue()
@@ -162,19 +166,14 @@ function StarCustomChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
-  
-  --[[
-    starcustomchat.utils.sendMessageToStagehand(self.stagehandType, "icc_savePortrait", {
-    entityId = player.id(),
-    portrait = nil,
-    cropArea = player.getProperty("icc_portrait_frame",  self.config.portraitCropArea)
-  })
-  --]]
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
     self.savedPortraits[player.uniqueId()] = {
-      portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"), self.config.portraitBGColor),
-      cropArea = player.getProperty("icc_portrait_frame") or self.config.portraitCropArea
+      portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
+      settings = player.getProperty("icc_portrait_settings") or {
+        offset = self.config.defaultPortraitOffset,
+        scale = self.config.defaultPortraitScale
+      }
     }
   end
 
@@ -244,13 +243,55 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + size, offset[2] + size})
   end
 
-  local function drawPortrait(portrait, messageOffset, cropArea, color)
+  local function drawPortrait(portrait, messageOffset, cropArea, portraitSettings, color)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
     local size = portraitSizeFromBaseFont(self.config.fontSize)
 
     for _, layer in ipairs(portrait) do
-      self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + size, offset[2] + size})
+      if portraitSettings then
+        local currentScale = portraitSettings.scale * (size / 70)
+        local currentOffset = vec2.floor(vec2.mul(portraitSettings.offset, (size / 70)))
+        local imageSize = root.imageSize(layer.image)
+
+        -- This monstrocity exists because drawImageRect can't be fixed
+        local imageOffset = {0, 0}
+
+        local cropX1, cropX2, cropY1, cropY2 = 0, imageSize[1], 0, imageSize[2]
+        
+        if portraitSettings.scale > 1 then
+          cropX2 = 70 // portraitSettings.scale
+          cropY2 = 70 // portraitSettings.scale
+        end
+
+        if portraitSettings.offset[1] > 0 then
+          imageOffset[1] = portraitSettings.offset[1] / portraitSettings.scale
+          cropX2 = math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale)
+        else
+          cropX1 = - portraitSettings.offset[1] // portraitSettings.scale
+          cropX2 = math.min(math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale), imageSize[2])
+        end
+
+        if portraitSettings.offset[2] > 0 then
+          imageOffset[2] = portraitSettings.offset[2] / portraitSettings.scale
+          cropY2 = math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale)
+        else
+          cropY1 = - portraitSettings.offset[2] // portraitSettings.scale
+          cropY2 = math.min(math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale), imageSize[2])
+        end
+
+        if (cropX2 - cropX1 > 0 and cropY2 - cropY1 > 0) then
+          self.canvas:drawImage(layer.image .. string.format("?crop;%d;%d;%d;%d", 
+              cropX1, 
+              cropY1, 
+              cropX2, 
+              cropY2
+            ), 
+            vec2.add(offset, imageOffset), currentScale)
+        end
+      else
+        self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + size, offset[2] + size})
+      end
     end
     drawModeIcon(offset)
     drawImage(self.config.icons.frame, offset)
@@ -264,7 +305,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[tostring(target)]
 
     if uuid and self.savedPortraits[uuid] then
-      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, color)
+      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, self.savedPortraits[uuid].settings, color)
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
