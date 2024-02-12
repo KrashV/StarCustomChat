@@ -200,8 +200,7 @@ function cursorOverride(screenPosition)
   
   for _, event in ipairs(input.events()) do
     if event.type == "MouseWheel" and widget.inMember("portraitCanvas", screenPosition) then
-      self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 3)
-
+      self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 4)
       save()
       drawCharacter()
     end
