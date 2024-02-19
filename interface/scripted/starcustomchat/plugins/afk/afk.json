@@ -1,0 +1,38 @@
+{
+  "name": "AFK",
+
+  "localeKeys": {
+    "settings.afk_mode": {
+      "ru": "АФК плагин",
+      "en": "AFK plugin"
+    }
+  },
+
+  "settingsAddons": {
+    "gui": {
+      "chbAFKMode" : {
+        "type": "button",
+        "checkable": true,
+        "base": "/interface/optionsmenu/checkboxnocheck.png",
+        "hover": "/interface/optionsmenu/checkboxnocheckhover.png",
+        "baseImageChecked": "/interface/optionsmenu/checkboxcheck.png",
+        "hoverImageChecked": "/interface/optionsmenu/checkboxcheckhover.png",
+        "position": [8, 46],
+        "callback": "turnOnAFK"
+      },
+      "lblAfk": {
+        "type": "label",
+        "position": [23, 46],
+        "value": ""
+      }
+    },
+    "scriptWidgetCallbacks": ["turnOnAFK"]
+  },
+
+  "parameters": {
+    "mode": "effect",
+    "effect": "starchatafk",
+    "timer": 300
+  },
+  "script": "/interface/scripted/starcustomchat/plugins/afk/afk.lua"
+}

@@ -9,16 +9,16 @@ function oocchat:init()
 end
 
 function oocchat:formatIncomingMessage(message)
-  if message.text:find("^%^?g?r?a?y?;?%(%(") and (message.text:find("^%^?g?r?a?y?;?%(%b()%)%^?r?e?s?e?t?;?$") or not message.text:find("%)%)")) then
+  if message.text:find("^%s*%^?g?r?a?y?;?%(%(") and (message.text:find("^%s*%^?g?r?a?y?;?%(%b()%)%^?r?e?s?e?t?;?$") or not message.text:find("%)%)")) then
     if message.mode == "Broadcast" or message.mode == "Local" then
       message.mode = "OOC"
     end
   end
 
   if message.text:find("%(%(") then
-    if message.mode ~= "Broadcast" and message.mode ~= "Local" then
-      message.text = string.gsub(message.text, "%(%b()%)", "^gray;%1^reset;")
-      message.text = string.gsub(message.text, "%(%((.*)$", "^gray;((%1^reset;")
+    if message.mode ~= "OOC" then
+      message.text = string.gsub(message.text, "%(%(.-%)%)", "^gray;%1^reset;")
+      message.text = string.gsub(message.text, "(.*)%(%((.-)$", "%1^gray;((%2")
     end
   end
   return message

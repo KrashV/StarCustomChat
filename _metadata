@@ -1,10 +1,12 @@
 {
-  "version" : "1.5.8",
   "author" : "Degranon",
-  "requires" : [],
-  "description" : "Star Custom Chat",
-  "path" : ".",
-  "name" : "starcustomchat",
+  "description" : "Star Custom Chat is an overwhole mod that rewrites the way chat works in Starbound. \nInstead of a boring, plain text you can now have:\n\n* Two modes inspired by Discord: the compact one and the avatar showcase\n* Plugin and localisation system that allows you to enrich the experience for your own server by adding more functionality to the chat\n* Chat size configuration\n* Quick and easy DM panels\n\nRequires https://github.com/StarExtensions/StarExtensions by Novaenia version 1.9.24+\n\nFor questions, bug reports and suggestions please go to my discord server: https://discord.gg/E6jhHcSUGm",
+  "friendlyName" : "Star Custom Chat",
   "includes" : [],
-  "permissions" : ["clipboard"]
+  "name" : "starcustomchat",
+  "path" : ".",
+  "permissions" : ["clipboard"],
+  "requires" : [],
+  "tags" : "User Interface",
+  "version" : "1.5.9"
 }

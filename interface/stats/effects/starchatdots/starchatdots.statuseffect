@@ -1,8 +1,8 @@
 {
-  "name" : "icchatdots",
+  "name" : "starchatdots",
   "animationConfig" : "/player/playereffects.animation",
 
   "scripts" : [
-    "icchatdots.lua"
+    "starchatdots.lua"
   ]
 }

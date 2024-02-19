@@ -1,0 +1,30 @@
+{
+  "backgrond": {
+    "type": "image",
+    "file": "/interface/scripted/starcustomchat/base/replying/body.png",
+    "zlevel": 16
+  },
+  "lblHint": {
+    "type": "label",
+    "position": [4, 8],
+    "value": "",
+    "zlevel": 17,
+    "fontSize": 7,
+    "vAnchor": "mid"
+  },
+  "lblRecepient": {
+    "type": "label",
+    "value": "",
+    "zlevel": 17,
+    "fontSize": 9,
+    "vAnchor": "mid"
+  },
+  "btnClose": {
+    "type": "button",
+    "position": [253, 5],
+    "callback": "resetDMLayout",
+    "base": "/interface/scripted/starcustomchat/base/replying/close.png",
+    "hover": "/interface/scripted/starcustomchat/base/replying/close_hover.png",
+    "zlevel": 17
+  }
+}

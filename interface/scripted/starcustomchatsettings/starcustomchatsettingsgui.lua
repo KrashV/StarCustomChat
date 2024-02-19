@@ -178,8 +178,8 @@ function cancel()
 end
 
 
-function update()
-
+function update(dt)
+  self.runCallbackForPlugins("settings_update", dt)
 end
 
 function cursorOverride(screenPosition)

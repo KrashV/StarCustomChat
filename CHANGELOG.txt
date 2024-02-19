@@ -1,1 +1,5 @@
-- Allow enlarging the avatar up to x4
+- Added templates for 8 tab modes
+- Some movements around the code and files
+- OOC plugin: Fixed OOC messages sometimes not selected correctly
+- Removed asking for portrait every single time
+- Added AFK plugin: if you do not move for 5 minutes (mouse or buttons), your character will darken out and put in the "sleep" emote

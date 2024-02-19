@@ -1,0 +1,60 @@
+{
+  "btnMenu": {
+    "type": "button",
+    "position": [0, 0],
+    "callback": "null",
+    "base": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:base",
+    "hover": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:hover",
+    "zlevel": 17
+  },
+
+  "btnCollapse": {
+    "type": "button",
+    "position": [-20, 0],
+    "callback": "collapse",
+    "base": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:base",
+    "hover": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:hover",
+    "visible": false,
+    "zlevel": 18,
+    "data": {
+      "displayText": "chat.commands.collapse"
+    }
+  },
+
+  "btnDM": {
+    "type": "button",
+    "position": [0, 0],
+    "callback": "enableDM",
+    "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
+    "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
+    "visible": false,
+    "zlevel": 18,
+    "data": {
+      "displayText": "chat.commands.dm"
+    }
+  },
+  "btnCopy": {
+    "type": "button",
+    "position": [20, 0],
+    "callback": "copyMessage",
+    "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
+    "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
+    "visible": false,
+    "zlevel": 18,
+    "data": {
+      "displayText": "chat.commands.copy"
+    }
+  },
+  "btnPing": {
+    "type": "button",
+    "position": [40, 0],
+    "callback": "ping",
+    "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
+    "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
+    "visible": false,
+    "zlevel": 18,
+    "data": {
+      "displayText": "chat.commands.ping"
+    }
+  }
+}
