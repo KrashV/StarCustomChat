@@ -504,7 +504,7 @@ function textboxEnterKey(widgetName)
       return
     end
 
-    if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" then
+    if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
       widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
       return
     else
