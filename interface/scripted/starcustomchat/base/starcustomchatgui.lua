@@ -110,10 +110,12 @@ function init()
   end
 
   local currentMessageMode = config.getParameter("currentMessageMode")
+
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
     widget.setFontColor("rgChatMode." .. currentMessageMode, chatConfig.modeColors[widget.getData("rgChatMode." .. currentMessageMode).mode])
   else
+    widget.setSelectedOption("rgChatMode", 1)
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
