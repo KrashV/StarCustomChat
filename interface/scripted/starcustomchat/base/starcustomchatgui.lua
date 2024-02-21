@@ -368,30 +368,35 @@ function canvasClickEvent(position, button, isButtonDown)
   if button == 0 and isButtonDown then
     self.customChat.expanded = not self.customChat.expanded
 
-    local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
-    saveEverythingDude()
-    pane.dismiss()
+    if not self.reopening then
+      
+      local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
+      saveEverythingDude()
+      pane.dismiss()
 
-    local chatConfig = buildChatInterface()
-    chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
-    chatConfig.expanded = self.customChat.expanded
-    chatConfig.currentSizes = chatParameters
-    chatConfig.lastInputMessage = widget.getText("tbxInput")
-    chatConfig.portraits = self.customChat.savedPortraits
-    chatConfig.connectionToUuid =  self.customChat.connectionToUuid
-    chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-    chatConfig.chatLineOffset = self.customChat.lineOffset
-    chatConfig.reopened = true
-    chatConfig.DMingTo = self.DMingTo
-    chatConfig.selectedModes = {}
-    for _, mode in ipairs(chatConfig["chatModes"]) do 
-      if widget.active("btnCk" .. mode) then
-        chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+      local chatConfig = buildChatInterface()
+      chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
+      chatConfig.expanded = self.customChat.expanded
+      chatConfig.currentSizes = chatParameters
+      chatConfig.lastInputMessage = widget.getText("tbxInput")
+      chatConfig.portraits = self.customChat.savedPortraits
+      chatConfig.connectionToUuid =  self.customChat.connectionToUuid
+      chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+      chatConfig.chatLineOffset = self.customChat.lineOffset
+      chatConfig.reopened = true
+      chatConfig.DMingTo = self.DMingTo
+      chatConfig.selectedModes = {}
+      for _, mode in ipairs(chatConfig["chatModes"]) do 
+        if widget.active("btnCk" .. mode) then
+          chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+        end
       end
-    end
 
-    self.reopening = true
-    player.interact("ScriptPane", chatConfig)
+
+      player.interact("ScriptPane", chatConfig)
+      self.reopening = true
+    end
+    
   end
 
   -- Defocus from the canvases or we can never leave lol :D
