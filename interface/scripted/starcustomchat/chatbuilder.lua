@@ -86,6 +86,8 @@ function buildChatInterface()
       toggle_id = toggle_id + 1
     end
   end
+
+  baseInterface.expanded = root.getConfiguration("icc_is_expanded")
   return baseInterface
 end
 

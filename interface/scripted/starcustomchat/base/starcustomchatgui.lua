@@ -66,6 +66,7 @@ function init()
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = config.getParameter("expanded")
+  root.setConfiguration("icc_is_expanded", expanded)
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
