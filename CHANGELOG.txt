@@ -1,1 +1,2 @@
 - If you write the whole command, pressing enter will execute it straight away
+- Stores the expanded state on wrap / rejoin
