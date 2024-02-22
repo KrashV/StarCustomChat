@@ -1,3 +1,1 @@
-Courtesy to @muro_o:
-- If you write the whole command, pressing enter will execute it straight away
-- Stores the expanded state on wrap / rejoin
+- Each message now contains the UUID: you can use it for message manipulation

@@ -110,12 +110,21 @@ function StarCustomChat:addMessage(msg)
   if msg.connection then
     msg = formatMessage(msg)
     if msg then
+      msg.uuid = sb.makeUuid()
       table.insert(self.messages, msg)
       if #self.messages > self.config.chatHistoryLimit then
         table.remove(self.messages, 1)
       end
       self.callbackPlugins("onReceiveMessage", msg)
       self:processQueue()
+    end
+  end
+end
+
+function StarCustomChat:findMessageByUUID(uuid)
+  for ind, message in ipairs(self.messages) do 
+    if message.uuid and message.uuid == uuid then 
+      return ind 
     end
   end
 end
