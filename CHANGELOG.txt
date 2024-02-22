@@ -1,1 +1,2 @@
 - Each message now contains the UUID: you can use it for message manipulation
+- Opening the context menu is now more stable

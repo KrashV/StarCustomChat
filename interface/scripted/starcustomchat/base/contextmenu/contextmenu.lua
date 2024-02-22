@@ -8,13 +8,13 @@ function processContextMenu(screenPosition)
   end
 
   if widget.inMember("lytContext", screenPosition) then
-    widget.setVisible("lytContext.btnMenu", false)
     widget.setVisible("lytContext.btnDM", true)
     widget.setVisible("lytContext.btnCopy", true)
     widget.setVisible("lytContext.btnPing", true)
+    widget.setVisible("lytContext.dots", false)
     widget.setSize("lytContext", {60, 15})
   else
-    widget.setVisible("lytContext.btnMenu", true)
+    widget.setVisible("lytContext.dots", true)
     widget.setVisible("lytContext.btnDM", false)
     widget.setVisible("lytContext.btnCopy", false)
     widget.setVisible("lytContext.btnPing", false)
