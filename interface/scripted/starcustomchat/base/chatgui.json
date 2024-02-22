@@ -38,9 +38,13 @@
       "visible": false,
       "scissoring": false,
       "children": {
-        "include": {
-          "type": "include",
-          "file": "/interface/scripted/starcustomchat/base/contextmenu/contextmenugui.json"
+        "dots": {
+          "type": "button",
+          "position": [0, 0],
+          "callback": "null",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/menu.png:hover",
+          "zlevel": 17
         }
       }
     },
@@ -263,7 +267,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", 
-    "copyMessage", "ping", "collapse", "enableDM", "resetDMLayout"],
+    "resetDMLayout"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

@@ -11,6 +11,7 @@ function buildChatInterface()
   -- First, collect all the modes from the plugins
   local chatModes = {}
   baseInterface["chatModes"] = {}
+  baseInterface["contextMenuButtons"] = {}
   baseInterface["enabledPlugins"] = {}
   for _, pluginName in ipairs(enabledPlugins) do 
     local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
@@ -22,6 +23,13 @@ function buildChatInterface()
           table.insert(baseInterface["chatModes"], mode.name)
           table.insert(chatModes, mode)
         end
+      end
+    end
+
+    if pluginConfig.contextMenuButtons then
+      for btnName, btnConfig in pairs(pluginConfig.contextMenuButtons) do
+        baseInterface["contextMenuButtons"][btnName] = btnConfig
+        table.insert(baseInterface["scriptWidgetCallbacks"], btnConfig.callback)
       end
     end
   end

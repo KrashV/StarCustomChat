@@ -8,12 +8,6 @@
   "chat.modes.RadioMessage": "Броски",
   "chat.modes.CommandResult": "Команды",
 
-  "chat.commands.copy": "Скопировать",
-  "chat.commands.ping": "Пингануть",
-  "chat.commands.dm": "Личное сообщение",
-  "chat.commands.collapse": "Свернуть сообщение",
-  "chat.commands.uncollapse": "Развернуть сообщение",
-
   "chat.textbox.hint": "Введите сообщение",
   "chat.dming.hint": "Отправить ЛС:",
 

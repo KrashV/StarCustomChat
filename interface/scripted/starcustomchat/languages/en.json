@@ -8,12 +8,6 @@
   "chat.modes.RadioMessage": "RadioMessage",
   "chat.modes.CommandResult": "CommandResult",
 
-  "chat.commands.copy": "Copy message",
-  "chat.commands.ping": "Ping user",
-  "chat.commands.dm": "DM user",
-  "chat.commands.collapse": "Collapse message",
-  "chat.commands.uncollapse": "Expand message",
-
   "chat.textbox.hint": "Type here",
   "chat.dming.hint": "Send DM to:",
 

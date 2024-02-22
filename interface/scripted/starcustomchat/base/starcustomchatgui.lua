@@ -101,6 +101,7 @@ function init()
   self.DMTimer = 2
   self.ReplyTimer = 5
   self.ReplyTime = 0
+  contextMenu_init(config.getParameter("contextMenuButtons"))
   checkDMs()
 
   local lastText = config.getParameter("lastInputMessage")
