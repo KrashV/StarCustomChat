@@ -1,5 +1,5 @@
 {
-  "btnMenu": {
+  "dots": {
     "type": "button",
     "position": [0, 0],
     "callback": "null",
