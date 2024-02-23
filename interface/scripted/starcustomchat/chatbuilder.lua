@@ -31,6 +31,10 @@ function buildChatInterface()
         baseInterface["contextMenuButtons"][btnName] = btnConfig
       end
     end
+
+    if pluginConfig.guiAddons then
+      baseInterface["gui"] = sb.jsonMerge(baseInterface["gui"], pluginConfig.guiAddons)
+    end
   end
 
   -- Then sort the modes by tab priority

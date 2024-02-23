@@ -49,22 +49,6 @@
       }
     },
 
-    "lytDMingTo": {
-      "type": "layout",
-      "position": [22, 24],
-      "size": [265, 16],
-      "layoutType": "basic",
-      "zlevel": 15,
-      "visible": false,
-      "scissoring": false,
-      "children": {
-        "include": {
-          "type": "include",
-          "file": "/interface/scripted/starcustomchat/base/dmtab/dmtabgui.json"
-        }
-      }
-    },
-
     "cnvChatCanvas": {
       "type": "canvas",
       "zlevel": 10,
