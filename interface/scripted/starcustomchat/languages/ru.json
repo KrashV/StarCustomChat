@@ -9,7 +9,7 @@
   "chat.modes.CommandResult": "Команды",
 
   "chat.textbox.hint": "Введите сообщение",
-  "chat.dming.hint": "Отправить ЛС:",
+  "chat.message.edited": "изменено",
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
   "chat.alerts.dm_not_found": "Игрок не на планете",

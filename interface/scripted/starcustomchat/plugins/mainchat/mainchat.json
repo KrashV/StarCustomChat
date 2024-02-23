@@ -86,6 +86,11 @@
       "ru": "Пингануть",
       "en": "Ping user"
     },
+    
+    "chat.dming.hint": {
+      "en": "Send DM to:",
+      "ru": "Отправить ЛС:"
+    },
     "chat.commands.dm": {
       "ru": "Личное сообщение",
       "en": "DM user"

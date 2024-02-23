@@ -341,7 +341,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
   }, self.config.fontSize + 1, (color or self.config.textColors.default))
 
   if time then
-    timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], nameOffset[2] + self.config.timeOffset[2]}
+    local timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], nameOffset[2] + self.config.timeOffset[2]}
     self.canvas:drawText(time, {
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
@@ -420,9 +420,10 @@ function filterMessages(messages)
   return drawnMessageIndexes
 end
 
-function createNameForCompactMode(name, color, text, time, timeColor)
+function createNameForCompactMode(name, color, text, time, timeColor, edited)
   local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
-  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, name, text)
+  local editedString = edited and string.format(" ^lightgray;(%s)^reset;", starcustomchat.utils.getTranslation("chat.message.edited")) or ""
+  local formattedString = string.format(" %s^reset;<^%s;%s^reset;%s>: %s", timeString, color, name, editedString, text)
 
   return formattedString
 end
@@ -437,7 +438,15 @@ function cutStringFromEnd(toCollapse, inputString, MAX)
   end
 end
 
---TODO: instead of all messages we need to look at the messages that are drawn
+function StarCustomChat:getTextSize(text)
+  -- Get amount of lines in the message and its length
+  local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
+  widget.setText(labelToCheck, text)
+  local sizeOfText = widget.getSize(labelToCheck)
+  widget.setText(labelToCheck, "")
+  return sizeOfText
+end
+
 function StarCustomChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
@@ -466,9 +475,11 @@ function StarCustomChat:processQueue()
     local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
     message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait)
 
-    -- Get amount of lines in the message and its length
-    local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
-    local text = self.chatMode == "modern" and message.text or createNameForCompactMode(message.nickname, self.config.modeColors[messageMode] or self.config.modeColors.default, message.text, message.time, self.config.textColors.time)
+
+    local text = self.chatMode == "modern" and message.text 
+      or createNameForCompactMode(message.nickname, 
+        self.config.modeColors[messageMode] or self.config.modeColors.default, 
+        message.text, message.time, self.config.textColors.time, message.edited)
 
     if self.maxCharactersAllowed ~= 0 then
       local toCheckLength = message.collapsed == nil and true or message.collapsed
@@ -477,12 +488,11 @@ function StarCustomChat:processQueue()
       message.collapsed = nil
     end
 
-    widget.setText(labelToCheck, text)
-    local sizeOfText = widget.getSize(labelToCheck)
+    local sizeOfText = self:getTextSize(text)
+
     if not sizeOfText then return end 
     message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
     message.height = sizeOfText[2]
-    widget.setText(labelToCheck, "")
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
@@ -498,7 +508,7 @@ function StarCustomChat:processQueue()
         local size = portraitSizeFromBaseFont(self.config.fontSize)
         local nameOffset = vec2.add(self.config.nameOffset, {size, size})
         
-        self.canvas:drawText(text, {
+        self.canvas:drawText(text .. (message.edited and " ^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")" or ""), {
           position = {nameOffset[1], messageOffset},
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
@@ -507,7 +517,8 @@ function StarCustomChat:processQueue()
 
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
-          self:drawIcon(message.portrait, message.nickname, offset, self.config.modeColors[messageMode], message.time, message.recipient)
+          self:drawIcon(message.portrait, message.nickname, offset, self.config.modeColors[messageMode], 
+            message.time, message.recipient)
           message.height = message.height + self.config.spacings.name + self.config.fontSize + 1
         end
       end

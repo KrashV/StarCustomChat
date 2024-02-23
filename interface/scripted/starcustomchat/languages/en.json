@@ -9,7 +9,7 @@
   "chat.modes.CommandResult": "CommandResult",
 
   "chat.textbox.hint": "Type here",
-  "chat.dming.hint": "Send DM to:",
+  "chat.message.edited": "edited",
 
   "chat.alerts.dm_not_specified": "Select the recipient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
