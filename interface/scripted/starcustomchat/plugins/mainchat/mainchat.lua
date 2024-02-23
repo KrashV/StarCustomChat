@@ -19,6 +19,7 @@ function mainchat:init(chat)
     widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
 
     widget.setVisible("lytDMingTo", true)
+    self.customChat.hasExternalMenu = "lytDMingTo"
     widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
   end
 end
@@ -114,7 +115,7 @@ end
 
 function mainchat:onTextboxEscape()
   if self.DMingTo then
-    self:resetDMLayout()
+    self:resetLayout("lytDMingTo")
     widget.focus("tbxInput")
     return true
   end
@@ -125,7 +126,7 @@ function mainchat:onTextboxEnter(message)
     local whisperName
     if self.DMingTo then
       whisperName = self.DMingTo
-      self:resetDMLayout()
+      self:resetLayout("lytDMingTo")
     else
       local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
       if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
@@ -153,15 +154,17 @@ function mainchat:onBackgroundChange(chatConfig)
   chatConfig.DMingTo = self.DMingTo
 end
 
-function mainchat:resetDMLayout()
-  if widget.active("lytDMingTo") then
-    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
+function mainchat:resetLayout(layout)
+  if widget.active(layout) then
+    local size = {0, widget.getSize(layout)[2]}
+    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
+    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
   end
 
   self.DMingTo = nil
-  widget.setVisible("lytDMingTo", false)
+  widget.setVisible(layout, false)
+  self.customChat.hasExternalMenu = nil
 end
 
 function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
@@ -176,7 +179,11 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
         widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
         widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
       end
+      if self.customChat.hasExternalMenu then
+        self:resetLayout("lytDMingTo")
+      end
       widget.setVisible("lytDMingTo", true)
+      self.customChat.hasExternalMenu = "lytDMingTo"
 
       self.DMingTo = selectedMessage.recipient or selectedMessage.nickname
       widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
@@ -208,7 +215,7 @@ end
 
 function mainchat:onCustomButtonClick(buttonName, data)
   if buttonName == "resetDMLayout" then
-    self:resetDMLayout()
+    self:resetLayout("lytDMingTo")
     if widget.getText("tbxInput") ~= "" then
       widget.focus("tbxInput")
     end
