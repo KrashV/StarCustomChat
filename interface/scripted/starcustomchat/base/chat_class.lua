@@ -369,8 +369,13 @@ function StarCustomChat:resetOffset()
 end
 
 function StarCustomChat:highlightMessage(message, color)
-  local y1, y2 = message.offset, message.offset + message.height + self.config.spacings.messages
-  self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, color or self.config.highlightColor)
+  for i = #self.drawnMessageIndexes, 1, -1 do 
+    if message.uuid == self.messages[self.drawnMessageIndexes[i]].uuid then
+      local y1, y2 = message.offset, message.offset + message.height + self.config.spacings.messages
+      self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, color or self.config.highlightColor)
+      return
+    end
+  end
 end
 
 function StarCustomChat:clearHighlights()
