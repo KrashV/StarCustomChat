@@ -203,3 +203,10 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
     end
   end
 end
+
+function mainchat:onCustomButtonClick(buttonName, data)
+  if buttonName == "resetDMLayout" then
+    self:resetDMLayout()
+    widget.focus("tbxInput")
+  end
+end

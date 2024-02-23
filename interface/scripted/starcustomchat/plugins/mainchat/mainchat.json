@@ -64,10 +64,10 @@
           "fontSize": 9,
           "vAnchor": "mid"
         },
-        "btnClose": {
+        "resetDMLayout": {
           "type": "button",
           "position": [253, 5],
-          "callback": "resetDMLayout",
+          "callback": "customButtonCallback",
           "base": "/interface/scripted/starcustomchat/base/replying/close.png",
           "hover": "/interface/scripted/starcustomchat/base/replying/close_hover.png",
           "zlevel": 17

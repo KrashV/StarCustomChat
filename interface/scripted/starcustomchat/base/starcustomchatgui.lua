@@ -575,6 +575,9 @@ function createTooltip(screenPosition)
   end
 end
 
+function customButtonCallback(buttonName, data)
+  self.runCallbackForPlugins("onCustomButtonClick", buttonName, data)
+end
 
 function saveEverythingDude()
   -- Save messages and last command

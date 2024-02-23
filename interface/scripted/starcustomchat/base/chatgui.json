@@ -251,7 +251,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", 
-    "resetDMLayout", "contextMenuButtonClick"],
+    "customButtonCallback", "contextMenuButtonClick"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

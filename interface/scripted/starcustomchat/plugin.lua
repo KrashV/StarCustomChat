@@ -75,6 +75,10 @@ function PluginClass:onBackgroundChange(chatConfig)
   return chatConfig
 end
 
+function PluginClass:onCustomButtonClick(buttonName, data)
+
+end
+
 --[[
   Context menu
 ]]
