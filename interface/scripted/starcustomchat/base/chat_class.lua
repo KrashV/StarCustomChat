@@ -368,8 +368,9 @@ function StarCustomChat:resetOffset()
   self:processQueue()
 end
 
-function StarCustomChat:highlightMessage(y1, y2)
-  self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, self.config.highlightColor)
+function StarCustomChat:highlightMessage(message, color)
+  local y1, y2 = message.offset, message.offset + message.height + self.config.spacings.messages
+  self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, color or self.config.highlightColor)
 end
 
 function StarCustomChat:clearHighlights()
@@ -394,7 +395,7 @@ function StarCustomChat:selectMessage(position)
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]
     if message.offset and pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
-      self:highlightMessage(message.offset, message.offset + message.height + self.config.spacings.messages)
+      self:highlightMessage(message)
       return message
     end
   end
