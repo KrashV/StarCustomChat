@@ -207,6 +207,8 @@ end
 function mainchat:onCustomButtonClick(buttonName, data)
   if buttonName == "resetDMLayout" then
     self:resetDMLayout()
-    widget.focus("tbxInput")
+    if widget.getText("tbxInput") ~= "" then
+      widget.focus("tbxInput")
+    end
   end
 end
