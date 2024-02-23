@@ -86,27 +86,29 @@ end
 
 function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMessage)
 
-  if buttonName == "copy" then
-    return true
-  elseif buttonName == "dm" then
-    return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
-  elseif buttonName == "ping" then
-    return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
-      and selectedMessage.connection * -65536 ~= player.id()
-  elseif buttonName == "collapse" then
-    local allowCollapse = self.customChat.maxCharactersAllowed ~= 0 and selectedMessage.isLong
+  if selectedMessage then
+    if buttonName == "copy" then
+      return true
+    elseif buttonName == "dm" then
+      return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
+    elseif buttonName == "ping" then
+      return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
+        and selectedMessage.connection * -65536 ~= player.id()
+    elseif buttonName == "collapse" then
+      local allowCollapse = self.customChat.maxCharactersAllowed ~= 0 and selectedMessage.isLong
 
-    if allowCollapse then
-      widget.setButtonImages("lytContext.collapse", {
-        base = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:base", selectedMessage.collapsed and "uncollapse" or "collapse"),
-        hover = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:hover", selectedMessage.collapsed and "uncollapse" or "collapse")
-      })
-      widget.setData("lytContext.collapse", {
-        displayText = string.format("chat.commands.%s", selectedMessage.collapsed and "uncollapse" or "collapse")
-      })
+      if allowCollapse then
+        widget.setButtonImages("lytContext.collapse", {
+          base = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:base", selectedMessage.collapsed and "uncollapse" or "collapse"),
+          hover = string.format("/interface/scripted/starcustomchat/base/contextmenu/%s.png:hover", selectedMessage.collapsed and "uncollapse" or "collapse")
+        })
+        widget.setData("lytContext.collapse", {
+          displayText = string.format("chat.commands.%s", selectedMessage.collapsed and "uncollapse" or "collapse")
+        })
+      end
+    
+      return widget.inMember("lytContext", screenPosition) and allowCollapse
     end
-  
-    return widget.inMember("lytContext", screenPosition) and allowCollapse
   end
 end
 
