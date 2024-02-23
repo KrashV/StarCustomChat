@@ -420,10 +420,9 @@ function filterMessages(messages)
   return drawnMessageIndexes
 end
 
-function createNameForCompactMode(name, color, text, time, timeColor, edited)
+function createNameForCompactMode(name, color, text, time, timeColor)
   local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
-  local editedString = edited and string.format(" ^lightgray;(%s)^reset;", starcustomchat.utils.getTranslation("chat.message.edited")) or ""
-  local formattedString = string.format(" %s^reset;<^%s;%s^reset;%s>: %s", timeString, color, name, editedString, text)
+  local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, name, text)
 
   return formattedString
 end
@@ -479,7 +478,7 @@ function StarCustomChat:processQueue()
     local text = self.chatMode == "modern" and message.text 
       or createNameForCompactMode(message.nickname, 
         self.config.modeColors[messageMode] or self.config.modeColors.default, 
-        message.text, message.time, self.config.textColors.time, message.edited)
+        message.text, message.time, self.config.textColors.time)
 
     if self.maxCharactersAllowed ~= 0 then
       local toCheckLength = message.collapsed == nil and true or message.collapsed
@@ -488,6 +487,7 @@ function StarCustomChat:processQueue()
       message.collapsed = nil
     end
 
+    text = text .. (message.edited and " ^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")" or "")
     local sizeOfText = self:getTextSize(text)
 
     if not sizeOfText then return end 
@@ -508,7 +508,7 @@ function StarCustomChat:processQueue()
         local size = portraitSizeFromBaseFont(self.config.fontSize)
         local nameOffset = vec2.add(self.config.nameOffset, {size, size})
         
-        self.canvas:drawText(text .. (message.edited and " ^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")" or ""), {
+        self.canvas:drawText(text, {
           position = {nameOffset[1], messageOffset},
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
