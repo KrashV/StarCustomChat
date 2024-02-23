@@ -23,6 +23,14 @@ function mainchat:init(chat)
   end
 end
 
+function mainchat:registerMessageHandlers(shared)
+
+  shared.setMessageHandler( "icc_ping", function(_, _, source)
+    starcustomchat.utils.alert("chat.alerts.was_pinged", source)
+    pane.playSound(self.pingSound)
+  end)
+
+end
 function mainchat:onLocaleChange()
   widget.setText("lytDMingTo.lblHint", starcustomchat.utils.getTranslation("chat.dming.hint"))
   widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))

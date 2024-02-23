@@ -30,7 +30,8 @@
     "modeIcons": {
       "server": "/interface/scripted/starcustomchat/base/icons/server.png",
       "console": "/interface/scripted/starcustomchat/base/icons/console.png"
-    }
+    },
+    "pingSound": "/sfx/instruments/bones/a4.ogg"
   },
 
   "guiAddons": {

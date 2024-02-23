@@ -180,10 +180,7 @@ function registerCallbacks()
     self.customChat:clearHistory(message)
   end))
 
-  shared.setMessageHandler( "icc_ping", simpleHandler(function(source)
-    starcustomchat.utils.alert("chat.alerts.was_pinged", source)
-    pane.playSound(self.customChat.config.notificationSound)
-  end))
+  self.runCallbackForPlugins("registerMessageHandlers", shared)
 
   return true
 end

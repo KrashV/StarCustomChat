@@ -24,6 +24,10 @@ function PluginClass:update(dt)
 
 end
 
+function PluginClass:registerMessageHandlers(shared)
+
+end
+
 function PluginClass:onSendMessage(data)
 
 end
