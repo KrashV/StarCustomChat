@@ -4,6 +4,16 @@ require "/scripts/util.lua"
 
 
 function buildChatInterface()
+
+  local function sortByPriority(tbl)
+    table.sort(tbl, function(a, b) 
+      local a_priority = a.priority or 999999
+      local b_priority = b.priority or 999999
+      return a_priority < b_priority
+    end)
+  end
+
+
   local baseInterface = root.assetJson("/interface/scripted/starcustomchat/base/chatgui.json")
   local enabledPlugins = root.assetJson("/scripts/starcustomchat/enabledplugins.json")
   local disabledModes = root.assetJson("/scripts/starcustomchat/disabledmodes.json")
@@ -27,8 +37,8 @@ function buildChatInterface()
     end
 
     if pluginConfig.contextMenuButtons then
-      for btnName, btnConfig in pairs(pluginConfig.contextMenuButtons) do
-        baseInterface["contextMenuButtons"][btnName] = btnConfig
+      for _, btnConfig in ipairs(pluginConfig.contextMenuButtons) do
+        table.insert(baseInterface["contextMenuButtons"], btnConfig)
       end
     end
 
@@ -38,11 +48,10 @@ function buildChatInterface()
   end
 
   -- Then sort the modes by tab priority
-  table.sort(chatModes, function(a, b) 
-    local a_priority = a.tab_priority or 999999
-    local b_priority = b.tab_priority or 999999
-    return a_priority < b_priority
-  end)
+  sortByPriority(chatModes)
+
+  -- Then sort the modes by tab priority
+  sortByPriority(baseInterface["contextMenuButtons"])
 
   -- Then add the modes to the radio group
   local tab_id = 1

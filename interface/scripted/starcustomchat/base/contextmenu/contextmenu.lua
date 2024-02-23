@@ -4,7 +4,7 @@ function contextMenu_init(buttonsConfig)
   self.contextMenu.dotsSize = root.imageSize(config.getParameter("gui")["lytContext"]["children"]["dots"]["base"])
 
   local position = {0, 0}
-  for btnName, btnConfig in pairs(buttonsConfig) do 
+  for _, btnConfig in ipairs(buttonsConfig) do 
     local buttonSize = root.imageSize(btnConfig["base"])
 
     widget.addChild("lytContext", {
@@ -16,10 +16,10 @@ function contextMenu_init(buttonsConfig)
       data = {
         displayText = btnConfig["tooltip"]
       }
-    }, btnName)
+    }, btnConfig.name)
 
     table.insert(self.contextMenu.buttonConfigs, {
-      name = btnName,
+      name = btnConfig.name,
       size = buttonSize
     })
   end

@@ -4,7 +4,7 @@
   "modes": [{
     "name": "OOC",
     "has_tab": true,
-    "tab_priority": 80,
+    "priority": 80,
     "has_toggle": true
   }],
 

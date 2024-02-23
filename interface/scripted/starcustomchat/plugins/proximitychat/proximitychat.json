@@ -4,7 +4,7 @@
   "modes": [{
     "name": "Proximity",
     "has_tab": true,
-    "tab_priority": 15,
+    "priority": 15,
     "has_toggle": true
   }],
 

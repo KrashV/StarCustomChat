@@ -4,22 +4,22 @@
   "modes": [{
     "name": "Broadcast",
     "has_tab": true,
-    "tab_priority": 0,
+    "priority": 0,
     "has_toggle": true
   },{
     "name": "Local",
     "has_tab": true,
-    "tab_priority": 10,
+    "priority": 10,
     "has_toggle": true
   },{
     "name": "Party",
     "has_tab": true,
-    "tab_priority": 20,
+    "priority": 20,
     "has_toggle": false
   },{
     "name": "Whisper",
     "has_tab": true,
-    "tab_priority": 30,
+    "priority": 30,
     "has_toggle": false
   },{
     "name": "CommandResult",
@@ -105,30 +105,36 @@
     }
   },
 
-  "contextMenuButtons": {
-    "copy": {
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
-      "tooltip": "chat.commands.copy"
-    },
-    "ping": {
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
-      "tooltip": "chat.commands.ping"
-    },
-    
-    "collapse": {
+  "contextMenuButtons": [
+    {
+      "name": "collapse",
       "base": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:hover",
-      "tooltip": "chat.commands.collapse"
+      "tooltip": "chat.commands.collapse",
+      "priority": 0
     },
-
-    "dm": {
+    {
+      "name": "dm",
       "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
-      "tooltip": "chat.commands.dm"
+      "tooltip": "chat.commands.dm",
+      "priority": 10
+    },
+    {
+      "name": "copy",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
+      "tooltip": "chat.commands.copy",
+      "priority": 20
+    },
+    {
+      "name": "ping",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
+      "tooltip": "chat.commands.ping",
+      "priority": 30
     }
-  },
+  ],
 
   "script": "/interface/scripted/starcustomchat/plugins/mainchat/mainchat.lua"
 }
