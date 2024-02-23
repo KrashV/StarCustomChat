@@ -56,12 +56,11 @@ function init()
     -- The logic here is actually strange and might need some more customisation
     local result = nil
     for _, plugin in ipairs(plugins) do 
-      result = plugin[method](plugin, ...)
+      result = plugin[method](plugin, ...) or result
     end
     return result
   end
 
-  self.runCallbackForPlugins("init")
   localeChat(self.localePluginConfig)
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
@@ -83,6 +82,8 @@ function init()
     chatConfig, player.id(), storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
+  self.runCallbackForPlugins("init", self.customChat)
+
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
   self.tooltipFields = {}
@@ -99,8 +100,6 @@ function init()
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
   self.DMTimer = 2
-  self.ReplyTimer = 5
-  self.ReplyTime = 0
   contextMenu_init(config.getParameter("contextMenuButtons"))
   checkDMs()
 
@@ -118,17 +117,6 @@ function init()
   else
     widget.setSelectedOption("rgChatMode", 1)
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
-  end
-
-  self.DMingTo = config.getParameter("DMingTo")
-
-  if self.DMingTo and not widget.active("lytDMingTo") then
-    widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
-
-    widget.setVisible("lytDMingTo", true)
-    widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
   end
 
   self.chatFunctionCallback = function(message)
@@ -263,8 +251,7 @@ function localeChat(localePluginConfig)
     widget.setText("lblTextboxHint", hint)
   end
 
-  widget.setText("lytDMingTo.lblHint", starcustomchat.utils.getTranslation("chat.dming.hint"))
-  widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))
+  self.runCallbackForPlugins("onLocaleChange")
 
   if hasFocus then
     widget.focus("tbxInput")
@@ -290,7 +277,6 @@ function update(dt)
     pane.dismiss()
   end
 
-  self.ReplyTime = math.max(self.ReplyTime - dt, 0)
   self.runCallbackForPlugins("update", dt)
 end
 
@@ -387,7 +373,6 @@ function canvasClickEvent(position, button, isButtonDown)
       chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
       chatConfig.chatLineOffset = self.customChat.lineOffset
       chatConfig.reopened = true
-      chatConfig.DMingTo = self.DMingTo
       chatConfig.selectedModes = {}
       for _, mode in ipairs(chatConfig["chatModes"]) do 
         if widget.active("btnCk" .. mode) then
@@ -395,11 +380,11 @@ function canvasClickEvent(position, button, isButtonDown)
         end
       end
 
+      chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
 
       player.interact("ScriptPane", chatConfig)
       self.reopening = true
     end
-    
   end
 
   -- Defocus from the canvases or we can never leave lol :D
@@ -464,23 +449,10 @@ function processButtonEvents(dt)
   end
 end
 
-function resetDMLayout()
-  if widget.active("lytDMingTo") then
-    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition(self.highlightCanvasName, vec2.sub(widget.getPosition(self.highlightCanvasName), {0, widget.getSize("lytDMingTo")[2]}))
-  end
-
-  self.DMingTo = nil
-  widget.setVisible("lytDMingTo", false)
-end
-
 function escapeTextbox(widgetName)
-  if not self.DMingTo then
+
+  if not self.runCallbackForPlugins("onTextboxEscape") then
     blurTextbox(widgetName)
-  else
-    resetDMLayout()
-    widget.focus(widgetName)
   end
 end
 
@@ -521,30 +493,7 @@ function textboxEnterKey(widgetName)
       self.lastCommand = text
       starcustomchat.utils.saveMessage(text)
     end
-  elseif message.mode == "Whisper" or self.DMingTo then
-    local whisperName
-    if self.DMingTo then
-      whisperName = self.DMingTo
-      resetDMLayout()
-    else
-      local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-      if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
-
-      local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-      if (not world.entityExists(data.id) and index(self.contacts, data.id) == 0) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
-
-      whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
-    end
-
-    local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. text or "/w " .. whisperName .. " " .. text
-
-    processCommand(whisper)
-    self.customChat.lastWhisper = {
-      recipient = whisperName,
-      text = text
-    }
-    starcustomchat.utils.saveMessage(whisper)
-  else
+  elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
     starcustomchat.utils.saveMessage(message.text)
     message = self.runCallbackForPlugins("formatOutcomingMessage", message)
     sendMessage(message)

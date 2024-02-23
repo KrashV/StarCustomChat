@@ -60,31 +60,23 @@
     "copy": {
       "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
-      "filter": "ctxCopyFilter",
-      "callback": "ctxCopy",
       "tooltip": "chat.commands.copy"
     },
     "ping": {
       "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
-      "filter": "ctxPingFilter",
-      "callback": "ctxPing",
       "tooltip": "chat.commands.ping"
     },
     
     "collapse": {
       "base": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/collapse.png:hover",
-      "filter": "ctxCollapseFilter",
-      "callback": "ctxCollapse",
       "tooltip": "chat.commands.collapse"
     },
 
     "dm": {
       "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
-      "filter": "ctxDMFilter",
-      "callback": "ctxDM",
       "tooltip": "chat.commands.dm"
     }
   },

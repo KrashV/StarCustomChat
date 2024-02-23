@@ -11,9 +11,8 @@ function contextMenu_init(buttonsConfig)
       type = "button",
       base = btnConfig["base"],
       hover = btnConfig["hover"],
-      callback = btnConfig["callback"],
+      callback = "contextMenuButtonClick",
       visible = false,
-      position = {0, 0},
       data = {
         displayText = btnConfig["tooltip"]
       }
@@ -21,7 +20,6 @@ function contextMenu_init(buttonsConfig)
 
     table.insert(self.contextMenu.buttonConfigs, {
       name = btnName,
-      filter = btnConfig.filter,
       size = buttonSize
     })
   end
@@ -41,7 +39,8 @@ function processContextMenu(screenPosition)
     local layoutSize = {0, self.contextMenu.dotsSize[2]}
 
     for _, btnConfig in ipairs(self.contextMenu.buttonConfigs) do 
-      if btnConfig.filter and _ENV[btnConfig.filter] and _ENV[btnConfig.filter](self.customChat, screenPosition, self.selectedMessage) then
+
+      if self.runCallbackForPlugins("contextMenuButtonFilter", btnConfig.name, screenPosition, self.selectedMessage) then
         widget.setPosition("lytContext." .. btnConfig.name, {layoutSize[1], 0})
         widget.setVisible("lytContext." .. btnConfig.name, true)
         layoutSize[1] = layoutSize[1] + btnConfig.size[1]
@@ -70,4 +69,8 @@ function processContextMenu(screenPosition)
     newOffset[2] = math.min(newOffset[2], self.customChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2] - widget.getSize("lytContext")[2])
     widget.setPosition("lytContext", newOffset)
   end
+end
+
+function contextMenuButtonClick(buttonName)
+  self.runCallbackForPlugins("contextMenuButtonClick", buttonName, self.selectedMessage)
 end

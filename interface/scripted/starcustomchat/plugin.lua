@@ -36,6 +36,17 @@ function PluginClass:onModeChange(mode)
 
 end
 
+
+function PluginClass:onTextboxEscape()
+  -- Do nothing
+  return false
+end
+
+function PluginClass:onTextboxEnter(message)
+  -- Do nothing
+  return false
+end
+
 function PluginClass:formatIncomingMessage(message)
   return message
 end
@@ -48,10 +59,28 @@ function PluginClass:onSettingsUpdate(data)
 
 end
 
+function PluginClass:onLocaleChange()
+
+end
+
 function PluginClass:onCursorOverride(screenPosition)
   
 end
 
+function PluginClass:onBackgroundChange(chatConfig)
+  return chatConfig
+end
+
+--[[
+  Context menu
+]]
+function PluginClass:contextMenuButtonFilter(buttonName, screenPosition, selectedMessage)
+  return false
+end
+
+function PluginClass:contextMenuButtonClick(buttonName, selectedMessage)
+
+end
 
 -- Settings callbacks
 function PluginClass:settings_init(localeConfig)

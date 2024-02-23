@@ -29,7 +29,6 @@ function buildChatInterface()
     if pluginConfig.contextMenuButtons then
       for btnName, btnConfig in pairs(pluginConfig.contextMenuButtons) do
         baseInterface["contextMenuButtons"][btnName] = btnConfig
-        table.insert(baseInterface["scriptWidgetCallbacks"], btnConfig.callback)
       end
     end
   end
