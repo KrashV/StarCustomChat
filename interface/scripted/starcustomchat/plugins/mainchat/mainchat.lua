@@ -13,14 +13,8 @@ function mainchat:init(chat)
 
   self.DMingTo = config.getParameter("DMingTo")
 
-  if self.DMingTo and not widget.active("lytDMingTo") then
-    widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
-    widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
-
-    widget.setVisible("lytDMingTo", true)
-    self.customChat.hasExternalMenu = "lytDMingTo"
-    widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
+  if self.DMingTo then
+    self.customChat:openSubMenu(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
   end
 end
 
@@ -32,9 +26,9 @@ function mainchat:registerMessageHandlers(shared)
   end)
 
 end
+
 function mainchat:onLocaleChange()
-  widget.setText("lytDMingTo.lblHint", starcustomchat.utils.getTranslation("chat.dming.hint"))
-  widget.setPosition("lytDMingTo.lblRecepient", vec2.add(widget.getPosition("lytDMingTo.lblHint"), {widget.getSize("lytDMingTo.lblHint")[1] + 3, 0}))
+  self.customChat:setSubMenuTexts(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
 end
 
 function mainchat:update(dt)
@@ -115,7 +109,7 @@ end
 
 function mainchat:onTextboxEscape()
   if self.DMingTo then
-    self:resetLayout("lytDMingTo")
+    self.customChat:closeSubMenu()
     widget.focus("tbxInput")
     return true
   end
@@ -126,7 +120,8 @@ function mainchat:onTextboxEnter(message)
     local whisperName
     if self.DMingTo then
       whisperName = self.DMingTo
-      self:resetLayout("lytDMingTo")
+      self.customChat:closeSubMenu()
+      self.DMingTo = nil
     else
       local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
       if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
@@ -154,39 +149,14 @@ function mainchat:onBackgroundChange(chatConfig)
   chatConfig.DMingTo = self.DMingTo
 end
 
-function mainchat:resetLayout(layout)
-  if widget.active(layout) then
-    local size = {0, widget.getSize(layout)[2]}
-    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), size))
-    widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
-  end
-
-  self.DMingTo = nil
-  widget.setVisible(layout, false)
-  self.customChat.hasExternalMenu = nil
-end
-
 function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage then
     if buttonName == "copy" then
       clipboard.setText(selectedMessage.text)
       starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
     elseif buttonName == "dm" then
-      if not widget.active("lytDMingTo") then
-
-        widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), {0, widget.getSize("lytDMingTo")[2]}))
-        widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
-        widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), {0, widget.getSize("lytDMingTo")[2]}))
-      end
-      if self.customChat.hasExternalMenu then
-        self:resetLayout("lytDMingTo")
-      end
-      widget.setVisible("lytDMingTo", true)
-      self.customChat.hasExternalMenu = "lytDMingTo"
-
       self.DMingTo = selectedMessage.recipient or selectedMessage.nickname
-      widget.setText("lytDMingTo.lblRecepient", self.DMingTo)
+      self.customChat:openSubMenu(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
       widget.focus("tbxInput")
 
     elseif buttonName == "ping" then
@@ -214,8 +184,9 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
 end
 
 function mainchat:onCustomButtonClick(buttonName, data)
-  if buttonName == "resetDMLayout" then
-    self:resetLayout("lytDMingTo")
+  if self.DMingTo then
+    self.customChat:closeSubMenu()
+    self.DMingTo = nil
     if widget.getText("tbxInput") ~= "" then
       widget.focus("tbxInput")
     end

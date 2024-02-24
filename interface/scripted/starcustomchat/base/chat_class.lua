@@ -129,6 +129,33 @@ function StarCustomChat:findMessageByUUID(uuid)
   end
 end
 
+function StarCustomChat:setSubMenuTexts(hint, text)
+  widget.setText("lytSubMenu.lblHint", hint)
+  widget.setPosition("lytSubMenu.lblText", vec2.add(widget.getPosition("lytSubMenu.lblHint"), {widget.getSize("lytSubMenu.lblHint")[1] + 3, 0}))
+  widget.setText("lytSubMenu.lblText", text)
+end
+
+function StarCustomChat:openSubMenu(hint, text)
+  if not widget.active("lytSubMenu") then
+    local size = {0, widget.getSize("lytSubMenu")[2]}
+    widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
+    widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
+  end
+  self:setSubMenuTexts(hint, text)
+  widget.setVisible("lytSubMenu", true)
+end
+
+function StarCustomChat:closeSubMenu()
+  if widget.active("lytSubMenu") then
+    widget.setVisible("lytSubMenu", false)
+    local size = {0, widget.getSize("lytSubMenu")[2]}
+    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
+    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
+  end
+end
+
 function StarCustomChat:requestPortrait(connection)
   local entityId = connection * -65536
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]

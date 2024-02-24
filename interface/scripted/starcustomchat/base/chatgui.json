@@ -87,6 +87,48 @@
     },
 
     
+  "lytSubMenu": {
+    "type": "layout",
+    "position": [22, 24],
+    "size": [265, 16],
+    "layoutType": "basic",
+    "zlevel": 15,
+    "visible": false,
+    "scissoring": false,
+    "children": {
+      "backgrond": {
+        "type": "image",
+        "file": "/interface/scripted/starcustomchat/base/submenu/body.png",
+        "zlevel": 16
+      },
+      "lblHint": {
+        "type": "label",
+        "position": [4, 8],
+        "value": "",
+        "zlevel": 17,
+        "fontSize": 7,
+        "vAnchor": "mid"
+      },
+      "lblText": {
+        "type": "label",
+        "value": "",
+        "position": [4, 8],
+        "zlevel": 17,
+        "fontSize": 7,
+        "vAnchor": "mid"
+      },
+      "resetEditLayout": {
+        "type": "button",
+        "position": [253, 5],
+        "callback": "customButtonCallback",
+        "base": "/interface/scripted/starcustomchat/base/submenu/close.png",
+        "hover": "/interface/scripted/starcustomchat/base/submenu/close_hover.png",
+        "zlevel": 17
+      }
+    }
+  },
+
+    
     "saScrollArea": {
       "type": "scrollArea",
       "rect": [20, 26, 289, 312],
