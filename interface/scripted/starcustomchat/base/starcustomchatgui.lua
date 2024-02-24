@@ -489,10 +489,29 @@ function textboxEnterKey(widgetName)
       starcustomchat.utils.saveMessage(text)
     end
   elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
-    starcustomchat.utils.saveMessage(message.text)
-    message = self.runCallbackForPlugins("formatOutcomingMessage", message)
-    sendMessage(message)
-    
+    if message.mode == "Whisper" then
+      local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
+      if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
+
+      local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
+      if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
+
+      whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
+  
+      local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
+        or "/w " .. whisperName .. " " .. message.text
+  
+      self.customChat:processCommand(whisper)
+      self.customChat.lastWhisper = {
+        recipient = whisperName,
+        text = message.text
+      }
+      starcustomchat.utils.saveMessage(whisper)
+    else
+      starcustomchat.utils.saveMessage(message.text)
+      message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+      sendMessage(message)
+    end
   end
   blurTextbox(widgetName)
 end

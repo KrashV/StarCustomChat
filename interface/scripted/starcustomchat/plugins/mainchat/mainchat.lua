@@ -121,21 +121,10 @@ function mainchat:onTextboxEscape()
 end
 
 function mainchat:onTextboxEnter(message)
-  if message.mode == "Whisper" or self.DMingTo then
-    local whisperName
-    if self.DMingTo then
-      whisperName = self.DMingTo
-      self.customChat:closeSubMenu()
-      self.DMingTo = nil
-    else
-      local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-      if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
-
-      local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-      if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
-
-      whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
-    end
+  if self.DMingTo then
+    local whisperName = self.DMingTo
+    self.customChat:closeSubMenu()
+    self.DMingTo = nil
 
     local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
       or "/w " .. whisperName .. " " .. message.text

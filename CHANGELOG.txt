@@ -1,5 +1,1 @@
-- Each message now contains the UUID: you can use it for message manipulation
-- Opening the context menu is now more stable
-- Context menu is now customizable and can include additional buttons from plugins
-- More plugin callbacks
-- Added an ability to bring your gui addons
+- Fixed message sending in Whisper tab sometimes behaving weird
