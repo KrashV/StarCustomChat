@@ -112,6 +112,9 @@ end
 function mainchat:onTextboxEscape()
   if self.DMingTo then
     self.customChat:closeSubMenu()
+    if widget.getText("tbxInput") == "" then
+      widget.blur("tbxInput")
+    end
     self.DMingTo = nil
     return true
   end

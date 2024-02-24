@@ -242,8 +242,6 @@ function localeChat(localePluginConfig)
 
   local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
 
-  widget.setText("tbxInput", savedText)
-
   if not savedText or savedText == "" then
     widget.setText("lblTextboxHint", hint)
   end
