@@ -135,12 +135,14 @@ function StarCustomChat:setSubMenuTexts(hint, text)
   widget.setText("lytSubMenu.lblText", text)
 end
 
-function StarCustomChat:openSubMenu(hint, text)
+function StarCustomChat:openSubMenu(type, hint, text)
   if not widget.active("lytSubMenu") then
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
     widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), size))
     widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
+  else
+    self.callbackPlugins("onSubMenuReopen", type)
   end
   self:setSubMenuTexts(hint, text)
   widget.setVisible("lytSubMenu", true)

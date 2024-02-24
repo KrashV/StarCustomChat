@@ -79,6 +79,9 @@ function PluginClass:onCustomButtonClick(buttonName, data)
 
 end
 
+function PluginClass:onSubMenuReopen(type)
+
+end
 --[[
   Context menu
 ]]

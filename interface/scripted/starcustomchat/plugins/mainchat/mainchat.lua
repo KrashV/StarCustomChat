@@ -14,7 +14,7 @@ function mainchat:init(chat)
   self.DMingTo = config.getParameter("DMingTo")
 
   if self.DMingTo then
-    self.customChat:openSubMenu(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+    self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
   end
 end
 
@@ -28,7 +28,9 @@ function mainchat:registerMessageHandlers(shared)
 end
 
 function mainchat:onLocaleChange()
-  self.customChat:setSubMenuTexts(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+  if self.DMingTo then
+    self.customChat:setSubMenuTexts(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+  end
 end
 
 function mainchat:update(dt)
@@ -110,7 +112,7 @@ end
 function mainchat:onTextboxEscape()
   if self.DMingTo then
     self.customChat:closeSubMenu()
-    widget.focus("tbxInput")
+    self.DMingTo = nil
     return true
   end
 end
@@ -149,6 +151,12 @@ function mainchat:onBackgroundChange(chatConfig)
   chatConfig.DMingTo = self.DMingTo
 end
 
+function mainchat:onSubMenuReopen(type)
+  if type ~= "DMs" then
+    self.DMingTo = nil
+  end
+end
+
 function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage then
     if buttonName == "copy" then
@@ -156,7 +164,7 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
     elseif buttonName == "dm" then
       self.DMingTo = selectedMessage.recipient or selectedMessage.nickname
-      self.customChat:openSubMenu(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+      self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
       widget.focus("tbxInput")
 
     elseif buttonName == "ping" then
