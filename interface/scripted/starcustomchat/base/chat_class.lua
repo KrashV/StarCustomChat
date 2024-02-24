@@ -122,9 +122,9 @@ function StarCustomChat:addMessage(msg)
 end
 
 function StarCustomChat:findMessageByUUID(uuid)
-  for ind, message in ipairs(self.messages) do 
-    if message.uuid and message.uuid == uuid then 
-      return ind 
+  for i = #self.messages, 1, -1 do 
+    if self.messages[i].uuid and self.messages[i].uuid == uuid then 
+      return i 
     end
   end
 end
