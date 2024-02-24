@@ -91,6 +91,17 @@ function starcustomchat.utils.createStagehandWithData(stagehandType, data)
   world.spawnStagehand(world.entityPosition(player.id()), stagehandType, {data = data})
 end
 
+function starcustomchat.utils.utf8Substring(inputString, startPos, endPos)
+  -- Calculate the byte offsets for the start and end positions
+  local byteStart = utf8.offset(inputString, startPos)
+  local byteEnd = utf8.offset(inputString, endPos + 1) - 1
+
+  -- Extract the substring
+  local result = string.sub(inputString, byteStart, byteEnd)
+
+  return result
+end
+
 function starcustomchat.utils.clearPortraitFromInvisibleLayers(portrait)
   if portrait and type(portrait) == "table" then
     local filteredPortrait = {}
