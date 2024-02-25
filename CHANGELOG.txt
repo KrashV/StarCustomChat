@@ -1,1 +1,1 @@
-- Fixed message sending in Whisper tab sometimes behaving weird
+- Fixed DM tab crashing you if the player has a name of one character

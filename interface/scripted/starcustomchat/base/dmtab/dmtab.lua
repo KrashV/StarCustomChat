@@ -17,7 +17,9 @@ function populateList()
       if index(self.contacts, player.id) == 0 and player.data then
         local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
         if mode == "letter" or not player.data.portrait then
-          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", string.sub(player.name, 1, 2))
+          local trimmedName = starcustomchat.utils.utf8Substring(player.name, 1, 2)
+          trimmedName = utf8.len(trimmedName) == 1 and trimmedName .. " " or (utf8.len(trimmedName) == 0 and "  ") or trimmedName
+          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", trimmedName)
         elseif player.data.portrait then
           drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
         end
@@ -84,7 +86,7 @@ function drawIcon(canvasName, args)
     for _, layer in ipairs(args) do
       playerCanvas:drawImage(layer.image, {-14, -18})
     end
-  elseif type(args) == "string" and string.len(args) == 2 then
+  elseif type(args) == "string" and utf8.len(args) == 2 then
     playerCanvas:drawText(args, {
       position = {8, 3},
       horizontalAnchor = "mid", -- left, mid, right

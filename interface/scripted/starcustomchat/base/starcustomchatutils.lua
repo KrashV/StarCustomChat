@@ -92,6 +92,11 @@ function starcustomchat.utils.createStagehandWithData(stagehandType, data)
 end
 
 function starcustomchat.utils.utf8Substring(inputString, startPos, endPos)
+    -- Check if startPos is within the valid range
+  startPos = math.min(startPos, endPos)
+  
+  endPos = math.min(endPos, utf8.len(inputString))
+
   -- Calculate the byte offsets for the start and end positions
   local byteStart = utf8.offset(inputString, startPos)
   local byteEnd = utf8.offset(inputString, endPos + 1) - 1
