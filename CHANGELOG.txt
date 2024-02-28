@@ -1,1 +1,1 @@
-- Fixed DM tab crashing you if the player has a name of one character
+- Fix AFK plugin sometimes dropping after awhile

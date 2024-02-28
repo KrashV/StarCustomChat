@@ -7,7 +7,7 @@ afk = PluginClass:new(
 function afk:init()
   self:_loadConfig()
 
-  self.afkTime = 0
+  self.afkTime = self.timer
   self.afkActive = false
 
   self.enabled = root.getConfiguration("icc_afk_enabled") or false
@@ -17,11 +17,11 @@ end
 
 function afk:update(dt)
   if not self.enabled or #input.events() > 0 then
-    self.afkTime = 0
+    self.afkTime = self.timer
     self:deactivateAFK()
   else
-    self.afkTime = math.min(self.afkTime + dt, self.timer)
-    if self.afkTime >= self.timer then
+    self.afkTime = math.max(self.afkTime - dt, 0)
+    if self.afkTime <= 0 then
       self:activateAFK()
       player.emote("sleep")
     end
