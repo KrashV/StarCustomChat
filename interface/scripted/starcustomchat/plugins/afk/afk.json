@@ -3,36 +3,61 @@
 
   "localeKeys": {
     "settings.afk_mode": {
-      "ru": "АФК плагин",
-      "en": "AFK plugin"
+      "ru": "АФК",
+      "en": "AFK"
+    },
+    "chat.buttons.afk_mode": {
+      "ru": "Включить AFK режим",
+      "en": "Turn on AFK Mode"
+    },
+    "settings.afk_min": {
+      "ru": "мин",
+      "en": "min"
     }
   },
 
   "settingsAddons": {
     "gui": {
-      "chbAFKMode" : {
-        "type": "button",
-        "checkable": true,
-        "base": "/interface/optionsmenu/checkboxnocheck.png",
-        "hover": "/interface/optionsmenu/checkboxnocheckhover.png",
-        "baseImageChecked": "/interface/optionsmenu/checkboxcheck.png",
-        "hoverImageChecked": "/interface/optionsmenu/checkboxcheckhover.png",
-        "position": [8, 46],
-        "callback": "turnOnAFK"
-      },
       "lblAfk": {
         "type": "label",
-        "position": [23, 46],
+        "position": [10, 44],
+        "value": ""
+      },
+      "afkTimerSpinner" : {
+        "type": "spinner",
+        "position" : [27, 44],
+        "upOffset" : 20
+      },
+      "lblAfkTimer": {
+        "type": "label",
+        "position": [42, 44],
+        "value": "",
+        "hAnchor": "mid"
+      },
+      
+      "lblAfkTimerMin": {
+        "type": "label",
+        "position": [59, 44],
         "value": ""
       }
     },
-    "scriptWidgetCallbacks": ["turnOnAFK"]
+    "scriptWidgetCallbacks": ["turnOnAFK", "afkTimerSpinner.up", "afkTimerSpinner.down"]
+  },
+
+  "guiAddons": {
+    "btnStartAfk": {
+      "type": "button",
+      "position": [1, 26],
+      "base": "/interface/scripted/starcustomchat/plugins/afk/interface/afk.png",
+      "hover": "/interface/scripted/starcustomchat/plugins/afk/interface/afkhover.png",
+      "callback": "customButtonCallback"
+    }
   },
 
   "parameters": {
     "mode": "effect",
     "effect": "starchatafk",
-    "timer": 300
+    "afkIgnoreTime": 3
   },
   "script": "/interface/scripted/starcustomchat/plugins/afk/afk.lua"
 }

@@ -1,1 +1,2 @@
-- Fix AFK plugin sometimes dropping after awhile
+- AFK plugin now has the configuration of minutes instead of a toggle. 0 means AFK plugin is disabled
+- Added forceful entering in AFK mode. You'll have (by default) 3 seconds before AFK check will take place
