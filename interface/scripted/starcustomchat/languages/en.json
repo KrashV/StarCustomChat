@@ -11,6 +11,9 @@
   "chat.textbox.hint": "Type here",
   "chat.message.edited": "edited",
 
+  "chat.buttons.bottom": "To bottom",
+  "chat.buttons.settings": "Settings",
+
   "chat.alerts.dm_not_specified": "Select the recipient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
   "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",

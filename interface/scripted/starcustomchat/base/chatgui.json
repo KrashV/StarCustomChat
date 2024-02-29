@@ -280,7 +280,10 @@
       "position": [1, 0],
       "base": "/interface/scripted/starcustomchat/base/tobottom.png",
       "hover": "/interface/scripted/starcustomchat/base/tobottomhover.png",
-      "callback": "toBottom"
+      "callback": "toBottom",
+      "data": {
+        "displayText": "chat.buttons.bottom"
+      }
     },
 
     "btnSettings": {
@@ -288,7 +291,10 @@
       "position": [1, 13],
       "base": "/interface/scripted/starcustomchat/base/settings.png",
       "hover": "/interface/scripted/starcustomchat/base/settingshover.png",
-      "callback": "openSettings"
+      "callback": "openSettings",
+      "data": {
+        "displayText": "chat.buttons.settings"
+      }
     }
 
   },

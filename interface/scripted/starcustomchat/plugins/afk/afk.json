@@ -50,7 +50,10 @@
       "position": [1, 26],
       "base": "/interface/scripted/starcustomchat/plugins/afk/interface/afk.png",
       "hover": "/interface/scripted/starcustomchat/plugins/afk/interface/afkhover.png",
-      "callback": "customButtonCallback"
+      "callback": "customButtonCallback",
+      "data": {
+        "displayText": "chat.buttons.afk_mode"
+      }
     }
   },
 
