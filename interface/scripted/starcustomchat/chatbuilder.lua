@@ -108,6 +108,7 @@ function buildChatInterface()
   end
 
   baseInterface.expanded = root.getConfiguration("icc_is_expanded")
+  baseInterface["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", baseInterface.expanded and "body" or "shortbody")
   return baseInterface
 end
 
