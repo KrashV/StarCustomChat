@@ -31,7 +31,7 @@
 
   "greeting.se_not_found": "Welcome to Advanced Chat by Degranon!\n\nThe advanced chat mod requires the StarExtensions version 1.9.24 or higher\nhttps://github.com/StarExtensions/StarExtensions",
   "greeting.se_version": "Welcome to Advanced Chat by Degranon!\n\nPlease update the StarExtensions to version 1.9.24 or higher\nhttps://github.com/StarExtensions/StarExtensions",
-  "greeting.unbind_controls": "Welcome to Advanced Chat by Degranon!\n\nTo begin with, you need to manually unbound the following controls (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nClick Accept - and you should be good to go!",
+  "greeting.unbind_controls": "Welcome to Advanced Chat by Degranon!\n\nTo begin with, you need to manually unbound the following controls (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nClick Accept, rejoin the game - and you should be good to go!",
   "greeting.unknown": "Welcome to Advanced Chat by Degranon!\n\nSomething went wrong. Oops!",
   "greeting.close": "Gotcha!",
 
