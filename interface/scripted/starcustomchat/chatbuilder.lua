@@ -87,10 +87,16 @@ function buildChatInterface()
     end
 
     if mode.has_toggle then
+      local checked = true
+      if mode.checked ~= nil then
+          checked = mode.checked
+      end
+
+    
       baseInterface["gui"]["btnCk" .. mode.name] = {
         type = "button",
         checkable = true,
-        checked = mode.toggled ~= nil and mode.toggled or false,
+        checked = checked,
         position = {289, 6 + 15 * (toggle_id - 1)},
         pressedOffset = {0, 0},
         base = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
