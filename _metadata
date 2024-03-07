@@ -5,8 +5,8 @@
   "includes" : [],
   "name" : "starcustomchat",
   "path" : ".",
-  "permissions" : ["clipboard"],
+  "permissions" : ["clipboard", "voice"],
   "requires" : [],
   "tags" : "User Interface",
-  "version" : "1.5.14"
+  "version" : "1.6.0"
 }

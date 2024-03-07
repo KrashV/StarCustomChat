@@ -298,7 +298,7 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "redrawChat", "toBottom", "openSettings", "selectPlayer", 
+  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
     "customButtonCallback", "contextMenuButtonClick"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"

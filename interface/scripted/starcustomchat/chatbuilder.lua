@@ -90,14 +90,14 @@ function buildChatInterface()
       baseInterface["gui"]["btnCk" .. mode.name] = {
         type = "button",
         checkable = true,
-        checked = true,
+        checked = mode.toggled ~= nil and mode.toggled or false,
         position = {289, 6 + 15 * (toggle_id - 1)},
         pressedOffset = {0, 0},
         base = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
         hover = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
         baseImageChecked = "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
         hoverImageChecked = "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
-        callback = "redrawChat",
+        callback = "modeToggle",
         data = {
           mode = mode.name,
           tooltipMode = mode.name

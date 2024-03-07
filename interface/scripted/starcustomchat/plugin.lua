@@ -40,6 +40,9 @@ function PluginClass:onModeChange(mode)
 
 end
 
+function PluginClass:onModeToggle(mode, isChecked)
+
+end
 
 function PluginClass:onTextboxEscape()
   -- Do nothing

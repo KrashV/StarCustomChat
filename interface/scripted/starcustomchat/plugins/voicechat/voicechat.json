@@ -1,0 +1,20 @@
+{
+  "name": "Voice Chat",
+
+  "modes": [{
+    "name": "Voice",
+    "has_tab": false,
+    "priority": 150,
+    "has_toggle": true,
+    "toggled": false
+  }],
+
+  "localeKeys": {
+    "chat.modes.Voice": {
+      "ru": "Голосовой чат",
+      "en": "Voice chat"
+    }
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/voicechat/voicechat.lua"
+}

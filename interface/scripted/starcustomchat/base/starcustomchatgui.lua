@@ -534,7 +534,8 @@ function setMode(id, data)
   self.runCallbackForPlugins("onModeChange", data.mode)
 end
 
-function redrawChat()
+function modeToggle(button, isChecked)
+  self.runCallbackForPlugins("onModeToggle", button, widget.getChecked(button))
   self.customChat:processQueue()
 end
 

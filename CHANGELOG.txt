@@ -1,1 +1,1 @@
-- Fixed short body blocking interface on init
+- Added voice chat toggler

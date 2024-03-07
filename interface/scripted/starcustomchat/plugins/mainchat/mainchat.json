@@ -23,7 +23,8 @@
     "has_toggle": false
   },{
     "name": "CommandResult",
-    "has_toggle": true
+    "has_toggle": true,
+    "priority": 40
   }],
 
   "parameters": {
