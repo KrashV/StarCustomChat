@@ -39,8 +39,12 @@ function init()
     if pluginConfig.script then
       require(pluginConfig.script)
 
-      local classInstance = _ENV[pluginName]:new()
-      table.insert(plugins, classInstance)
+      if not _ENV[pluginName] then
+        sb.logError("Failed to load plugin %s", pluginName)
+      else
+        local classInstance = _ENV[pluginName]:new()
+        table.insert(plugins, classInstance)
+      end
     end
 
     if pluginConfig.baseConfigValues then
@@ -545,21 +549,8 @@ end
 
 function openSettings()
   local chatConfigInterface = buildSettingsInterface()
-  chatConfigInterface.chatMode = self.chatMode
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
-  chatConfigInterface.backImage = self.customChat.config.icons.empty
-  chatConfigInterface.frameImage = self.customChat.config.icons.frame
-  chatConfigInterface.proximityRadius = self.customChat.proximityRadius
-  chatConfigInterface.portraitSettings = player.getProperty("icc_portrait_settings") or {
-    offset = self.customChat.config.defaultPortraitOffset,
-    scale = self.customChat.config.defaultPortraitScale
-  }
-  chatConfigInterface.defaultPortraitSettings = {
-    offset = self.customChat.config.defaultPortraitOffset,
-    scale = self.customChat.config.defaultPortraitScale
-  }
-  chatConfigInterface.fontSize = self.customChat.config.fontSize
-  chatConfigInterface.maxCharactersAllowed = self.customChat.maxCharactersAllowed
+  chatConfigInterface.chatConfig = self.customChat.config
   player.interact("ScriptPane", chatConfigInterface)
 end
 

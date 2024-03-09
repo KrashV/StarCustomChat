@@ -13,8 +13,47 @@
     "chat.modes.Voice": {
       "ru": "Голосовой чат",
       "en": "Voice chat"
+    },
+    "settings.plugins.voicechat": {
+      "ru": "Голосовой чат",
+      "en": "Voice chat"
+    },
+    "settings.voice_button": {
+      "ru": "Настройки голосового",
+      "en": "Voice settings"
+    },
+    "settings.push_to_talk_description": {
+      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat",
+      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat"
     }
   },
 
-  "script": "/interface/scripted/starcustomchat/plugins/voicechat/voicechat.lua"
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabselectedhover.png"
+    },
+    "gui": {
+      "openVoiceSettings": {
+        "type": "button",
+        "base": "/interface/button.png",
+        "hover": "/interface/buttonhover.png",
+        "caption": "",
+        "position": [40, 40],
+        "callback": "openVoiceSettings"
+      },
+      "lblBindsDesc": {
+        "type": "label",
+        "value": "",
+        "wrapWidth": 200,
+        "position": [20, 90]
+      }
+    }
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/voicechat/voicechat.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/voicechat/voicesettings.lua"
+
 }

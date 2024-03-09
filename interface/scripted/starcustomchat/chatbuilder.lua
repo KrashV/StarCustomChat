@@ -131,16 +131,69 @@ function buildSettingsInterface()
 
   local enabledPlugins = root.assetJson("/scripts/starcustomchat/enabledplugins.json")
 
-  for _, pluginName in ipairs(enabledPlugins) do 
-    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
-    
-    if pluginConfig.settingsAddons then
-      local prevCallbacks = copy(baseSettingsInterface["scriptWidgetCallbacks"])
-      baseSettingsInterface = sb.jsonMerge(baseSettingsInterface, pluginConfig.settingsAddons)
+  local pluginPageId = 0
+  local tabOffset = {0, -15}
+  local tabPosition = {0, 0}
 
-      baseSettingsInterface["scriptWidgetCallbacks"] = mergeArrays(prevCallbacks, pluginConfig.settingsAddons["scriptWidgetCallbacks"] or {})
+  for i, pluginName in ipairs(enabledPlugins) do 
+    local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
+
+    if pluginConfig.settingsPage then
+      local layoutWidget = {
+        type = "layout",
+        layoutType = "basic",
+        rect = {0, 0, 500, 500},
+        children = {},
+        visible = i == 1
+      }
+
+      baseSettingsInterface["gui"]["lytPluginSettings"]["children"]["pluginSettings" .. pluginName] = copy(layoutWidget)
+      local layout = baseSettingsInterface["gui"]["lytPluginSettings"]["children"]["pluginSettings" .. pluginName]
+
+      layout["data"] = {
+        pluginName = pluginName
+      }
+      for widgetName, widgetConfig in pairs(pluginConfig.settingsPage["gui"] or {}) do 
+        if widgetConfig.type == "spinner" then
+          local callbackName = widgetConfig.callback or widgetName
+          
+          widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+            actualPluginCallback = {
+              pluginName = pluginName,
+              callback = callbackName
+            }
+          })
+          widgetConfig.callback = "_generalSpinnerCallback"
+        elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
+          widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+            actualPluginCallback = {
+              pluginName = pluginName,
+              callback = widgetConfig.callback
+            }
+          })
+          widgetConfig.callback = "_generalCallback"
+        elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
+          baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
+        end
+        layout["children"][widgetName] = widgetConfig
+      end
+
+      table.insert(baseSettingsInterface["gui"]["rgPluginTabs"]["buttons"], {
+        id = pluginPageId,
+        selected = pluginPageId == 0,
+        baseImage = pluginConfig.settingsPage["tabButtons"]["baseImage"],
+        hoverImage = pluginConfig.settingsPage["tabButtons"]["hoverImage"],
+        baseImageChecked = pluginConfig.settingsPage["tabButtons"]["baseImageChecked"],
+        hoverImageChecked = pluginConfig.settingsPage["tabButtons"]["hoverImageChecked"],
+        position = tabPosition,
+        data = {
+          pluginName = pluginName,
+          pluginTabName = pluginName
+        }
+      })
+      pluginPageId = pluginPageId + 1
+      tabPosition = vec2.add(tabPosition, tabOffset)
     end
   end
-
   return baseSettingsInterface
 end

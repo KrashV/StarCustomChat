@@ -141,6 +141,7 @@ end
 
 function mainchat:onBackgroundChange(chatConfig)
   chatConfig.DMingTo = self.DMingTo
+  return chatConfig
 end
 
 function mainchat:onSubMenuReopen(type)

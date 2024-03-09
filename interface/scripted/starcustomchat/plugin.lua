@@ -95,20 +95,3 @@ end
 function PluginClass:contextMenuButtonClick(buttonName, selectedMessage)
 
 end
-
--- Settings callbacks
-function PluginClass:settings_init(localeConfig)
-  
-end
-
-function PluginClass:settings_update(dt)
-  
-end
-
-function PluginClass:settings_onCursorOverride(screenPosition)
-  
-end
-
-function PluginClass:settings_onSave(localeConfig)
-
-end

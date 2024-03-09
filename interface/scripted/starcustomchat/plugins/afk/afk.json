@@ -13,10 +13,20 @@
     "settings.afk_min": {
       "ru": "мин",
       "en": "min"
+    },
+    "settings.plugins.afk": {
+      "ru": "Настройки AFK",
+      "en": "AFK settings"
     }
   },
 
-  "settingsAddons": {
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/afk/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/afk/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/afk/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/afk/settingstabs/tabselectedhover.png"
+    },
     "gui": {
       "lblAfk": {
         "type": "label",
@@ -26,7 +36,8 @@
       "afkTimerSpinner" : {
         "type": "spinner",
         "position" : [27, 44],
-        "upOffset" : 20
+        "upOffset" : 20,
+        "callback": "afkTimerSpinner"
       },
       "lblAfkTimer": {
         "type": "label",
@@ -40,8 +51,7 @@
         "position": [59, 44],
         "value": ""
       }
-    },
-    "scriptWidgetCallbacks": ["turnOnAFK", "afkTimerSpinner.up", "afkTimerSpinner.down"]
+    }
   },
 
   "guiAddons": {
@@ -62,5 +72,6 @@
     "effect": "starchatafk",
     "afkIgnoreTime": 3
   },
-  "script": "/interface/scripted/starcustomchat/plugins/afk/afk.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/afk/afk.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/afk/afksettings.lua"
 }

@@ -33,10 +33,20 @@
     "settings.prox_radius": {
       "ru": "Радиус близких сообщений",
       "en": "Proximity radius"
+    },
+    "settings.plugins.proximitychat": {
+      "ru": "Близкий чат",
+      "en": "Proximity chat"
     }
   },
 
-  "settingsAddons": {
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabselectedhover.png"
+    },
     "gui": {
       "sldProxRadius" : {
         "type": "slider",
@@ -58,9 +68,9 @@
         "hAnchor": "mid",
         "value": ""
       }
-    },
-    "scriptWidgetCallbacks": ["updateProxRadius"]
+    }
   },
 
-  "script": "/interface/scripted/starcustomchat/plugins/proximitychat/proximity.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/proximitychat/proximity.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/proximitychat/proximitychatsettings.lua"
 }

@@ -1,1 +1,2 @@
 - Added voice chat toggler
+- Settings are now split between plugin configurations

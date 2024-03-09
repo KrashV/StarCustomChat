@@ -60,6 +60,11 @@
     "chat.commands.uncollapse": {
       "ru": "Развернуть сообщение",
       "en": "Expand message"
+    },
+
+    "settings.plugins.mainchat": {
+      "ru": "Общие",
+      "en": "General"
     }
   },
 
@@ -94,5 +99,109 @@
     }
   ],
 
-  "script": "/interface/scripted/starcustomchat/plugins/mainchat/mainchat.lua"
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabselectedhover.png"
+    },
+    "gui": {
+      "portraitCanvas": {
+        "type": "canvas",
+        "rect": [8, 58, 78, 128],
+        "captureMouseEvents": true
+      },
+  
+      "saScrollArea": {
+        "type": "scrollArea",
+        "rect": [8, 58, 78, 128]
+      },
+  
+      "btnResetAvatar": {
+        "type": "button",
+        "position": [1, 21],
+        "callback": "resetAvatar",
+        "zlevel": 20,
+        "caption": "",
+        "base" : "/interface/scripted/starcustomchatsettings/button.png?flipx;",
+        "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90"
+      },
+  
+  
+      "btnLanguage": {
+        "type": "button",
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "position": [75, 21],
+        "callback": "changeLanguage"
+      },
+  
+  
+      "btnMode": {
+        "type": "button",
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "position": [118, 21],
+        "callback": "changeMode"
+      },
+      
+      "sldFontSize" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/largeselection.png",
+        "position": [97, 135],
+        "callback": "updateFontSize"
+      },
+  
+      "lblFontSizeHint" : {
+        "type": "label",
+        "position": [155, 125],
+        "hAnchor": "mid",
+        "value": ""
+      },
+  
+      "lblFontSizeValue" : {
+        "type": "label",
+        "position": [225, 135],
+        "hAnchor": "mid",
+        "value": ""
+      },
+      
+  
+      "sldMessageLength" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/largeselection.png",
+        "position": [97, 100],
+        "callback": "updateMessageLength"
+      },
+  
+      "lblMessageLengthHint" : {
+        "type": "label",
+        "position": [155, 95],
+        "hAnchor": "mid",
+        "vAnchor": "top",
+        "value": ""
+      },
+  
+      "lblMessageLengthValue" : {
+        "type": "label",
+        "position": [225, 100],
+        "hAnchor": "mid",
+        "value": ""
+      },
+  
+  
+      "btnDeleteChat" : {
+        "type" : "button",
+        "base" : "/interface/scripted/starcustomchatsettings/button.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
+        "position" : [162, 21],
+        "caption" : "Cancel",
+        "callback": "clearHistory"
+      }
+    }
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/mainchat/mainchat.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/mainchat/mainchatsettings.lua"
 }

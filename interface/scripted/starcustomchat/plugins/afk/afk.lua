@@ -63,35 +63,3 @@ end
 function afk:onSettingsUpdate(data)
   self.timer = (root.getConfiguration("icc_afk_timer") or 0) * 60
 end
-
-function afk:settings_init(localeConfig)
-  widget.setText("lblAfk", localeConfig["settings.afk_mode"])
-  widget.setText("lblAfkTimerMin", localeConfig["settings.afk_min"])
-  self.settingsTimer = root.getConfiguration("icc_afk_timer") or 0
-  widget.setText("lblAfkTimer", self.settingsTimer)
-  widget.setData("lblAfkTimer", self.settingsTimer)
-end
-
-function afk:settings_onSave(localeConfig)
-  widget.setText("lblAfk", localeConfig["settings.afk_mode"])
-  widget.setText("lblAfkTimerMin", localeConfig["settings.afk_min"])
-end
-
-afkTimerSpinner = {}
-function afkTimerSpinner.up()
-  local mins = tonumber(widget.getData("lblAfkTimer")) or 0
-  mins = math.min(mins + 1, 5)
-  widget.setText("lblAfkTimer", mins)
-  widget.setData("lblAfkTimer", mins)
-  root.setConfiguration("icc_afk_timer", tonumber(widget.getData("lblAfkTimer")) or 0)
-  save()
-end
-
-function afkTimerSpinner.down()
-  local mins = tonumber(widget.getData("lblAfkTimer")) or 0
-  mins = math.max(mins - 1, 0)
-  widget.setText("lblAfkTimer", mins)
-  widget.setData("lblAfkTimer", mins)
-  root.setConfiguration("icc_afk_timer", tonumber(widget.getData("lblAfkTimer")) or 0)
-  save()
-end

@@ -97,37 +97,3 @@ function drawCircle(center, radius, color, sections)
     }, {0, 0}, 1, color)
   end
 end
-
-
--- Settings
-function proximitychat:settings_init(localeConfig)
-  self:_loadConfig()
-  self.proximityRadius = root.getConfiguration("icc_proximity_radius") or self.proximityRadius
-  widget.setSliderRange("sldProxRadius", 0, 90, 1)
-  widget.setSliderValue("sldProxRadius", self.proximityRadius - 10)
-  widget.setText("lblProxRadiusValue", self.proximityRadius)
-  widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
-end
-
-function proximitychat:settings_onCursorOverride(screenPosition)
-  if widget.inMember("sldProxRadius", screenPosition) 
-    or widget.inMember("lblProxRadiusValue", screenPosition) 
-    or widget.inMember("lblProxRadiusHint", screenPosition) then
-    
-    if player.id() and world.entityPosition(player.id()) then
-      drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green")
-    end
-  end
-end
-
-function updateProxRadius(widgetName)
-  local newRadius = widget.getSliderValue(widgetName) + 10
-  widget.setText("lblProxRadiusValue", newRadius)
-  root.setConfiguration("icc_proximity_radius", newRadius)
-  save()
-end
-
-function proximitychat:settings_onSave(localeConfig)
-  widget.setText("lblProxRadiusHint", localeConfig["settings.prox_radius"])
-  self.proximityRadius = root.getConfiguration("icc_proximity_radius") or 100
-end
