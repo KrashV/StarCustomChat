@@ -197,7 +197,6 @@
         "value": ""
       },
   
-  
       "btnDeleteChat" : {
         "type" : "button",
         "base" : "/interface/scripted/starcustomchatsettings/button.png",

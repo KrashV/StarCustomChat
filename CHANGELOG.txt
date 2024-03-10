@@ -1,2 +1,3 @@
 - Added voice chat toggler
 - Settings are now split between plugin configurations
+- Forcefully set the idle emote on the incoming portraits

@@ -19,6 +19,7 @@ local handlerCutter = nil
 
 ICChatTimer = TimerKeeper.new()
 function init()
+
   shared.chatIsOpen = true
   self.canvasName = "cnvChatCanvas"
   self.highlightCanvasName = "cnvHighlightCanvas"
