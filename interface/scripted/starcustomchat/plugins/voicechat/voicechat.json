@@ -19,8 +19,8 @@
       "en": "Voice chat"
     },
     "settings.voice_button": {
-      "ru": "Настройки голосового",
-      "en": "Voice settings"
+      "ru": "Настройки",
+      "en": "Settings"
     },
     "settings.push_to_talk_description": {
       "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat",
@@ -36,19 +36,27 @@
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabselectedhover.png"
     },
     "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
       "openVoiceSettings": {
         "type": "button",
         "base": "/interface/button.png",
         "hover": "/interface/buttonhover.png",
         "caption": "",
-        "position": [40, 40],
+        "position": [90, 70],
         "callback": "openVoiceSettings"
       },
       "lblBindsDesc": {
         "type": "label",
         "value": "",
+        "hAnchor": "mid",
         "wrapWidth": 200,
-        "position": [20, 90]
+        "position": [120, 90]
       }
     }
   },

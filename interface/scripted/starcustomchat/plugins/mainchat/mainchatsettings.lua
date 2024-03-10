@@ -80,6 +80,7 @@ function mainchat:onLocaleChange(localeConfig)
   widget.setText(self.layoutWidget .. ".lblMessageLengthHint", starcustomchat.utils.getTranslation("settings.chat_collapse"))
   widget.setText(self.layoutWidget .. ".btnDeleteChat", starcustomchat.utils.getTranslation("settings.clear_chat_history"))
   widget.setText(self.layoutWidget .. ".btnResetAvatar", starcustomchat.utils.getTranslation("settings.reset_avatar"))
+  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
 end
 
 -- Utility function: return the index of a value in the given array

@@ -17,6 +17,7 @@ end
 
 function proximitychat:onLocaleChange()
   widget.setText(self.layoutWidget .. ".lblProxRadiusHint", starcustomchat.utils.getTranslation("settings.prox_radius"))
+  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.proximitychat"))
 end
 
 function proximitychat:cursorOverride(screenPosition)

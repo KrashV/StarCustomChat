@@ -20,6 +20,8 @@ end
 function afk:onLocaleChange()
   widget.setText(self.layoutWidget .. ".lblAfk", starcustomchat.utils.getTranslation("settings.afk_mode"))
   widget.setText(self.layoutWidget .. ".lblAfkTimerMin", starcustomchat.utils.getTranslation("settings.afk_min"))
+  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.afk"))
+  widget.setText(self.layoutWidget .. ".lblAfk0Warning", starcustomchat.utils.getTranslation("settings.afk_description"))
 end
 
 afk.afkTimerSpinner = {}

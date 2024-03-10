@@ -107,15 +107,22 @@
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabselectedhover.png"
     },
     "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
       "portraitCanvas": {
         "type": "canvas",
-        "rect": [8, 58, 78, 128],
+        "rect": [8, 53, 78, 123],
         "captureMouseEvents": true
       },
   
       "saScrollArea": {
         "type": "scrollArea",
-        "rect": [8, 58, 78, 128]
+        "rect": [8, 53, 78, 123]
       },
   
       "btnResetAvatar": {
@@ -149,20 +156,20 @@
       "sldFontSize" : {
         "type": "slider",
         "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 135],
+        "position": [97, 110],
         "callback": "updateFontSize"
       },
   
       "lblFontSizeHint" : {
         "type": "label",
-        "position": [155, 125],
+        "position": [155, 100],
         "hAnchor": "mid",
         "value": ""
       },
   
       "lblFontSizeValue" : {
         "type": "label",
-        "position": [225, 135],
+        "position": [225, 110],
         "hAnchor": "mid",
         "value": ""
       },
@@ -171,13 +178,13 @@
       "sldMessageLength" : {
         "type": "slider",
         "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 100],
+        "position": [97, 75],
         "callback": "updateMessageLength"
       },
   
       "lblMessageLengthHint" : {
         "type": "label",
-        "position": [155, 95],
+        "position": [155, 70],
         "hAnchor": "mid",
         "vAnchor": "top",
         "value": ""
@@ -185,7 +192,7 @@
   
       "lblMessageLengthValue" : {
         "type": "label",
-        "position": [225, 100],
+        "position": [225, 75],
         "hAnchor": "mid",
         "value": ""
       },

@@ -48,23 +48,30 @@
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabselectedhover.png"
     },
     "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
       "sldProxRadius" : {
         "type": "slider",
         "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 60],
+        "position": [60, 90],
         "callback": "updateProxRadius"
       },
   
       "lblProxRadiusHint" : {
         "type": "label",
-        "position": [155, 50],
+        "position": [120, 80],
         "hAnchor": "mid",
         "value": ""
       },
   
       "lblProxRadiusValue" : {
         "type": "label",
-        "position": [225, 60],
+        "position": [120, 100],
         "hAnchor": "mid",
         "value": ""
       }

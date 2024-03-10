@@ -17,6 +17,10 @@
     "settings.plugins.afk": {
       "ru": "Настройки AFK",
       "en": "AFK settings"
+    },
+    "settings.afk_description": {
+      "ru": "Значение 0 отключает AFK плагин",
+      "en": "Value 0 disables the AFK plugin"
     }
   },
 
@@ -28,27 +32,43 @@
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/afk/settingstabs/tabselectedhover.png"
     },
     "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
       "lblAfk": {
         "type": "label",
-        "position": [10, 44],
-        "value": ""
+        "position": [103, 90],
+        "value": "",
+        "hAnchor": "right"
       },
       "afkTimerSpinner" : {
         "type": "spinner",
-        "position" : [27, 44],
+        "position" : [105, 90],
         "upOffset" : 20,
         "callback": "afkTimerSpinner"
       },
       "lblAfkTimer": {
         "type": "label",
-        "position": [42, 44],
+        "position": [120, 90],
         "value": "",
         "hAnchor": "mid"
       },
       
       "lblAfkTimerMin": {
         "type": "label",
-        "position": [59, 44],
+        "position": [137, 90],
+        "value": "",
+        "hAnchor": "left"
+      },
+      
+      "lblAfk0Warning": {
+        "type": "label",
+        "position": [120, 70],
+        "hAnchor": "mid",
         "value": ""
       }
     }
