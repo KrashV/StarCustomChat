@@ -37,14 +37,6 @@
 
   "settings.title": "Chat settings",
   "settings.subtitle": "Custom chat by Degranon",
-  "settings.chat_mode": "Chat mode",
   "settings.ok": "Okay",
-  "settings.cancel": "Cancel",
-  "settings.font_size": "Chat size",
-  "settings.clear_chat_history": "Clear chat",
-  "settings.reset_avatar": "Reset avatar",
-  "settings.chat_collapse": "Max characters in message\n0 = do not collapse",
-
-  "settings.modes.compact": "Compact",
-  "settings.modes.modern": "Modern"
+  "settings.cancel": "Cancel"
 }

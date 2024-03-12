@@ -65,6 +65,51 @@
     "settings.plugins.mainchat": {
       "ru": "Общие",
       "en": "General"
+    },
+    
+    "settings.chat_mode": {
+      "en": "Chat mode",
+      "ru": "Режим чата"
+    },
+    "settings.font_size": {
+      "en": "Chat size",
+      "ru": "Размер чата"
+    },
+    "settings.clear_chat_history": {
+      "en": "Clear chat",
+      "ru": "Очистить чат"
+    },
+    "settings.reset_avatar": {
+      "en": "Reset avatar",
+      "ru": "Сброс портрета"
+    },
+    "settings.chat_collapse": {
+      "en": "Max characters in message\n0 = do not collapse",
+      "ru": "Макс. символов в сообщении\n0 = не сворачивать"
+    },
+    "settings.modes.compact": {
+      "en": "Compact",
+      "ru": "Компакт."
+    },
+    "settings.modes.modern": {
+      "en": "Modern",
+      "ru": "Полный"
+    },
+    "settings.mainchat.customavatar": {
+      "en": "Custom portrait image",
+      "ru": "Кастомный портрет"
+    },
+    "settings.mainchat.setportrait": {
+      "en": "Set",
+      "ru": "Выбрать"
+    },
+    "settings.mainchat.alerts.size_error": {
+      "en": "Max image size is 64x64",
+      "ru": "Макс размер изображения - 64x64"
+    },
+    "settings.mainchat.alerts.image_error": {
+      "en": "Could not load the image",
+      "ru": "Изображение не найдено"
     }
   },
 
@@ -152,50 +197,6 @@
         "position": [118, 21],
         "callback": "changeMode"
       },
-      
-      "sldFontSize" : {
-        "type": "slider",
-        "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 110],
-        "callback": "updateFontSize"
-      },
-  
-      "lblFontSizeHint" : {
-        "type": "label",
-        "position": [155, 100],
-        "hAnchor": "mid",
-        "value": ""
-      },
-  
-      "lblFontSizeValue" : {
-        "type": "label",
-        "position": [225, 110],
-        "hAnchor": "mid",
-        "value": ""
-      },
-      
-  
-      "sldMessageLength" : {
-        "type": "slider",
-        "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 75],
-        "callback": "updateMessageLength"
-      },
-  
-      "lblMessageLengthHint" : {
-        "type": "label",
-        "position": [155, 70],
-        "hAnchor": "mid",
-        "vAnchor": "top",
-        "value": ""
-      },
-  
-      "lblMessageLengthValue" : {
-        "type": "label",
-        "position": [225, 75],
-        "hAnchor": "mid",
-        "value": ""
-      },
   
       "btnDeleteChat" : {
         "type" : "button",
@@ -204,6 +205,75 @@
         "position" : [162, 21],
         "caption" : "Cancel",
         "callback": "clearHistory"
+      },
+      
+
+
+      "sldFontSize" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/largeselection.png",
+        "position": [97, 113],
+        "callback": "updateFontSize"
+      },
+  
+      "lblFontSizeHint" : {
+        "type": "label",
+        "position": [155, 103],
+        "hAnchor": "mid",
+        "value": ""
+      },
+  
+      "lblFontSizeValue" : {
+        "type": "label",
+        "position": [225, 113],
+        "hAnchor": "mid",
+        "value": ""
+      },
+      
+  
+      "sldMessageLength" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/largeselection.png",
+        "position": [97, 90],
+        "callback": "updateMessageLength"
+      },
+  
+      "lblMessageLengthHint" : {
+        "type": "label",
+        "position": [155, 85],
+        "hAnchor": "mid",
+        "vAnchor": "top",
+        "value": ""
+      },
+  
+      "lblMessageLengthValue" : {
+        "type": "label",
+        "position": [225, 90],
+        "hAnchor": "mid",
+        "value": ""
+      },
+
+      "tbxCustomPortrait": {
+        "type": "textbox",
+        "position": [97, 50],
+        "callback": "null",
+        "maxWidth": 80,
+        "hint": "?directives"
+      },
+
+      "btnSetCustomPortrait": {
+        "type": "button",
+        "position": [190, 47],
+        "base": "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover": "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "callback": "setPortrait"
+      },
+
+      "lblCustomPortrait": {
+        "type": "label",
+        "position": [97, 40],
+        "value": "",
+        "mouseTransparent": true
       }
     }
   },

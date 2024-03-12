@@ -1,3 +1,1 @@
-- Added voice chat toggler
-- Settings are now split between plugin configurations
-- Forcefully set the idle emote on the incoming portraits
+- Added an ability to set your own custom avatar, up to 64x64 pixels

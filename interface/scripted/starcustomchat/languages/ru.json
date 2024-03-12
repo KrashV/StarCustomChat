@@ -37,14 +37,6 @@
 
   "settings.title": "Настройки чата",
   "settings.subtitle": "Кастомный чат Degranon",
-  "settings.font_size": "Размер чата",
-  "settings.chat_mode": "Режим чата",
   "settings.ok": "Принять",
-  "settings.cancel": "Отменить",
-  "settings.clear_chat_history": "Очистить чат",
-  "settings.reset_avatar": "Сброс портрета",
-  "settings.chat_collapse": "Макс. символов в сообщении\n0 = не сворачивать",
-
-  "settings.modes.compact": "Компакт.",
-  "settings.modes.modern": "Полный"
+  "settings.cancel": "Отменить"
 }

@@ -207,7 +207,7 @@ function StarCustomChat:resetChat()
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
     self.savedPortraits[player.uniqueId()] = {
-      portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
+      portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
       settings = player.getProperty("icc_portrait_settings") or {
         offset = self.config.defaultPortraitOffset,
         scale = self.config.defaultPortraitScale
@@ -286,49 +286,53 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     drawImage(self.config.icons.empty, offset)
     local size = portraitSizeFromBaseFont(self.config.fontSize)
 
-    for _, layer in ipairs(portrait) do
-      if portraitSettings then
-        local currentScale = portraitSettings.scale * (size / 70)
-        local currentOffset = vec2.floor(vec2.mul(portraitSettings.offset, (size / 70)))
-        local imageSize = root.imageSize(layer.image)
-
-        -- This monstrocity exists because drawImageRect can't be fixed
-        local imageOffset = {0, 0}
-
-        local cropX1, cropX2, cropY1, cropY2 = 0, imageSize[1], 0, imageSize[2]
-        
-        if portraitSettings.scale > 1 then
-          cropX2 = 70 // portraitSettings.scale
-          cropY2 = 70 // portraitSettings.scale
-        end
-
-        if portraitSettings.offset[1] > 0 then
-          imageOffset[1] = portraitSettings.offset[1] / portraitSettings.scale
-          cropX2 = math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale)
+    if type(portrait) == "string" then
+      drawImage(portrait, offset)
+    else
+      for _, layer in ipairs(portrait) do
+        if portraitSettings then
+          local currentScale = portraitSettings.scale * (size / 70)
+          local currentOffset = vec2.floor(vec2.mul(portraitSettings.offset, (size / 70)))
+          local imageSize = root.imageSize(layer.image)
+  
+          -- This monstrocity exists because drawImageRect can't be fixed
+          local imageOffset = {0, 0}
+  
+          local cropX1, cropX2, cropY1, cropY2 = 0, imageSize[1], 0, imageSize[2]
+          
+          if portraitSettings.scale > 1 then
+            cropX2 = 70 // portraitSettings.scale
+            cropY2 = 70 // portraitSettings.scale
+          end
+  
+          if portraitSettings.offset[1] > 0 then
+            imageOffset[1] = portraitSettings.offset[1] / portraitSettings.scale
+            cropX2 = math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale)
+          else
+            cropX1 = - portraitSettings.offset[1] // portraitSettings.scale
+            cropX2 = math.min(math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale), imageSize[2])
+          end
+  
+          if portraitSettings.offset[2] > 0 then
+            imageOffset[2] = portraitSettings.offset[2] / portraitSettings.scale
+            cropY2 = math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale)
+          else
+            cropY1 = - portraitSettings.offset[2] // portraitSettings.scale
+            cropY2 = math.min(math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale), imageSize[2])
+          end
+  
+          if (cropX2 - cropX1 > 0 and cropY2 - cropY1 > 0) then
+            self.canvas:drawImage(layer.image .. string.format("?crop;%d;%d;%d;%d", 
+                cropX1, 
+                cropY1, 
+                cropX2, 
+                cropY2
+              ), 
+              vec2.add(offset, imageOffset), currentScale)
+          end
         else
-          cropX1 = - portraitSettings.offset[1] // portraitSettings.scale
-          cropX2 = math.min(math.floor(cropX2 - portraitSettings.offset[1] / portraitSettings.scale), imageSize[2])
+          self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + size, offset[2] + size})
         end
-
-        if portraitSettings.offset[2] > 0 then
-          imageOffset[2] = portraitSettings.offset[2] / portraitSettings.scale
-          cropY2 = math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale)
-        else
-          cropY1 = - portraitSettings.offset[2] // portraitSettings.scale
-          cropY2 = math.min(math.floor(cropY2 - portraitSettings.offset[2] / portraitSettings.scale), imageSize[2])
-        end
-
-        if (cropX2 - cropX1 > 0 and cropY2 - cropY1 > 0) then
-          self.canvas:drawImage(layer.image .. string.format("?crop;%d;%d;%d;%d", 
-              cropX1, 
-              cropY1, 
-              cropX2, 
-              cropY2
-            ), 
-            vec2.add(offset, imageOffset), currentScale)
-        end
-      else
-        self.canvas:drawImageRect(layer.image, cropArea or self.config.portraitCropArea, {offset[1], offset[2], offset[1] + size, offset[2] + size})
       end
     end
     drawModeIcon(offset)

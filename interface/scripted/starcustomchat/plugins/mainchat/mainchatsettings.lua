@@ -23,6 +23,11 @@ function mainchat:init()
 
   self.portraitCanvas = widget.bindCanvas(self.layoutWidget .. ".portraitCanvas")
 
+  self.customImage = player.getProperty("icc_custom_portrait") or nil
+  if self.customImage then
+    self.customImageSize = root.imageSize(self.customImage)
+  end
+
   self:drawCharacter()
   self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
   self.availableModes = {"compact", "modern"}
@@ -42,7 +47,7 @@ function mainchat:init()
 end
 
 function mainchat:cursorOverride(screenPosition)
-  if widget.active(self.layoutWidget) then
+  if widget.active(self.layoutWidget) and not self.customImage then
     if self.portraitAnchor then
       local currentPos = self.portraitCanvas:mousePosition()
       local diff = vec2.sub(currentPos, self.portraitAnchor)
@@ -58,7 +63,7 @@ function mainchat:cursorOverride(screenPosition)
     
     for _, event in ipairs(input.events()) do
       if event.type == "MouseWheel" and widget.inMember(self.layoutWidget .. ".portraitCanvas", screenPosition) then
-        self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 4)
+        self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 3, 4)
         save()
         self:drawCharacter()
       end
@@ -81,6 +86,8 @@ function mainchat:onLocaleChange(localeConfig)
   widget.setText(self.layoutWidget .. ".btnDeleteChat", starcustomchat.utils.getTranslation("settings.clear_chat_history"))
   widget.setText(self.layoutWidget .. ".btnResetAvatar", starcustomchat.utils.getTranslation("settings.reset_avatar"))
   widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
+  widget.setText(self.layoutWidget .. ".lblCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.customavatar"))
+  widget.setText(self.layoutWidget .. ".btnSetCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.setportrait"))
 end
 
 -- Utility function: return the index of a value in the given array
@@ -95,6 +102,9 @@ function mainchat:resetAvatar()
   
   self.portraitSettings.offset = self.defaultPortraitSettings.offset
   self.portraitSettings.scale = self.defaultPortraitSettings.scale
+  player.setProperty("icc_custom_portrait", nil)
+  self.customImage = nil
+  widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
   self:drawCharacter()
   save()
 end
@@ -107,10 +117,14 @@ function mainchat:drawCharacter()
   self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
 
-  local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
+  if not self.customImage then
+    local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
 
-  for _, layer in ipairs(portrait) do
-    self.portraitCanvas:drawImage(layer.image, self.portraitSettings.offset, self.portraitSettings.scale)
+    for _, layer in ipairs(portrait) do
+      self.portraitCanvas:drawImage(layer.image, self.portraitSettings.offset, self.portraitSettings.scale)
+    end
+  else
+    self.portraitCanvas:drawImageRect(self.customImage, {0,0,self.customImageSize[1],self.customImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
   end
   self.portraitCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
@@ -155,5 +169,30 @@ function mainchat:clickCanvasCallback(position, button, isDown)
   if button == 0 then
     self.portraitAnchor = isDown and vec2.sub(position, self.portraitSettings.offset) or nil
     save()
+  end
+end
+
+function mainchat:setPortrait(widgetName, data)
+  local text = widget.getText(self.layoutWidget .. ".tbxCustomPortrait")
+  if text == "" then
+    player.setProperty("icc_custom_portrait", nil)
+    self.customImage = nil
+  else
+    if pcall(function() root.imageSize("/assetmissing.png" .. text) end) then
+      local imageSize = root.imageSize("/assetmissing.png" .. text)
+      if imageSize[1] <= 64 and imageSize[2] <= 64 then
+        widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+        self.customImage = "/assetmissing.png" .. text
+        self.customImageSize = imageSize
+        player.setProperty("icc_custom_portrait", "/assetmissing.png" .. text)
+        self:drawCharacter()
+      else
+        widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+        starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
+      end
+    else
+      widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+      starcustomchat.utils.alert("settings.mainchat.alerts.image_error")
+    end
   end
 end
