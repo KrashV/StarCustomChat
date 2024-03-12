@@ -54,6 +54,7 @@
       "lblBindsDesc": {
         "type": "label",
         "value": "",
+        "color": "lightgray",
         "hAnchor": "mid",
         "wrapWidth": 200,
         "position": [120, 90]

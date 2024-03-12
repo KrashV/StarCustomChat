@@ -96,8 +96,8 @@
       "ru": "Полный"
     },
     "settings.mainchat.customavatar": {
-      "en": "Custom portrait image",
-      "ru": "Кастомный портрет"
+      "en": "Custom portrait (up to 64x64)",
+      "ru": "Кастомный портрет (до 64х64)"
     },
     "settings.mainchat.setportrait": {
       "en": "Set",
@@ -220,6 +220,7 @@
         "type": "label",
         "position": [155, 103],
         "hAnchor": "mid",
+        "color": "lightgray",
         "value": ""
       },
   
@@ -243,6 +244,7 @@
         "position": [155, 85],
         "hAnchor": "mid",
         "vAnchor": "top",
+        "color": "lightgray",
         "value": ""
       },
   
@@ -273,6 +275,7 @@
         "type": "label",
         "position": [97, 40],
         "value": "",
+        "color": "lightgray",
         "mouseTransparent": true
       }
     }

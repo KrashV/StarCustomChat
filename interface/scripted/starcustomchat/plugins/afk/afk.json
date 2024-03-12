@@ -69,6 +69,7 @@
         "type": "label",
         "position": [120, 70],
         "hAnchor": "mid",
+        "color": "lightgray",
         "value": ""
       }
     }

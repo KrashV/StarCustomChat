@@ -65,6 +65,7 @@
       "lblProxRadiusHint" : {
         "type": "label",
         "position": [120, 80],
+        "color": "lightgray",
         "hAnchor": "mid",
         "value": ""
       },
