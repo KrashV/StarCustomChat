@@ -41,6 +41,23 @@
       "position": [237, 132],
       "buttons": []
     },
+
+    "btnLanguage": {
+      "type": "button",
+      "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+      "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+      "position": [75, 21],
+      "callback": "changeLanguage"
+    },
+
+
+    "btnMode": {
+      "type": "button",
+      "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+      "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+      "position": [118, 21],
+      "callback": "changeMode"
+    },
     
     "close" : {
       "type" : "button",
@@ -51,7 +68,7 @@
       "position" : [223, 152]
     }
   },
-  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "changePluginPage", "_generalSpinnerCallback.down"],
+  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "changePluginPage", "_generalSpinnerCallback.down", "changeMode", "changeLanguage"],
 
   "canvasClickCallbacks" : {
 

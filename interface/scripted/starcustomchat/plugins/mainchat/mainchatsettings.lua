@@ -14,8 +14,6 @@ function mainchat:init()
     offset = self.chatConfig.defaultPortraitOffset,
     scale = self.chatConfig.defaultPortraitScale
   }
-  self.chatMode = root.getConfiguration("iccMode") or "modern"
-  self.currentLanguage = root.getConfiguration("iccLocale") or "en"
   self.portraitSettings = player.getProperty("icc_portrait_settings") or self.defaultPortraitSettings
 
   self.fontSize = root.getConfiguration("icc_font_size") or self.chatConfig.fontSize
@@ -29,9 +27,6 @@ function mainchat:init()
   end
 
   self:drawCharacter()
-  self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
-  self.availableModes = {"compact", "modern"}
-
   
   widget.setSliderRange(self.layoutWidget .. ".sldFontSize", 0, 4, 1)
   widget.setSliderValue(self.layoutWidget .. ".sldFontSize", self.fontSize - 6)
@@ -79,8 +74,6 @@ function mainchat:save()
 end
 
 function mainchat:onLocaleChange(localeConfig)
-  widget.setText(self.layoutWidget .. ".btnLanguage", starcustomchat.utils.getTranslation("name"))
-  widget.setText(self.layoutWidget .. ".btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
   widget.setText(self.layoutWidget .. ".lblFontSizeHint", starcustomchat.utils.getTranslation("settings.font_size"))
   widget.setText(self.layoutWidget .. ".lblMessageLengthHint", starcustomchat.utils.getTranslation("settings.chat_collapse"))
   widget.setText(self.layoutWidget .. ".btnDeleteChat", starcustomchat.utils.getTranslation("settings.clear_chat_history"))
@@ -88,14 +81,6 @@ function mainchat:onLocaleChange(localeConfig)
   widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
   widget.setText(self.layoutWidget .. ".lblCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.customavatar"))
   widget.setText(self.layoutWidget .. ".btnSetCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.setportrait"))
-end
-
--- Utility function: return the index of a value in the given array
-function index(tab, value)
-  for k, v in ipairs(tab) do
-    if v == value then return k end
-  end
-  return 0
 end
 
 function mainchat:resetAvatar()
@@ -128,23 +113,6 @@ function mainchat:drawCharacter()
   end
   self.portraitCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, 
     {0, 0, canvasSize[1], canvasSize[2]})
-end
-
-function mainchat:changeLanguage()
-  local i = index(self.availableLocales, self.currentLanguage)
-  self.currentLanguage = self.availableLocales[(i % #self.availableLocales) + 1]
-  root.setConfiguration("iccLocale", self.currentLanguage)
-  localeSettings()
-  save()
-end
-
-
-function mainchat:changeMode()
-  local i = index(self.availableModes, self.chatMode)
-  self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
-  root.setConfiguration("iccMode", self.chatMode)
-  widget.setText(self.layoutWidget .. ".btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
-  save()
 end
 
 function mainchat:updateFontSize(widgetName)

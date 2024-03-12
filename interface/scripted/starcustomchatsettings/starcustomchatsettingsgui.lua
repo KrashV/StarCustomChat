@@ -7,6 +7,12 @@ function init()
   self.localePluginConfig = {}
   local plugins = {}
 
+  self.chatMode = root.getConfiguration("iccMode") or "modern"
+  self.currentLanguage = root.getConfiguration("iccLocale") or "en"
+
+  self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
+  self.availableModes = {"compact", "modern"}
+
   -- Load plugins
   for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
     local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
@@ -48,6 +54,8 @@ end
 
 function localeSettings()
   starcustomchat.utils.buildLocale(self.localePluginConfig)
+  widget.setText("btnLanguage", starcustomchat.utils.getTranslation("name"))
+  widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
   pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle"))
   self.runCallbackForPlugins("onLocaleChange", self.localePluginConfig)
 end
@@ -97,6 +105,31 @@ function cursorOverride(screenPosition)
   self.runCallbackForPlugins("cursorOverride", screenPosition)
 end
 
+function changeLanguage()
+  local i = index(self.availableLocales, self.currentLanguage)
+  self.currentLanguage = self.availableLocales[(i % #self.availableLocales) + 1]
+  root.setConfiguration("iccLocale", self.currentLanguage)
+  
+  localeSettings()
+  save()
+end
+
+
+function changeMode()
+  local i = index(self.availableModes, self.chatMode)
+  self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
+  root.setConfiguration("iccMode", self.chatMode)
+  widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
+  save()
+end
+
+-- Utility function: return the index of a value in the given array
+  function index(tab, value)
+    for k, v in ipairs(tab) do
+      if v == value then return k end
+    end
+    return 0
+  end
 
 function createTooltip(screenPosition)
   if self.tooltipFields then

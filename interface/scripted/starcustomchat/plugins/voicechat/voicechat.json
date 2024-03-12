@@ -18,14 +18,12 @@
       "ru": "Голосовой чат",
       "en": "Voice chat"
     },
-    "settings.voice.settings": {
-      "ru": "Настройки",
-      "en": "Settings"
+    "settings.voice.settings": "/voice",
+    "settings.voice.binds_label": {
+      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat.\nНастройки голосового чата находятся в /voice",
+      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat.\nVoice chat settings are located in /voice"
     },
-    "settings.voice.binds": {
-      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat",
-      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat"
-    },
+    "settings.voice.binds_button": "/binds",
     "settings.voice.default_enable": {
       "ru": "Включать автоматически",
       "en": "Turn on by default"
@@ -47,21 +45,31 @@
         "hAnchor": "left",
         "value": ""
       },
-      "openVoiceSettings": {
+      "btnOpenVoiceSettings": {
         "type": "button",
         "base": "/interface/button.png",
         "hover": "/interface/buttonhover.png",
         "caption": "",
-        "position": [90, 70],
+        "position": [180, 100],
         "callback": "openVoiceSettings"
+      },
+      
+      "btnBinds": {
+        "type": "button",
+        "base": "/interface/button.png",
+        "hover": "/interface/buttonhover.png",
+        "caption": "",
+        "position": [180, 80],
+        "callback": "binds"
       },
       "lblBindsDesc": {
         "type": "label",
         "value": "",
         "color": "lightgray",
-        "hAnchor": "mid",
-        "wrapWidth": 200,
-        "position": [120, 90]
+        "hAnchor": "left",
+        "vAnchor": "top",
+        "wrapWidth": 150,
+        "position": [12, 110]
       },
       "lblEnableDefault": {
         "type": "label",

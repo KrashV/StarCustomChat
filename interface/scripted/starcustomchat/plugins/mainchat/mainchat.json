@@ -180,24 +180,6 @@
         "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90"
       },
   
-  
-      "btnLanguage": {
-        "type": "button",
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-        "position": [75, 21],
-        "callback": "changeLanguage"
-      },
-  
-  
-      "btnMode": {
-        "type": "button",
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-        "position": [118, 21],
-        "callback": "changeMode"
-      },
-  
       "btnDeleteChat" : {
         "type" : "button",
         "base" : "/interface/scripted/starcustomchatsettings/button.png",

@@ -13,14 +13,19 @@ function voicechat:init()
 end
 
 function voicechat:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".openVoiceSettings", starcustomchat.utils.getTranslation("settings.voice.settings"))
-  widget.setText(self.layoutWidget .. ".lblBindsDesc", starcustomchat.utils.getTranslation("settings.voice.binds"))
+  widget.setText(self.layoutWidget .. ".btnOpenVoiceSettings", starcustomchat.utils.getTranslation("settings.voice.settings"))
+  widget.setText(self.layoutWidget .. ".btnBinds", starcustomchat.utils.getTranslation("settings.voice.binds_button"))
+  widget.setText(self.layoutWidget .. ".lblBindsDesc", starcustomchat.utils.getTranslation("settings.voice.binds_label"))
   widget.setText(self.layoutWidget .. ".lblEnableDefault", starcustomchat.utils.getTranslation("settings.voice.default_enable"))
   widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.voicechat"))
 end
 
 function voicechat:openVoiceSettings()
   chat.command("/voice")
+end
+
+function voicechat:binds()
+  chat.command("/binds")
 end
 
 function voicechat:setEnabled()
