@@ -1,1 +1,2 @@
 - Added an ability to set your own custom avatar, up to 64x64 pixels
+- Add a check to enable voice chat by default

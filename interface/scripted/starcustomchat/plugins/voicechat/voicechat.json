@@ -18,13 +18,17 @@
       "ru": "Голосовой чат",
       "en": "Voice chat"
     },
-    "settings.voice_button": {
+    "settings.voice.settings": {
       "ru": "Настройки",
       "en": "Settings"
     },
-    "settings.push_to_talk_description": {
+    "settings.voice.binds": {
       "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat",
       "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat"
+    },
+    "settings.voice.default_enable": {
+      "ru": "Включать автоматически",
+      "en": "Turn on by default"
     }
   },
 
@@ -58,6 +62,23 @@
         "hAnchor": "mid",
         "wrapWidth": 200,
         "position": [120, 90]
+      },
+      "lblEnableDefault": {
+        "type": "label",
+        "value": "",
+        "color": "lightgray",
+        "hAnchor": "right",
+        "wrapWidth": 200,
+        "position": [205, 40]
+      },
+      "chkEnableDefault": {
+        "type": "button",
+        "checkable": true,
+        "checked": true,
+        "base": "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
+        "baseImageChecked": "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
+        "callback": "setEnabled",
+        "position": [210, 38]
       }
     }
   },
