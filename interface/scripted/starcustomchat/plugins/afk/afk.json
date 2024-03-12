@@ -91,7 +91,8 @@
   "parameters": {
     "mode": "effect",
     "effect": "starchatafk",
-    "afkIgnoreTime": 3
+    "afkIgnoreTime": 3,
+    "putToSleep": true
   },
   "script": "/interface/scripted/starcustomchat/plugins/afk/afk.lua",
   "settingsScript": "/interface/scripted/starcustomchat/plugins/afk/afksettings.lua"
