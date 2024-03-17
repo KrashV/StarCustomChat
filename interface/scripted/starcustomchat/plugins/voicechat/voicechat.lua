@@ -9,8 +9,12 @@ function voicechat:init()
   local isEnabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked("btnCkVoice", isEnabled)
 
+  self:setEnabled(isEnabled)
+end
+
+function voicechat:setEnabled(enabled)
   -- This code is a little hideous because voice.setEnabled(true) closes the audio device and opens it anew. We don't want stutters in our audio
-  if isEnabled then 
+  if enabled then 
     if not voice.enabled() then
       voice.setEnabled(true)
     end
@@ -22,6 +26,6 @@ end
 function voicechat:onModeToggle(button, isChecked)
   if button == "btnCkVoice" then
     root.setConfiguration("scc_voice_enabled", isChecked)
-    voice.setEnabled(isChecked)
+    self:setEnabled(isChecked)
   end
 end
