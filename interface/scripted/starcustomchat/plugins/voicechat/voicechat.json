@@ -70,23 +70,6 @@
         "vAnchor": "top",
         "wrapWidth": 150,
         "position": [12, 110]
-      },
-      "lblEnableDefault": {
-        "type": "label",
-        "value": "",
-        "color": "lightgray",
-        "hAnchor": "right",
-        "wrapWidth": 200,
-        "position": [205, 40]
-      },
-      "chkEnableDefault": {
-        "type": "button",
-        "checkable": true,
-        "checked": true,
-        "base": "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
-        "baseImageChecked": "/interface/scripted/starcustomchat/base/chatmodeenabled.png",
-        "callback": "setEnabled",
-        "position": [210, 38]
       }
     }
   },

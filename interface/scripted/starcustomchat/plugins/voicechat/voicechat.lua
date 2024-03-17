@@ -6,12 +6,14 @@ voicechat = PluginClass:new(
 
 function voicechat:init()
   self:_loadConfig()
-  widget.setChecked("btnCkVoice", root.getConfiguration("scc_voice_enable_by_default") or false)
-  voice.setEnabled(widget.getChecked("btnCkVoice"))
+  local isEnabled = root.getConfiguration("scc_voice_enabled") or false
+  widget.setChecked("btnCkVoice", isEnabled)
+  voice.setEnabled(isEnabled)
 end
 
 function voicechat:onModeToggle(button, isChecked)
   if button == "btnCkVoice" then
+    root.setConfiguration("scc_voice_enabled", isChecked)
     voice.setEnabled(isChecked)
   end
 end

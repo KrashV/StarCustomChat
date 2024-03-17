@@ -8,5 +8,5 @@
   "permissions" : ["clipboard", "voice"],
   "requires" : [],
   "tags" : "User Interface",
-  "version" : "1.6.2"
+  "version" : "1.6.3"
 }
