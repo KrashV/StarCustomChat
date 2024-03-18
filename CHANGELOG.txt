@@ -1,2 +1,1 @@
-- Fixed opening and closing the chat disabling/enabling voice chat
-- Removed the Enable by default setting from the previous update: now the chat stores whether the chat mode was toggled on or off
+- Added a new plugin that allows you to customize the chat color

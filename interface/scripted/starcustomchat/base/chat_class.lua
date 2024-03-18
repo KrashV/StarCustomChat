@@ -54,6 +54,7 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   o.lineOffset = lineOffset or 0
   o.maxCharactersAllowed = maxCharactersAllowed
   o.callbackPlugins = callbackPlugins
+  o.colorTable = root.getConfiguration("scc_custom_colors") or {}
   return o
 end
 
@@ -119,6 +120,10 @@ function StarCustomChat:addMessage(msg)
       self:processQueue()
     end
   end
+end
+
+function StarCustomChat:getColor(type)
+  return self.colorTable[type] and "#" .. self.colorTable[type] or self.config.defaultColor
 end
 
 function StarCustomChat:findMessageByUUID(uuid)
@@ -204,6 +209,7 @@ function StarCustomChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
+  self.colorTable = root.getConfiguration("scc_custom_colors") or {}
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
     self.savedPortraits[player.uniqueId()] = {
@@ -258,7 +264,7 @@ function StarCustomChat:previewCommands(commands, selected)
 
   local result = ""
   for i, command in ipairs(commands) do 
-    result = result .. "^" .. (i == selected and self.config.commandPreviewSelectedColor or self.config.commandPreviewColor) .. ";" .. command .. " "
+    result = result .. "^" .. (i == selected and self:getColor("commandselecttext") or self:getColor("chattext")) .. ";" .. command .. " "
   end
 
   self.commandPreviewCanvas:drawText(result, {
@@ -379,7 +385,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
       verticalAnchor = "top" -- top, mid, bottom
-    }, self.config.fontSize - 1, self.config.textColors.time)
+    }, self.config.fontSize - 1, self:getColor("timetext"))
   end
 end
 
@@ -511,7 +517,7 @@ function StarCustomChat:processQueue()
     local text = self.chatMode == "modern" and message.text 
       or createNameForCompactMode(message.nickname, 
         self.config.modeColors[messageMode] or self.config.modeColors.default, 
-        message.text, message.time, self.config.textColors.time)
+        message.text, message.time, self:getColor("timetext"))
 
     if self.maxCharactersAllowed ~= 0 then
       local toCheckLength = message.collapsed == nil and true or message.collapsed
@@ -546,7 +552,7 @@ function StarCustomChat:processQueue()
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self.config.textColors[messageMode] or self.config.textColors.default)
+        }, self.config.fontSize, self:getColor("chattext"))
 
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
@@ -564,7 +570,7 @@ function StarCustomChat:processQueue()
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self.config.textColors[messageMode] or self.config.textColors.default)
+        }, self.config.fontSize, self:getColor("chattext"))
 
         if message.avatar then
           local squareSize = self.config.modeIndicatorSize

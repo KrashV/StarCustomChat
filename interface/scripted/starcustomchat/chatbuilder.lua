@@ -153,30 +153,41 @@ function buildSettingsInterface()
       layout["data"] = {
         pluginName = pluginName
       }
-      for widgetName, widgetConfig in pairs(pluginConfig.settingsPage["gui"] or {}) do 
-        if widgetConfig.type == "spinner" then
-          local callbackName = widgetConfig.callback or widgetName
-          
-          widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
-            actualPluginCallback = {
-              pluginName = pluginName,
-              callback = callbackName
-            }
-          })
-          widgetConfig.callback = "_generalSpinnerCallback"
-        elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
-          widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
-            actualPluginCallback = {
-              pluginName = pluginName,
-              callback = widgetConfig.callback
-            }
-          })
-          widgetConfig.callback = "_generalCallback"
-        elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
-          baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
+      local function processWidgets(widgets)
+        for widgetName, widgetConfig in pairs(widgets or {}) do 
+            if widgetConfig.type == "spinner" then
+                local callbackName = widgetConfig.callback or widgetName
+                
+                widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+                    actualPluginCallback = {
+                        pluginName = pluginName,
+                        callback = callbackName
+                    }
+                })
+                widgetConfig.callback = "_generalSpinnerCallback"
+            elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
+                widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+                    actualPluginCallback = {
+                        pluginName = pluginName,
+                        callback = widgetConfig.callback
+                    }
+                })
+                widgetConfig.callback = "_generalCallback"
+            elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
+                baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
+            end
+            layout["children"][widgetName] = widgetConfig
+            
+            -- If this widget has its own children, process them recursively
+            if widgetConfig.children then
+                processWidgets(widgetConfig.children)
+            end
         end
-        layout["children"][widgetName] = widgetConfig
-      end
+    end
+    
+    -- Initial call to process the top-level widgets
+    processWidgets(pluginConfig.settingsPage["gui"])
+    
 
       table.insert(baseSettingsInterface["gui"]["rgPluginTabs"]["buttons"], {
         id = pluginPageId,

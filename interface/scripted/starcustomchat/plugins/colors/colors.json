@@ -1,0 +1,125 @@
+{
+  "name": "Colors",
+  "parameters": {
+    "items": [
+      {
+        "name": "chattext",
+        "label": "settings.colors.chat",
+        "default": "FFFFFFFF"
+      },
+      {
+        "name": "timetext",
+        "label": "settings.colors.time",
+        "default": "7C7C7CF7"
+      },
+      {
+        "name": "commandselecttext",
+        "label": "settings.colors.commandselect",
+        "default": "FEEE30"
+      }
+    ]
+  },
+  "localeKeys": {
+    "settings.plugins.colors": {
+      "ru": "Цвета",
+      "en": "Colors"
+    },
+    "settings.colors.chat": {
+      "ru": "Текст чата",
+      "en": "Chat text"
+    },
+    "settings.colors.time": {
+      "ru": "Время",
+      "en": "Time"
+    },
+    "settings.colors.commandselect": {
+      "ru": "Команда",
+      "en": "Command"
+    }
+  },
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tabselectedhover.png"
+    },
+
+    "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
+      "cnvColorPicker": {
+        "type": "canvas",
+        "position": [70, 70],
+        "captureMouseEvents": true
+      },
+      "coursorCanvas": {
+        "type": "canvas",
+        "focus": false,
+        "zlevel" : 3,
+        "rect": [70, 70, 250, 250],
+        "mouseTransparent": true
+      },
+      "previewBack": {
+        "type": "image",
+        "file": "/interface/scripted/starcustomchatsettings/colorpicker/previewback.png",
+        "position": [205, 40],
+        "scale": 2,
+        "zlevel": 4
+      },
+      "previewImage": {
+        "type": "image",
+        "file": "/interface/scripted/starcustomchatsettings/colorpicker/previewcolor.png",
+        "position": [205, 40],
+        "scale": 2,
+        "zlevel": 5
+      },
+      "previewImageFrame": {
+        "type": "image",
+        "file": "/interface/scripted/starcustomchatsettings/colorpicker/previewframe.png",
+        "position": [205, 40],
+        "scale": 2,
+        "zlevel": 6
+      },
+
+      "saScrollArea": {
+        "type": "scrollArea",
+        "rect": [5, 35, 65, 130],
+        "children": {
+          "listItems": {
+            "type": "list",
+            "callback": "changedColorItem",
+            "schema": {
+              "selectedBG" : "/interface/scripted/starcustomchatsettings/colorpicker/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchatsettings/colorpicker/listunselected.png",
+              "spacing" : [0, 1],
+              "memberSize" : [55, 15],
+              "listTemplate" : {
+                "background" : {
+                  "type" : "image",
+                  "file" : "/interface/scripted/starcustomchatsettings/colorpicker/listunselected.png",
+                  "position" : [2, 0],
+                  "zlevel" : -1
+                },
+                "name" : {
+                  "type" : "label",
+                  "hAnchor": "mid",
+                  "vAnchor": "mid",
+                  "position": [27, 7],
+                  "wrapWidth": 50
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/colors/colorssetting.lua"
+}
