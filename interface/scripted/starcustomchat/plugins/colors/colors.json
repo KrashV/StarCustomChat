@@ -24,6 +24,10 @@
       "ru": "Цвета",
       "en": "Colors"
     },
+    "settings.colors.drop_to_default": {
+      "ru": "Сбросить",
+      "en": "Default"
+    },
     "settings.colors.chat": {
       "ru": "Текст чата",
       "en": "Chat text"
@@ -85,6 +89,15 @@
         "position": [205, 40],
         "scale": 2,
         "zlevel": 6
+      },
+
+      "btnDropToDefault": {
+        "type": "button",
+        "base": "/interface/buttonred.png",
+        "hover": "/interface/buttonredhover.png",
+        "position": [140, 45],
+        "visible": false,
+        "callback": "dropToDefault"
       },
 
       "saScrollArea": {
