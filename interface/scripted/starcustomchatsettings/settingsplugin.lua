@@ -11,7 +11,7 @@ function SettingsPluginClass:new(obj)
 end
 
 function SettingsPluginClass:_loadConfig()
-  local parms = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", self.name, self.name)).parameters
+  local parms = config.getParameter("pluginParameters")[self.name]
   if parms then
     for name, value in pairs(parms) do 
       self[name] = value

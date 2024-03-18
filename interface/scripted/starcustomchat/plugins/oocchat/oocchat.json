@@ -8,13 +8,26 @@
     "has_toggle": true
   }],
 
+  "settingsPluginAddons": {
+    "colors": {
+      "items": [
+        {
+          "name": "occtext",
+          "label": "chat.modes.OOC",
+          "default": "575757"
+        }
+      ]
+    }
+  },
+
   "baseConfigValues": {
     "modeColors": {
       "OOC" : "darkgray"
-    },
-    "textColors": {
-      "OOC" : "darkgray"
     }
+  },
+
+  "parameters": {
+    "defaultColor": "575757"
   },
 
   "localeKeys": {

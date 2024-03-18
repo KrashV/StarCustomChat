@@ -118,6 +118,39 @@ function buildChatInterface()
   return baseInterface
 end
 
+local function is_array(t)
+  -- Simple check to guess if a table is being used as an array.
+  -- This checks if the first key is an integer.
+  -- It's a naive check but works for simple JSON arrays.
+  local k, _ = next(t)
+  return type(k) == "number"
+end
+
+function merge_json(t1, t2)
+  if is_array(t1) and is_array(t2) then
+      -- If both are arrays, concatenate them
+      for _, v in ipairs(t2) do
+          table.insert(t1, v)
+      end
+  elseif not is_array(t1) and not is_array(t2) then
+      -- If both are objects, merge them
+      for k, v in pairs(t2) do
+          if type(v) == "table" and type(t1[k]) == "table" then
+              -- Recursively merge tables
+              merge_json(t1[k], v)
+          else
+              -- Set or overwrite the value
+              t1[k] = v
+          end
+      end
+  else
+      -- If one is an array and the other is an object, this is an error
+      error("Cannot merge an array with an object")
+  end
+  return t1
+end
+
+
 function buildSettingsInterface()
   local function mergeArrays(t1, t2)
     if t2 == nil then return t1 end
@@ -153,6 +186,7 @@ function buildSettingsInterface()
       layout["data"] = {
         pluginName = pluginName
       }
+
       local function processWidgets(widgets)
         for widgetName, widgetConfig in pairs(widgets or {}) do 
             if widgetConfig.type == "spinner" then
@@ -183,11 +217,10 @@ function buildSettingsInterface()
                 processWidgets(widgetConfig.children)
             end
         end
-    end
+      end
     
-    -- Initial call to process the top-level widgets
-    processWidgets(pluginConfig.settingsPage["gui"])
-    
+      -- Initial call to process the top-level widgets
+      processWidgets(pluginConfig.settingsPage["gui"])
 
       table.insert(baseSettingsInterface["gui"]["rgPluginTabs"]["buttons"], {
         id = pluginPageId,
@@ -204,6 +237,18 @@ function buildSettingsInterface()
       })
       pluginPageId = pluginPageId + 1
       tabPosition = vec2.add(tabPosition, tabOffset)
+    end
+
+    if pluginConfig.parameters then
+      baseSettingsInterface["pluginParameters"][pluginName] = sb.jsonMerge(baseSettingsInterface["pluginParameters"][pluginName], pluginConfig.parameters)
+    end
+
+    if pluginConfig.settingsPluginAddons then
+      for basePlugName, newConfig in pairs(pluginConfig.settingsPluginAddons) do 
+        if contains(enabledPlugins, basePlugName) then
+          baseSettingsInterface["pluginParameters"][basePlugName] = merge_json(baseSettingsInterface["pluginParameters"][basePlugName], newConfig)
+        end
+      end
     end
   end
   return baseSettingsInterface

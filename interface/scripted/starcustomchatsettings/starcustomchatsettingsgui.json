@@ -73,5 +73,6 @@
   "canvasClickCallbacks" : {
 
   },
-  "scripts": ["/interface/scripted/starcustomchatsettings/starcustomchatsettingsgui.lua"]
+  "scripts": ["/interface/scripted/starcustomchatsettings/starcustomchatsettingsgui.lua"],
+  "pluginParameters": {}
 }

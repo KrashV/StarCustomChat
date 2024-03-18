@@ -1,1 +1,2 @@
 - Added a new plugin that allows you to customize the chat color
+- OOC chat: since the chat actually changes the text instead of coloring it, the changes will only apply to new messages after saving (click on the chat)

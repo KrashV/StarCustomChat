@@ -78,6 +78,8 @@ function setColor(c, newColor)
             col = tonumber(newColor, 16)
             al = 255
         end
+    
+        sb.logInfo("New Color: %s, Alpha: %s", col, al)
         -- First, set the alpha
         c.selected_alpha = al
         c.alpha_mouse = {alpha_size[1] * (al / 255), alpha_size[2] // 2}
