@@ -78,7 +78,7 @@
   "guiAddons": {
     "btnStartAfk": {
       "type": "button",
-      "position": [1, 26],
+      "position": [6, 26],
       "base": "/interface/scripted/starcustomchat/plugins/afk/interface/afk.png",
       "hover": "/interface/scripted/starcustomchat/plugins/afk/interface/afkhover.png",
       "callback": "customButtonCallback",

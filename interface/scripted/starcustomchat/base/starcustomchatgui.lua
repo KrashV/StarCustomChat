@@ -133,6 +133,16 @@ function init()
   requestPortraits()
   self.customChat:processQueue()
 
+  local storedHiddenMessages = config.getParameter("storedMessages") or {}
+
+  for _, message in pairs(storedHiddenMessages) do 
+    self.customChat:addMessage(message)
+  end
+
+  if config.getParameter("forceFocus") then
+    widget.focus("tbxInput")
+  end
+
   ICChatTimer:add(0.5, registerCallbacks)
 end
 
@@ -595,6 +605,11 @@ function saveEverythingDude()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", self.sentMessages)
+end
+
+function closeChat()
+  pane.dismiss()
+  world.sendEntityMessage(player.id(), "scc_chat_hidden")
 end
 
 function uninit()

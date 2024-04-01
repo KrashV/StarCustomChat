@@ -13,6 +13,7 @@
 
   "chat.buttons.bottom": "Отмотать вниз",
   "chat.buttons.settings": "Настройки",
+  "chat.buttons.hide": "Скрыть чат",
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
   "chat.alerts.dm_not_found": "Игрок не на планете",

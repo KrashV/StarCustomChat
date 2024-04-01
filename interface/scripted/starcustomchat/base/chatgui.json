@@ -277,7 +277,7 @@
 
     "btnToBottom": {
       "type": "button",
-      "position": [1, 0],
+      "position": [6, 0],
       "base": "/interface/scripted/starcustomchat/base/tobottom.png",
       "hover": "/interface/scripted/starcustomchat/base/tobottomhover.png",
       "callback": "toBottom",
@@ -288,18 +288,29 @@
 
     "btnSettings": {
       "type": "button",
-      "position": [1, 13],
+      "position": [6, 13],
       "base": "/interface/scripted/starcustomchat/base/settings.png",
       "hover": "/interface/scripted/starcustomchat/base/settingshover.png",
       "callback": "openSettings",
       "data": {
         "displayText": "chat.buttons.settings"
       }
+    },
+
+    "btnHideChat": {
+      "type": "button",
+      "position": [0, 0],
+      "base": "/interface/scripted/starcustomchat/base/close.png",
+      "hover": "/interface/scripted/starcustomchat/base/closehover.png",
+      "callback": "closeChat",
+      "data": {
+        "displayText": "chat.buttons.hide"
+      }
     }
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick"],
+    "customButtonCallback", "contextMenuButtonClick", "closeChat"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

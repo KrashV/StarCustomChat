@@ -1,2 +1,2 @@
-- Context menu: added an ability to delete a message from the chat
-- Proximity chat: added an ability to only allow incoming messages from your set radius
+- Added a button to hide the chat whatsoever
+- The chat will be automatically reopened on receiving a new message or by pressed Enter

@@ -97,7 +97,7 @@ function buildChatInterface()
         type = "button",
         checkable = true,
         checked = checked,
-        position = {289, 6 + 15 * (toggle_id - 1)},
+        position = {289, 11 + 15 * (toggle_id - 1)},
         pressedOffset = {0, 0},
         base = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
         hover = "/interface/scripted/starcustomchat/base/chatmodedisabled.png",
