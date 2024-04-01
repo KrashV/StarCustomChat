@@ -386,7 +386,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     position = nameOffset,
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "top" -- top, mid, bottom
-  }, self.config.fontSize + 1, (color or self.config.textColors.default))
+  }, self.config.fontSize + 1, (color or self:getColor("chattext")))
 
   if time then
     local timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], nameOffset[2] + self.config.timeOffset[2]}
