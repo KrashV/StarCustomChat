@@ -48,6 +48,14 @@
       "ru": "Удалить",
       "en": "Delete"
     },
+    "chat.commands.confirm_delete": {
+      "ru": "Подтвердить удаление",
+      "en": "Confirm deletion"
+    },
+    "chat.commands.cancel_delete": {
+      "ru": "Отмена удаления",
+      "en": "Cancel deletion"
+    },
     
     "chat.dming.hint": {
       "en": "Send DM to:",
@@ -151,7 +159,21 @@
       "base": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover",
       "tooltip": "chat.commands.delete",
-      "priority": 90
+      "priority": -20
+    },
+    {
+      "name": "confirm_delete",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:hover",
+      "tooltip": "chat.commands.confirm_delete",
+      "priority": -22
+    },
+    {
+      "name": "cancel_delete",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover",
+      "tooltip": "chat.commands.cancel_delete",
+      "priority": -21
     }
   ],
 

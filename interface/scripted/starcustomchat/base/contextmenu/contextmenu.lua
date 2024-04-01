@@ -44,12 +44,17 @@ function processContextMenu(screenPosition)
         widget.setPosition("lytContext." .. btnConfig.name, {layoutSize[1], 0})
         widget.setVisible("lytContext." .. btnConfig.name, true)
         layoutSize[1] = layoutSize[1] + btnConfig.size[1]
+      else
+        widget.setVisible("lytContext." .. btnConfig.name, false)
+        widget.setPosition("lytContext." .. btnConfig.name, {0, 0})
       end
     end
     widget.setVisible("lytContext.dots", false)
 
     widget.setSize("lytContext", layoutSize)
   else
+    self.runCallbackForPlugins("contextMenuReset")
+    
     widget.setVisible("lytContext.dots", true)
     for _, btnConfig in ipairs(self.contextMenu.buttonConfigs) do 
       widget.setVisible("lytContext." .. btnConfig.name, false)

@@ -92,6 +92,10 @@ function PluginClass:contextMenuButtonFilter(buttonName, screenPosition, selecte
   return false
 end
 
+function PluginClass:contextMenuReset()
+
+end
+
 function PluginClass:contextMenuButtonClick(buttonName, selectedMessage)
 
 end

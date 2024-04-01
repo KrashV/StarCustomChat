@@ -11,6 +11,7 @@ function mainchat:init(chat)
   self.ReplyTimer = 5
   self.ReplyTime = 0
 
+  self.pressedDelete = false
   self.DMingTo = config.getParameter("DMingTo")
 
   if self.DMingTo then
@@ -87,7 +88,9 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
     if buttonName == "copy" then
       return true
     elseif buttonName == "delete" then
-      return true
+      return not self.pressedDelete
+    elseif buttonName == "confirm_delete" or buttonName == "cancel_delete" then
+      return self.pressedDelete
     elseif buttonName == "dm" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
@@ -183,9 +186,18 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
     elseif buttonName == "collapse" then
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
     elseif buttonName == "delete" then
+      self.pressedDelete = true
+    elseif buttonName == "confirm_delete" then
       self.customChat:deleteMessage(selectedMessage.uuid)
+      self.pressedDelete = false
+    elseif buttonName == "cancel_delete" then
+      self.pressedDelete = false
     end
   end
+end
+
+function mainchat:contextMenuReset()
+  self.pressedDelete = false
 end
 
 function mainchat:onCustomButtonClick(buttonName, data)
