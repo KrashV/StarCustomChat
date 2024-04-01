@@ -44,6 +44,10 @@
       "ru": "Пингануть",
       "en": "Ping user"
     },
+    "chat.commands.delete": {
+      "ru": "Удалить",
+      "en": "Delete"
+    },
     
     "chat.dming.hint": {
       "en": "Send DM to:",
@@ -141,6 +145,13 @@
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
       "tooltip": "chat.commands.ping",
       "priority": 30
+    },
+    {
+      "name": "delete",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover",
+      "tooltip": "chat.commands.delete",
+      "priority": 90
     }
   ],
 

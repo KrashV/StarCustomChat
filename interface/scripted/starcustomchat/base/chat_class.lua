@@ -134,6 +134,14 @@ function StarCustomChat:findMessageByUUID(uuid)
   end
 end
 
+function StarCustomChat:deleteMessage(uuid)
+  local ind = self:findMessageByUUID(uuid)
+  if ind then
+    table.remove(self.messages, ind)
+    self:processQueue()
+  end
+end
+
 function StarCustomChat:setSubMenuTexts(hint, text)
   widget.setText("lytSubMenu.lblHint", hint)
   widget.setPosition("lytSubMenu.lblText", vec2.add(widget.getPosition("lytSubMenu.lblHint"), {widget.getSize("lytSubMenu.lblHint")[1] + 3, 0}))

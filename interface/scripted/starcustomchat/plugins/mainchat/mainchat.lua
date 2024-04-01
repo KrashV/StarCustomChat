@@ -86,6 +86,8 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
   if selectedMessage then
     if buttonName == "copy" then
       return true
+    elseif buttonName == "delete" then
+      return true
     elseif buttonName == "dm" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
@@ -180,6 +182,8 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       end
     elseif buttonName == "collapse" then
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
+    elseif buttonName == "delete" then
+      self.customChat:deleteMessage(selectedMessage.uuid)
     end
   end
 end
