@@ -11,9 +11,6 @@
   "baseConfigValues": {
     "modeColors": {
       "Proximity" : "darkgreen"
-    },
-    "textColors": {
-      "Proximity" : "white"
     }
   },
 
