@@ -59,14 +59,6 @@ function populateList()
   end
 
   drawCharacters(playersAround, not self.receivedMessageFromStagehand)
-
-
-  --[[
-  starcustomchat.utils.sendMessageToStagehand(self.stagehandName, "icc_getAllPlayers", _, function(players)
-    self.receivedMessageFromStagehand = true
-    drawCharacters(players, true)
-  end)
-  ]]
 end
 
 function selectPlayer()

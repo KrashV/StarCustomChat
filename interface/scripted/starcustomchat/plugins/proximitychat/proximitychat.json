@@ -34,6 +34,10 @@
     "settings.plugins.proximitychat": {
       "ru": "Близкий чат",
       "en": "Proximity chat"
+    },
+    "settings.plugins.restrict_description": {
+      "ru": "Получать близкие сообщения только от персонажей в радиусе",
+      "en": "Only receive the proximity based messages from the players in the set radius"
     }
   },
 
@@ -72,6 +76,27 @@
         "position": [120, 100],
         "hAnchor": "mid",
         "value": ""
+      },
+
+      "chkRestrictReceiving": {
+        "type": "button",
+        "position": [150, 60],
+        "checkable": true,
+        "checked": true,
+        "base": "/interface/crafting/checkboxnocheck.png",
+        "hover": "/interface/crafting/checkboxnocheck.png",
+        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+        "callback": "restrictReceiving"
+      },
+
+      "lblRestrictingInfo": {
+        "type": "label",
+        "position": [140, 70],
+        "hAnchor": "right",
+        "vAnchor": "top",
+        "color": "lightgray",
+        "wrapWidth": 120
       }
     }
   },

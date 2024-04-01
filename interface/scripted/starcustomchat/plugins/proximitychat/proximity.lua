@@ -6,7 +6,8 @@ proximitychat = PluginClass:new(
 
 function proximitychat:init()
   self:_loadConfig()
-  self.proximityRadius = root.getConfiguration("icc_proximity_radius") or self.proximityRadius
+  self.proximityRadius = root.getConfiguration("scc_proximity_radius") or self.proximityRadius
+  self.receivingRestricted = root.getConfiguration("scc_proximity_restricted") or false
 end
 
 function planetTime()
@@ -61,6 +62,14 @@ end
 
 function proximitychat:formatIncomingMessage(message)
   if message.mode == "Proximity" then
+    if self.receivingRestricted and message.connection then
+      local authorEntityId = message.connection * -65536
+      if world.entityExists(authorEntityId) then
+        if world.magnitude(world.entityPosition(player.id()), world.entityPosition(authorEntityId)) > self.proximityRadius then
+          message.text = ""
+        end
+      end
+    end
     message.portrait = message.portrait and message.portrait ~= "" and message.portrait or message.connection
   end
   return message
@@ -73,7 +82,8 @@ function proximitychat:onReceiveMessage(message)
 end
 
 function proximitychat:onSettingsUpdate(data)
-  self.proximityRadius = root.getConfiguration("icc_proximity_radius") or self.proximityRadius
+  self.proximityRadius = root.getConfiguration("scc_proximity_radius") or self.proximityRadius
+  self.receivingRestricted = root.getConfiguration("scc_proximity_restricted") or false
 end
 
 function proximitychat:onCursorOverride(screenPosition)
