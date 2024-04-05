@@ -60,3 +60,7 @@ end
 function SettingsPluginClass:save(localeConfig)
 
 end
+
+function SettingsPluginClass:uninit()
+
+end

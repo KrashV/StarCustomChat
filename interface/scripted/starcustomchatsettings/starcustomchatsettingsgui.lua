@@ -154,5 +154,6 @@ function createTooltip(screenPosition)
 end
 
 function uninit()
+  self.runCallbackForPlugins("uninit")
   save()
 end
