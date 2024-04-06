@@ -297,6 +297,10 @@ function cursorOverride(screenPosition)
   self.runCallbackForPlugins("onCursorOverride", screenPosition)
 end
 
+function textboxCallback()
+  self.runCallbackForPlugins("onTextboxCallback")
+end
+
 function checkCommandsPreview()
   local text = widget.getText("tbxInput")
 

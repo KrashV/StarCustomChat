@@ -44,6 +44,10 @@ function PluginClass:onModeToggle(mode, isChecked)
 
 end
 
+function PluginClass:onTextboxCallback()
+
+end
+
 function PluginClass:onTextboxEscape()
   -- Do nothing
   return false

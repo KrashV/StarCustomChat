@@ -167,7 +167,7 @@
     "tbxInput": {
       "type": "textbox",
       "position": [23, 14],
-      "callback": "null",
+      "callback": "textboxCallback",
       "maxWidth": 263,
       "zlevel": 4,
       "enterKey": "textboxEnterKey",
@@ -309,7 +309,7 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
+  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
     "customButtonCallback", "contextMenuButtonClick", "closeChat"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
