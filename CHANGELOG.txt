@@ -1,2 +1,1 @@
-- Added a button to hide the chat whatsoever
-- The chat will be automatically reopened on receiving a new message or by pressed Enter
+- Removed an ability to receive messages from other players - now only the server can send them.

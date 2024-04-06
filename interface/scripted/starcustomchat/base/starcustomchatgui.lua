@@ -167,7 +167,9 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler("icc_sendToUser", simpleHandler(function(message)
-    self.customChat:addMessage(message)
+    if message and message.connection and message.connection == 0 then
+      self.customChat:addMessage(message)
+    end
   end))
 
   shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
