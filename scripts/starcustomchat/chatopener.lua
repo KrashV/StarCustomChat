@@ -26,7 +26,7 @@ function init()
     if self.chatHidden then
       hideChat()
     end
-    SCChatTimer:add(0.5, function() innerHandlerCutter = shared.setChatMessageHandler(receiveMessage) end)
+    SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
     self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
   end
 
