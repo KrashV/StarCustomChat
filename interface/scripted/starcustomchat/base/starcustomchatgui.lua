@@ -410,7 +410,12 @@ function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
     if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
       if input.key("LCtrl") then
-        self.customChat.config.fontSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
+        local newChatSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
+        if newChatSize ~= self.customChat.config.fontSize then
+          self.customChat.recalculateHeight = true
+        end
+        self.customChat.config.fontSize = newChatSize
+
         root.setConfiguration("icc_font_size", self.customChat.config.fontSize)
         createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize)
         self.customChat:processQueue()

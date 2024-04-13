@@ -215,7 +215,11 @@ end
 
 function StarCustomChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
-  self.config.fontSize = root.getConfiguration("icc_font_size") or self.config.fontSize
+  local newChatSize = root.getConfiguration("icc_font_size") or self.config.fontSize
+  if newChatSize ~= self.config.fontSize then
+    self.recalculateHeight = true
+  end
+  self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
   self.colorTable = root.getConfiguration("scc_custom_colors") or {}
   widget.setFontColor("tbxInput", self:getColor("chattext"))
@@ -536,11 +540,17 @@ function StarCustomChat:processQueue()
     end
 
     text = text .. (message.edited and " ^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")" or "")
-    local sizeOfText = self:getTextSize(text)
+    
+    if not message.textHeight or self.recalculateHeight then
+      local sizeOfText = self:getTextSize(text)
 
-    if not sizeOfText then return end 
-    message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
-    message.height = sizeOfText[2]
+      if not sizeOfText then return end 
+      message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
+      message.height = sizeOfText[2]
+      message.textHeight = message.height
+    else
+      message.height = message.textHeight
+    end
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
@@ -593,4 +603,6 @@ function StarCustomChat:processQueue()
     self.totalHeight = self.totalHeight + message.height
     self.messages[self.drawnMessageIndexes[i]] = message
   end
+
+  self.recalculateHeight = nil
 end

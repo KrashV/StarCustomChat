@@ -1,1 +1,1 @@
-- Removed an ability to receive messages from other players - now only the server can send them.
+- Optimized the chat message height calculation

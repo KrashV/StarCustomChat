@@ -87,10 +87,10 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
   if selectedMessage then
     if buttonName == "copy" then
       return true
-    elseif buttonName == "delete" then
-      return not self.pressedDelete
     elseif buttonName == "confirm_delete" or buttonName == "cancel_delete" then
       return self.pressedDelete
+    elseif buttonName == "delete" then
+      return not self.pressedDelete
     elseif buttonName == "dm" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
