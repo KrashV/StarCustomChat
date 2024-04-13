@@ -1,1 +1,2 @@
 - Optimized the chat message height calculation
+- Fixed (in a very messy way) the deletion button sometimes not working

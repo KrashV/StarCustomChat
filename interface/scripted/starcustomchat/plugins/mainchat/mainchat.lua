@@ -90,7 +90,7 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
     elseif buttonName == "confirm_delete" or buttonName == "cancel_delete" then
       return self.pressedDelete
     elseif buttonName == "delete" then
-      return not self.pressedDelete
+      return true
     elseif buttonName == "dm" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
@@ -187,6 +187,13 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
     elseif buttonName == "delete" then
       self.pressedDelete = true
+      widget.setButtonImages("lytContext.delete", {
+        base = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
+        hover = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover"
+      })
+      widget.setData("lytContext.delete", {
+        displayText = "chat.commands.cancel_delete"
+      })
     elseif buttonName == "confirm_delete" then
       self.customChat:deleteMessage(selectedMessage.uuid)
       self.pressedDelete = false
@@ -198,6 +205,13 @@ end
 
 function mainchat:contextMenuReset()
   self.pressedDelete = false
+  widget.setButtonImages("lytContext.delete", {
+    base = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
+    hover = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover"
+  })
+  widget.setData("lytContext.delete", {
+    displayText = "chat.commands.delete"
+  })
 end
 
 function mainchat:onCustomButtonClick(buttonName, data)

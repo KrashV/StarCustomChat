@@ -167,13 +167,6 @@
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:hover",
       "tooltip": "chat.commands.confirm_delete",
       "priority": -22
-    },
-    {
-      "name": "cancel_delete",
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover",
-      "tooltip": "chat.commands.cancel_delete",
-      "priority": -21
     }
   ],
 
