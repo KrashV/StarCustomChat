@@ -186,18 +186,28 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
     elseif buttonName == "collapse" then
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
     elseif buttonName == "delete" then
-      self.pressedDelete = true
-      widget.setButtonImages("lytContext.delete", {
-        base = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
-        hover = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover"
-      })
-      widget.setData("lytContext.delete", {
-        displayText = "chat.commands.cancel_delete"
-      })
+      if self.pressedDelete then
+        self.pressedDelete = false
+        widget.setButtonImages("lytContext.delete", {
+          base = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
+          hover = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover"
+        })
+        widget.setData("lytContext.delete", {
+          displayText = "chat.commands.delete"
+        })
+      else
+        self.pressedDelete = true
+        widget.setButtonImages("lytContext.delete", {
+          base = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
+          hover = "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover"
+        })
+        widget.setData("lytContext.delete", {
+          displayText = "chat.commands.cancel_delete"
+        })
+      end
+
     elseif buttonName == "confirm_delete" then
       self.customChat:deleteMessage(selectedMessage.uuid)
-      self.pressedDelete = false
-    elseif buttonName == "cancel_delete" then
       self.pressedDelete = false
     end
   end
