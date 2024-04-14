@@ -30,6 +30,8 @@ function init()
 
   local chatConfig = root.assetJson("/interface/scripted/starcustomchat/base/chat.config")
 
+  self.chatUUID = sb.makeUuid()
+
   local plugins = {}
   self.localePluginConfig = {}
 
@@ -144,8 +146,16 @@ function init()
   end
 
   ICChatTimer:add(0.5, registerCallbacks)
+
+  ICChatTimer:add(2, checkUUID)
 end
 
+function checkUUID()
+  if player.id() then
+    world.sendEntityMessage(player.id(), "scc_check_uuid", self.chatUUID)
+  end
+  ICChatTimer:add(2, checkUUID)
+end
 
 function registerCallbacks()
 
@@ -181,6 +191,12 @@ function registerCallbacks()
 
   shared.setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
     self.customChat:updatePortrait(data)
+  end))
+
+  shared.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
+    if self.chatUUID ~= uuid then
+      pane.dismiss()
+    end
   end))
 
   shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)

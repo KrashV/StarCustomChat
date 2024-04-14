@@ -7,10 +7,32 @@ if type(shared) ~= "table" then
   getmetatable('').shared = shared
 end
 
+ICChatTimer = TimerKeeper.new()
 
 function init()
+  self.hiddenChatUUID = sb.makeUuid()
+
+  ICChatTimer:add(0.5, registerCallbacks)
+
+  ICChatTimer:add(2, checkUUID)
+end
+
+function checkUUID()
+  if player.id() then
+    world.sendEntityMessage(player.id(), "scc_reveal_check_uuid", self.chatUUID)
+  end
+  ICChatTimer:add(2, checkUUID)
+end
+
+function registerCallbacks()
   shared.setMessageHandler("scc_close_revealing_interface", localHandler(function()
     openChat()
+  end))
+
+  shared.setMessageHandler("scc_reveal_check_uuid", localHandler(function(uuid)
+    if uuid ~= self.hiddenChatUUID then
+      pane.dismiss()
+    end
   end))
 end
 

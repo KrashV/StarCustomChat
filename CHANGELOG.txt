@@ -1,1 +1,2 @@
 - Fixed cancel deletion not working
+- Hopefully fixed the double chat opening
