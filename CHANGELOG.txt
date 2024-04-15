@@ -1,2 +1,1 @@
-- Fixed cancel deletion not working
-- Hopefully fixed the double chat opening
+- Fixed character names trimmed weirdly on DM tab when names are shown

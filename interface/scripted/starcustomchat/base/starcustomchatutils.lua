@@ -8,6 +8,10 @@ function starcustomchat.utils.getLocale()
   return root.getConfiguration("iccLocale") or "en"
 end
 
+function starcustomchat.utils.clearNick(nick)
+  return string.gsub(nick, "%^#?%w+;", "")
+end
+
 function starcustomchat.utils.buildLocale(localePluginConfig)
   local addLocaleKeys = copy(localePluginConfig or {})
 

@@ -17,7 +17,7 @@ function populateList()
       if index(self.contacts, player.id) == 0 and player.data then
         local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
         if mode == "letter" or not player.data.portrait then
-          local trimmedName = starcustomchat.utils.utf8Substring(player.name, 1, 2)
+          local trimmedName = starcustomchat.utils.utf8Substring(starcustomchat.utils.clearNick(player.name), 1, 2)
           trimmedName = utf8.len(trimmedName) == 1 and trimmedName .. " " or (utf8.len(trimmedName) == 0 and "  ") or trimmedName
           drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", trimmedName)
         elseif player.data.portrait then
