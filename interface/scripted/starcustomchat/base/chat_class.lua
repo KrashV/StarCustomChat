@@ -538,8 +538,6 @@ function StarCustomChat:processQueue()
     else
       message.collapsed = nil
     end
-
-    text = text .. (message.edited and " ^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")" or "")
     
     if not message.textHeight or self.recalculateHeight then
       local sizeOfText = self:getTextSize(text)
