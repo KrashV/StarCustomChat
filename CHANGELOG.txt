@@ -1,2 +1,3 @@
-- Fixed character names trimmed weirdly on DM tab when names are shown
-- Fixed hiding the chat crashing it without an ability to restore
+- Some new necessary plugin callbacks
+- Fixed crash on closing the settings menu when the chat is hidden
+- Some minor improvements for the hidden mode

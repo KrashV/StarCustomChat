@@ -48,6 +48,10 @@ function PluginClass:onTextboxCallback()
 
 end
 
+function PluginClass:preventTextboxCallback(message)
+  return false
+end
+
 function PluginClass:onTextboxEscape()
   -- Do nothing
   return false

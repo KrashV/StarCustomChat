@@ -181,7 +181,7 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
-    return true
+    return shared.chatIsOpen
   end))
 
   shared.setMessageHandler("icc_close_chat", localHandler(function(message)
@@ -200,11 +200,13 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
-    createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
-    self.runCallbackForPlugins("onSettingsUpdate", data)
-    
-    localeChat(self.localePluginConfig)
-    self.customChat:resetChat()
+    if shared.chatIsOpen then
+      createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
+      self.runCallbackForPlugins("onSettingsUpdate", data)
+      
+      localeChat(self.localePluginConfig)
+      self.customChat:resetChat()
+    end
   end))
 
   shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
@@ -263,6 +265,8 @@ function localeChat(localePluginConfig)
 
   local savedText = widget.getText("tbxInput")
   local hasFocus = widget.hasFocus("tbxInput")
+  widget.setText("lblTextboxHint", starcustomchat.utils.getTranslation("chat.textbox.hint"))
+
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   if self.chatMode ~= "compact" then self.chatMode = "modern" end
 
@@ -346,7 +350,7 @@ end
 function checkTyping()
   local text = widget.getText("tbxInput")
 
-  widget.setText("lblTextboxHint", text ~= "" and "" or starcustomchat.utils.getTranslation("chat.textbox.hint"))
+  widget.setVisible("lblTextboxHint", text == "")
 
   if widget.hasFocus("tbxInput") or text ~= "" then
     status.addPersistentEffect("starchatdots", "starchatdots")
@@ -497,6 +501,7 @@ function blurTextbox(widgetName)
 end
 
 function textboxEnterKey(widgetName)
+
   local text = widget.getText(widgetName)
 
   if text == "" then
@@ -508,6 +513,10 @@ function textboxEnterKey(widgetName)
     text = text,
     mode = widget.getSelectedData("rgChatMode").mode
   }
+
+  if self.runCallbackForPlugins("preventTextboxCallback", message) then
+    return
+  end
 
   if string.sub(text, 1, 1) == "/" then
     if string.len(text) == 1 then
@@ -642,7 +651,7 @@ function uninit()
   if not self.reopening and text and text ~= "" then
     clipboard.setText(text)
   end
-
+  shared.chatIsOpen = false
   saveEverythingDude()
   handlerCutter()
 end

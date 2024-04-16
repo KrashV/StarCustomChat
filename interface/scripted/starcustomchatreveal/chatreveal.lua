@@ -20,7 +20,10 @@ end
 
 function checkUUID()
   if player.id() then
-    world.sendEntityMessage(player.id(), "scc_reveal_check_uuid", self.chatUUID)
+    world.sendEntityMessage(player.id(), "scc_reveal_check_uuid", self.hiddenChatUUID)
+    promises:add(world.sendEntityMessage(player.id(), "icc_is_chat_open"), function(res)
+      if res then pane.dismiss() end
+    end)
   end
   ICChatTimer:add(2, checkUUID)
 end
@@ -42,7 +45,8 @@ function openChat(_, _, _, force)
   pane.dismiss()
 end
 
-function update()
+function update(dt)
+  ICChatTimer:update(dt)
   if not player.id() or not world.entityExists(player.id()) then
     pane.dismiss()
     return
