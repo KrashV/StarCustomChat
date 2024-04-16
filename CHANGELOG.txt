@@ -1,1 +1,2 @@
 - Fixed character names trimmed weirdly on DM tab when names are shown
+- Fixed hiding the chat crashing it without an ability to restore

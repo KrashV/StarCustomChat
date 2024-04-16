@@ -1,4 +1,5 @@
 require "/scripts/messageutil.lua"
+require "/scripts/scctimer.lua"
 
 
 local shared = getmetatable('').shared

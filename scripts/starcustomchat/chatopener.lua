@@ -1,7 +1,7 @@
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/scripts/messageutil.lua"
 require "/scripts/util.lua"
-require "/scripts/icctimer.lua"
+require "/scripts/scctimer.lua"
 
 SCChatTimer = TimerKeeper.new()
 

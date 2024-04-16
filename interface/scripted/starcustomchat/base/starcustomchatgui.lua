@@ -1,5 +1,5 @@
 require "/scripts/messageutil.lua"
-require "/scripts/icctimer.lua"
+require "/scripts/scctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
 require "/interface/scripted/starcustomchat/base/chat_class.lua"
