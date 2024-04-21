@@ -40,4 +40,4 @@ jobs:
         with:
           webhook-url: ${{ secrets.DELIVERY_DISCORD_URL }}
           filename: StarCustomChat.pak  
-          content: "<@&${{ vars.DEG_ROLE_MENTION }}> StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+          content: "StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
