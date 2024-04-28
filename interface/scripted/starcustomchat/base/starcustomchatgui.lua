@@ -429,6 +429,9 @@ end
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
     if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
+
+      self.runCallbackForPlugins("onChatScroll")
+
       if input.key("LCtrl") then
         local newChatSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
         if newChatSize ~= self.customChat.config.fontSize then

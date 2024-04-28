@@ -28,6 +28,10 @@ function PluginClass:registerMessageHandlers(shared)
 
 end
 
+function PluginClass:onChatScroll()
+
+end
+
 function PluginClass:onSendMessage(data)
 
 end

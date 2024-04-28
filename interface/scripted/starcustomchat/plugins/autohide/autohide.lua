@@ -12,11 +12,15 @@ function autohide:init()
   self.ignoreServerMessages = root.getConfiguration("scc_autohide_ignore_server_messages") or false
 end
 
+function autohide:onCursorOverride()
+  self.autohideTime = self.timer
+end
+
 function autohide:update(dt)
   if self.timer > 0 and self.autohideTime <= 0 then
     closeChat()
   end
-  self.autohideTime = math.max(self.autohideTime - dt, 0)
+  self.autohideTime = widget.hasFocus("tbxInput") and self.timer or math.max(self.autohideTime - dt, 0)
 end
 
 function autohide:onReceiveMessage(message)

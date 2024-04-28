@@ -65,6 +65,7 @@ function mainchat:formatIncomingMessage(message)
     end
   end
 
+
   return message
 end
 
