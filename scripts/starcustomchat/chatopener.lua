@@ -55,7 +55,9 @@ end
 function receiveMessage(message)
   if self.chatHidden then
     table.insert(self.storedMessages, message)
-    world.sendEntityMessage(player.id(), "scc_close_revealing_interface")
+    if message.connection and (message.connection ~= 0 or not root.getConfiguration("scc_autohide_ignore_server_messages")) then
+      world.sendEntityMessage(player.id(), "scc_close_revealing_interface")
+    end
   end
 end
 

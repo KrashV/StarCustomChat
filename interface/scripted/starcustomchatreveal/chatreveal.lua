@@ -20,7 +20,7 @@ end
 
 function checkUUID()
   if player.id() then
-    world.sendEntityMessage(player.id(), "scc_reveal_check_uuid", self.hiddenChatUUID)
+    world.sendEntityMessage(player.id(), "scc_check_uuid", self.hiddenChatUUID)
     promises:add(world.sendEntityMessage(player.id(), "icc_is_chat_open"), function(res)
       if res then pane.dismiss() end
     end)
@@ -33,7 +33,7 @@ function registerCallbacks()
     openChat()
   end))
 
-  shared.setMessageHandler("scc_reveal_check_uuid", localHandler(function(uuid)
+  shared.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
     if uuid ~= self.hiddenChatUUID then
       pane.dismiss()
     end
