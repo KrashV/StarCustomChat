@@ -537,7 +537,7 @@ function StarCustomChat:processQueue()
     else
       message.collapsed = nil
     end
-    
+
     if not message.textHeight or self.recalculateHeight then
       local sizeOfText = message.imageSize and vec2.div(message.imageSize, 10 / self.config.fontSize) or self:getTextSize(text)
 

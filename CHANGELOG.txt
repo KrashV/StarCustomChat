@@ -1,2 +1,1 @@
-- Replace new line breaks with spaces on input
-- Introduce image messages
+- Fix images not being the correct size when they should be

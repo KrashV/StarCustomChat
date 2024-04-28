@@ -50,7 +50,6 @@ function images:onReceiveMessage(message)
       message.text = ""
     else
       message.text = ""
-      message.textHeight = imageSize[2]
       message.imageSize = imageSize
     end
   end
