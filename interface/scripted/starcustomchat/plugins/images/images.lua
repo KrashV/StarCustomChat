@@ -43,12 +43,15 @@ function images:preventTextboxCallback(message)
 end
 
 function images:onReceiveMessage(message)
-  if message and message.image and string.find(message.image, "^/%w+%.png") then
-    local imageSize = root.imageSize(message.image)
+  if message and (message.image and string.find(message.image, "^/%w+%.png"))
+    or (message.text and string.find(message.text, "^/%w+%.png")) then
+
+    local imageSize = root.imageSize(message.image or message.text)
     if imageSize[1] > 64 or imageSize[2] > 64 then
       starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
       message.text = ""
     else
+      message.image = message.image or message.text
       message.text = ""
       message.imageSize = imageSize
     end

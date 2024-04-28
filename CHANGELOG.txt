@@ -1,2 +1,3 @@
 - Fix images not being the correct size when they should be
 - Don't hide the chat if you are currently typing or hovering on the chat box
+- Fix the images not shown when they should have
