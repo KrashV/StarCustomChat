@@ -68,7 +68,7 @@ function StarCustomChat:addMessage(msg)
 
     message = self.callbackPlugins("formatIncomingMessage", message)
 
-    if not message or not message.text or message.text == "" then return nil end
+    if not message or ((not message.text or message.text == "") and not message.image) then return nil end
 
     if not message.nickname then
       message.nickname = "Unknown"
@@ -78,7 +78,7 @@ function StarCustomChat:addMessage(msg)
       message.portrait = self.config.icons.unknown
     end
 
-    if not message.text or message.text == "" then return nil end
+    if not message.text or message.text == "" and not message.image then return nil end
 
     if message.connection == 0 then
       for _, settings in ipairs(self.config.serverTextSpecific) do 
@@ -501,7 +501,6 @@ end
 function StarCustomChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
-
   self.drawnMessageIndexes = filterMessages(self.messages)
   
   local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
@@ -540,15 +539,15 @@ function StarCustomChat:processQueue()
     end
     
     if not message.textHeight or self.recalculateHeight then
-      local sizeOfText = self:getTextSize(text)
+      local sizeOfText = message.imageSize and vec2.div(message.imageSize, 10 / self.config.fontSize) or self:getTextSize(text)
 
       if not sizeOfText then return end 
-      message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
-      message.height = sizeOfText[2]
-      message.textHeight = message.height
-    else
-      message.height = message.textHeight
-    end
+        message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
+        message.height = sizeOfText[2]
+        message.textHeight = message.height
+      else
+        message.height = message.textHeight
+      end
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
@@ -557,19 +556,23 @@ function StarCustomChat:processQueue()
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
     end
 
-
+   
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "modern" then
       if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
         local size = portraitSizeFromBaseFont(self.config.fontSize)
         local nameOffset = vec2.add(self.config.nameOffset, {size, size})
         
-        self.canvas:drawText(text, {
-          position = {nameOffset[1], messageOffset},
-          horizontalAnchor = "left", -- left, mid, right
-          verticalAnchor = "bottom", -- top, mid, bottom
-          wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self:getColor("chattext"))
+        if message.image then
+          self.canvas:drawImage(message.image, {nameOffset[1], messageOffset}, 1 / 10 * self.config.fontSize)
+        else
+          self.canvas:drawText(text, {
+            position = {nameOffset[1], messageOffset},
+            horizontalAnchor = "left", -- left, mid, right
+            verticalAnchor = "bottom", -- top, mid, bottom
+            wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
+          }, self.config.fontSize, self:getColor("chattext"))
+        end
 
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
@@ -588,6 +591,11 @@ function StarCustomChat:processQueue()
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
         }, self.config.fontSize, self:getColor("chattext"))
+
+        if message.image then
+          local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
+          self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2]}, 1 / 10 * self.config.fontSize)
+        end
 
         if message.avatar then
           local squareSize = self.config.modeIndicatorSize

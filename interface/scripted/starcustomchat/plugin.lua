@@ -48,6 +48,10 @@ function PluginClass:onTextboxCallback()
 
 end
 
+function PluginClass:afterTextboxPressed()
+
+end
+
 function PluginClass:preventTextboxCallback(message)
   return false
 end

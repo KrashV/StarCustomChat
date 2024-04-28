@@ -523,7 +523,7 @@ function textboxEnterKey(widgetName)
     return
   end
 
-  if string.sub(text, 1, 1) == "/" then
+  if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
       blurTextbox(widgetName)
       return
@@ -568,6 +568,7 @@ function textboxEnterKey(widgetName)
     end
   end
   blurTextbox(widgetName)
+  self.runCallbackForPlugins("afterTextboxPressed", message)
 end
 
 function processCommand(command)

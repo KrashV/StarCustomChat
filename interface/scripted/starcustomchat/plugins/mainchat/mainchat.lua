@@ -86,7 +86,7 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
 
   if selectedMessage then
     if buttonName == "copy" then
-      return true
+      return not selectedMessage.image
     elseif buttonName == "confirm_delete" or buttonName == "cancel_delete" then
       return self.pressedDelete
     elseif buttonName == "delete" then
