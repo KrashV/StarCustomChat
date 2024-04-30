@@ -39,9 +39,9 @@ function starcustomchat.utils.getTranslation(key)
   end
 end
 
-function starcustomchat.utils.alert(key, format)
+function starcustomchat.utils.alert(key, ...)
   local text = starcustomchat.utils.getTranslation(key)
-  interface.queueMessage(format and string.format(text, format) or text)
+  interface.queueMessage(... and string.format(text, ...) or text)
 end
 
 function starcustomchat.utils.saveMessage(message)

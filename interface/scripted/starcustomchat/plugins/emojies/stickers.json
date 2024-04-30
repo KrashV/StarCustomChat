@@ -23,8 +23,8 @@
       "ru": "Изображение не найдено"
     },
     "settings.plugins.stickers.alerts.size_error": {
-      "en": "Image should not exceed %sx%s",
-      "ru": "Изображение не должно быть больше %sх%s"
+      "en": "Image should not exceed 32x32",
+      "ru": "Изображение не должно быть больше 32х32"
     },
     "settings.plugins.stickers.alerts.empty_error": {
       "en": "Paste the directives in the text field",
@@ -168,8 +168,7 @@
   },
 
   "parameters": {
-    "defaultCommandColor": "5f2bba",
-    "maxSize": [32, 32]
+    "defaultCommandColor": "5f2bba"
   },
 
   "script": "/interface/scripted/starcustomchat/plugins/stickers/stickers.lua",

@@ -57,8 +57,8 @@ function stickers:addSticker()
   if pcall(function() root.imageSize(newImage) end) then
     local imageSize = root.imageSize(newImage)
 
-    if imageSize[1] > self.maxSize[1] or imageSize[2] > self.maxSize[2] then
-      starcustomchat.utils.alert("settings.plugins.stickers.alerts.size_error", self.maxSize[1], self.maxSize[2])
+    if imageSize[1] > 32 or imageSize[2] > 32 then
+      starcustomchat.utils.alert("settings.plugins.stickers.alerts.size_error")
       widget.setText(self.layoutWidget .. ".tbxStickerDirectives", "")
       return
     end
