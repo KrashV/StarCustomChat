@@ -636,6 +636,8 @@ function createTooltip(screenPosition)
       end
     end
   end
+
+  return self.runCallbackForPlugins("onCreateTooltip", screenPosition)
 end
 
 function customButtonCallback(buttonName, data)

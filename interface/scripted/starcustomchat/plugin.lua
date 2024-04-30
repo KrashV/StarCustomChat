@@ -94,6 +94,10 @@ function PluginClass:onCursorOverride(screenPosition)
   
 end
 
+function PluginClass:onCreateTooltip(screenPosition)
+  
+end
+
 function PluginClass:onProcessCommand(text)
   return false
 end

@@ -1,0 +1,62 @@
+{
+  "paneLayer" : "tooltip",
+  "gui": {
+    "background": {
+      "type": "background",
+      "fileBody": "/interface/scripted/starcustomchat/plugins/reactions/reactionselect/body.png",
+      "fileHeader": "/interface/scripted/starcustomchat/plugins/reactions/reactionselect/header.png",
+      "fileFooter": "/interface/scripted/starcustomchat/plugins/reactions/reactionselect/footer.png"
+    },
+    "title": {
+      "type": "title",
+      "title": ":)",
+      "subtitle": "Made by Kerrie Lake",
+      "icon" : {
+        "type" : "image",
+        "file" : "/interface/scripted/starcustomchat/plugins/reactions/reactions/smile.png",
+        "offset": [1, 1]
+      }
+    },
+    "scrollArea": {
+      "type": "scrollArea",
+      "rect": [10, 25, 175, 90],
+      "children": {
+        "reactList": {
+          "type": "list",
+          "columns" : 6,
+          "fillDown": true,
+          "callback": "onEmojiSelect",
+          "schema": {
+            "memberSize": [16, 16],
+            "spacing" : [10, 10],
+            "listTemplate": {
+              "emoji": {
+                "type": "image",
+                "file": "/assetmissing.png",
+                "position": [0, 0]
+              }
+            }
+          }
+        }
+      }
+    },
+    "tbxSearch": {
+      "type": "textbox",
+      "position": [7, 10],
+      "callback": "searchEmoji",
+      "hint": "Search..."
+    },
+    "close" : {
+      "type" : "button",
+      "base" : "/interface/x.png",
+      "hover" : "/interface/xhover.png",
+      "pressed" : "/interface/xpress.png",
+      "pressedOffset" : [0, 0],
+      "position" : [161, 101]
+    }
+  },
+
+  
+  "scriptWidgetCallbacks": ["onEmojiSelect", "searchEmoji"],
+  "scripts": ["/interface/scripted/starcustomchat/plugins/reactions/reactionselect/reactionselect.lua"]
+}

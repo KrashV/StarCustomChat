@@ -1,0 +1,36 @@
+{
+  "name": "Reactions",
+
+  "localeKeys": {
+    "chat.commands.add_reaction": {
+      "ru": "Добавить реакцию",
+      "en": "Add reaction"
+    }
+  },
+
+
+  "contextMenuButtons": [
+    {
+      "name": "add_reacton",
+      "base": "/interface/scripted/starcustomchat/plugins/reactions/contextmenu/addreaction.png:base",
+      "hover": "/interface/scripted/starcustomchat/plugins/reactions/contextmenu/addreaction.png:hover",
+      "tooltip": "chat.commands.add_reaction",
+      "priority": -70
+    }
+  ],
+
+  "parameters": {
+
+  },
+
+  "baseConfigValues": {
+    "emotePanelHeight": 12,
+    "emotesOffset": [0, 2],
+    "emoteNumberSpace": 14,
+    "emoteSpacing": 25,
+    "emojiFontSize": 7
+  },
+
+
+  "script": "/interface/scripted/starcustomchat/plugins/reactions/reactions.lua"
+}

@@ -1,1 +1,1 @@
-- In whisper and party mode only send stickers to the recepient(s), not to everyone around!
+- EMOTES
