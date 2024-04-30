@@ -1,1 +1,2 @@
 - Rewrite settings buttons from radioGroup to individual list items
+- Add stickers!
