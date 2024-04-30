@@ -31,6 +31,7 @@
       "baseImageChecked": "/interface/scripted/starcustomchat/plugins/autohide/settingstabs/tabselected.png",
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/autohide/settingstabs/tabselectedhover.png"
     },
+    "priority": 1,
     "gui": {
       "titleText": {
         "type": "label",

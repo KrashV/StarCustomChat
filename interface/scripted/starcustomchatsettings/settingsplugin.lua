@@ -18,7 +18,7 @@ function SettingsPluginClass:_loadConfig()
     end
   end
   self.chatConfig = config.getParameter("chatConfig")
-  self.layoutWidget = "lytPluginSettings.pluginSettings" .. self.name
+  self.layoutWidget = "lytPluginSettings." .. self.name
 end
 
 function SettingsPluginClass:init(localeConfig)

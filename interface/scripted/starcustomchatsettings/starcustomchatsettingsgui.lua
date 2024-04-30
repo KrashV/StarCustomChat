@@ -13,6 +13,8 @@ function init()
   self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
   self.availableModes = {"compact", "modern"}
 
+  self.pluginSettingsButtons = {}
+
   -- Load plugins
   for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
     local pluginConfig = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
@@ -43,8 +45,43 @@ function init()
   end
 
   self.pluginLayouts = {}
-  for layoutName, layoutConfig in pairs(config.getParameter("gui")["lytPluginSettings"]["children"]) do 
-    self.pluginLayouts[layoutConfig.data.pluginName] = layoutName
+
+  local pluginLayouts = config.getParameter("gui")["lytPluginSettings"]["children"]
+  local sortedLayouts = {}
+
+  for layoutName, layoutConfig in pairs(pluginLayouts) do 
+    table.insert(sortedLayouts, layoutConfig)
+  end
+
+  table.sort(sortedLayouts, function(lay1, lay2)
+    local a_priority = lay1.data.priority or 999999
+    local b_priority = lay2.data.priority or 999999
+
+    return a_priority < b_priority
+  end)
+
+  for i, layoutConfig in pairs(sortedLayouts) do 
+    self.pluginLayouts[layoutConfig.data.pluginName] = layoutConfig.data.pluginName
+    local li = widget.addListItem("saPlugins.listPluginTabs")
+
+    self.pluginSettingsButtons[layoutConfig.data.pluginName] = li
+
+    widget.setButtonImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+      base = layoutConfig.data.base,
+      hover = layoutConfig.data.hover,
+      pressed = layoutConfig.data.baseImageChecked
+    })
+    widget.setButtonCheckedImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+      base = layoutConfig.data.baseImageChecked,
+      hover = layoutConfig.data.hoverImageChecked,
+      pressed = layoutConfig.data.base
+    })
+
+    widget.setData("saPlugins.listPluginTabs." .. li, layoutConfig.data)
+    widget.setData("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+      pluginTabName = layoutConfig.data.pluginName
+    })
+    widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", i == 1)
   end
 
   self.runCallbackForPlugins("init", starcustomchat.locale)
@@ -67,9 +104,16 @@ function save()
   world.sendEntityMessage(player.id(), "icc_reset_settings")
 end
 
-function changePluginPage(_, data)
+function changePluginPage()
+  local li = widget.getListSelected("saPlugins.listPluginTabs")
+  local data = widget.getData("saPlugins.listPluginTabs." .. li)
+
   for pluginName, layoutName in pairs(self.pluginLayouts) do 
     widget.setVisible("lytPluginSettings." .. layoutName, data.pluginName == pluginName)
+  end
+
+  for pluginName, li in pairs(self.pluginSettingsButtons) do 
+      widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", false)
   end
 end
 

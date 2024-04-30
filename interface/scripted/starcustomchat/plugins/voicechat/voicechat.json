@@ -37,6 +37,7 @@
       "baseImageChecked": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabselected.png",
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/voicechat/settingstabs/tabselectedhover.png"
     },
+    "priority": 3,
     "gui": {
       "titleText": {
         "type": "label",

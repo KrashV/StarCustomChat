@@ -177,6 +177,7 @@
       "baseImageChecked": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabselected.png",
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tabselectedhover.png"
     },
+    "priority": 0,
     "gui": {
       "titleText": {
         "type": "label",

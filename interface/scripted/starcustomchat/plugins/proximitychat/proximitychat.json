@@ -48,6 +48,7 @@
       "baseImageChecked": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabselected.png",
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/proximitychat/settingstabs/tabselectedhover.png"
     },
+    "priority": 5,
     "gui": {
       "titleText": {
         "type": "label",

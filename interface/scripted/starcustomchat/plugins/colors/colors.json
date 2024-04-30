@@ -48,6 +48,7 @@
       "baseImageChecked": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tabselected.png",
       "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tabselectedhover.png"
     },
+    "priority": 2,
 
     "gui": {
       "titleText": {

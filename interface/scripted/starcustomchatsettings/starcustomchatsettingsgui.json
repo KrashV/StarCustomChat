@@ -35,11 +35,55 @@
       "children": {}
     },
 
-    "rgPluginTabs": {
-      "type": "radioGroup",
-      "callback": "changePluginPage",
-      "position": [237, 132],
-      "buttons": []
+    "saPlugins": {
+      "type": "scrollArea",
+      "rect": [237, 20, 270, 145],
+      
+      "buttons" : {
+        "vertical" : {
+          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+        },
+        "horizontal" : {
+          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+        }
+      },
+      "thumbs" : {
+        "vertical" : {
+          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+        },
+        "horizontal" : {
+          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+        }
+      },
+      "children": {
+        "listPluginTabs": {
+          "type": "list",
+          "fillDown": true,
+          "callback": "changePluginPage",
+          "position": [0, 0],
+          "schema": {
+            "spacing" : [0, 1],
+            "memberSize" : [13, 13],
+            "listTemplate": {
+              "pluginSetting" : {
+                "type" : "button",
+                "base" : "/interface/scripted/starcustomchat/plugins/mainchat/settingstabs/tab.png",
+                "callback": "null",
+                "checkable": true,
+                "position" : [0, 0],
+                "pressedOffset": [0, 0],
+                "zlevel" : -1
+              }
+            }
+          }
+        }
+      }
     },
 
     "btnLanguage": {
