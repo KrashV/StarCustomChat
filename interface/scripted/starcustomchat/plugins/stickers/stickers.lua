@@ -32,6 +32,10 @@ function stickers:onProcessCommand(text)
         if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
         world.sendEntityMessage(data.id, "icc_sendToUser", message)
         world.sendEntityMessage(player.id(), "icc_sendToUser", message)
+    elseif message.mode == "Party" then
+      for _, pl in ipairs(player.teamMembers()) do 
+        world.sendEntityMessage(pl.entity, "icc_sendToUser", message)
+      end
     else
       for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
         world.sendEntityMessage(pl, "icc_sendToUser", message)
