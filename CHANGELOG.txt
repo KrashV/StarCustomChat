@@ -1,2 +1,1 @@
-- Rewrite settings buttons from radioGroup to individual list items
-- Add stickers!
+- In whisper mode only send stickers to the recepient, not to everyone around!
