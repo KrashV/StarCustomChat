@@ -32,6 +32,10 @@ function PluginClass:onChatScroll()
 
 end
 
+function PluginClass:addCustomCommandPreview(availableCommands, substr)
+
+end
+
 function PluginClass:onSendMessage(data)
 
 end
@@ -88,6 +92,10 @@ end
 
 function PluginClass:onCursorOverride(screenPosition)
   
+end
+
+function PluginClass:onProcessCommand(text)
+  return false
 end
 
 function PluginClass:onBackgroundChange(chatConfig)

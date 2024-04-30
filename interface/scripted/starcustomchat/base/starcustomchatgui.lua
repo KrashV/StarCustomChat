@@ -330,8 +330,8 @@ function checkCommandsPreview()
     if #availableCommands > 0 then
       self.savedCommandSelection = math.max(self.savedCommandSelection % (#availableCommands + 1), 1)
       widget.setVisible("lytCommandPreview", true)
-      widget.setText("lblCommandPreview", availableCommands[self.savedCommandSelection])
-      widget.setData("lblCommandPreview", availableCommands[self.savedCommandSelection])
+      widget.setText("lblCommandPreview", availableCommands[self.savedCommandSelection].name)
+      widget.setData("lblCommandPreview", availableCommands[self.savedCommandSelection].name)
       self.customChat:previewCommands(availableCommands, self.savedCommandSelection)
     else
       widget.setVisible("lytCommandPreview", false)

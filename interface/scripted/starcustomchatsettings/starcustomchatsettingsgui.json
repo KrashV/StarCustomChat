@@ -37,7 +37,7 @@
 
     "saPlugins": {
       "type": "scrollArea",
-      "rect": [237, 20, 270, 145],
+      "rect": [237, 35, 270, 145],
       
       "buttons" : {
         "vertical" : {

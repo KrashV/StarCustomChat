@@ -1,0 +1,176 @@
+{
+  "name": "Stickers",
+
+  "localeKeys": {
+    "settings.plugins.stickers": {
+      "ru": "Стикеры",
+      "en": "Stickers"
+    },
+    "settings.plugins.stickers.add": {
+      "ru": "Добавить",
+      "en": "Add"
+    },
+    "settings.plugins.stickers.remove": {
+      "ru": "Удалить",
+      "en": "Remove"
+    },
+    "settings.plugins.stickers.alerts.name_error": {
+      "en": "Stickers should have directives and a name",
+      "ru": "Стикеры должны иметь директивы и имя"
+    },
+    "settings.plugins.stickers.alerts.image_error": {
+      "en": "Could not load the image",
+      "ru": "Изображение не найдено"
+    },
+    "settings.plugins.stickers.alerts.size_error": {
+      "en": "Image should not exceed 32x32",
+      "ru": "Изображение не должно быть больше 32х32"
+    },
+    "settings.plugins.stickers.alerts.empty_error": {
+      "en": "Paste the directives in the text field",
+      "ru": "Вставь директивы в текстовое поле"
+    },
+    "settings.plugins.stickers.alerts.already_exists": {
+      "en": "A sticker with this name already exists",
+      "ru": "Стикер с таким именем уже существует"
+    },
+    "settings.colors.stickerselect": {
+      "en": "Stickers",
+      "ru": "Стикеры"
+    },
+    "chat.commands.save_sticker": {
+      "en": "Save sticker",
+      "ru": "Сохранить стикер"
+    },
+    "chat.commands.alerts.saved": {
+      "en": "Sticker %s saved!",
+      "ru": "Стикер %s сохранён!"
+    }
+  },
+
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/stickers/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/stickers/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/stickers/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/stickers/settingstabs/tabselectedhover.png"
+    },
+    "priority": 7,
+    "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
+      "saSavedStickers": {
+        "type": "scrollArea",
+        "rect": [15, 50, 230, 140],
+        "children": {
+          "listStickers": {
+            "type": "list",
+            "columns" : 5,            
+            "fillDown" : true,
+            "callback": "onStickerSelected",
+            "scissoring" : false,
+            "schema": {
+              "memberSize": [32, 36],
+              "spacing" : [10, 10],
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frameselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+              "listTemplate": {
+                "background": {
+                  "type": "image",
+                  "file": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                  "position": [0, 2]
+                },
+                "sticker": {
+                  "type": "image",
+                  "file": "/assetmissing.png",
+                  "position": [16, 18],
+                  "centered": true,
+                  "zLevel": 2
+                },
+                "name": {
+                  "type": "label",
+                  "hAnchor": "mid",
+                  "vAnchor": "mid",
+                  "position": [16, 0],
+                  "zLevel": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "tbxStickerSearch": {
+        "type": "textbox",
+        "callback": "searchSticker",
+        "position": [140, 130],
+        "hint": "search",
+        "maxWidth": 40,
+        "regex": "[a-zA-Z0-9]{0,30}"
+      },
+      "tbxStickerName": {
+        "type": "textbox",
+        "callback": "null",
+        "position": [25, 35],
+        "hint": "name",
+        "maxWidth": 40,
+        "regex": "[a-zA-Z0-9]{0,30}"
+      },
+      "tbxStickerDirectives": {
+        "type": "textbox",
+        "callback": "null",
+        "position": [70, 35],
+        "maxWidth": 80,
+        "hint": "?directives"
+      },
+      "btnAdd": {
+        "type": "button",
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "position": [170, 35],
+        "callback": "addSticker"
+      },
+      "btnRemove": {
+        "type": "button",
+        "visible": false,
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000?brightness=90",
+        "position": [170, 20],
+        "callback": "removeSticker"
+      }
+    }
+  },
+
+  "contextMenuButtons": [
+    {
+      "name": "save_sticker",
+      "base": "/interface/scripted/starcustomchat/plugins/stickers/contextmenu/savesticker.png:base",
+      "hover": "/interface/scripted/starcustomchat/plugins/stickers/contextmenu/savesticker.png:hover",
+      "tooltip": "chat.commands.save_sticker",
+      "priority": -90
+    }
+  ],
+
+  "settingsPluginAddons": {
+    "colors": {
+      "items": [
+        {
+          "name": "stickercommands",
+          "label": "settings.colors.stickerselect",
+          "default": "5f2bba"
+        }
+      ]
+    }
+  },
+
+  "parameters": {
+    "defaultCommandColor": "5f2bba"
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/stickers/stickers.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/stickers/stickerssettings.lua"
+}

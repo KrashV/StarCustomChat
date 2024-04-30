@@ -242,14 +242,16 @@ function StarCustomChat:getMessages ()
 end
 
 function StarCustomChat:processCommand(text)
-  local commandResult = chat.command(text) or {}
-  for _, line in ipairs(commandResult) do 
-    chat.addMessage(line)
-    table.insert(self.messages, {
-      text = line
-    })
-    if #self.messages > self.config.chatHistoryLimit then
-      table.remove(self.messages, 1)
+  if not self.callbackPlugins("onProcessCommand", text) then
+    local commandResult = chat.command(text) or {}
+    for _, line in ipairs(commandResult) do 
+      chat.addMessage(line)
+      table.insert(self.messages, {
+        text = line
+      })
+      if #self.messages > self.config.chatHistoryLimit then
+        table.remove(self.messages, 1)
+      end
     end
   end
 end
@@ -277,7 +279,7 @@ function StarCustomChat:previewCommands(commands, selected)
 
   local result = ""
   for i, command in ipairs(commands) do 
-    result = result .. "^" .. (i == selected and self:getColor("commandselecttext") or self:getColor("chattext")) .. ";" .. command .. " "
+    result = result .. "^" .. (i == selected and self:getColor(command.color or "commandselecttext") or self:getColor("chattext")) .. ";" .. command.name .. " "
   end
 
   self.commandPreviewCanvas:drawText(result, {
@@ -585,14 +587,26 @@ function StarCustomChat:processQueue()
     else -- compact mode
       if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
         local offset = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset})
-        self.canvas:drawText(text, {
-          position = offset,
-          horizontalAnchor = "left", -- left, mid, right
-          verticalAnchor = "bottom", -- top, mid, bottom
-          wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-        }, self.config.fontSize, self:getColor("chattext"))
+        if not message.image then
+          self.canvas:drawText(text, {
+            position = offset,
+            horizontalAnchor = "left", -- left, mid, right
+            verticalAnchor = "bottom", -- top, mid, bottom
+            wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
+          }, self.config.fontSize, self:getColor("chattext"))
 
-        if message.image then
+        else
+          local text = createNameForCompactMode(message.nickname, 
+          self.config.modeColors[messageMode] or self.config.modeColors.default, 
+          "", message.time, self:getColor("timetext"))
+          
+          self.canvas:drawText(text, {
+            position = offset,
+            horizontalAnchor = "left", -- left, mid, right
+            verticalAnchor = "bottom", -- top, mid, bottom
+            wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
+          }, self.config.fontSize, self:getColor("chattext"))
+
           local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2]}, 1 / 10 * self.config.fontSize)
         end

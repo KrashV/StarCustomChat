@@ -60,13 +60,18 @@ function starcustomchat.utils.getCommands(allCommands, substr)
     for _, comm in ipairs(commlist) do
       if type ~= "admin" or (type == "admin" and player.isAdmin()) then
         if string.find(comm, substr) then
-          table.insert(availableCommands, comm)
+          table.insert(availableCommands, {
+            name = comm,
+            color = nil
+          })
         end
       end
     end
   end
 
-  table.sort(availableCommands, function(a, b) return a:upper() < b:upper() end)
+  self.runCallbackForPlugins("addCustomCommandPreview", availableCommands, substr)
+
+  table.sort(availableCommands, function(a, b) return a.name:upper() < b.name:upper() end)
   return availableCommands
 end
 
