@@ -23,11 +23,15 @@ function stickers:onProcessCommand(text)
 
     if message.mode == "Whisper" then
         local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-        if not li then return end
+        if not li then 
+          starcustomchat.utils.alert("chat.alerts.dm_not_found")
+          return true
+        end
   
         local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
         if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
         world.sendEntityMessage(data.id, "icc_sendToUser", message)
+        world.sendEntityMessage(player.id(), "icc_sendToUser", message)
     else
       for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
         world.sendEntityMessage(pl, "icc_sendToUser", message)
