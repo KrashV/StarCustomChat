@@ -1,1 +1,1 @@
-- EMOTES
+- Emotes: add a few missing emotes and show its names on hover

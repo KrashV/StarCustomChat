@@ -4,9 +4,17 @@ function init()
   self.emojiList = root.assetJson("/interface/scripted/starcustomchat/plugins/reactions/reactions/reactionlist.json")
   populateReacts()
 
-  local text = config.getParameter("text")
-  pane.setTitle(utf8.len(text) > 20 and starcustomchat.utils.utf8Substring(text, 1, 20) .. "..." or text, config.getParameter("nickname"))
+  pane.setTitle(getTitle(config.getParameter("text")), config.getParameter("nickname"))
   pane.setTitleIcon(string.format("/interface/scripted/starcustomchat/plugins/reactions/reactions/%s.png", self.emojiList[math.random(#self.emojiList)]))
+end
+
+
+function cleanColors(text)
+  return string.gsub(text, "%^#?%w+;", "")
+end
+
+function getTitle(text)
+  return utf8.len(text) > 20 and starcustomchat.utils.utf8Substring(cleanColors(text), 1, 20) .. "..." or text
 end
 
 function populateReacts(search)
@@ -17,6 +25,7 @@ function populateReacts(search)
       local li = widget.addListItem("scrollArea.reactList")
       widget.setImage("scrollArea.reactList." .. li .. ".emoji", string.format("/interface/scripted/starcustomchat/plugins/reactions/reactions/%s.png", emoji))
       widget.setData("scrollArea.reactList." .. li, emoji)
+      widget.setData("scrollArea.reactList." .. li .. ".emoji", emoji)
     end
   end
 end
@@ -39,5 +48,13 @@ function onEmojiSelect()
     end
 
     pane.dismiss()
+  end
+end
+
+function createTooltip(screenPosition)
+  local wid = widget.getChildAt(screenPosition)
+  if wid then
+    local data = widget.getData(wid:sub(2))
+    if data then return data end
   end
 end
