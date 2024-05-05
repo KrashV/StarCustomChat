@@ -25,7 +25,7 @@
 
   "baseConfigValues": {
     "emotePanelHeight": 12,
-    "emotesOffset": [0, 2],
+    "emotesOffset": [0, 0],
     "emoteNumberSpace": 14,
     "emoteSpacing": 25,
     "emojiFontSize": 7

@@ -1,1 +1,3 @@
-- Emotes: add a few missing emotes and show its names on hover
+- Added sounds for talking
+- Changed the icon for voicechat
+- Moved the reaction panel a little

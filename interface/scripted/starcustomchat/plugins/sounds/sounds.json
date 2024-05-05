@@ -1,0 +1,99 @@
+{
+  "name": "Sounds",
+
+  "localeKeys": {
+    "settings.plugins.sounds": {
+      "ru": "Звуки",
+      "en": "Sounds"
+    },
+    "settings.plugins.sounds.enable": {
+      "ru": "Включить звуки разговора",
+      "en": "Enable talking sounds"
+    },
+    "settings.plugins.sounds.pitch": {
+      "ru": "Тон",
+      "en": "Pitch"
+    },
+    "settings.plugins.sounds.test": {
+      "ru": "Тест",
+      "en": "Test"
+    },
+    "settings.plugins.sounds.description": {
+      "ru": "При отправке сообщения проигрывает звук разговора, связанный с вашей расой",
+      "en": "At message sending plays a talking sound related to your species"
+    }
+  },
+
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabselectedhover.png"
+    },
+    "priority": 2,
+    "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": ""
+      },
+
+      "lblSoundsEnabled": {
+        "type": "label",
+        "position": [120, 100],
+        "hAnchor": "right",
+        "color": "lightgray"
+      },
+      
+      "lblSoundsDescription": {
+        "type": "label",
+        "position": [120, 80],
+        "hAnchor": "mid",
+        "vAnchor": "top",
+        "color": "lightgray",
+        "wrapWidth": 110
+      },
+
+      "chkEnabled": {
+        "type": "button",
+        "position": [130, 100],
+        "checkable": true,
+        "checked": false,
+        "base": "/interface/crafting/checkboxnocheck.png",
+        "hover": "/interface/crafting/checkboxnocheck.png",
+        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+        "callback": "enableSounds"
+      },
+
+      "lblSoundPitch": {
+        "type": "label",
+        "position": [120, 90],
+        "hAnchor": "right",
+        "color": "lightgray"
+      },
+
+      "sldSoundPitch" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/smallselection.png",
+        "position": [130, 90],
+        "callback": "setTalkingPitch"
+      },
+
+      "btnPlay" : {
+        "type": "button",
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "callback": "playSound",
+        "position": [180, 40]
+      }
+    }
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/sounds/sounds.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/sounds/soundssettings.lua"
+
+}
