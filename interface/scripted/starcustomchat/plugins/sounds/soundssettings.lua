@@ -24,7 +24,7 @@ function sounds:init()
   widget.setChecked(self.layoutWidget .. ".chkEnabled", self.soundsEnabled or false)
 
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
-  widget.setSliderRange(self.layoutWidget .. ".sldSoundPitch", 4, 20, 2)
+  widget.setSliderRange(self.layoutWidget .. ".sldSoundPitch", 0, 20, 2)
   widget.setSliderValue(self.layoutWidget .. ".sldSoundPitch", self.soundPitch * 10)
 end
 
@@ -45,13 +45,15 @@ end
 function sounds:playSound()
   local soundTable = {
     pool = self.soundsPool,
-    pitch = self.soundPitch
+    pitch = self.soundPitch,
+    volume = 1.3
   }
   shared.sccTalkingSound(soundTable)
 end
 
 function sounds:setTalkingPitch()
-  self.soundPitch = widget.getSliderValue(self.layoutWidget .. ".sldSoundPitch") / 10
+  self.soundPitch = math.max(widget.getSliderValue(self.layoutWidget .. ".sldSoundPitch") / 10, 0.4)
+  widget.setSliderValue(self.layoutWidget .. ".sldSoundPitch", self.soundPitch * 10)
   player.setProperty("scc_sound_pitch", self.soundPitch)
   save()
 end

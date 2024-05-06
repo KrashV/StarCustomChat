@@ -1,3 +1,2 @@
-- Added sounds for talking
-- Changed the icon for voicechat
-- Moved the reaction panel a little
+- Made the chatting sounds a little bit louder
+- Fixed the slider going out of its place
