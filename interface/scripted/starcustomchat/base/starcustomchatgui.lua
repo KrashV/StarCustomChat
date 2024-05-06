@@ -388,6 +388,10 @@ function setSizes(expanded, chatParameters, currentSizes)
 end
 
 function canvasClickEvent(position, button, isButtonDown)
+  if self.runCallbackForPlugins("onCanvasClick", position, button, isButtonDown) then
+    return
+  end
+  
   if button == 0 and isButtonDown then
     self.customChat.expanded = not self.customChat.expanded
 

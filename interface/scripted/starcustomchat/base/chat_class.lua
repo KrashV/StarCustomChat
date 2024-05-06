@@ -576,7 +576,7 @@ function StarCustomChat:processQueue()
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.emojiFontSize, self:getColor("chattext"))
+        }, self.config.fontSize - 1, self:getColor("chattext"))
 
         message.reactions[ind].position = copy(emojiStartOffset)
         emojiStartOffset[1] = emojiStartOffset[1] + self.config.emoteSpacing * self.config.fontSize / 10

@@ -84,3 +84,28 @@ function reactions:onCreateTooltip(screenPosition)
     end
   end
 end
+
+function reactions:onCanvasClick(screenPosition, button, isButtonDown)
+  if button == 0 and isButtonDown then
+    local selectedMessage = self.customChat:selectMessage()
+    if selectedMessage and selectedMessage.reactions then
+
+      local currentPos = vec2.sub(screenPosition, config.getParameter("gui")["panefeature"]["offset"])
+      
+      for _, reactObj in ipairs (selectedMessage.reactions) do 
+        if rect.contains(rect.withSize(reactObj.position, {16, 16}), currentPos) then
+          local data = {
+            nickname = player.name(),
+            reaction = reactObj.reaction,
+            uuid = selectedMessage.uuid
+          }
+      
+          for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+            world.sendEntityMessage(pl, "scc_add_reaction", data)
+          end      
+          return true
+        end
+      end
+    end
+  end
+end

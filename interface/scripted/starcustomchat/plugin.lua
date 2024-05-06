@@ -32,6 +32,10 @@ function PluginClass:onChatScroll()
 
 end
 
+function PluginClass:onCanvasClick(screenPosition, button, isButtonDown)
+  return false
+end
+
 function PluginClass:addCustomCommandPreview(availableCommands, substr)
 
 end
