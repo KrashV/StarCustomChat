@@ -568,7 +568,7 @@ function StarCustomChat:processQueue()
       local emojiStartOffset = vec2.add({xOffset, messageOffset}, self.config.emotesOffset)
       for ind, reactObj in ipairs(message.reactions) do 
         local reaction = reactObj.reaction
-        self.canvas:drawImage(string.format("/interface/scripted/starcustomchat/plugins/reactions/reactions/%s.png", reaction), 
+        self.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction), 
           emojiStartOffset, 1 / 16 * self.config.fontSize)
 
         self.canvas:drawText(#reactObj.nicknames, {

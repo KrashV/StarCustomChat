@@ -13,7 +13,7 @@
       "subtitle": "Made by Kerrie Lake",
       "icon" : {
         "type" : "image",
-        "file" : "/interface/scripted/starcustomchat/plugins/reactions/reactions/smile.png",
+        "file" : "/emotes/smile.emote.png",
         "offset": [1, 1]
       }
     },

@@ -1,11 +1,11 @@
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
-  self.emojiList = root.assetJson("/interface/scripted/starcustomchat/plugins/reactions/reactions/reactionlist.json")
+  self.emojiList = root.assetJson("/interface/scripted/starcustomchat/plugins/reactions/reactionlist.json")
   populateReacts()
 
   pane.setTitle(getTitle(config.getParameter("text")), config.getParameter("nickname"))
-  pane.setTitleIcon(string.format("/interface/scripted/starcustomchat/plugins/reactions/reactions/%s.png", self.emojiList[math.random(#self.emojiList)]))
+  pane.setTitleIcon(string.format("/emotes/%s.emote.png", self.emojiList[math.random(#self.emojiList)]))
 end
 
 
@@ -23,7 +23,7 @@ function populateReacts(search)
   for _, emoji in ipairs(self.emojiList) do 
     if not search or string.find(emoji, search) then
       local li = widget.addListItem("scrollArea.reactList")
-      widget.setImage("scrollArea.reactList." .. li .. ".emoji", string.format("/interface/scripted/starcustomchat/plugins/reactions/reactions/%s.png", emoji))
+      widget.setImage("scrollArea.reactList." .. li .. ".emoji", string.format("/emotes/%s.emote.png", emoji))
       widget.setData("scrollArea.reactList." .. li, emoji)
       widget.setData("scrollArea.reactList." .. li .. ".emoji", emoji)
     end
