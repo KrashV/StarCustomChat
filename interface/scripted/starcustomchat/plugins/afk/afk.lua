@@ -12,7 +12,7 @@ function afk:init()
   self.afkActive = false
   self.forcedAfkTimer = 0
   -- On init, deactivate AFK by force
-  self:deactivateAFK(true)
+  --self:deactivateAFK(true)
   widget.setVisible("btnStartAfk", self.timer ~= 0)
 end
 
