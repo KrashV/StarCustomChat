@@ -48,6 +48,9 @@ function sounds:playSound()
     pitch = self.soundPitch,
     volume = 1.3
   }
+  if not shared.sccTalkingSound then
+    status.addPersistentEffect("scctalking", "scctalking")
+  end
   shared.sccTalkingSound(soundTable)
 end
 

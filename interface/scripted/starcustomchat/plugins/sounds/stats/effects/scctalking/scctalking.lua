@@ -24,3 +24,7 @@ function sccTalkingSound(soundData)
     animator.playSound(self.soundName)
   end
 end
+
+function uninit()
+  shared.sccTalkingSound = nil
+end

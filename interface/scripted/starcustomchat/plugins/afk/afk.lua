@@ -70,3 +70,7 @@ function afk:onSettingsUpdate(data)
   self.timer = (root.getConfiguration("icc_afk_timer") or 0) * 60
   widget.setVisible("btnStartAfk", self.timer ~= 0)
 end
+
+function afk:uninit()
+  status.clearPersistentEffects("starchatafk")
+end

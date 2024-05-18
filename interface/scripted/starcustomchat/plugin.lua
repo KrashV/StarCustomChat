@@ -117,6 +117,11 @@ end
 function PluginClass:onSubMenuReopen(type)
 
 end
+
+function PluginClass:uninit()
+
+end
+
 --[[
   Context menu
 ]]

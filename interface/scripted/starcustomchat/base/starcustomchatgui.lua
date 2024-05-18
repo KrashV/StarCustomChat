@@ -669,4 +669,6 @@ function uninit()
   shared.chatIsOpen = false
   saveEverythingDude()
   handlerCutter()
+  status.clearPersistentEffects("starchatdots")
+  self.runCallbackForPlugins("uninit")
 end

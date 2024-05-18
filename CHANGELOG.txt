@@ -1,1 +1,1 @@
-- Allow to type the new emotes in the chat itself!
+- Fixed the status effects not being removed after the chat is closed, causing the error spam after the mod is uninistalled
