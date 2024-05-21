@@ -15,8 +15,11 @@ sounds = SettingsPluginClass:new(
 function sounds:init()
   self:_loadConfig()
 
-  local allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
-  local currentRaceSounds = allRaceSounds[player.species()] or allRaceSounds["human"]
+  self.selectedSpecies = player.getProperty("scc_sound_species") or player.species()
+  self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
+  self.selectedSpecies = self.allRaceSounds[self.selectedSpecies] and self.selectedSpecies or "human"
+
+  local currentRaceSounds = self.allRaceSounds[self.selectedSpecies]
 
   self.soundsPool = currentRaceSounds[player.gender()] 
 
@@ -26,6 +29,31 @@ function sounds:init()
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
   widget.setSliderRange(self.layoutWidget .. ".sldSoundPitch", 0, 20, 2)
   widget.setSliderValue(self.layoutWidget .. ".sldSoundPitch", self.soundPitch * 10)
+
+  self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
+end
+
+function sounds:populateScrollArea(allRaceSounds, selectedSpecies)
+  widget.clearListItems(self.layoutWidget .. ".saSpecies.listItems")
+
+  local ind = 0
+  for speciesName, _ in pairs(allRaceSounds) do
+    ind = ind + 1
+    local li = widget.addListItem(self.layoutWidget .. ".saSpecies.listItems")
+    widget.setText(self.layoutWidget .. ".saSpecies.listItems." .. li .. ".name", speciesName)
+    widget.setData(self.layoutWidget .. ".saSpecies.listItems." .. li, speciesName)
+    if speciesName == selectedSpecies then
+      widget.setListSelected(self.layoutWidget .. ".saSpecies.listItems", li)
+    end
+  end
+end
+
+function sounds:changeSpecies()
+  local li = widget.getListSelected(self.layoutWidget .. ".saSpecies.listItems") 
+  local newSpecies = widget.getData(self.layoutWidget .. ".saSpecies.listItems." .. li)
+  player.setProperty("scc_sound_species", newSpecies)
+  self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
+  save()
 end
 
 function sounds:onLocaleChange()

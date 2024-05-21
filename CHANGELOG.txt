@@ -1,2 +1,1 @@
-- Fixed the status effects not being removed after the chat is closed, causing the error spam after the mod is uninistalled
-- AFK plugin: don't reset AFK on chat reopen
+- Sounds: Allow changing species of the character

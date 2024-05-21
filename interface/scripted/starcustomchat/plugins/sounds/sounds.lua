@@ -13,8 +13,8 @@ sounds = PluginClass:new(
 function sounds:init()
   self:_loadConfig()
 
-  local allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
-  local currentRaceSounds = allRaceSounds[player.species()] or allRaceSounds["human"]
+  self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
+  local currentRaceSounds = self.allRaceSounds[player.species()] or self.allRaceSounds["human"]
 
   self.soundsPool = currentRaceSounds[player.gender()] 
   self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
@@ -39,6 +39,7 @@ end
 function sounds:onSettingsUpdate()
   self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
+  self.soundsPool = self.allRaceSounds[player.getProperty("scc_sound_species") or player.species()][player.gender()]
 end
 
 function sounds:uninit()

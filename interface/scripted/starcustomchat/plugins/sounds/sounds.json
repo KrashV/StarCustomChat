@@ -7,8 +7,8 @@
       "en": "Sounds"
     },
     "settings.plugins.sounds.enable": {
-      "ru": "Включить звуки разговора",
-      "en": "Enable talking sounds"
+      "ru": "Звуки разговора",
+      "en": "Talking sounds"
     },
     "settings.plugins.sounds.pitch": {
       "ru": "Тон",
@@ -48,6 +48,38 @@
         "color": "lightgray"
       },
       
+      "saSpecies": {
+        "type": "scrollArea",
+        "rect": [5, 35, 60, 130],
+        "children": {
+          "listItems": {
+            "type": "list",
+            "callback": "changeSpecies",
+            "schema": {
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/sounds/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/sounds/listunselected.png",
+              "spacing" : [0, 1],
+              "memberSize" : [55, 15],
+              "listTemplate" : {
+                "background" : {
+                  "type" : "image",
+                  "file" : "/interface/scripted/starcustomchat/plugins/sounds/listunselected.png",
+                  "position" : [2, 0],
+                  "zlevel" : -1
+                },
+                "name" : {
+                  "type" : "label",
+                  "hAnchor": "mid",
+                  "vAnchor": "mid",
+                  "position": [27, 7],
+                  "wrapWidth": 50
+                }
+              }
+            }
+          }
+        }
+      },
+
       "lblSoundsDescription": {
         "type": "label",
         "position": [120, 80],
