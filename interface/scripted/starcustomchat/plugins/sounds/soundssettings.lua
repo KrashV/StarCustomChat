@@ -36,9 +36,7 @@ end
 function sounds:populateScrollArea(allRaceSounds, selectedSpecies)
   widget.clearListItems(self.layoutWidget .. ".saSpecies.listItems")
 
-  local ind = 0
   for speciesName, _ in pairs(allRaceSounds) do
-    ind = ind + 1
     local li = widget.addListItem(self.layoutWidget .. ".saSpecies.listItems")
     widget.setText(self.layoutWidget .. ".saSpecies.listItems." .. li .. ".name", speciesName)
     widget.setData(self.layoutWidget .. ".saSpecies.listItems." .. li, speciesName)
