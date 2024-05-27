@@ -1,1 +1,1 @@
-- Sounds: Allow changing species of the character
+- Sounds: Fixed the sounds dropping to default

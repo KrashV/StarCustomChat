@@ -14,7 +14,8 @@ function sounds:init()
   self:_loadConfig()
 
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
-  local currentRaceSounds = self.allRaceSounds[player.species()] or self.allRaceSounds["human"]
+  local selectedSpecies = player.getProperty("scc_sound_species") or player.species()
+  local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
 
   self.soundsPool = currentRaceSounds[player.gender()] 
   self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
