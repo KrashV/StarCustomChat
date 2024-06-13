@@ -48,10 +48,12 @@ end
 
 function sounds:changeSpecies()
   local li = widget.getListSelected(self.layoutWidget .. ".saSpecies.listItems") 
-  local newSpecies = widget.getData(self.layoutWidget .. ".saSpecies.listItems." .. li)
-  player.setProperty("scc_sound_species", newSpecies)
-  self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
-  save()
+  if li then
+    local newSpecies = widget.getData(self.layoutWidget .. ".saSpecies.listItems." .. li)
+    player.setProperty("scc_sound_species", newSpecies)
+    self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
+    save()
+  end
 end
 
 function sounds:onLocaleChange()
