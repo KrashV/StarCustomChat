@@ -17,7 +17,7 @@ function stickers:populateList(search)
   widget.clearListItems(self.layoutWidget .. ".saSavedStickers.listStickers") 
   self.stickerIndexes = {}
   for name, image in pairs(self.savedStickers) do 
-    if not search or string.find(name, search) then
+    if not search or string.find(name, search, nil, true) then
       self:addStickerToList(name, image)
     end
   end

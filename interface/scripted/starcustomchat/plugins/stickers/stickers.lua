@@ -49,7 +49,7 @@ end
 
 function stickers:addCustomCommandPreview(availableCommands, substr)
   for name, _ in pairs(self.savedStickers) do 
-    if string.find("/" .. name, substr) then
+    if string.find("/" .. name, substr, nil, true) then
       table.insert(availableCommands, {
         name = "/" .. name,
         color = "stickercommands"

@@ -1,1 +1,1 @@
-- Sounds: Fixed hot reloading crashing the settings
+- Fixed entering command with a broken regex caused the mod to crash

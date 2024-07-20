@@ -59,7 +59,7 @@ function starcustomchat.utils.getCommands(allCommands, substr)
   for type, commlist in pairs(allCommands) do 
     for _, comm in ipairs(commlist) do
       if type ~= "admin" or (type == "admin" and player.isAdmin()) then
-        if string.find(comm, substr) then
+        if string.find(comm, substr, nil, true) then
           table.insert(availableCommands, {
             name = comm,
             color = nil

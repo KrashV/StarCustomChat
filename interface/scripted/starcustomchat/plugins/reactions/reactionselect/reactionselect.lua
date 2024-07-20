@@ -21,7 +21,7 @@ function populateReacts(search)
   widget.clearListItems("scrollArea.reactList")
 
   for _, emoji in ipairs(self.emojiList) do 
-    if not search or string.find(emoji, search) then
+    if not search or string.find(emoji, search, nil, true) then
       local li = widget.addListItem("scrollArea.reactList")
       widget.setImage("scrollArea.reactList." .. li .. ".emoji", string.format("/emotes/%s.emote.png", emoji))
       widget.setData("scrollArea.reactList." .. li, emoji)
