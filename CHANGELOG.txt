@@ -1,1 +1,1 @@
-- Fixed entering command with a broken regex caused the mod to crash
+- Fixed collapsing messages breaking the text rendering

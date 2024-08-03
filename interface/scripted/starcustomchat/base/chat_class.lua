@@ -443,6 +443,7 @@ function StarCustomChat:collapseMessage(position)
     local message = self.messages[self.drawnMessageIndexes[i]]
     if message.offset and pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
       self.messages[self.drawnMessageIndexes[i]].collapsed = not self.messages[self.drawnMessageIndexes[i]].collapsed
+      self.messages[self.drawnMessageIndexes[i]].textHeight = nil
       self:processQueue()
     end
   end
@@ -536,6 +537,9 @@ function StarCustomChat:processQueue()
     if self.maxCharactersAllowed ~= 0 then
       local toCheckLength = message.collapsed == nil and true or message.collapsed
       text, message.isLong, message.collapsed = cutStringFromEnd(toCheckLength, text, self.maxCharactersAllowed)
+      if toCheckLength then
+        message.textHeight = nil
+      end
     else
       message.collapsed = nil
     end
