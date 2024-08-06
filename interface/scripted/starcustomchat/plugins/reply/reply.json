@@ -1,0 +1,51 @@
+{
+  "name": "Reply",
+
+  "settingsPluginAddons": {
+    "colors": {
+      "items": [
+        {
+          "name": "replytext",
+          "label": "chat.commands.reply",
+          "default": "7f7e7f"
+        }
+      ]
+    }
+  },
+
+  "localeKeys": {
+    "chat.commands.reply": {
+      "ru": "Ответить",
+      "en": "Reply"
+    },
+    "chat.reply.recipient": {
+      "ru": "Ответить %s",
+      "en": "Reply to %s"
+    }
+  },
+
+  "contextMenuButtons": [
+    {
+      "name": "reply",
+      "base": "/interface/scripted/starcustomchat/plugins/reply/contextmenu/reply.png:base",
+      "hover": "/interface/scripted/starcustomchat/plugins/reply/contextmenu/reply.png:hover",
+      "tooltip": "chat.commands.reply",
+      "priority": -70
+    }
+  ],
+
+  "parameters": {
+    //"stagehandType": "irdencustomchat",
+    "highlightReplyColor": "#886e447f",
+    "messageRadius": 100,
+    "trimLength": 40
+  },
+
+  "baseConfigValues": {
+    "replyOffsetHeight": 10,
+    "replyImageOffset": [0,2],
+    "replyTextOffset": [0, 3]
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/reply/reply.lua"
+}

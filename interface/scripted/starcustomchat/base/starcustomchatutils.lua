@@ -30,12 +30,12 @@ function starcustomchat.utils.buildLocale(localePluginConfig)
   starcustomchat.locale = sb.jsonMerge(starcustomchat.locale, addLocaleKeys)
 end
 
-function starcustomchat.utils.getTranslation(key)
+function starcustomchat.utils.getTranslation(key, ...)
   if not starcustomchat.locale[key] then
     sb.logError("Can't get transaction of key: %s", key)
     return "???"
   else
-    return starcustomchat.locale[key]
+    return ... and string.format(starcustomchat.locale[key], ...) or starcustomchat.locale[key]
   end
 end
 
@@ -98,6 +98,10 @@ end
 
 function starcustomchat.utils.createStagehandWithData(stagehandType, data)
   world.spawnStagehand(world.entityPosition(player.id()), stagehandType, {data = data})
+end
+
+function starcustomchat.utils.cropMessage(text, trimLength)
+  return utf8.len(text) < trimLength and text or starcustomchat.utils.utf8Substring(text, 1, trimLength) .. "..."
 end
 
 function starcustomchat.utils.utf8Substring(inputString, startPos, endPos)

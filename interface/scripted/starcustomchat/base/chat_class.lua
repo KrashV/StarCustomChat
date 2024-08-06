@@ -134,6 +134,18 @@ function StarCustomChat:findMessageByUUID(uuid)
   end
 end
 
+function StarCustomChat:replaceUUID(oldUUID, newUUID)
+  if oldUUID and newUUID then
+    local oldMessageInd = self:findMessageByUUID(oldUUID)
+    for i, message in ipairs(self.messages) do 
+      if message.replyUUID == oldUUID then
+        self.messages[i].replyUUID = newUUID
+      end
+    end
+    self.messages[oldMessageInd].uuid = newUUID
+  end
+end
+
 function StarCustomChat:deleteMessage(uuid)
   local ind = self:findMessageByUUID(uuid)
   if ind then
@@ -652,6 +664,27 @@ function StarCustomChat:processQueue()
           self.canvas:drawRect({iconOffset[1], iconOffset[2], iconOffset[1] + squareSize, iconOffset[2] - self.config.fontSize + 2}, self.config.modeColors[messageMode])
         end
       end
+    end
+
+    local replyOffset = 0
+    local prevMessage = message.replyUUID and self:findMessageByUUID(message.replyUUID)
+    if prevMessage then
+      replyOffset = self.config.replyOffsetHeight * self.config.fontSize / 10
+
+      local size = portraitSizeFromBaseFont(self.config.fontSize)
+      local xOffset = self.chatMode == "modern" and self.config.nameOffset[1] + size or self.config.textOffsetCompactMode[1]
+
+      local replyStartOffset = vec2.add({xOffset, messageOffset + message.height}, self.config.replyImageOffset)
+      self.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png", 
+        replyStartOffset, 1 / 8 * self.config.fontSize)
+        
+      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text, self.canvas:size()[1] // 10) ), {
+        position = vec2.add(replyStartOffset, {size / 2, 0}),
+        horizontalAnchor = "left", -- left, mid, right
+        verticalAnchor = "bottom" -- top, mid, bottom
+      }, self.config.fontSize / 1.2, self:getColor("replytext"))
+        
+      message.height = message.height + replyOffset
     end
     
     message.offset = messageOffset

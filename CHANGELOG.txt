@@ -1,1 +1,1 @@
-- Fixed collapsing messages breaking the text rendering
+- A new Reply button to show your message as a reply to someone else's
