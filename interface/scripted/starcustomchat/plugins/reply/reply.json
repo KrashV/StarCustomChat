@@ -36,9 +36,10 @@
 
   "parameters": {
     //"stagehandType": "irdencustomchat",
-    "highlightReplyColor": "#886e447f",
+    "highlightReplyColor": "#1f84c17f",
     "messageRadius": 100,
-    "trimLength": 40
+    "trimLength": 40,
+    "desaturateTimer": 1.8
   },
 
   "baseConfigValues": {

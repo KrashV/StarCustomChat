@@ -1,1 +1,1 @@
-- A new Reply button to show your message as a reply to someone else's
+- Pressing on the reply hint will scroll the chat to the original message

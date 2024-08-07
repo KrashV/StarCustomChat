@@ -429,6 +429,19 @@ function StarCustomChat:offsetCanvas(offset)
   end
 end
 
+function StarCustomChat:scrollToMessage(ind)
+  local message = self.messages[ind]
+  if message and not self:isInsideChat(message, message.offset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+    self:offsetCanvas((self:selectMessage().offset - message.offset) / (self.config.spacings.name + self.config.fontSize + 1))
+  end
+end
+
+  
+function StarCustomChat:isInsideChat(message, messageOffset, addSpacing, canvasSize)
+  return (self.chatMode == "modern" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
+    or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
+end
+
 function StarCustomChat:resetOffset()
   self.lineOffset = 0
   self:processQueue()
@@ -517,12 +530,6 @@ function StarCustomChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
   self.drawnMessageIndexes = filterMessages(self.messages)
-  
-  local function isInsideChat(message, messageOffset, addSpacing, canvasSize)
-    return (self.chatMode == "modern" and message.avatar) and (messageOffset + message.height + addSpacing >= 0 and messageOffset <= canvasSize[2]) 
-      or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
-  end
-
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]
@@ -604,7 +611,7 @@ function StarCustomChat:processQueue()
 
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "modern" then
-      if isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+      if self:isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
         local size = portraitSizeFromBaseFont(self.config.fontSize)
         local nameOffset = vec2.add(self.config.nameOffset, {size, size})
 
@@ -631,7 +638,7 @@ function StarCustomChat:processQueue()
       end
     
     else -- compact mode
-      if isInsideChat(message, messageOffset, 0, self.canvas:size()) then
+      if self:isInsideChat(message, messageOffset, 0, self.canvas:size()) then
         local offset = vec2.add(self.config.textOffsetCompactMode, {0, messageOffset})        
         
         if not message.image then

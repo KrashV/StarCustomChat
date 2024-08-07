@@ -1,4 +1,6 @@
 require "/interface/scripted/starcustomchat/plugin.lua"
+require "/scripts/rect.lua"
+require "/scripts/util.lua"
 
 reply = PluginClass:new(
   { name = "reply" }
@@ -14,6 +16,9 @@ function reply:init(chat)
     self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", self.replyingToMessage.nickname), self:cropMessage(self.replyingToMessage.text))
   end
   self.messagesToReply = {}
+
+  self.highlightMessageInd = nil
+  self.desaturateTime = 0
 end
 
 function reply:registerMessageHandlers(shared)
@@ -104,11 +109,44 @@ function reply:onTextboxEscape()
   end
 end
 
+function lerpColor(hex1, hex2, t)
+  local function hexToRGBA(hex)
+      local r, g, b, a = hex:match("#?(..)(..)(..)(..)")
+      return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), tonumber(a, 16)
+  end
+
+  local function rgbaToHex(r, g, b, a)
+      return string.format("#%02x%02x%02x%02x", r, g, b, a)
+  end
+
+  if 1 - t < 0.000001 then return hex2 end
+
+  local r1, g1, b1, a1 = hexToRGBA(hex1)
+  local r2, g2, b2, a2 = hexToRGBA(hex2)
+  
+  local r = r1 + (r2 - r1) * t
+  local g = g1 + (g2 - g1) * t
+  local b = b1 + (b2 - b1) * t
+  local a = a1 + (a2 - a1) * t
+  
+  return rgbaToHex(math.floor(r), math.floor(g), math.floor(b), math.floor(a))
+end
+
 function reply:update(dt)
   if self.replyingToMessage then
     self.customChat:highlightMessage(self.replyingToMessage, self.highlightReplyColor)
   end
-  sb.setLogMap("Replying", sb.print(self.messagesToReply))
+
+  if self.highlightMessageInd then
+    local newColor = lerpColor(self.highlightReplyColor, "#00000000", self.desaturateTime / self.desaturateTimer)
+
+    self.customChat:highlightMessage(self.customChat.messages[self.highlightMessageInd], newColor)
+    self.desaturateTime = self.desaturateTime + dt 
+    if newColor == "#00000000" then
+      self.highlightMessageInd = nil
+      self.desaturateTime = 0 
+    end
+  end
 end
 
 function reply:onBackgroundChange(chatConfig)
@@ -119,5 +157,21 @@ end
 function reply:onSubMenuReopen(type)
   if type ~= "reply" then
     self.replyingToMessage = nil
+  end
+end
+
+function reply:onCanvasClick(screenPosition, button, isButtonDown)
+  if button == 0 and isButtonDown then
+    local selectedMessage = self.customChat:selectMessage()
+    if selectedMessage and selectedMessage.replyUUID then
+      if selectedMessage.height - (screenPosition[2] - selectedMessage.offset) < self.customChat.config.replyOffsetHeight then
+        local originalMessage = self.customChat:findMessageByUUID(selectedMessage.replyUUID)
+        if originalMessage then
+          self.customChat:scrollToMessage(originalMessage)
+          self.highlightMessageInd = originalMessage
+        end
+        return true
+      end
+    end
   end
 end
