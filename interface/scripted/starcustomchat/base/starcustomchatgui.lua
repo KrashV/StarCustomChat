@@ -210,7 +210,11 @@ function registerCallbacks()
   end))
 
   shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
-    self.customChat:clearHistory(message)
+    self.customChat:clearHistory()
+  end))
+
+  shared.setMessageHandler( "/clearchat", localHandler(function(data)
+    self.customChat:clearHistory()
   end))
 
   self.runCallbackForPlugins("registerMessageHandlers", shared)

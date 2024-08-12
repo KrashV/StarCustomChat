@@ -1,1 +1,1 @@
-- Pressing on the reply hint will scroll the chat to the original message
+- Added a new command /clearchat to clear the chat
