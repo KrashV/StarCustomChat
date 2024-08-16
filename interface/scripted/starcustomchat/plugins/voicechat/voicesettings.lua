@@ -26,3 +26,7 @@ end
 function voicechat:binds()
   chat.command("/binds")
 end
+
+function voicechat:uninit()
+  root.setConfiguration("scc_voice_enabled", voice.enabled())
+end
