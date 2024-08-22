@@ -1,1 +1,1 @@
-- Fixed voice chat auto enabling after enabling and disabling it in the settings
+- Added Bigger Chat support. Now you can have more control of your wall of text
