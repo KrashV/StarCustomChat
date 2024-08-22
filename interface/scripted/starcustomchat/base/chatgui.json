@@ -164,11 +164,22 @@
       "position": [20, 12]
     },
 
+    "btnOpenBiggerChat": {
+      "type": "button",
+      "base": "/interface/scripted/starcustomchat/base/biggerchat.png",
+      "callback": "openBiggerChat",
+      "position": [275,12],
+      "zlevel": 5,
+      "data": {
+        "displayText": "chat.buttons.bigger_chat"
+      }
+    },
+
     "tbxInput": {
       "type": "textbox",
       "position": [23, 14],
       "callback": "textboxCallback",
-      "maxWidth": 263,
+      "maxWidth": 250,
       "zlevel": 4,
       "enterKey": "textboxEnterKey",
       "escapeKey": "escapeTextbox"
@@ -310,7 +321,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "closeChat"],
+    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

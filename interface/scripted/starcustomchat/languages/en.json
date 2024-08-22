@@ -14,6 +14,7 @@
   "chat.buttons.bottom": "To bottom",
   "chat.buttons.settings": "Settings",
   "chat.buttons.hide": "Hide chat",
+  "chat.buttons.bigger_chat": "Bigger chat",
 
   "chat.alerts.dm_not_specified": "Select the recipient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",

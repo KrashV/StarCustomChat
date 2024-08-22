@@ -148,6 +148,8 @@ function init()
   ICChatTimer:add(0.5, registerCallbacks)
 
   ICChatTimer:add(2, checkUUID)
+
+  widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 end
 
 function checkUUID()
@@ -173,6 +175,18 @@ function registerCallbacks()
         },
         uuid = player.uniqueId()
       }
+    end
+  end))
+
+  shared.setMessageHandler("scc_set_message_bigchat", localHandler(function(text)
+    widget.focus("tbxInput")
+    if text and utf8.len(text) > 0 then
+      widget.setText("tbxInput", text)
+      textboxCallback()
+    else
+      if widget.getText("tbxInput") == "" then
+        blurTextbox("tbxInput")
+      end
     end
   end))
 
@@ -650,6 +664,14 @@ end
 
 function customButtonCallback(buttonName, data)
   self.runCallbackForPlugins("onCustomButtonClick", buttonName, data)
+end
+
+function openBiggerChat()
+  widget.focus("tbxInput")
+  local biggerChat = root.assetJson("/interface/BiggerChat/biggerchatv2.json")
+  biggerChat.initialText = widget.getText("tbxInput")
+  biggerChat.fontColor = self.customChat:getColor("chattext")
+  player.interact("ScriptPane", biggerChat)
 end
 
 function saveEverythingDude()
