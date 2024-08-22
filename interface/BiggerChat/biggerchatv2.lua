@@ -33,7 +33,7 @@ function init()
   self.isSelecting = false
   self.selectionStart = nil
   player.setProperty("biggerChatOpen", true)
-  createColorQueue()
+  --createColorQueue()
 
   if config.getParameter("initialText") then
     widget.setText("totallyFakeTextbox", config.getParameter("initialText"))

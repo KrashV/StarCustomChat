@@ -1,1 +1,1 @@
-- Added Bigger Chat support. Now you can have more control of your wall of text
+! A quick hotfix for the previous version
