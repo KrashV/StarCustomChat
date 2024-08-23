@@ -13,6 +13,7 @@ function afk:init()
   self.forcedAfkTimer = 0
   -- On init, deactivate AFK by force
   --self:deactivateAFK(true)
+  status.clearPersistentEffects("starchatafk")
   widget.setVisible("btnStartAfk", self.timer ~= 0)
 end
 
