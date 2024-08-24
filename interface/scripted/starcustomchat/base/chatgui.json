@@ -179,7 +179,7 @@
       "type": "textbox",
       "position": [23, 14],
       "callback": "textboxCallback",
-      "maxWidth": 250,
+      "maxWidth": 247,
       "zlevel": 4,
       "enterKey": "textboxEnterKey",
       "escapeKey": "escapeTextbox"

@@ -1,1 +1,3 @@
-- Remove afk effect status on loading the game.
+- Remove afk effect status on loading the game
+- Fixed the textbox text going behind the Bigger Chat button
+- Changed the interface of the Bigger Chat to a more readable one
