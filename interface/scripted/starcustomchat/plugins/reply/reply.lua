@@ -71,13 +71,7 @@ end
 
 function reply:onTextboxEnter()
   local function calculateNewMessageUUID(connection, text, mode, nickname)
-    local tempMessage = self.customChat.callbackPlugins("formatIncomingMessage", {
-      connection = connection,
-      text = text,
-      mode = mode,
-      nickname = nickname
-    })
-    return util.hashString(tempMessage.connection .. tempMessage.text)
+    return util.hashString(connection .. text)
   end
 
   if self.replyingToMessage then

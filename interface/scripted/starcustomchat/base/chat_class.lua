@@ -109,9 +109,9 @@ function StarCustomChat:addMessage(msg)
   end
 
   if msg.connection then
+    msg.uuid = util.hashString(msg.connection .. (msg.text or ""))
     msg = formatMessage(msg)
     if msg then
-      msg.uuid = util.hashString(msg.connection .. msg.text)
       table.insert(self.messages, msg)
       if #self.messages > self.config.chatHistoryLimit then
         table.remove(self.messages, 1)
