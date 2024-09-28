@@ -228,11 +228,12 @@ end
 function StarCustomChat:resetChat()
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   local newChatSize = root.getConfiguration("icc_font_size") or self.config.fontSize
-  if newChatSize ~= self.config.fontSize then
+  local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
+  if newChatSize ~= self.config.fontSize or maxCharactersAllowed ~= self.maxCharactersAllowed then
     self.recalculateHeight = true
   end
   self.config.fontSize = newChatSize
-  self.maxCharactersAllowed  = root.getConfiguration("icc_max_allowed_characters") or 0
+  self.maxCharactersAllowed  = maxCharactersAllowed
   self.colorTable = root.getConfiguration("scc_custom_colors") or {}
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
