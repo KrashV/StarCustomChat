@@ -472,6 +472,8 @@ function processEvents(screenPosition)
         self.customChat:offsetCanvas(self.customChat.expanded and - self.customChat.config.pageSkipExpanded or - self.customChat.config.pageSkip)
       elseif event.data.key == "PageDown" then
         self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
+      elseif event.data.key == "End" then
+        self.customChat:resetOffset()
       end
     end
   end

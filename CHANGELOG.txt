@@ -1,1 +1,2 @@
 - Fixed the message order being wacky after resetting the max characters allowed in a message
+- Added End button listener that resets the chat offset
