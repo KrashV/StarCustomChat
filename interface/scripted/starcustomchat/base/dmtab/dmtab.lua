@@ -1,11 +1,13 @@
-function checkDMs()
-  if widget.active("lytCharactersToDM") then
-    populateList()
+function checkDMs(dmingTo)
+  self.DMTimer = 2
+
+  if widget.getSelectedData("rgChatMode").mode == "Whisper" then
+    populateList(dmingTo)
   end
   ICChatTimer:add(self.DMTimer, checkDMs)
 end
 
-function populateList()
+function populateList(dmingTo)
   local function drawCharacters(players, toRemovePlayers)
     local mode = #players > 7 and "letter" or "avatar"
 
@@ -30,6 +32,12 @@ function populateList()
         })
         self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
         table.insert(self.contacts, player.id)
+
+
+        if dmingTo and dmingTo == player.id then
+          self.ignoreSettingList = true
+          widget.setListSelected("lytCharactersToDM.saPlayers.lytPlayers", li)
+        end
       end
     end
 
@@ -37,6 +45,7 @@ function populateList()
     if toRemovePlayers then
       for i, id in ipairs(self.contacts) do
         if index(idTable, id) == 0 then
+          self.ignoreSettingList = true
           widget.removeListItem("lytCharactersToDM.saPlayers.lytPlayers", i - 1)
           table.remove(self.contacts, i)
         end
@@ -62,7 +71,18 @@ function populateList()
 end
 
 function selectPlayer()
-  widget.focus("tbxInput")
+  local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
+  if li then 
+    local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
+
+    self.DMingPlayerID = data.id 
+  end
+
+  if not self.ignoreSettingList then
+    widget.focus("tbxInput")
+  end
+
+  self.ignoreSettingList = nil
 end
 
 function drawIcon(canvasName, args)

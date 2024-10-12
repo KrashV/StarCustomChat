@@ -106,9 +106,7 @@ function init()
 
   widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
-  self.DMTimer = 2
   contextMenu_init(config.getParameter("contextMenuButtons"))
-  checkDMs()
 
   local lastText = config.getParameter("lastInputMessage")
   if lastText and lastText ~= "" then
@@ -149,6 +147,7 @@ function init()
 
   ICChatTimer:add(2, checkUUID)
 
+  checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 end
 
@@ -427,6 +426,7 @@ function canvasClickEvent(position, button, isButtonDown)
       chatConfig.portraits = self.customChat.savedPortraits
       chatConfig.connectionToUuid =  self.customChat.connectionToUuid
       chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+      chatConfig.DMingPlayerID = self.DMingPlayerID
       chatConfig.chatLineOffset = self.customChat.lineOffset
       chatConfig.reopened = true
       chatConfig.selectedModes = {}
