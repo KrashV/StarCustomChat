@@ -686,7 +686,7 @@ end
 
 function closeChat()
   pane.dismiss()
-  world.sendEntityMessage(player.id(), "scc_chat_hidden")
+  world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
 end
 
 function uninit()

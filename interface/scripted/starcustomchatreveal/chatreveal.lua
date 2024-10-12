@@ -41,7 +41,7 @@ function registerCallbacks()
 end
 
 function openChat(_, _, _, force)
-  world.sendEntityMessage(player.id(), "scc_chat_opened", force)
+  world.sendEntityMessage(player.id(), "scc_chat_opened", force, config.getParameter("mode"))
   pane.dismiss()
 end
 

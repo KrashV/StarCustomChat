@@ -61,21 +61,24 @@ function receiveMessage(message)
   end
 end
 
-function hideChat()
+function hideChat(mode)
   shared.chatIsOpen = false
   self.chatHidden = true
   root.setConfiguration("scc_chat_hidden", self.chatHidden)
   message.setHandler("icc_sendToUser", simpleHandler(receiveMessage))
   
   local revealAssets = root.assetJson("/interface/scripted/starcustomchatreveal/chatreveal.json")
+  revealAssets.mode = mode
   player.interact("ScriptPane", revealAssets)
 end
 
-function openChat(forceFocus)
+function openChat(forceFocus, mode)
   self.chatHidden = false
   root.setConfiguration("scc_chat_hidden", self.chatHidden)
   self.interface.storedMessages = self.storedMessages
   self.interface.forceFocus = forceFocus
+  self.interface.currentMessageMode = mode
+
   player.interact("ScriptPane", self.interface)
   self.storedMessages = {}
   shared.chatIsOpen = true
