@@ -1,2 +1,1 @@
-- The recepient of DMs will stay active when you reopen the chat
-- Reopening from hiding will keep the last message mode
+- Fixed changing the chat mode (Modern/Compact) breaking the chat text

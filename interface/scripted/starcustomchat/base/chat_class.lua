@@ -226,12 +226,13 @@ function StarCustomChat:clearHistory()
 end
 
 function StarCustomChat:resetChat()
-  self.chatMode = root.getConfiguration("iccMode") or "modern"
   local newChatSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
-  if newChatSize ~= self.config.fontSize or maxCharactersAllowed ~= self.maxCharactersAllowed then
+  local newChatMode = root.getConfiguration("iccMode") or "modern"
+  if newChatSize ~= self.config.fontSize or maxCharactersAllowed ~= self.maxCharactersAllowed or self.chatMode ~= newChatMode then
     self.recalculateHeight = true
   end
+  self.chatMode = newChatMode
   self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = maxCharactersAllowed
   self.colorTable = root.getConfiguration("scc_custom_colors") or {}
