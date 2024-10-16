@@ -46,7 +46,7 @@ end
 
 function reply:contextMenuButtonFilter(buttonName, screenPosition, selectedMessage)
   if selectedMessage and buttonName == "reply" then
-    return selectedMessage.mode ~= "CommandResult"
+    return selectedMessage.mode ~= "CommandResult" and selectedMessage.mode ~= "Whisper"
   end
 end
 
