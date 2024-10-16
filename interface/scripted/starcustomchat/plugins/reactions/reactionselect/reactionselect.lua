@@ -2,6 +2,7 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
   self.emojiList = root.assetJson("/interface/scripted/starcustomchat/plugins/reactions/reactionlist.json")
+  self.stagehandType = config.getParameter("stagehandType")
   populateReacts()
 
   pane.setTitle(getTitle(config.getParameter("text")), config.getParameter("nickname"))
@@ -43,8 +44,13 @@ function onEmojiSelect()
       uuid = config.getParameter("messageUUID")
     }
 
-    for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
-      world.sendEntityMessage(pl, "scc_add_reaction", data)
+    
+    if self.stagehandType and self.stagehandType ~= "" then
+      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReaction", data = data})
+    else
+      for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+        world.sendEntityMessage(pl, "scc_add_reaction", data)
+      end
     end
 
     pane.dismiss()

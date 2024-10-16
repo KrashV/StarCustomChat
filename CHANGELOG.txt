@@ -1,1 +1,1 @@
-- Fixed changing the chat mode (Modern/Compact) breaking the chat text
+- Added an ability to send the reactions through the stagehand instead of to people around you

@@ -58,6 +58,7 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
     selectEmojiPane.messageUUID = selectedMessage.uuid
     selectEmojiPane.text = selectedMessage.text
     selectEmojiPane.nickname = selectedMessage.nickname
+    selectEmojiPane.stagehandType = self.stagehandType
 
     player.interact("ScriptPane", selectEmojiPane)
   end
@@ -98,9 +99,13 @@ function reactions:onCanvasClick(screenPosition, button, isButtonDown)
             uuid = selectedMessage.uuid
           }
       
-          for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
-            world.sendEntityMessage(pl, "scc_add_reaction", data)
-          end      
+          if self.stagehandType and self.stagehandType ~= "" then
+            starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReaction", data = data})
+          else
+            for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+              world.sendEntityMessage(pl, "scc_add_reaction", data)
+            end
+          end
           return true
         end
       end
