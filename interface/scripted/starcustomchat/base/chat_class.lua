@@ -98,7 +98,11 @@ function StarCustomChat:addMessage(msg)
           message.recipient = self.lastWhisper.recipient
           self.lastWhisper = nil
         else
-          pane.playSound(self.config.notificationSound)
+          if type(self.config.notificationSound) == "table" then
+            pane.playSound(self.config.notificationSound[math.random(1, #self.config.notificationSound)])
+          else
+            pane.playSound(self.config.notificationSound)
+          end
         end
       end
 

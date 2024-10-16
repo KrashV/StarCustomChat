@@ -1,1 +1,3 @@
+- Added an ability to send the reactions through the stagehand instead of to people around you
 - Disabled "Reply" option for whisper messages, to not confuse it with the DMs
+- Allowed to have an array of sounds for ping and notifications
