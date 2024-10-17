@@ -169,7 +169,8 @@
 
   "parameters": {
     "defaultCommandColor": "5f2bba",
-    "maxSize": [32, 32]
+    "maxSize": [32, 32],
+    "stagehandType": ""
   },
 
   "script": "/interface/scripted/starcustomchat/plugins/stickers/stickers.lua",

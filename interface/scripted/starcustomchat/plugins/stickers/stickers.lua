@@ -33,12 +33,20 @@ function stickers:onProcessCommand(text)
         world.sendEntityMessage(data.id, "icc_sendToUser", message)
         world.sendEntityMessage(player.id(), "icc_sendToUser", message)
     elseif message.mode == "Party" then
-      for _, pl in ipairs(player.teamMembers()) do 
-        world.sendEntityMessage(pl.entity, "icc_sendToUser", message)
+      if self.stagehandType and self.stagehandType ~= "" then
+        starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message, players = util.map(player.teamMembers(), function(p) return p.entity end)})
+      else
+        for _, pl in ipairs(player.teamMembers()) do 
+          world.sendEntityMessage(pl.entity, "icc_sendToUser", message)
+        end
       end
     else
-      for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
-        world.sendEntityMessage(pl, "icc_sendToUser", message)
+      if self.stagehandType and self.stagehandType ~= "" then
+        starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message})
+      else
+        for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+          world.sendEntityMessage(pl, "icc_sendToUser", message)
+        end
       end
     end
     return true
