@@ -41,3 +41,12 @@ jobs:
           webhook-url: ${{ secrets.DELIVERY_DISCORD_URL }}
           filename: StarCustomChat.pak  
           content: "StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
+
+      - name: Upload mod to Google Drive
+        uses: logickoder/google-drive-upload@main
+        with:
+          credentials: ${{ secrets.GCP_CREDENTIAL }}
+          filename: StarCustomChat.pak
+          folderId: ${{ secrets.DRIVE_FOLDER_ID }}
+          overwrite: "true"
+        
