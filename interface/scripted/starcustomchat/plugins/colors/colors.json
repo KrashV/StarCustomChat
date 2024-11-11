@@ -16,6 +16,11 @@
         "name": "commandselecttext",
         "label": "settings.colors.commandselect",
         "default": "FEEE30"
+      },
+      {
+        "name": "servertext",
+        "label": "settings.colors.servertext",
+        "default": "FFFFFF6C"
       }
     ]
   },
@@ -35,6 +40,10 @@
     "settings.colors.time": {
       "ru": "Время",
       "en": "Time"
+    },
+    "settings.colors.servertext": {
+      "ru": "Серверные сбщ",
+      "en": "Server msgs"
     },
     "settings.colors.commandselect": {
       "ru": "Команда",
