@@ -2,3 +2,4 @@
 - Disabled "Reply" option for whisper messages, to not confuse it with the DMs
 - Allowed to have an array of sounds for ping and notifications
 - The emote counter will be blue if you have reacted with this emoji
+- Allow to color the individual messages in different colours

@@ -633,7 +633,7 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
         end
 
 
@@ -656,19 +656,19 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
 
         else
           local text = createNameForCompactMode(message.nickname, 
           self.config.modeColors[messageMode] or self.config.modeColors.default, 
-          "", message.time, self:getColor("timetext"))
+            "", message.time, self:getColor("timetext"))
           
           self.canvas:drawText(text, {
             position = {offset[1], offset[2] + reactionOffset},
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
 
           local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)
