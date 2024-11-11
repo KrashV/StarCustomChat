@@ -54,6 +54,9 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   o.lineOffset = lineOffset or 0
   o.maxCharactersAllowed = maxCharactersAllowed
   o.callbackPlugins = callbackPlugins
+  
+
+  o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.colorTable = root.getConfiguration("scc_custom_colors") or {}
   return o
 end
@@ -262,14 +265,23 @@ end
 function StarCustomChat:processCommand(text)
   if not self.callbackPlugins("onProcessCommand", text) then
     local commandResult = chat.command(text) or {}
-    for _, line in ipairs(commandResult) do 
-      chat.addMessage(line)
-      table.insert(self.messages, {
-        text = line
-      })
-      if #self.messages > self.config.chatHistoryLimit then
-        table.remove(self.messages, 1)
-      end
+
+      for _, line in ipairs(commandResult) do 
+        if self.isOSB then
+          self:addMessage({
+            connection = 0,
+            mode = "CommandResult",
+            text = line
+          })
+        else
+          chat.addMessage(line)
+          table.insert(self.messages, {
+            text = line
+          })
+          if #self.messages > self.config.chatHistoryLimit then
+            table.remove(self.messages, 1)
+          end
+        end
     end
   end
 end

@@ -7,7 +7,7 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
-require("/scripts/starextensions/lib/chat_callback.lua")
+
 
 local shared = getmetatable('').shared
 if type(shared) ~= "table" then
@@ -19,6 +19,12 @@ local handlerCutter = nil
 
 ICChatTimer = TimerKeeper.new()
 function init()
+
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
+  if not self.isOpenSB then
+    require("/scripts/starextensions/lib/chat_callback.lua")
+  end
 
   shared.chatIsOpen = true
   self.canvasName = "cnvChatCanvas"
@@ -160,7 +166,12 @@ end
 
 function registerCallbacks()
 
-  handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+  if not self.isOpenSB then
+    handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+  else
+    shared.addMessageToSCC = self.chatFunctionCallback
+  end
+
   shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and world.entityExists(player.id()) then
       return {
@@ -696,7 +707,10 @@ function uninit()
   end
   shared.chatIsOpen = false
   saveEverythingDude()
-  handlerCutter()
+
+  if handlerCutter then
+    handlerCutter()
+  end
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
 end

@@ -14,7 +14,10 @@ end
 local innerHandlerCutter = nil
 
 function init()
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
   local reasonToNotStart = checkSEAndControls()
+
   if reasonToNotStart then
     local sewarningConfig = root.assetJson("/interface/scripted/starcustomchat/sewarning/sewarning.json")
     sewarningConfig.reason = reasonToNotStart
@@ -26,7 +29,11 @@ function init()
     if self.chatHidden then
       hideChat()
     end
-    SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
+
+    if not self.isOpenSB then
+      SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
+    end
+
     self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
   end
 
@@ -35,19 +42,21 @@ function init()
 end
 
 function checkSEAndControls()
-  if not _ENV["starExtensions"] then
+  if not _ENV["starExtensions"] and not self.isOpenSB then
     return "se_not_found"
-  elseif not root.assetData or not root.assetData("/scripts/starextensions/lib/chat_callback.lua") then
+  elseif not root.assetData and (not root.assetData("/scripts/starextensions/lib/chat_callback.lua") and not player.questIds) then
     return "se_version"
   else
-    require("/scripts/starextensions/lib/chat_callback.lua")
-    if not setChatMessageHandler then
-      return "se_version"
-    else
-      local bindings = root.getConfiguration("bindings")
-      if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
-        return "unbind_controls"
+    if not self.isOpenSB then
+      require("/scripts/starextensions/lib/chat_callback.lua")
+      if not setChatMessageHandler then
+        return "se_version"
       end
+    end
+
+    local bindings = root.getConfiguration("bindings")
+    if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
+      return "unbind_controls"
     end
   end
 end

@@ -1,0 +1,12 @@
+[
+  {
+    "op": "test",
+    "path": "/universeScriptContexts/OpenStarbound",
+    "value": ["/scripts/opensb/universeclient/universeclient.lua"]
+  },
+  {
+    "op": "add",
+    "path": "/universeScriptContexts/OpenStarbound/-",
+    "value": "/scripts/starcustomchat/SCCMessagePicker.lua"
+  }
+]
