@@ -597,15 +597,18 @@ function StarCustomChat:processQueue()
       local emojiStartOffset = vec2.add({xOffset, messageOffset}, self.config.emotesOffset)
       for ind, reactObj in ipairs(message.reactions) do 
         local reaction = reactObj.reaction
+
         self.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction), 
           emojiStartOffset, 1 / 16 * self.config.fontSize)
+
+        local myNameInd = index(reactObj.nicknames, player.name()) ~= 0 -- if we have emoted
 
         self.canvas:drawText(#reactObj.nicknames, {
           position = vec2.add(emojiStartOffset, {self.config.emoteNumberSpace * self.config.fontSize / 10, 0}),
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize - 1, self:getColor("chattext"))
+        }, self.config.fontSize - 1, myNameInd and "cornflowerblue" or self:getColor("chattext"))
 
         message.reactions[ind].position = copy(emojiStartOffset)
         emojiStartOffset[1] = emojiStartOffset[1] + self.config.emoteSpacing * self.config.fontSize / 10
