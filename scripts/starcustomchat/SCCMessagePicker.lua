@@ -16,11 +16,9 @@ function onChatReceivePacket(data)
 end
 
 function onEntityMessagePacket(data)
-  sb.logInfo("SEM")
   sb.logInfo(sb.print(data))
 end
 
 function onChatSendPacket(data)
-  sb.logInfo("SENDCHAT")
   sb.logInfo(sb.print(data))
 end
