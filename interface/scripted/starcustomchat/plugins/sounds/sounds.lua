@@ -45,6 +45,7 @@ end
 function sounds:onProcessCommand(text)
   if string.sub(text, 1, 3) == "/w " and self.soundsWhispersEnabled then
     self:playSound()
+    player.emote("blabbering")
   end
 end
 
