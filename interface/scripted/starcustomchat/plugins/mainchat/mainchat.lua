@@ -8,6 +8,7 @@ function mainchat:init(chat)
   self:_loadConfig()
 
   self.customChat = chat
+
   self.ReplyTimer = 5
   self.ReplyTime = 0
 
@@ -55,7 +56,8 @@ end
 function mainchat:formatIncomingMessage(message)
   if message.mode == "CommandResult" then
     message.portrait = self.modeIcons.console
-    message.nickname = "Console"    
+    message.nickname = "Console"
+    message.color = self.customChat:getColor("servertext")
   elseif message.mode == "RadioMessage" then
     message.portrait = message.portrait or self.modeIcons.server
     message.nickname = message.nickname or "Server"
@@ -63,12 +65,12 @@ function mainchat:formatIncomingMessage(message)
     if message.connection == 0 then
       message.portrait = message.portrait or self.modeIcons.server
       message.nickname = message.nickname or "Server"
+      message.color = self.customChat:getColor("servertext")
     else
       message.portrait = message.portrait and message.portrait ~= "" and message.portrait or message.connection
       message.nickname = message.nickname or ""
     end
   end
-
 
   return message
 end

@@ -19,11 +19,16 @@ function sounds:init()
 
   self.soundsPool = currentRaceSounds[player.gender()] 
   self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
+  self.soundsWhispersEnabled = root.getConfiguration("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   status.addPersistentEffect("scctalking", "scctalking")
 end
 
 function sounds:onSendMessage()
+  self:playSound()
+end
+
+function sounds:playSound()
   if self.soundsEnabled then
     local soundTable = {
       pool = self.soundsPool,
@@ -37,8 +42,16 @@ function sounds:onSendMessage()
   end
 end
 
+function sounds:onProcessCommand(text)
+  if string.sub(text, 1, 3) == "/w " and self.soundsWhispersEnabled then
+    self:playSound()
+    player.emote("blabbering")
+  end
+end
+
 function sounds:onSettingsUpdate()
   self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
+  self.soundsWhispersEnabled = root.getConfiguration("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   self.soundsPool = self.allRaceSounds[player.getProperty("scc_sound_species") or player.species()][player.gender()]
 end

@@ -101,10 +101,12 @@ function StarCustomChat:addMessage(msg)
           message.recipient = self.lastWhisper.recipient
           self.lastWhisper = nil
         else
-          if type(self.config.notificationSound) == "table" then
-            pane.playSound(self.config.notificationSound[math.random(1, #self.config.notificationSound)])
-          else
-            pane.playSound(self.config.notificationSound)
+          if message.nickname ~= player.name() then
+            if type(self.config.notificationSound) == "table" then
+              pane.playSound(self.config.notificationSound[math.random(1, #self.config.notificationSound)])
+            else
+              pane.playSound(self.config.notificationSound)
+            end
           end
         end
       end
@@ -236,9 +238,11 @@ function StarCustomChat:resetChat()
   local newChatSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
   local newChatMode = root.getConfiguration("iccMode") or "modern"
+  
   if newChatSize ~= self.config.fontSize or maxCharactersAllowed ~= self.maxCharactersAllowed or self.chatMode ~= newChatMode then
     self.recalculateHeight = true
   end
+
   self.chatMode = newChatMode
   self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = maxCharactersAllowed
@@ -609,15 +613,18 @@ function StarCustomChat:processQueue()
       local emojiStartOffset = vec2.add({xOffset, messageOffset}, self.config.emotesOffset)
       for ind, reactObj in ipairs(message.reactions) do 
         local reaction = reactObj.reaction
+
         self.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction), 
           emojiStartOffset, 1 / 16 * self.config.fontSize)
+
+        local myNameInd = index(reactObj.nicknames, player.name()) ~= 0 -- if we have emoted
 
         self.canvas:drawText(#reactObj.nicknames, {
           position = vec2.add(emojiStartOffset, {self.config.emoteNumberSpace * self.config.fontSize / 10, 0}),
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize - 1, self:getColor("chattext"))
+        }, self.config.fontSize - 1, myNameInd and "cornflowerblue" or self:getColor("chattext"))
 
         message.reactions[ind].position = copy(emojiStartOffset)
         emojiStartOffset[1] = emojiStartOffset[1] + self.config.emoteSpacing * self.config.fontSize / 10
@@ -642,7 +649,7 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
         end
 
 
@@ -665,19 +672,19 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
 
         else
           local text = createNameForCompactMode(message.nickname, 
           self.config.modeColors[messageMode] or self.config.modeColors.default, 
-          "", message.time, self:getColor("timetext"))
+            "", message.time, self:getColor("timetext"))
           
           self.canvas:drawText(text, {
             position = {offset[1], offset[2] + reactionOffset},
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, self:getColor("chattext"))
+          }, self.config.fontSize, message.color or self:getColor("chattext"))
 
           local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)

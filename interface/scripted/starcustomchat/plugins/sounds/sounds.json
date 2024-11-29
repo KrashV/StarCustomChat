@@ -7,8 +7,12 @@
       "en": "Sounds"
     },
     "settings.plugins.sounds.enable": {
-      "ru": "Звуки разговора",
-      "en": "Talking sounds"
+      "ru": "Включить",
+      "en": "Enabled"
+    },
+    "settings.plugins.sounds.enablewhisper": {
+      "ru": "Звуки при ЛС",
+      "en": "Enable with DMs"
     },
     "settings.plugins.sounds.pitch": {
       "ru": "Тон",
@@ -41,13 +45,6 @@
         "value": ""
       },
 
-      "lblSoundsEnabled": {
-        "type": "label",
-        "position": [120, 100],
-        "hAnchor": "right",
-        "color": "lightgray"
-      },
-      
       "saSpecies": {
         "type": "scrollArea",
         "rect": [5, 35, 60, 130],
@@ -89,9 +86,37 @@
         "wrapWidth": 110
       },
 
-      "chkEnabled": {
+      "lblSoundsEnabledWhisper": {
+        "type": "label",
+        "position": [120, 100],
+        "hAnchor": "right",
+        "color": "lightgray"
+      },
+      
+
+      "chkEnabledWhisper": {
         "type": "button",
         "position": [130, 100],
+        "checkable": true,
+        "checked": false,
+        "base": "/interface/crafting/checkboxnocheck.png",
+        "hover": "/interface/crafting/checkboxnocheck.png",
+        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+        "callback": "enableWhisperSounds"
+      },
+
+      "lblSoundsEnabled": {
+        "type": "label",
+        "position": [120, 120],
+        "hAnchor": "right",
+        "color": "lightgray"
+      },
+      
+
+      "chkEnabled": {
+        "type": "button",
+        "position": [130, 120],
         "checkable": true,
         "checked": false,
         "base": "/interface/crafting/checkboxnocheck.png",
