@@ -1,3 +1,1 @@
-- Sounds: added an option to play the sounds and the animation during whisper messages
-- Do not play the notification sound when you send the message
-- Fixed some server messages not being colored as server messages
+- Sounds: enabling the sounds are not player wise, not global
