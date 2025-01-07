@@ -18,8 +18,8 @@ function sounds:init()
   local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
 
   self.soundsPool = currentRaceSounds[player.gender()] 
-  self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
-  self.soundsWhispersEnabled = root.getConfiguration("scc_sounds_whisper_enabled") or false
+  self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
+  self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   status.addPersistentEffect("scctalking", "scctalking")
 end
@@ -50,8 +50,8 @@ function sounds:onProcessCommand(text)
 end
 
 function sounds:onSettingsUpdate()
-  self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
-  self.soundsWhispersEnabled = root.getConfiguration("scc_sounds_whisper_enabled") or false
+  self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
+  self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   self.soundsPool = self.allRaceSounds[player.getProperty("scc_sound_species") or player.species()][player.gender()]
 end

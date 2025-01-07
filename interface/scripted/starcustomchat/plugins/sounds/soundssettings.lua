@@ -23,10 +23,10 @@ function sounds:init()
 
   self.soundsPool = currentRaceSounds[player.gender()] 
 
-  self.soundsEnabled = root.getConfiguration("scc_sounds_enabled") or false
+  self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnabled", self.soundsEnabled or false)
 
-  self.soundsWhispersEnabled = root.getConfiguration("scc_sounds_whisper_enabled") or false
+  self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnabledWhisper", self.soundsWhispersEnabled or false)
 
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
@@ -70,13 +70,13 @@ end
 
 function sounds:enableSounds()
   self.soundsEnabled = widget.getChecked(self.layoutWidget .. ".chkEnabled")
-  root.setConfiguration("scc_sounds_enabled", self.soundsEnabled)
+  player.setProperty("scc_sounds_enabled", self.soundsEnabled)
   save()
 end
 
 function sounds:enableWhisperSounds()
   self.soundsWhispersEnabled = widget.getChecked(self.layoutWidget .. ".chkEnabledWhisper")
-  root.setConfiguration("scc_sounds_whisper_enabled", self.soundsWhispersEnabled)
+  player.setProperty("scc_sounds_whisper_enabled", self.soundsWhispersEnabled)
   save()
 end
 
