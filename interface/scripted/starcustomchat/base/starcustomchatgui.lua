@@ -20,17 +20,22 @@ local handlerCutter = nil
 ICChatTimer = TimerKeeper.new()
 function init()
 
+  sb.logInfo("StarCustomChat: ChatOpener init")
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
   if not self.isOpenSB then
     require("/scripts/starextensions/lib/chat_callback.lua")
+    ICChatTimer:add(2, checkUUID)
+    handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+  else
+    self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
   end
 
   shared.chatIsOpen = true
-  self.canvasName = "cnvChatCanvas"
+  self.canvasName = "chatLog"
   self.highlightCanvasName = "cnvHighlightCanvas"
   self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
-  self.chatWindowWidth = widget.getSize("backgroundImage")[1]
+  self.chatWindowWidth = widget.getSize("saScrollArea")[1]
 
   self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
 
@@ -65,6 +70,8 @@ function init()
     end
   end
 
+  sb.logInfo("StarCustomChat: Required plugins loaded")
+
   self.runCallbackForPlugins = function(method, ...)
     -- The logic here is actually strange and might need some more customisation
     local result = nil
@@ -77,8 +84,8 @@ function init()
   localeChat(self.localePluginConfig)
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
-  local expanded = config.getParameter("expanded")
-  root.setConfiguration("icc_is_expanded", expanded)
+  local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
+  
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
@@ -95,7 +102,10 @@ function init()
     chatConfig, player.id(), storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
+  sb.logInfo("StarCustomChat: ChatOpener created chat")
   self.runCallbackForPlugins("init", self.customChat)
+
+  sb.logInfo("StarCustomChat: ChatOpener ran init callbacks")
 
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -114,6 +124,7 @@ function init()
 
   contextMenu_init(config.getParameter("contextMenuButtons"))
 
+  sb.logInfo("StarCustomChat: ChatOpener ran context menu init")
   local lastText = config.getParameter("lastInputMessage")
   if lastText and lastText ~= "" then
     widget.setText("tbxInput", lastText)
@@ -134,9 +145,10 @@ function init()
     self.customChat:addMessage(message)
   end
 
-  registerCallbacks()
-
+  prepareForCallbacks()
+  sb.logInfo("StarCustomChat: Prepared callbacks")
   requestPortraits()
+  sb.logInfo("StarCustomChat: ChatOpener requested portraits")
   self.customChat:processQueue()
 
   local storedHiddenMessages = config.getParameter("storedMessages") or {}
@@ -149,12 +161,18 @@ function init()
     widget.focus("tbxInput")
   end
 
-  ICChatTimer:add(0.5, registerCallbacks)
-
-  ICChatTimer:add(2, checkUUID)
-
   checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
+
+  sb.logInfo("StarCustomChat: ChatOpener init closed")
+end
+
+function prepareForCallbacks()
+  local calbacksReady = registerCallbacks()
+
+  if not calbacksReady then
+    ICChatTimer:add(2, prepareForCallbacks)
+  end
 end
 
 function checkUUID()
@@ -166,14 +184,12 @@ end
 
 function registerCallbacks()
 
-  if not self.isOpenSB then
-    handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
-  else
-    shared.addMessageToSCC = self.chatFunctionCallback
+  if not shared.setMessageHandler then
+    return false
   end
 
   shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
-    if player.id() and world.entityExists(player.id()) then
+    if player.id() and player.uniqueId() and world.entityExists(player.id()) then
       return {
         portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
@@ -322,6 +338,8 @@ function update(dt)
   
   ICChatTimer:update(dt)
   promises:update()
+  
+  if self.drawingCanvas then self.drawingCanvas:clear() end
 
   self.customChat:clearHighlights()
   widget.setVisible("lytContext", false)
@@ -330,7 +348,7 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
 
-  if not player.id() or not world.entityExists(player.id()) then
+  if not self.isOpenSB and (not player.id() or not world.entityExists(player.id())) then
     shared.chatIsOpen = false
     pane.dismiss()
   end
@@ -390,6 +408,7 @@ end
 
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
+
   local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
 
   local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
@@ -413,6 +432,10 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
   widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
   widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)
+
+  if self.isOpenSB then
+    widget.setSize("background", expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight} or {self.chatWindowWidth, chatParameters.bodyHeight})
+  end
 end
 
 function canvasClickEvent(position, button, isButtonDown)
@@ -422,35 +445,41 @@ function canvasClickEvent(position, button, isButtonDown)
   
   if button == 0 and isButtonDown then
     self.customChat.expanded = not self.customChat.expanded
+    root.setConfiguration("icc_is_expanded", self.customChat.expanded)
 
-    if not self.reopening then
-      
-      local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
-      saveEverythingDude()
-      pane.dismiss()
+    if self.isOpenSB then
+      setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
+      self.customChat:processQueue()
+    else
+      if not self.reopening then
+        
+        local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
+        saveEverythingDude()
+        pane.dismiss()
 
-      local chatConfig = buildChatInterface()
-      chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
-      chatConfig.expanded = self.customChat.expanded
-      chatConfig.currentSizes = chatParameters
-      chatConfig.lastInputMessage = widget.getText("tbxInput")
-      chatConfig.portraits = self.customChat.savedPortraits
-      chatConfig.connectionToUuid =  self.customChat.connectionToUuid
-      chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-      chatConfig.DMingPlayerID = self.DMingPlayerID
-      chatConfig.chatLineOffset = self.customChat.lineOffset
-      chatConfig.reopened = true
-      chatConfig.selectedModes = {}
-      for _, mode in ipairs(chatConfig["chatModes"]) do 
-        if widget.active("btnCk" .. mode) then
-          chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+        local chatConfig = buildChatInterface()
+        chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
+        chatConfig.expanded = self.customChat.expanded
+        chatConfig.currentSizes = chatParameters
+        chatConfig.lastInputMessage = widget.getText("tbxInput")
+        chatConfig.portraits = self.customChat.savedPortraits
+        chatConfig.connectionToUuid =  self.customChat.connectionToUuid
+        chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+        chatConfig.DMingPlayerID = self.DMingPlayerID
+        chatConfig.chatLineOffset = self.customChat.lineOffset
+        chatConfig.reopened = true
+        chatConfig.selectedModes = {}
+        for _, mode in ipairs(chatConfig["chatModes"]) do 
+          if widget.active("btnCk" .. mode) then
+            chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+          end
         end
+
+        chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
+
+        player.interact("ScriptPane", chatConfig)
+        self.reopening = true
       end
-
-      chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
-
-      player.interact("ScriptPane", chatConfig)
-      self.reopening = true
     end
   end
 
@@ -461,7 +490,7 @@ end
 
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
-    if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
+    if event.type == "MouseWheel" and widget.inMember("saScrollArea", screenPosition) then
 
       self.runCallbackForPlugins("onChatScroll")
 
@@ -699,6 +728,25 @@ function closeChat()
   pane.dismiss()
   world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
 end
+
+-- OpenStarbound chat
+function convertToChatMessage(oldMessage)
+  local newMessage = {}
+  newMessage.text = oldMessage.text
+  newMessage.connection = oldMessage.fromConnection
+  newMessage.mode = oldMessage.context.mode
+  newMessage.nickname = oldMessage.fromNick
+  newMessage.portrait = oldMessage.portrait
+  return newMessage
+end
+
+function addMessages(messages, showPane) 
+  for _, message in ipairs(messages) do
+    self.customChat:addMessage(convertToChatMessage(message))
+  end
+end
+
+
 
 function uninit()
   local text = widget.getText("tbxInput")

@@ -43,6 +43,7 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
 
   o.messages = messages
   o.author = playerId
+  o.canvasName = canvasWid
   o.canvas = widget.bindCanvas(canvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
   o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
@@ -173,7 +174,7 @@ function StarCustomChat:openSubMenu(type, hint, text)
   if not widget.active("lytSubMenu") then
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
   else
     self.callbackPlugins("onSubMenuReopen", type)
@@ -187,7 +188,7 @@ function StarCustomChat:closeSubMenu()
     widget.setVisible("lytSubMenu", false)
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
   end
 end

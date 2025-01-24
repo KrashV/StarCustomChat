@@ -10,6 +10,7 @@
         }],
         "name": "Repeat last command"
       }
-    }
+    },
+    "tags": ["clipboard"]
   }
 }

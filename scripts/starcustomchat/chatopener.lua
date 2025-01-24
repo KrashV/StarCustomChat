@@ -23,18 +23,21 @@ function init()
     sewarningConfig.reason = reasonToNotStart
     player.interact("ScriptPane", sewarningConfig)
   else
-    self.interface = buildChatInterface()
-    shared.setMessageHandler = message.setHandler
+
+    self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
     self.chatHidden = root.getConfiguration("scc_chat_hidden") or false
-    if self.chatHidden then
-      hideChat()
-    end
+
+    shared.setMessageHandler = message.setHandler
+
 
     if not self.isOpenSB then
+      self.interface = buildChatInterface()
       SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
     end
 
-    self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
+    if self.chatHidden then
+      hideChat()
+    end
   end
 
   message.setHandler("scc_chat_hidden", localHandler(hideChat))
@@ -82,21 +85,23 @@ function hideChat(mode)
 end
 
 function openChat(forceFocus, mode)
-  self.chatHidden = false
-  root.setConfiguration("scc_chat_hidden", self.chatHidden)
-  self.interface.storedMessages = self.storedMessages
-  self.interface.forceFocus = forceFocus
-  self.interface.currentMessageMode = mode
+  if not self.isOpenSB then
+    self.chatHidden = false
+    root.setConfiguration("scc_chat_hidden", self.chatHidden)
+    self.interface.storedMessages = self.storedMessages
+    self.interface.forceFocus = forceFocus
+    self.interface.currentMessageMode = mode
 
-  player.interact("ScriptPane", self.interface)
-  self.storedMessages = {}
-  shared.chatIsOpen = true
+    player.interact("ScriptPane", self.interface)
+    self.storedMessages = {}
+    shared.chatIsOpen = true
+  end
 end
 
 function update(dt)
   SCChatTimer:update(dt)
 
-  if not shared.chatIsOpen and self.interface and not self.chatHidden then
+  if not shared.chatIsOpen and self.interface and not self.chatHidden and not self.isOpenSB then
     openChat()
   end
 end
