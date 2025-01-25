@@ -101,7 +101,7 @@ function init()
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
   self.customChat = StarCustomChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName,
-    chatConfig, player.id(), storedMessages, self.chatMode,
+    chatConfig, storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
   self.runCallbackForPlugins("init", self.customChat)
@@ -159,7 +159,14 @@ function init()
 end
 
 function prepareForCallbacks()
-  local calbacksReady = registerCallbacks()
+  -- Reinitialize the shared table if necessary
+  local shared = getmetatable('').shared
+  if type(shared) ~= "table" then
+    shared = {}
+    getmetatable('').shared = shared
+  end
+
+  local calbacksReady = registerCallbacks(shared)
 
   if not calbacksReady then
     ICChatTimer:add(2, prepareForCallbacks)
@@ -173,7 +180,7 @@ function checkUUID()
   ICChatTimer:add(2, checkUUID)
 end
 
-function registerCallbacks()
+function registerCallbacks(shared)
 
   if not shared.setMessageHandler then
     return false

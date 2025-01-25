@@ -13,7 +13,6 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 StarCustomChat = {
   messages = jarray(),
   drawnMessageIndexes = jarray(),
-  author = 0,
   lineOffset = 0,
   canvas = nil,
   highlightCanvas = nil,
@@ -34,7 +33,7 @@ StarCustomChat = {
 
 StarCustomChat.__index = StarCustomChat
 
-function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, playerId, messages, 
+function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
   chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, callbackPlugins)
 
   local o = {}
@@ -42,7 +41,6 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   self.__index = self
 
   o.messages = messages
-  o.author = playerId
   o.canvasName = canvasWid
   o.canvas = widget.bindCanvas(canvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
@@ -296,7 +294,7 @@ function StarCustomChat:sendMessage(text, mode)
 
   local data = {
     text = text,
-    connection = self.author // -65536,
+    connection = player.id() // -65536,
     portrait = "", --TODO: Add portrait,
     mode = mode,
     nickname = player.name()

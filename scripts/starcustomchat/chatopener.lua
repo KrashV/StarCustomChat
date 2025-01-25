@@ -35,7 +35,7 @@ function init()
       SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
     end
 
-    if self.chatHidden then
+    if self.chatHidden and not self.isOpenSB then
       hideChat()
     end
   end
