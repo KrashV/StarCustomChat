@@ -23,6 +23,11 @@ function init()
   sb.logInfo("StarCustomChat: ChatOpener init")
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
+  
+  self.chatFunctionCallback = function(message)
+    self.customChat:addMessage(message)
+  end
+  
   if not self.isOpenSB then
     require("/scripts/starextensions/lib/chat_callback.lua")
     ICChatTimer:add(2, checkUUID)
@@ -139,10 +144,6 @@ function init()
   else
     widget.setSelectedOption("rgChatMode", 1)
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
-  end
-
-  self.chatFunctionCallback = function(message)
-    self.customChat:addMessage(message)
   end
 
   prepareForCallbacks()

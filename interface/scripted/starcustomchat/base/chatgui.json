@@ -302,7 +302,8 @@
       "position": [-25, -25],
       "base": "/assetmissing.png",
       "hover": "/assetmissing.png",
-      "callback": "null"
+      "callback": "null",
+      "mouseTransparent": true
     },
 
     "btnSettings": {
