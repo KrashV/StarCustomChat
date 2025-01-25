@@ -55,11 +55,11 @@ function checkSEAndControls()
       if not setChatMessageHandler then
         return "se_version"
       end
-    end
 
-    local bindings = root.getConfiguration("bindings")
-    if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
-      return "unbind_controls"
+      local bindings = root.getConfiguration("bindings")
+      if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
+        return "unbind_controls"
+      end
     end
   end
 end

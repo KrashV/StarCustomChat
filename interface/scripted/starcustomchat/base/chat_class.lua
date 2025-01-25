@@ -23,7 +23,6 @@ StarCustomChat = {
   chatMode = "modern",
   savedPortraits = {},
   connectionToUuid = {},
-
   queueTimer = 0.5,
   queueTime = 0,
   lastWhisper = nil,

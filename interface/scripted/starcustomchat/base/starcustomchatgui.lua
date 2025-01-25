@@ -21,7 +21,7 @@ ICChatTimer = TimerKeeper.new()
 function init()
 
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-
+  if self.isOpenSB then shared.setMessageHandler = nil end
   
   self.chatFunctionCallback = function(message)
     self.customChat:addMessage(message)
@@ -160,7 +160,7 @@ end
 
 function prepareForCallbacks()
   -- Reinitialize the shared table if necessary
-  local shared = getmetatable('').shared
+  shared = getmetatable('').shared
   if type(shared) ~= "table" then
     shared = {}
     getmetatable('').shared = shared
@@ -169,7 +169,7 @@ function prepareForCallbacks()
   local calbacksReady = registerCallbacks(shared)
 
   if not calbacksReady then
-    ICChatTimer:add(2, prepareForCallbacks)
+    ICChatTimer:add(0.5, prepareForCallbacks)
   end
 end
 
@@ -518,14 +518,17 @@ function processEvents(screenPosition)
 end
 
 function processButtonEvents(dt)
-  if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
-    if input.keyDown("/") then
-      widget.setText("tbxInput", "/")
-    end
-    widget.focus("tbxInput")
-    chat.setInput("")
-  end
 
+  -- StarExtensions only
+  if not self.isOpenSB then
+    if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
+      if input.keyDown("/") then
+        widget.setText("tbxInput", "/")
+      end
+      widget.focus("tbxInput")
+      chat.setInput("")
+    end
+  end
 
   if widget.hasFocus("tbxInput") then
     for _, event in ipairs(input.events()) do
@@ -723,11 +726,28 @@ function saveEverythingDude()
 end
 
 function closeChat()
-  pane.dismiss()
-  world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
+  if not self.isOpenSB then
+    pane.dismiss()
+    world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
+  else
+    pane.hide()
+  end
 end
 
 -- OpenStarbound chat
+function startChat()
+  pane.show()
+  widget.focus("tbxInput")
+  chat.setInput("")
+end
+
+function startCommand()
+  pane.show()
+  widget.setText("tbxInput", "/")
+  widget.focus("tbxInput")
+  chat.setInput("")
+end
+
 function convertToChatMessage(oldMessage)
   local newMessage = {}
   newMessage.text = oldMessage.text
