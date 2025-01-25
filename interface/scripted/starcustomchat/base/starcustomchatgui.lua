@@ -20,7 +20,6 @@ local handlerCutter = nil
 ICChatTimer = TimerKeeper.new()
 function init()
 
-  sb.logInfo("StarCustomChat: ChatOpener init")
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
   
@@ -75,8 +74,6 @@ function init()
     end
   end
 
-  sb.logInfo("StarCustomChat: Required plugins loaded")
-
   self.runCallbackForPlugins = function(method, ...)
     -- The logic here is actually strange and might need some more customisation
     local result = nil
@@ -107,10 +104,7 @@ function init()
     chatConfig, player.id(), storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
-  sb.logInfo("StarCustomChat: ChatOpener created chat")
   self.runCallbackForPlugins("init", self.customChat)
-
-  sb.logInfo("StarCustomChat: ChatOpener ran init callbacks")
 
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.contacts = {}
@@ -129,7 +123,6 @@ function init()
 
   contextMenu_init(config.getParameter("contextMenuButtons"))
 
-  sb.logInfo("StarCustomChat: ChatOpener ran context menu init")
   local lastText = config.getParameter("lastInputMessage")
   if lastText and lastText ~= "" then
     widget.setText("tbxInput", lastText)
@@ -147,9 +140,7 @@ function init()
   end
 
   prepareForCallbacks()
-  sb.logInfo("StarCustomChat: Prepared callbacks")
   requestPortraits()
-  sb.logInfo("StarCustomChat: ChatOpener requested portraits")
   self.customChat:processQueue()
 
   local storedHiddenMessages = config.getParameter("storedMessages") or {}
@@ -165,7 +156,6 @@ function init()
   checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 
-  sb.logInfo("StarCustomChat: ChatOpener init closed")
 end
 
 function prepareForCallbacks()
