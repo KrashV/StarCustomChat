@@ -536,19 +536,26 @@ function processButtonEvents(dt)
   if widget.hasFocus("tbxInput") then
     for _, event in ipairs(input.events()) do
       if event.type == "KeyDown" then
+        local lShift = event.data.mods and (event.data.mods.LShift or index(event.data.mods, "LShift") ~= 0)
+        local rShift = event.data.mods and (event.data.mods.RShift or index(event.data.mods, "RShift") ~= 0)
+        local lCtrl = event.data.mods and (event.data.mods.LCtrl or index(event.data.mods, "LCtrl") ~= 0)
+        local rCtrl = event.data.mods and (event.data.mods.RCtrl or index(event.data.mods, "RCtrl") ~= 0)
+        local shiftPressed = lShift or rShift
+        local ctrlPressed = lCtrl or rCtrl
+
         if event.data.key == "Tab" then
           self.savedCommandSelection = self.savedCommandSelection + 1
-        elseif event.data.key == "Up" and event.data.mods and (event.data.mods.LShift or event.data.mods.RShift) then
+        elseif event.data.key == "Up" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
             widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
           end
-        elseif event.data.key == "Down" and event.data.mods and (event.data.mods.LShift or event.data.mods.RShift) then
+        elseif event.data.key == "Down" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
             widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
           end
-        elseif event.data.key == "V" and event.data.mods and (event.data.mods.LCtrl or event.data.mods.RCtrl) then
+        elseif event.data.key == "V" and ctrlPressed then
           local textInClipboard = clipboard.getText()
           if textInClipboard and string.find(textInClipboard, '\n') then
             widget.setText("tbxInput", widget.getText("tbxInput") .. string.gsub(textInClipboard, "[\n\r]", " "))
