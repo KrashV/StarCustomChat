@@ -433,9 +433,9 @@ function setSizes(expanded, chatParameters, currentSizes)
 
   if self.isOpenSB then
     widget.setSize("background", expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight} or {self.chatWindowWidth, chatParameters.bodyHeight})
-    widget.setSize(self.canvasName, currentSizes and vec2.add(currentSizes.canvasSize, 2) or vec2.add(defaultSizes.canvasSize, 2))
-    widget.setSize("saScrollArea", currentSizes and currentSizes.canvasSize or defaultSizes.canvasSize)
-    widget.setSize(self.highlightCanvasName, currentSizes and vec2.add(currentSizes.highligtCanvasSize, 2) or vec2.add(defaultSizes.highligtCanvasSize, 2))
+    widget.setSize(self.canvasName, currentSizes and vec2.add(currentSizes.canvasSize, {0,2}) or vec2.add(defaultSizes.canvasSize, {0,2}))
+    widget.setSize("saScrollArea", currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
+    widget.setSize(self.highlightCanvasName, currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
   end
 end
 
