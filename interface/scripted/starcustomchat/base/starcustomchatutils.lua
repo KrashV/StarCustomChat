@@ -125,7 +125,7 @@ function starcustomchat.utils.clearPortraitFromInvisibleLayers(portrait)
     local filteredPortrait = {}
     for _, layer in ipairs(portrait) do 
       local imageSize = root.imageSize(layer.image)
-      if layer.image and not vec2.eq(imageSize, {0, 0}) and not string.find(layer.image, "?crop.?0;0;0") and not string.find(layer.image, "?multiply.?000") then
+      if layer.image and not vec2.eq(imageSize, {0, 0}) and not string.find(layer.image, "?crop.?0;0;0") and not string.match(layer.image, "^?multiply.?000;?$") then
         
         -- Set the idle emote
         if string.find(layer.image, "/emote.png") then

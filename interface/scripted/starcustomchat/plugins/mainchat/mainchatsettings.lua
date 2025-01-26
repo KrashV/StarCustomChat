@@ -50,15 +50,15 @@ function mainchat:cursorOverride(screenPosition)
       -- We believe that both the canvas and the crop area are squares
 
       self.portraitSettings.offset = {
-        util.clamp(math.floor(diff[1]), -120, 120),
-        util.clamp(math.floor(diff[2]), -120, 120)
+        util.clamp(math.floor(diff[1]), -180, 180),
+        util.clamp(math.floor(diff[2]), -180, 180)
       }
       self:drawCharacter()
     end
     
     for _, event in ipairs(input.events()) do
       if event.type == "MouseWheel" and widget.inMember(self.layoutWidget .. ".portraitCanvas", screenPosition) then
-        self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 3, 4)
+        self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 4)
         save()
         self:drawCharacter()
       end
