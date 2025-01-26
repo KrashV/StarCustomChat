@@ -12,6 +12,11 @@ function voicechat:init()
   self.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
+
+  if self.isOSB then
+    widget.setButtonEnabled(self.layoutWidget .. ".btnOpenVoiceSettings", false)
+    widget.setButtonEnabled(self.layoutWidget .. ".btnBinds", false)
+  end
 end
 
 function voicechat:onLocaleChange()
