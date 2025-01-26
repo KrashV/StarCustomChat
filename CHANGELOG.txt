@@ -1,1 +1,1 @@
-- Sounds: enabling the sounds are not player wise, not global
+- Portrait: Allow using the bigger sprite sheets by Kae
