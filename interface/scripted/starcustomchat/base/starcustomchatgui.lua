@@ -129,7 +129,7 @@ function init()
     widget.focus("tbxInput")
   end
 
-  local currentMessageMode = config.getParameter("currentMessageMode")
+  local currentMessageMode = config.getParameter("currentMessageMode") or root.getConfiguration("scc_message_mode")
 
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
@@ -346,7 +346,7 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
 
-  if not self.isOpenSB and (not player.id() or not world.entityExists(player.id())) then
+  if not self.isOpenSB and (not player.id() or not world.entityExists(player.id()) or world.type() == "Nowhere") then
     shared.chatIsOpen = false
     pane.dismiss()
   end
@@ -665,6 +665,7 @@ function setMode(id, data)
   widget.setFontColor("rgChatMode." .. id, self.customChat.config.modeColors[data.mode])
 
   self.runCallbackForPlugins("onModeChange", data.mode)
+  root.setConfiguration("scc_message_mode", id)
 end
 
 function modeToggle(button, isChecked)
@@ -694,7 +695,7 @@ end
 function createTooltip(screenPosition)
   if self.tooltipFields then
     for widgetName, tooltip in pairs(self.tooltipFields) do
-      if widget.inMember(widgetName, screenPosition) then
+      if widget.inMember(widgetName, screenPosition) and widget.active(widgetName) then
         return tooltip
       end
     end
