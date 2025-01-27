@@ -3,6 +3,9 @@ function checkDMs(dmingTo)
 
   if widget.getSelectedData("rgChatMode").mode == "Whisper" then
     populateList(dmingTo)
+  else
+    self.contacts = {}
+    widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
   end
   ICChatTimer:add(self.DMTimer, checkDMs)
 end
