@@ -139,7 +139,7 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
-  prepareForCallbacks()
+  ICChatTimer:add(1, prepareForCallbacks)
   requestPortraits()
   self.customChat:processQueue()
 
