@@ -585,18 +585,12 @@ function blurTextbox(widgetName)
   widget.blur(widgetName)
 end
 
-function textboxEnterKey(widgetName)
-
-  local text = widget.getText(widgetName)
-
-  if text == "" then
-    blurTextbox(widgetName)
-    return
-  end
+function sendMessageToBeSent(text, mode)
+  mode = mode or widget.getSelectedData("rgChatMode").mode
 
   local message = {
     text = text,
-    mode = widget.getSelectedData("rgChatMode").mode
+    mode = mode
   }
 
   if self.runCallbackForPlugins("preventTextboxCallback", message) then
@@ -605,7 +599,7 @@ function textboxEnterKey(widgetName)
 
   if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
-      blurTextbox(widgetName)
+      blurTextbox("tbxInput")
       return
     end
 
@@ -615,7 +609,7 @@ function textboxEnterKey(widgetName)
     end
 
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
-      widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
+      widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
       return
     else
       processCommand(text)
@@ -647,8 +641,20 @@ function textboxEnterKey(widgetName)
       sendMessage(message)
     end
   end
-  blurTextbox(widgetName)
+  blurTextbox("tbxInput")
   self.runCallbackForPlugins("afterTextboxPressed", message)
+end
+
+function textboxEnterKey(widgetName)
+
+  local text = widget.getText(widgetName)
+
+  if text == "" then
+    blurTextbox(widgetName)
+    return
+  end
+
+  sendMessageToBeSent(text, mode)
 end
 
 function processCommand(command)
