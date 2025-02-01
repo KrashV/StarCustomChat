@@ -16,6 +16,13 @@
       "type" : "background",
       "fileBody" : "/interface/scripted/starcustomchat/base/body.png"
     },
+    "cnvBackgroundCanvas": {
+      "type": "canvas",
+      "zlevel": -8,
+      "rect": [20, 26, 289, 310],
+      "mouseTransparent": false,
+      "captureMouseEvents": true
+    },
     "backgroundImage": {
       "type": "imageStretch",
       "direction" : "vertical",
@@ -49,7 +56,7 @@
       }
     },
 
-    "cnvChatCanvas": {
+    "chatLog": {
       "type": "canvas",
       "zlevel": 10,
       "rect": [20, 26, 289, 310],
@@ -295,6 +302,15 @@
       "data": {
         "displayText": "chat.buttons.bottom"
       }
+    },
+
+    "upButton": {
+      "type": "button",
+      "position": [-25, -25],
+      "base": "/assetmissing.png",
+      "hover": "/assetmissing.png",
+      "callback": "null",
+      "mouseTransparent": true
     },
 
     "btnSettings": {

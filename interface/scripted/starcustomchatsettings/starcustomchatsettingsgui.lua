@@ -4,6 +4,8 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
 
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
   self.localePluginConfig = {}
   local plugins = {}
 
@@ -60,6 +62,7 @@ function init()
     return a_priority < b_priority
   end)
 
+  widget.clearListItems("saPlugins.listPluginTabs")
   for i, layoutConfig in pairs(sortedLayouts) do 
     self.pluginLayouts[layoutConfig.data.pluginName] = layoutConfig.data.pluginName
     local li = widget.addListItem("saPlugins.listPluginTabs")

@@ -10,6 +10,8 @@ function autohide:init()
   self.timer = (root.getConfiguration("scc_autohide_timer") or 0)
   self.autohideTime = self.timer
   self.ignoreServerMessages = root.getConfiguration("scc_autohide_ignore_server_messages") or false
+
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 end
 
 function autohide:onCursorOverride()
@@ -19,6 +21,7 @@ end
 function autohide:update(dt)
   if self.timer > 0 and self.autohideTime <= 0 then
     closeChat()
+    self.autohideTime = self.timer
   end
   self.autohideTime = widget.hasFocus("tbxInput") and self.timer or math.max(self.autohideTime - dt, 0)
 end
@@ -26,6 +29,9 @@ end
 function autohide:onReceiveMessage(message)
   if message.connection and (message.connection == 0 and not self.ignoreServerMessages) or message.connection ~= 0 then
     self.autohideTime = self.timer
+    if self.isOpenSB then
+      pane.show()
+    end
   end
 end
 

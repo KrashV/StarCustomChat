@@ -20,8 +20,8 @@
     },
     "settings.voice.settings": "/voice",
     "settings.voice.binds_label": {
-      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat.\nНастройки голосового чата находятся в /voice",
-      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat.\nVoice chat settings are located in /voice"
+      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat.\nНастройки голосового чата StarExtensions находятся в /voice\nДля OpenStarbound в найстройках, кнопки отключены.",
+      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat.\nVoice chat settings are located in /voice\nFor OpenStarbound in settings, buttons are disabled."
     },
     "settings.voice.binds_button": "/binds",
     "settings.voice.default_enable": {

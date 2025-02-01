@@ -144,3 +144,29 @@ function starcustomchat.utils.clearPortraitFromInvisibleLayers(portrait)
 
   return portrait
 end
+
+
+function starcustomchat.utils.drawCircle(center, radius, color, sections)
+  sections = sections or 20
+
+  for i = 1, sections do
+    local startAngle = math.pi * 2 / sections * (i-1)
+    local endAngle = math.pi * 2 / sections * i
+    local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
+    local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
+
+    if self.isOpenSB then
+      if not self.drawingCanvas then
+        self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
+      end
+
+      self.drawingCanvas:drawLine(vec2.div(camera.worldToScreen(startLine), interface.scale()), vec2.div(camera.worldToScreen(endLine), interface.scale()), color)
+    else
+      interface.drawDrawable({
+        line = {camera.worldToScreen(startLine), camera.worldToScreen(endLine)},
+        width = 1,
+        color = color
+      }, {0, 0}, 1, color)
+    end
+  end
+end

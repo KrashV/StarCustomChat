@@ -8,8 +8,15 @@ voicechat = SettingsPluginClass:new(
 -- Settings
 function voicechat:init()
   self:_loadConfig()
+
+  self.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
+
+  if self.isOSB then
+    widget.setButtonEnabled(self.layoutWidget .. ".btnOpenVoiceSettings", false)
+    widget.setButtonEnabled(self.layoutWidget .. ".btnBinds", false)
+  end
 end
 
 function voicechat:onLocaleChange()
@@ -28,5 +35,9 @@ function voicechat:binds()
 end
 
 function voicechat:uninit()
-  root.setConfiguration("scc_voice_enabled", voice.enabled())
+  if self.isOSB then
+    root.setConfiguration("scc_voice_enabled", voice.getSettings()["enabled"])
+  else
+    root.setConfiguration("scc_voice_enabled", voice.enabled())
+  end
 end

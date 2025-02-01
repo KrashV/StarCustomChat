@@ -88,22 +88,8 @@ end
 
 function proximitychat:onCursorOverride(screenPosition)
   local id = findButtonByMode("Proximity")
-  if widget.inMember("rgChatMode." .. id, screenPosition) and player.id() and world.entityPosition(player.id()) then
-    drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green")
-  end
-end
 
-function drawCircle(center, radius, color, sections)
-  sections = sections or 20
-  for i = 1, sections do
-    local startAngle = math.pi * 2 / sections * (i-1)
-    local endAngle = math.pi * 2 / sections * i
-    local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
-    local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
-    interface.drawDrawable({
-      line = {camera.worldToScreen(startLine), camera.worldToScreen(endLine)},
-      width = 1,
-      color = color
-    }, {0, 0}, 1, color)
+  if widget.inMember("rgChatMode." .. id, screenPosition) and player.id() and world.entityPosition(player.id()) then
+    starcustomchat.utils.drawCircle(world.entityPosition(player.id()), self.proximityRadius, "green")
   end
 end

@@ -7,7 +7,7 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
-require("/scripts/starextensions/lib/chat_callback.lua")
+
 
 local shared = getmetatable('').shared
 if type(shared) ~= "table" then
@@ -20,11 +20,25 @@ local handlerCutter = nil
 ICChatTimer = TimerKeeper.new()
 function init()
 
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+  if self.isOpenSB then shared.setMessageHandler = nil end
+  
+  self.chatFunctionCallback = function(message)
+    self.customChat:addMessage(message)
+  end
+  
+  if not self.isOpenSB then
+    require("/scripts/starextensions/lib/chat_callback.lua")
+    ICChatTimer:add(2, checkUUID)
+    handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+  else
+    self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
+  end
+
   shared.chatIsOpen = true
-  self.canvasName = "cnvChatCanvas"
+  self.canvasName = "chatLog"
   self.highlightCanvasName = "cnvHighlightCanvas"
-  self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
-  self.chatWindowWidth = widget.getSize("backgroundImage")[1]
+  self.chatWindowWidth = widget.getSize("saScrollArea")[1]
 
   self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
 
@@ -71,8 +85,8 @@ function init()
   localeChat(self.localePluginConfig)
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
-  local expanded = config.getParameter("expanded")
-  root.setConfiguration("icc_is_expanded", expanded)
+  local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
+  
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
@@ -85,8 +99,8 @@ function init()
 
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.customChat = StarCustomChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName,
-    chatConfig, player.id(), storedMessages, self.chatMode,
+  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, "lytCommandPreview.cnvCommandsCanvas",
+    chatConfig, storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
   self.runCallbackForPlugins("init", self.customChat)
@@ -114,7 +128,7 @@ function init()
     widget.focus("tbxInput")
   end
 
-  local currentMessageMode = config.getParameter("currentMessageMode")
+  local currentMessageMode = config.getParameter("currentMessageMode") or root.getConfiguration("scc_message_mode")
 
   if currentMessageMode then
     widget.setSelectedOption("rgChatMode", currentMessageMode)
@@ -124,13 +138,10 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
-  self.chatFunctionCallback = function(message)
-    self.customChat:addMessage(message)
-  end
-
-  registerCallbacks()
-
+  ICChatTimer:add(1, prepareForCallbacks)
   requestPortraits()
+
+  self.customChat:drawBackground()
   self.customChat:processQueue()
 
   local storedHiddenMessages = config.getParameter("storedMessages") or {}
@@ -143,12 +154,24 @@ function init()
     widget.focus("tbxInput")
   end
 
-  ICChatTimer:add(0.5, registerCallbacks)
-
-  ICChatTimer:add(2, checkUUID)
-
   checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
+
+end
+
+function prepareForCallbacks()
+  -- Reinitialize the shared table if necessary
+  shared = getmetatable('').shared
+  if type(shared) ~= "table" then
+    shared = {}
+    getmetatable('').shared = shared
+  end
+
+  local calbacksReady = registerCallbacks(shared)
+
+  if not calbacksReady then
+    ICChatTimer:add(0.5, prepareForCallbacks)
+  end
 end
 
 function checkUUID()
@@ -158,11 +181,14 @@ function checkUUID()
   ICChatTimer:add(2, checkUUID)
 end
 
-function registerCallbacks()
+function registerCallbacks(shared)
 
-  handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+  if not shared.setMessageHandler then
+    return false
+  end
+
   shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
-    if player.id() and world.entityExists(player.id()) then
+    if player.id() and player.uniqueId() and world.entityExists(player.id()) then
       return {
         portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
@@ -311,6 +337,8 @@ function update(dt)
   
   ICChatTimer:update(dt)
   promises:update()
+  
+  if self.drawingCanvas then self.drawingCanvas:clear() end
 
   self.customChat:clearHighlights()
   widget.setVisible("lytContext", false)
@@ -319,7 +347,7 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
 
-  if not player.id() or not world.entityExists(player.id()) then
+  if not self.isOpenSB and (not player.id() or not world.entityExists(player.id()) or world.type() == "Nowhere") then
     shared.chatIsOpen = false
     pane.dismiss()
   end
@@ -379,6 +407,7 @@ end
 
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
+
   local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
 
   local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
@@ -402,6 +431,14 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
   widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
   widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)
+
+  if self.isOpenSB then
+    pane.setSize(expanded and {pane.getSize()[1], chatParameters.expandedBodyHeight + 25} or {pane.getSize()[1], chatParameters.bodyHeight + 25})
+    widget.setSize("background", expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight} or {self.chatWindowWidth, chatParameters.bodyHeight})
+    widget.setSize(self.canvasName, currentSizes and vec2.add(currentSizes.canvasSize, {0,2}) or vec2.add(defaultSizes.canvasSize, {0,2}))
+    widget.setSize("saScrollArea", currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
+    widget.setSize(self.highlightCanvasName, currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
+  end
 end
 
 function canvasClickEvent(position, button, isButtonDown)
@@ -411,35 +448,41 @@ function canvasClickEvent(position, button, isButtonDown)
   
   if button == 0 and isButtonDown then
     self.customChat.expanded = not self.customChat.expanded
+    root.setConfiguration("icc_is_expanded", self.customChat.expanded)
 
-    if not self.reopening then
-      
-      local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
-      saveEverythingDude()
-      pane.dismiss()
+    if self.isOpenSB then
+      setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
+      self.customChat:processQueue()
+    else
+      if not self.reopening then
+        
+        local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
+        saveEverythingDude()
+        pane.dismiss()
 
-      local chatConfig = buildChatInterface()
-      chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
-      chatConfig.expanded = self.customChat.expanded
-      chatConfig.currentSizes = chatParameters
-      chatConfig.lastInputMessage = widget.getText("tbxInput")
-      chatConfig.portraits = self.customChat.savedPortraits
-      chatConfig.connectionToUuid =  self.customChat.connectionToUuid
-      chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-      chatConfig.DMingPlayerID = self.DMingPlayerID
-      chatConfig.chatLineOffset = self.customChat.lineOffset
-      chatConfig.reopened = true
-      chatConfig.selectedModes = {}
-      for _, mode in ipairs(chatConfig["chatModes"]) do 
-        if widget.active("btnCk" .. mode) then
-          chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+        local chatConfig = buildChatInterface()
+        chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
+        chatConfig.expanded = self.customChat.expanded
+        chatConfig.currentSizes = chatParameters
+        chatConfig.lastInputMessage = widget.getText("tbxInput")
+        chatConfig.portraits = self.customChat.savedPortraits
+        chatConfig.connectionToUuid =  self.customChat.connectionToUuid
+        chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
+        chatConfig.DMingPlayerID = self.DMingPlayerID
+        chatConfig.chatLineOffset = self.customChat.lineOffset
+        chatConfig.reopened = true
+        chatConfig.selectedModes = {}
+        for _, mode in ipairs(chatConfig["chatModes"]) do 
+          if widget.active("btnCk" .. mode) then
+            chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+          end
         end
+
+        chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
+
+        player.interact("ScriptPane", chatConfig)
+        self.reopening = true
       end
-
-      chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
-
-      player.interact("ScriptPane", chatConfig)
-      self.reopening = true
     end
   end
 
@@ -450,7 +493,7 @@ end
 
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
-    if event.type == "MouseWheel" and widget.inMember("backgroundImage", screenPosition) then
+    if event.type == "MouseWheel" and widget.inMember("saScrollArea", screenPosition) then
 
       self.runCallbackForPlugins("onChatScroll")
 
@@ -480,31 +523,41 @@ function processEvents(screenPosition)
 end
 
 function processButtonEvents(dt)
-  if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
-    if input.keyDown("/") then
-      widget.setText("tbxInput", "/")
-    end
-    widget.focus("tbxInput")
-    chat.setInput("")
-  end
 
+  -- StarExtensions only
+  if not self.isOpenSB then
+    if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
+      if input.keyDown("/") then
+        widget.setText("tbxInput", "/")
+      end
+      widget.focus("tbxInput")
+      chat.setInput("")
+    end
+  end
 
   if widget.hasFocus("tbxInput") then
     for _, event in ipairs(input.events()) do
       if event.type == "KeyDown" then
+        local lShift = event.data.mods and (event.data.mods.LShift or index(event.data.mods, "LShift") ~= 0)
+        local rShift = event.data.mods and (event.data.mods.RShift or index(event.data.mods, "RShift") ~= 0)
+        local lCtrl = event.data.mods and (event.data.mods.LCtrl or index(event.data.mods, "LCtrl") ~= 0)
+        local rCtrl = event.data.mods and (event.data.mods.RCtrl or index(event.data.mods, "RCtrl") ~= 0)
+        local shiftPressed = lShift or rShift
+        local ctrlPressed = lCtrl or rCtrl
+
         if event.data.key == "Tab" then
           self.savedCommandSelection = self.savedCommandSelection + 1
-        elseif event.data.key == "Up" and event.data.mods and (event.data.mods.LShift or event.data.mods.RShift) then
+        elseif event.data.key == "Up" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
             widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
           end
-        elseif event.data.key == "Down" and event.data.mods and (event.data.mods.LShift or event.data.mods.RShift) then
+        elseif event.data.key == "Down" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
             widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
           end
-        elseif event.data.key == "V" and event.data.mods and (event.data.mods.LCtrl or event.data.mods.RCtrl) then
+        elseif event.data.key == "V" and ctrlPressed then
           local textInClipboard = clipboard.getText()
           if textInClipboard and string.find(textInClipboard, '\n') then
             widget.setText("tbxInput", widget.getText("tbxInput") .. string.gsub(textInClipboard, "[\n\r]", " "))
@@ -532,18 +585,12 @@ function blurTextbox(widgetName)
   widget.blur(widgetName)
 end
 
-function textboxEnterKey(widgetName)
-
-  local text = widget.getText(widgetName)
-
-  if text == "" then
-    blurTextbox(widgetName)
-    return
-  end
+function sendMessageToBeSent(text, mode)
+  mode = mode or widget.getSelectedData("rgChatMode").mode
 
   local message = {
     text = text,
-    mode = widget.getSelectedData("rgChatMode").mode
+    mode = mode
   }
 
   if self.runCallbackForPlugins("preventTextboxCallback", message) then
@@ -552,7 +599,7 @@ function textboxEnterKey(widgetName)
 
   if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
-      blurTextbox(widgetName)
+      blurTextbox("tbxInput")
       return
     end
 
@@ -562,7 +609,7 @@ function textboxEnterKey(widgetName)
     end
 
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
-      widget.setText(widgetName, widget.getData("lblCommandPreview") .. " ")
+      widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
       return
     else
       processCommand(text)
@@ -594,8 +641,20 @@ function textboxEnterKey(widgetName)
       sendMessage(message)
     end
   end
-  blurTextbox(widgetName)
+  blurTextbox("tbxInput")
   self.runCallbackForPlugins("afterTextboxPressed", message)
+end
+
+function textboxEnterKey(widgetName)
+
+  local text = widget.getText(widgetName)
+
+  if text == "" then
+    blurTextbox(widgetName)
+    return
+  end
+
+  sendMessageToBeSent(text, mode)
 end
 
 function processCommand(command)
@@ -614,6 +673,7 @@ function setMode(id, data)
   widget.setFontColor("rgChatMode." .. id, self.customChat.config.modeColors[data.mode])
 
   self.runCallbackForPlugins("onModeChange", data.mode)
+  root.setConfiguration("scc_message_mode", id)
 end
 
 function modeToggle(button, isChecked)
@@ -643,7 +703,7 @@ end
 function createTooltip(screenPosition)
   if self.tooltipFields then
     for widgetName, tooltip in pairs(self.tooltipFields) do
-      if widget.inMember(widgetName, screenPosition) then
+      if widget.inMember(widgetName, screenPosition) and widget.active(widgetName) then
         return tooltip
       end
     end
@@ -685,9 +745,45 @@ function saveEverythingDude()
 end
 
 function closeChat()
-  pane.dismiss()
-  world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
+  if not self.isOpenSB then
+    pane.dismiss()
+    world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
+  else
+    pane.hide()
+  end
 end
+
+-- OpenStarbound chat
+function startChat()
+  pane.show()
+  widget.focus("tbxInput")
+  chat.setInput("")
+end
+
+function startCommand()
+  pane.show()
+  widget.setText("tbxInput", "/")
+  widget.focus("tbxInput")
+  chat.setInput("")
+end
+
+function convertToChatMessage(oldMessage)
+  local newMessage = {}
+  newMessage.text = oldMessage.text
+  newMessage.connection = oldMessage.fromConnection
+  newMessage.mode = oldMessage.context.mode
+  newMessage.nickname = oldMessage.fromNick
+  newMessage.portrait = oldMessage.portrait
+  return newMessage
+end
+
+function addMessages(messages, showPane) 
+  for _, message in ipairs(messages) do
+    self.customChat:addMessage(convertToChatMessage(message))
+  end
+end
+
+
 
 function uninit()
   local text = widget.getText("tbxInput")
@@ -696,7 +792,10 @@ function uninit()
   end
   shared.chatIsOpen = false
   saveEverythingDude()
-  handlerCutter()
+
+  if handlerCutter then
+    handlerCutter()
+  end
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
 end

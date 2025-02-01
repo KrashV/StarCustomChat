@@ -5,6 +5,8 @@ voicechat = PluginClass:new(
 )
 
 function voicechat:init()
+  self.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
   self:_loadConfig()
   local isEnabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked("btnCkVoice", isEnabled)
@@ -13,15 +15,18 @@ function voicechat:init()
 end
 
 function voicechat:setEnabled(enabled)
-  -- This code is a little hideous because voice.setEnabled(true) closes the audio device and opens it anew. We don't want stutters in our audio
-  if enabled then 
-    if not voice.enabled() then
-      voice.setEnabled(true)
-    end
+  -- Avoid audio stutters by checking and setting voice settings efficiently
+  if self.isOSB then
+    local voiceSettings = voice.getSettings()
+    voiceSettings["enabled"] = enabled
+    voice.mergeSettings(voiceSettings)
   else
-    voice.setEnabled(false)
+    if voice.enabled() ~= enabled then
+      voice.setEnabled(enabled)
+    end
   end
 end
+
 
 function voicechat:onModeToggle(button, isChecked)
   if button == "btnCkVoice" then

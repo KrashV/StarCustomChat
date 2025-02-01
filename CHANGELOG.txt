@@ -1,1 +1,3 @@
-- Portrait: Allow using the bigger sprite sheets by Kae
+- Is fully supported for OpenStarbound 1.8.0+ !
+- Context menu redesign
+- Chat background color change

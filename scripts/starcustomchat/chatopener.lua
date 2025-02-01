@@ -14,20 +14,30 @@ end
 local innerHandlerCutter = nil
 
 function init()
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
   local reasonToNotStart = checkSEAndControls()
+
   if reasonToNotStart then
     local sewarningConfig = root.assetJson("/interface/scripted/starcustomchat/sewarning/sewarning.json")
     sewarningConfig.reason = reasonToNotStart
     player.interact("ScriptPane", sewarningConfig)
   else
-    self.interface = buildChatInterface()
-    shared.setMessageHandler = message.setHandler
+
+    self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
     self.chatHidden = root.getConfiguration("scc_chat_hidden") or false
-    if self.chatHidden then
+
+    shared.setMessageHandler = message.setHandler
+
+
+    if not self.isOpenSB then
+      self.interface = buildChatInterface()
+      SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
+    end
+
+    if self.chatHidden and not self.isOpenSB then
       hideChat()
     end
-    SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
-    self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
   end
 
   message.setHandler("scc_chat_hidden", localHandler(hideChat))
@@ -35,18 +45,24 @@ function init()
 end
 
 function checkSEAndControls()
-  if not _ENV["starExtensions"] then
-    return "se_not_found"
-  elseif not root.assetData or not root.assetData("/scripts/starextensions/lib/chat_callback.lua") then
+  if not _ENV["starExtensions"] and not self.isOpenSB then
+    return "se_osb_not_found"
+  elseif not root.assetData and (not root.assetData("/scripts/starextensions/lib/chat_callback.lua") and not player.questIds) then
     return "se_version"
   else
-    require("/scripts/starextensions/lib/chat_callback.lua")
-    if not setChatMessageHandler then
-      return "se_version"
-    else
+    if not self.isOpenSB then
+      require("/scripts/starextensions/lib/chat_callback.lua")
+      if not setChatMessageHandler then
+        return "se_version"
+      end
+
       local bindings = root.getConfiguration("bindings")
       if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
         return "unbind_controls"
+      end
+    else
+      if not world.loungingEntities then
+        return "osb_version"
       end
     end
   end
@@ -73,21 +89,23 @@ function hideChat(mode)
 end
 
 function openChat(forceFocus, mode)
-  self.chatHidden = false
-  root.setConfiguration("scc_chat_hidden", self.chatHidden)
-  self.interface.storedMessages = self.storedMessages
-  self.interface.forceFocus = forceFocus
-  self.interface.currentMessageMode = mode
+  if not self.isOpenSB then
+    self.chatHidden = false
+    root.setConfiguration("scc_chat_hidden", self.chatHidden)
+    self.interface.storedMessages = self.storedMessages
+    self.interface.forceFocus = forceFocus
+    self.interface.currentMessageMode = mode
 
-  player.interact("ScriptPane", self.interface)
-  self.storedMessages = {}
-  shared.chatIsOpen = true
+    player.interact("ScriptPane", self.interface)
+    self.storedMessages = {}
+    shared.chatIsOpen = true
+  end
 end
 
 function update(dt)
   SCChatTimer:update(dt)
 
-  if not shared.chatIsOpen and self.interface and not self.chatHidden then
+  if not shared.chatIsOpen and self.interface and not self.chatHidden and not self.isOpenSB then
     openChat()
   end
 end

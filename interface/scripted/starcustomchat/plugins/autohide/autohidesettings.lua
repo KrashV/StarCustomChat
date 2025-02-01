@@ -31,7 +31,7 @@ autohide.autohideTimerSpinner = {}
 
 function autohide.autohideTimerSpinner.up(self)
   local secs = tonumber(widget.getData(self.layoutWidget .. ".lblAutohideTimer")) or 0
-  secs = math.min(secs + 15, 90)
+  secs = math.min(secs + 5, 90)
   widget.setText(self.layoutWidget .. ".lblAutohideTimer", secs)
   widget.setData(self.layoutWidget .. ".lblAutohideTimer", secs)
   root.setConfiguration("scc_autohide_timer", tonumber(widget.getData(self.layoutWidget .. ".lblAutohideTimer")) or 0)
@@ -40,7 +40,7 @@ end
 
 function autohide.autohideTimerSpinner.down(self)
   local secs = tonumber(widget.getData(self.layoutWidget .. ".lblAutohideTimer")) or 0
-  secs = math.max(secs - 15, 0)
+  secs = math.max(secs - 5, 0)
   widget.setText(self.layoutWidget .. ".lblAutohideTimer", secs)
   widget.setData(self.layoutWidget .. ".lblAutohideTimer", secs)
   root.setConfiguration("scc_autohide_timer", tonumber(widget.getData(self.layoutWidget .. ".lblAutohideTimer")) or 0)

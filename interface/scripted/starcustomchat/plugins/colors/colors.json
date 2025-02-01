@@ -4,8 +4,13 @@
     "items": [
       {
         "name": "chattext",
-        "label": "settings.colors.chat",
+        "label": "settings.colors.chattext",
         "default": "FFFFFFFF"
+      },      
+      {
+        "name": "background",
+        "label": "settings.colors.background",
+        "default": "00000087"
       },
       {
         "name": "timetext",
@@ -33,9 +38,13 @@
       "ru": "Сбросить",
       "en": "Default"
     },
-    "settings.colors.chat": {
+    "settings.colors.chattext": {
       "ru": "Текст чата",
       "en": "Chat text"
+    },
+    "settings.colors.background": {
+      "ru": "Фон",
+      "en": "Background"
     },
     "settings.colors.time": {
       "ru": "Время",

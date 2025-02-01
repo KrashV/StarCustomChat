@@ -13,7 +13,6 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 StarCustomChat = {
   messages = jarray(),
   drawnMessageIndexes = jarray(),
-  author = 0,
   lineOffset = 0,
   canvas = nil,
   highlightCanvas = nil,
@@ -24,7 +23,6 @@ StarCustomChat = {
   chatMode = "modern",
   savedPortraits = {},
   connectionToUuid = {},
-
   queueTimer = 0.5,
   queueTime = 0,
   lastWhisper = nil,
@@ -34,7 +32,7 @@ StarCustomChat = {
 
 StarCustomChat.__index = StarCustomChat
 
-function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, playerId, messages, 
+function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
   chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, callbackPlugins)
 
   local o = {}
@@ -42,8 +40,9 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   self.__index = self
 
   o.messages = messages
-  o.author = playerId
+  o.canvasName = canvasWid
   o.canvas = widget.bindCanvas(canvasWid)
+  o.backgroundCanvas = widget.bindCanvas(backgroundCanvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
   o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
@@ -54,8 +53,16 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   o.lineOffset = lineOffset or 0
   o.maxCharactersAllowed = maxCharactersAllowed
   o.callbackPlugins = callbackPlugins
+  
+
+  o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.colorTable = root.getConfiguration("scc_custom_colors") or {}
   return o
+end
+
+function StarCustomChat:drawBackground()
+  self.backgroundCanvas:clear()
+  self.backgroundCanvas:drawRect({0, 0, self.backgroundCanvas:size()[1], self.backgroundCanvas:size()[2]}, self:getColor("background"))
 end
 
 function StarCustomChat:addMessage(msg)
@@ -75,7 +82,7 @@ function StarCustomChat:addMessage(msg)
     end
 
     if not message.portrait or message.portrait == '' then
-      message.portrait = self.config.icons.unknown
+      message.portrait = self:getUnknownPortrait(message.connection)
     end
 
     if not message.text or message.text == "" and not message.image then return nil end
@@ -170,7 +177,7 @@ function StarCustomChat:openSubMenu(type, hint, text)
   if not widget.active("lytSubMenu") then
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition("cnvChatCanvas", vec2.add(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
   else
     self.callbackPlugins("onSubMenuReopen", type)
@@ -184,7 +191,7 @@ function StarCustomChat:closeSubMenu()
     widget.setVisible("lytSubMenu", false)
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition("cnvChatCanvas", vec2.sub(widget.getPosition("cnvChatCanvas"), size))
+    widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
   end
 end
@@ -256,6 +263,7 @@ function StarCustomChat:resetChat()
     }
   end
 
+  self:drawBackground()
   self:processQueue()
 end
 
@@ -266,14 +274,23 @@ end
 function StarCustomChat:processCommand(text)
   if not self.callbackPlugins("onProcessCommand", text) then
     local commandResult = chat.command(text) or {}
-    for _, line in ipairs(commandResult) do 
-      chat.addMessage(line)
-      table.insert(self.messages, {
-        text = line
-      })
-      if #self.messages > self.config.chatHistoryLimit then
-        table.remove(self.messages, 1)
-      end
+
+      for _, line in ipairs(commandResult) do 
+        if self.isOSB then
+          self:addMessage({
+            connection = 0,
+            mode = "CommandResult",
+            text = line
+          })
+        else
+          chat.addMessage(line)
+          table.insert(self.messages, {
+            text = line
+          })
+          if #self.messages > self.config.chatHistoryLimit then
+            table.remove(self.messages, 1)
+          end
+        end
     end
   end
 end
@@ -283,7 +300,7 @@ function StarCustomChat:sendMessage(text, mode)
 
   local data = {
     text = text,
-    connection = self.author // -65536,
+    connection = player.id() // -65536,
     portrait = "", --TODO: Add portrait,
     mode = mode,
     nickname = player.name()
@@ -309,6 +326,10 @@ function StarCustomChat:previewCommands(commands, selected)
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "bottom" -- top, mid, bottom
   }, self.config.previewCommandFontSize)
+end
+
+function StarCustomChat:getUnknownPortrait(connection)
+  return string.format(self.config.unknownPortraits, connection % self.config.numberOfUnknownPortraits)
 end
 
 function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, recipient)
@@ -394,7 +415,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
-      drawImage(self.config.icons.unknown, offset)
+      drawImage(self:getUnknownPortrait(target), offset)
       drawModeIcon(offset)
       drawImage(self.config.icons.frame, offset)
     end
@@ -550,7 +571,7 @@ function StarCustomChat:processQueue()
     end
 
     if not message.portrait or message.portrait == '' then
-      message.portrait = self.config.icons.unknown
+      message.portrait = self:getUnknownPortrait(message.connection)
     end
     
     -- If the message should contain an avatar and name:

@@ -4,8 +4,9 @@ stickers = PluginClass:new(
   { name = "stickers" }
 )
 
-function stickers:init()
+function stickers:init(chat)
   self:_loadConfig()
+  self.customChat = chat
   self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
 end
 
@@ -78,6 +79,13 @@ function stickers:onReceiveMessage(message)
       message.image = message.image or message.text
       message.imageSize = imageSize
     end
+  end
+end
+
+function stickers:onCreateTooltip(screenPosition)
+  local selectedMessage = self.customChat:selectMessage()
+  if selectedMessage and selectedMessage.image then
+    return starcustomchat.utils.getTranslation("stickers.name_preview", selectedMessage.text)
   end
 end
 
