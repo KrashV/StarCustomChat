@@ -76,7 +76,7 @@ function StarCustomChat:addMessage(msg)
     end
 
     if not message.portrait or message.portrait == '' then
-      message.portrait = self.config.icons.unknown
+      message.portrait = self:getUnknownPortrait(message.connection)
     end
 
     if not message.text or message.text == "" and not message.image then return nil end
@@ -321,6 +321,10 @@ function StarCustomChat:previewCommands(commands, selected)
   }, self.config.previewCommandFontSize)
 end
 
+function StarCustomChat:getUnknownPortrait(connection)
+  return string.format(self.config.unknownPortraits, connection % self.config.numberOfUnknownPortraits)
+end
+
 function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, recipient)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
@@ -404,7 +408,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
-      drawImage(self.config.icons.unknown, offset)
+      drawImage(self:getUnknownPortrait(target), offset)
       drawModeIcon(offset)
       drawImage(self.config.icons.frame, offset)
     end
@@ -560,7 +564,7 @@ function StarCustomChat:processQueue()
     end
 
     if not message.portrait or message.portrait == '' then
-      message.portrait = self.config.icons.unknown
+      message.portrait = self:getUnknownPortrait(message.connection)
     end
     
     -- If the message should contain an avatar and name:
