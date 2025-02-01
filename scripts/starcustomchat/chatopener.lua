@@ -46,7 +46,7 @@ end
 
 function checkSEAndControls()
   if not _ENV["starExtensions"] and not self.isOpenSB then
-    return "se_not_found"
+    return "se_osb_not_found"
   elseif not root.assetData and (not root.assetData("/scripts/starextensions/lib/chat_callback.lua") and not player.questIds) then
     return "se_version"
   else
@@ -59,6 +59,10 @@ function checkSEAndControls()
       local bindings = root.getConfiguration("bindings")
       if #bindings["ChatBegin"] > 0 or #bindings["ChatBeginCommand"] > 0 or #bindings["InterfaceRepeatCommand"] > 0 then
         return "unbind_controls"
+      end
+    else
+      if not world.loungingEntities then
+        return "osb_version"
       end
     end
   end
