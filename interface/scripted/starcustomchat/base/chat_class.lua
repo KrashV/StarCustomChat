@@ -27,13 +27,14 @@ StarCustomChat = {
   queueTime = 0,
   lastWhisper = nil,
   maxCharactersAllowed = 0,
+  defaultColors = {},
   callbackPlugins = function() end
 }
 
 StarCustomChat.__index = StarCustomChat
 
 function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
-  chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, callbackPlugins)
+  chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, defaultColors, callbackPlugins)
 
   local o = {}
   setmetatable(o, self)
@@ -56,7 +57,9 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   
 
   o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-  o.colorTable = root.getConfiguration("scc_custom_colors") or {}
+
+
+  o.colorTable = root.getConfiguration("scc_custom_colors") or defaultColors or {}
   return o
 end
 
@@ -250,7 +253,7 @@ function StarCustomChat:resetChat()
   self.chatMode = newChatMode
   self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = maxCharactersAllowed
-  self.colorTable = root.getConfiguration("scc_custom_colors") or {}
+  self.colorTable = root.getConfiguration("scc_custom_colors") or self.colorTable or {}
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then

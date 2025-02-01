@@ -144,6 +144,13 @@ function buildChatInterface()
   end
 
   baseInterface.expanded = getConfiguration("icc_is_expanded")
+  local defaultColors = safeAssetJson("/interface/scripted/starcustomchat/plugins/colors/colors.json")["parameters"]["items"]
+
+  baseInterface.defaultColors = {}
+  for _, color in ipairs(defaultColors) do 
+    baseInterface.defaultColors[color.name] = color.default
+  end
+
   baseInterface["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", baseInterface.expanded and "body" or "shortbody")
   return baseInterface
 end

@@ -5,12 +5,18 @@ colors = SettingsPluginClass:new(
   { name = "colors" }
 )
 
-function colors:init()
+function colors:init(chat)
   self:_loadConfig()
   self.picker = colorpicker.new(self.layoutWidget .. ".cnvColorPicker")
   self.currentColor = ""
   self.coursorCanvas = widget.bindCanvas(self.layoutWidget .. ".coursorCanvas")
-  self.colors = root.getConfiguration("scc_custom_colors") or {}
+  local defaultColors = {}
+
+  for _, color in ipairs(self.items) do 
+    defaultColors[color.name] = color.default
+  end
+
+  self.colors = sb.jsonMerge(defaultColors, root.getConfiguration("scc_custom_colors") or {})
 end
 
 function colors:onLocaleChange()

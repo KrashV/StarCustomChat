@@ -101,7 +101,8 @@ function init()
 
   self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, "lytCommandPreview.cnvCommandsCanvas",
     chatConfig, storedMessages, self.chatMode,
-    expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
+    expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
+    config.getParameter("defaultColors"), self.runCallbackForPlugins)
 
   self.runCallbackForPlugins("init", self.customChat)
 
@@ -279,6 +280,9 @@ function requestPortraits()
 end
 
 function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontSize)
+  pane.removeWidget("totallyFakeLabelFullMode")
+  pane.removeWidget("totallyFakeLabelCompactMode")
+
   pane.addWidget({
     type = "label",
     wrapWidth = wrapWidthFullMode,
