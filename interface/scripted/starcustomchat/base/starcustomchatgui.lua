@@ -38,7 +38,6 @@ function init()
   shared.chatIsOpen = true
   self.canvasName = "chatLog"
   self.highlightCanvasName = "cnvHighlightCanvas"
-  self.commandPreviewCanvasName = "lytCommandPreview.cnvCommandsCanvas"
   self.chatWindowWidth = widget.getSize("saScrollArea")[1]
 
   self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
@@ -100,7 +99,7 @@ function init()
 
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.customChat = StarCustomChat:create(self.canvasName, self.highlightCanvasName, self.commandPreviewCanvasName,
+  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, "lytCommandPreview.cnvCommandsCanvas",
     chatConfig, storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, self.runCallbackForPlugins)
 
@@ -141,6 +140,8 @@ function init()
 
   ICChatTimer:add(1, prepareForCallbacks)
   requestPortraits()
+
+  self.customChat:drawBackground()
   self.customChat:processQueue()
 
   local storedHiddenMessages = config.getParameter("storedMessages") or {}

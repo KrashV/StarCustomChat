@@ -32,7 +32,7 @@ StarCustomChat = {
 
 StarCustomChat.__index = StarCustomChat
 
-function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
+function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
   chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, callbackPlugins)
 
   local o = {}
@@ -42,6 +42,7 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   o.messages = messages
   o.canvasName = canvasWid
   o.canvas = widget.bindCanvas(canvasWid)
+  o.backgroundCanvas = widget.bindCanvas(backgroundCanvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
   o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
@@ -57,6 +58,11 @@ function StarCustomChat:create (canvasWid, highlightCanvasWid, commandPreviewWid
   o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.colorTable = root.getConfiguration("scc_custom_colors") or {}
   return o
+end
+
+function StarCustomChat:drawBackground()
+  self.backgroundCanvas:clear()
+  self.backgroundCanvas:drawRect({0, 0, self.backgroundCanvas:size()[1], self.backgroundCanvas:size()[2]}, self:getColor("background"))
 end
 
 function StarCustomChat:addMessage(msg)
@@ -257,6 +263,7 @@ function StarCustomChat:resetChat()
     }
   end
 
+  self:drawBackground()
   self:processQueue()
 end
 

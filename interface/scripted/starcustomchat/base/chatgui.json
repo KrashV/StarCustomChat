@@ -16,6 +16,13 @@
       "type" : "background",
       "fileBody" : "/interface/scripted/starcustomchat/base/body.png"
     },
+    "cnvBackgroundCanvas": {
+      "type": "canvas",
+      "zlevel": -8,
+      "rect": [20, 26, 289, 310],
+      "mouseTransparent": false,
+      "captureMouseEvents": true
+    },
     "backgroundImage": {
       "type": "imageStretch",
       "direction" : "vertical",
