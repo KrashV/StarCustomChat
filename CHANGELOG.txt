@@ -1,1 +1,3 @@
-- Sounds: enabling the sounds are not player wise, not global
+- Is fully supported for OpenStarbound 1.8.0+ !
+- Context menu redesign
+- Chat background color change
