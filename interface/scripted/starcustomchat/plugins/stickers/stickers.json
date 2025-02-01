@@ -45,6 +45,10 @@
     "chat.commands.alerts.saved": {
       "en": "Sticker %s saved!",
       "ru": "Стикер %s сохранён!"
+    },
+    "stickers.name_preview": {
+      "en": "Sticker: %s",
+      "ru": "Стикер: %s"
     }
   },
 
