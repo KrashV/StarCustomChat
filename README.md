@@ -18,7 +18,7 @@ Custom chat provides you with several in-built functions like these:
 ![Full avatar mode](https://i.imgur.com/yLO8qWg.png)
 ![Short mode with disabled commands showcase](https://i.imgur.com/oXtXDp7.png)
 # Prerequirements
-This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensions)  by [Novaenia](https://github.com/Novaenia) v.1.9.24 or higher
+This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensions) by [Novaenia](https://github.com/Novaenia) v.1.9.24+ or [OpenStarbound](https://github.com/OpenStarbound/OpenStarbound) 0.1.8+
 
 # Controls
 
