@@ -1,1 +1,2 @@
-- Fixed the white background. Again.
+- Fixed the white background. Again. Again.
+- Gave more time to register callbacks

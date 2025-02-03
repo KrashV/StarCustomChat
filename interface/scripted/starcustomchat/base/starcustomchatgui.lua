@@ -170,7 +170,7 @@ function prepareForCallbacks()
 
   local calbacksReady = registerCallbacks(shared)
 
-  if not calbacksReady then
+  if not calbacksReady or world.type() == "Nowhere" or not player.id() then
     ICChatTimer:add(0.5, prepareForCallbacks)
   end
 end

@@ -253,7 +253,7 @@ function StarCustomChat:resetChat()
   self.chatMode = newChatMode
   self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = maxCharactersAllowed
-  self.colorTable = root.getConfiguration("scc_custom_colors") or self.colorTable or {}
+  self.colorTable = sb.jsonMerge(self.colorTable, root.getConfiguration("scc_custom_colors") or {})
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
