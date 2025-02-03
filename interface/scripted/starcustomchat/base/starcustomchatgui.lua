@@ -102,7 +102,7 @@ function init()
   self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, "lytCommandPreview.cnvCommandsCanvas",
     chatConfig, storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
-    config.getParameter("defaultColors"), self.runCallbackForPlugins)
+    sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
 
   self.runCallbackForPlugins("init", self.customChat)
 

@@ -59,7 +59,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
 
-  o.colorTable = root.getConfiguration("scc_custom_colors") or defaultColors or {}
+  o.colorTable = defaultColors
   return o
 end
 
