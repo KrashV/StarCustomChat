@@ -10,6 +10,7 @@ function autohide:init()
   self.timer = (root.getConfiguration("scc_autohide_timer") or 0)
   self.autohideTime = self.timer
   self.ignoreServerMessages = root.getConfiguration("scc_autohide_ignore_server_messages") or false
+  self.ignoreInspectMessages = root.getConfiguration("scc_autohide_ignore_inspect_messages") or false
 
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 end
@@ -26,8 +27,17 @@ function autohide:update(dt)
   self.autohideTime = widget.hasFocus("tbxInput") and self.timer or math.max(self.autohideTime - dt, 0)
 end
 
+function isInspecting(message)
+  local handHeldItem = player.primaryHandItem()
+  local inspecting = handHeldItem and handHeldItem.name and handHeldItem.name == "inspectionmode"
+
+  return message.connection == player.id() // -65536 and message.mode == "RadioMessage" and inspecting
+end
+
 function autohide:onReceiveMessage(message)
-  if message.connection and (message.connection == 0 and not self.ignoreServerMessages) or message.connection ~= 0 then
+
+
+  if message.connection and (message.connection == 0 and not self.ignoreServerMessages) or (message.connection ~= 0 and not (self.ignoreInspectMessages and isInspecting(message))) then
     self.autohideTime = self.timer
     if self.isOpenSB then
       pane.show()
@@ -39,4 +49,5 @@ function autohide:onSettingsUpdate(data)
   self.timer = (root.getConfiguration("scc_autohide_timer") or 0)
   self.autohideTime = self.timer
   self.ignoreServerMessages = root.getConfiguration("scc_autohide_ignore_server_messages") or false
+  self.ignoreInspectMessages = root.getConfiguration("scc_autohide_ignore_inspect_messages") or false
 end

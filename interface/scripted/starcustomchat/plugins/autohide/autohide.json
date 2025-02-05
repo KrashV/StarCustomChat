@@ -21,6 +21,10 @@
     "settings.autohide.ignore_server_messages": {
       "ru": "Игнорировать сообщения сервера",
       "en": "Ignore server messages"
+    },
+    "settings.autohide.ignore_inspect_messages": {
+      "ru": "Игнорировать осмотр объектов",
+      "en": "Ignore inspect item messages"
     }
   },
 
@@ -76,7 +80,7 @@
 
       "lblIgnoreServerMessages": {
         "type": "label",
-        "position": [120, 50],
+        "position": [80, 50],
         "hAnchor": "right",
         "vAnchor": "mid",
         "color": "lightgray",
@@ -85,14 +89,35 @@
       
       "chkIgnoreServerMessages": {
         "type": "button",
-        "position": [130, 50],
+        "position": [90, 50],
         "checkable": true,
         "checked": false,
         "base": "/interface/crafting/checkboxnocheck.png",
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "ignoreServerMessages"
+        "callback": "setIgnoreMessages"
+      },
+
+      "lblIgnoreInspectMessages": {
+        "type": "label",
+        "position": [200, 50],
+        "hAnchor": "right",
+        "vAnchor": "mid",
+        "color": "lightgray",
+        "wrapWidth": 70
+      },
+      
+      "chkIgnoreInspectMessages": {
+        "type": "button",
+        "position": [210, 50],
+        "checkable": true,
+        "checked": false,
+        "base": "/interface/crafting/checkboxnocheck.png",
+        "hover": "/interface/crafting/checkboxnocheck.png",
+        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+        "callback": "setIgnoreMessages"
       }
     }
   },

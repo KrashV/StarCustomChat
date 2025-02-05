@@ -16,7 +16,14 @@ function autohide:init()
   widget.setData(self.layoutWidget .. ".autohideTimerSpinner.up", widget.getData(self.layoutWidget .. ".autohideTimerSpinner"))
   widget.setData(self.layoutWidget .. ".autohideTimerSpinner.down", widget.getData(self.layoutWidget .. ".autohideTimerSpinner"))
   widget.setChecked(self.layoutWidget .. ".chkIgnoreServerMessages", root.getConfiguration("scc_autohide_ignore_server_messages") or false)
+  widget.setChecked(self.layoutWidget .. ".chkIgnoreInspectMessages", root.getConfiguration("scc_autohide_ignore_inspect_messages") or false)
   
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
+  if not self.isOpenSB then
+    widget.setVisible(self.layoutWidget .. ".chkIgnoreInspectMessages", false)
+    widget.setVisible(self.layoutWidget .. ".lblIgnoreInspectMessages", false)
+  end
 end
 
 function autohide:onLocaleChange()
@@ -25,6 +32,7 @@ function autohide:onLocaleChange()
   widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.autohide"))
   widget.setText(self.layoutWidget .. ".lblAutohide0Warning", starcustomchat.utils.getTranslation("settings.autohide.description"))
   widget.setText(self.layoutWidget .. ".lblIgnoreServerMessages", starcustomchat.utils.getTranslation("settings.autohide.ignore_server_messages"))
+  widget.setText(self.layoutWidget .. ".lblIgnoreInspectMessages", starcustomchat.utils.getTranslation("settings.autohide.ignore_inspect_messages"))
 end
 
 autohide.autohideTimerSpinner = {}
@@ -47,7 +55,8 @@ function autohide.autohideTimerSpinner.down(self)
   save()
 end
 
-function autohide:ignoreServerMessages()
+function autohide:setIgnoreMessages()
   root.setConfiguration("scc_autohide_ignore_server_messages", widget.getChecked(self.layoutWidget .. ".chkIgnoreServerMessages"))
+  root.setConfiguration("scc_autohide_ignore_inspect_messages", widget.getChecked(self.layoutWidget .. ".chkIgnoreInspectMessages"))
   save()
 end
