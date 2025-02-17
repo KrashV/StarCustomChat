@@ -194,7 +194,29 @@
   
       "saScrollArea": {
         "type": "scrollArea",
-        "rect": [8, 53, 78, 123]
+        "rect": [8, 53, 78, 123],
+        "buttons" : {
+          "horizontal" : {
+            "forward" : { "base" : "", "hover" : "", "pressed" : "" },
+            "backward" : { "base" : "", "hover": "", "pressed" : "" }
+          },
+          "vertical" : {
+            "forward" : { "base" : "", "hover" : "", "pressed" : "" },
+            "backward" : { "base" : "", "hover": "", "pressed" : "" }
+          }
+        },
+        "thumbs" : {
+          "horizontal" : {
+            "base" : { "begin" : "", "end" : "", "inner" : "" },
+            "hover" : { "begin" : "", "end" : "", "inner" : "" },
+            "pressed" : { "begin" : "", "end" : "", "inner" : "" }
+          },
+          "vertical" : {
+            "base" : { "begin" : "", "end" : "", "inner" : "" },
+            "hover" : { "begin" : "", "end" : "", "inner" : "" },
+            "pressed" : { "begin" : "", "end" : "", "inner" : "" }
+          }
+        }
       },
   
       "btnResetAvatar": {

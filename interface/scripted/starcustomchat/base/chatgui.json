@@ -140,25 +140,25 @@
       "type": "scrollArea",
       "rect": [20, 26, 289, 312],
       "buttons" : {
-        "vertical" : {
-          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
-          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
-        },
         "horizontal" : {
-          "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
-          "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+          "forward" : { "base" : "", "hover" : "", "pressed" : "" },
+          "backward" : { "base" : "", "hover": "", "pressed" : "" }
+        },
+        "vertical" : {
+          "forward" : { "base" : "", "hover" : "", "pressed" : "" },
+          "backward" : { "base" : "", "hover": "", "pressed" : "" }
         }
       },
       "thumbs" : {
-        "vertical" : {
-          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
-        },
         "horizontal" : {
-          "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-          "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-          "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+          "base" : { "begin" : "", "end" : "", "inner" : "" },
+          "hover" : { "begin" : "", "end" : "", "inner" : "" },
+          "pressed" : { "begin" : "", "end" : "", "inner" : "" }
+        },
+        "vertical" : {
+          "base" : { "begin" : "", "end" : "", "inner" : "" },
+          "hover" : { "begin" : "", "end" : "", "inner" : "" },
+          "pressed" : { "begin" : "", "end" : "", "inner" : "" }
         }
       },
       "children": {}
@@ -214,7 +214,7 @@
       "type": "radioGroup",
       "position": [20, 0],
       "callback": "setMode",
-      "buttons": [ //This will now be set dynamically
+      "buttons": [
       ]
     },
 
