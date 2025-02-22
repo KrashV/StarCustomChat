@@ -197,24 +197,24 @@
         "rect": [8, 53, 78, 123],
         "buttons" : {
           "horizontal" : {
-            "forward" : { "base" : "", "hover" : "", "pressed" : "" },
-            "backward" : { "base" : "", "hover": "", "pressed" : "" }
+            "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
+            "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
           },
           "vertical" : {
-            "forward" : { "base" : "", "hover" : "", "pressed" : "" },
-            "backward" : { "base" : "", "hover": "", "pressed" : "" }
+            "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
+            "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
           }
         },
         "thumbs" : {
           "horizontal" : {
-            "base" : { "begin" : "", "end" : "", "inner" : "" },
-            "hover" : { "begin" : "", "end" : "", "inner" : "" },
-            "pressed" : { "begin" : "", "end" : "", "inner" : "" }
+            "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+            "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+            "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
           },
           "vertical" : {
-            "base" : { "begin" : "", "end" : "", "inner" : "" },
-            "hover" : { "begin" : "", "end" : "", "inner" : "" },
-            "pressed" : { "begin" : "", "end" : "", "inner" : "" }
+            "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+            "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+            "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
           }
         }
       },

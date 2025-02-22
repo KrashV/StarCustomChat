@@ -1,1 +1,1 @@
-- Autohide: Add option to ignore inspect messages (OSB only)
+- Fix a crash for SE
