@@ -16,6 +16,8 @@ local innerHandlerCutter = nil
 function init()
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
+  self.chatUUID = sb.makeUuid()
+
   local reasonToNotStart = checkSEAndControls()
 
   if reasonToNotStart then
@@ -42,6 +44,9 @@ function init()
 
   message.setHandler("scc_chat_hidden", localHandler(hideChat))
   message.setHandler("scc_chat_opened", localHandler(openChat))
+  message.setHandler("scc_is_ready", localHandler(function() return self.chatUUID end))
+
+  world.sendEntityMessage(player.id(), "scc_reload_callbacks")
 end
 
 function checkSEAndControls()

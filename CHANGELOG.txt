@@ -1,1 +1,1 @@
-- Fix a crash for SE
+- Fixed warping breaking receiving the changes made in settings

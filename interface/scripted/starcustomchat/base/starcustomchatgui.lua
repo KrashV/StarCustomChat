@@ -44,7 +44,7 @@ function init()
 
   local chatConfig = root.assetJson("/interface/scripted/starcustomchat/base/chat.config")
 
-  self.chatUUID = sb.makeUuid()
+  self.chatUUID = ""
 
   local plugins = {}
   self.localePluginConfig = {}
@@ -139,7 +139,8 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
-  ICChatTimer:add(1, prepareForCallbacks)
+  createPromiseFunction()
+  
   requestPortraits()
 
   self.customChat:drawBackground()
@@ -160,6 +161,21 @@ function init()
 
 end
 
+function createPromiseFunction()
+  -- Since in OSB chat is ready before the other scripts, we should pool ourself before we can actually use it
+  local function pullPromise()
+    promises:add(world.sendEntityMessage(player.id(), "scc_is_ready"), function(uuid)
+        if self.chatUUID ~= uuid then
+          prepareForCallbacks()
+          self.chatUUID = uuid
+        end
+        ICChatTimer:add(0.5, pullPromise)
+    end, function() ICChatTimer:add(0.5, pullPromise) end)
+  end
+  
+  pullPromise()
+end
+
 function prepareForCallbacks()
   -- Reinitialize the shared table if necessary
   shared = getmetatable('').shared
@@ -170,7 +186,7 @@ function prepareForCallbacks()
 
   local calbacksReady = registerCallbacks(shared)
 
-  if not calbacksReady or world.type() == "Nowhere" or not player.id() then
+  if not calbacksReady then
     ICChatTimer:add(0.5, prepareForCallbacks)
   end
 end
@@ -187,6 +203,8 @@ function registerCallbacks(shared)
   if not shared.setMessageHandler then
     return false
   end
+
+  shared.setMessageHandler( "scc_reload_callbacks", localHandler(prepareForCallbacks))
 
   shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then
