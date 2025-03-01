@@ -350,7 +350,6 @@ function localeChat(localePluginConfig)
     widget.setHint("tbxInput", starcustomchat.utils.getTranslation("chat.textbox.hint"))
   end
 
-
   self.runCallbackForPlugins("onLocaleChange")
 
   if hasFocus then
