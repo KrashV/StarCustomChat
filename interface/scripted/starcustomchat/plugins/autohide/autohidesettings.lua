@@ -26,15 +26,6 @@ function autohide:init()
   end
 end
 
-function autohide:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".lblAutohide", starcustomchat.utils.getTranslation("settings.autohide.after"))
-  widget.setText(self.layoutWidget .. ".lblAutohideTimerMin", starcustomchat.utils.getTranslation("settings.autohide.sec"))
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.autohide"))
-  widget.setText(self.layoutWidget .. ".lblAutohide0Warning", starcustomchat.utils.getTranslation("settings.autohide.description"))
-  widget.setText(self.layoutWidget .. ".lblIgnoreServerMessages", starcustomchat.utils.getTranslation("settings.autohide.ignore_server_messages"))
-  widget.setText(self.layoutWidget .. ".lblIgnoreInspectMessages", starcustomchat.utils.getTranslation("settings.autohide.ignore_inspect_messages"))
-end
-
 autohide.autohideTimerSpinner = {}
 
 function autohide.autohideTimerSpinner.up(self)

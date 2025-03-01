@@ -66,7 +66,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.stickers"
       },
       "saSavedStickers": {
         "type": "scrollArea",
@@ -136,7 +137,8 @@
         "base" : "/interface/scripted/starcustomchatsettings/bt.png",
         "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
         "position": [170, 35],
-        "callback": "addSticker"
+        "callback": "addSticker",
+        "translationKey": "settings.plugins.stickers.add"
       },
       "btnRemove": {
         "type": "button",
@@ -144,7 +146,8 @@
         "base" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000",
         "hover" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000?brightness=90",
         "position": [170, 20],
-        "callback": "removeSticker"
+        "callback": "removeSticker",
+        "translationKey": "settings.plugins.stickers.remove"
       }
     }
   },

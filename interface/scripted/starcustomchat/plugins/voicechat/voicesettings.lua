@@ -14,16 +14,12 @@ function voicechat:init()
   widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
 
   if self.isOSB then
-    widget.setButtonEnabled(self.layoutWidget .. ".btnOpenVoiceSettings", false)
-    widget.setButtonEnabled(self.layoutWidget .. ".btnBinds", false)
+    widget.setVisible(self.layoutWidget .. ".btnOpenVoiceSettings", false)
+    widget.setVisible(self.layoutWidget .. ".btnBinds", false)
+    widget.setVisible(self.layoutWidget .. ".lblOpenStarbound", true)
+    widget.setVisible(self.layoutWidget .. ".lblStarExtentions", false)
   end
-end
-
-function voicechat:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".btnOpenVoiceSettings", starcustomchat.utils.getTranslation("settings.voice.settings"))
-  widget.setText(self.layoutWidget .. ".btnBinds", starcustomchat.utils.getTranslation("settings.voice.binds_button"))
-  widget.setText(self.layoutWidget .. ".lblBindsDesc", starcustomchat.utils.getTranslation("settings.voice.binds_label"))
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.voicechat"))
+  
 end
 
 function voicechat:openVoiceSettings()

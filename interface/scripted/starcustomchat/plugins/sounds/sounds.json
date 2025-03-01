@@ -12,7 +12,7 @@
     },
     "settings.plugins.sounds.enablewhisper": {
       "ru": "Звуки при ЛС",
-      "en": "Enable with DMs"
+      "en": "DM sounds"
     },
     "settings.plugins.sounds.pitch": {
       "ru": "Тон",
@@ -42,7 +42,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.sounds"
       },
 
       "saSpecies": {
@@ -83,14 +84,16 @@
         "hAnchor": "mid",
         "vAnchor": "top",
         "color": "lightgray",
-        "wrapWidth": 110
+        "wrapWidth": 110,
+        "translationKey": "settings.plugins.sounds.description"
       },
 
       "lblSoundsEnabledWhisper": {
         "type": "label",
         "position": [120, 100],
         "hAnchor": "right",
-        "color": "lightgray"
+        "color": "lightgray",
+        "translationKey": "settings.plugins.sounds.enablewhisper"
       },
       
 
@@ -110,7 +113,8 @@
         "type": "label",
         "position": [120, 120],
         "hAnchor": "right",
-        "color": "lightgray"
+        "color": "lightgray",
+        "translationKey": "settings.plugins.sounds.enable"
       },
       
 
@@ -130,7 +134,8 @@
         "type": "label",
         "position": [120, 90],
         "hAnchor": "right",
-        "color": "lightgray"
+        "color": "lightgray",
+        "translationKey": "settings.plugins.sounds.pitch"
       },
 
       "sldSoundPitch" : {
@@ -145,7 +150,8 @@
         "base" : "/interface/scripted/starcustomchatsettings/bt.png",
         "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
         "callback": "playSound",
-        "position": [180, 40]
+        "position": [180, 40],
+        "translationKey": "settings.plugins.sounds.test"
       }
     }
   },

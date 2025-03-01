@@ -42,13 +42,15 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.autohide"
       },
       "lblAutohide": {
         "type": "label",
         "position": [103, 90],
         "value": "",
-        "hAnchor": "right"
+        "hAnchor": "right",
+        "translationKey": "settings.autohide.after"
       },
       "autohideTimerSpinner" : {
         "type": "spinner",
@@ -67,7 +69,8 @@
         "type": "label",
         "position": [137, 90],
         "value": "",
-        "hAnchor": "left"
+        "hAnchor": "left",
+        "translationKey": "settings.autohide.sec"
       },
       
       "lblAutohide0Warning": {
@@ -75,7 +78,8 @@
         "position": [120, 110],
         "hAnchor": "mid",
         "color": "lightgray",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.autohide.description"
       },
 
       "lblIgnoreServerMessages": {
@@ -84,7 +88,8 @@
         "hAnchor": "right",
         "vAnchor": "mid",
         "color": "lightgray",
-        "wrapWidth": 70
+        "wrapWidth": 70,
+        "translationKey": "settings.autohide.ignore_server_messages"
       },
       
       "chkIgnoreServerMessages": {
@@ -105,7 +110,8 @@
         "hAnchor": "right",
         "vAnchor": "mid",
         "color": "lightgray",
-        "wrapWidth": 70
+        "wrapWidth": 70,
+        "translationKey": "settings.autohide.ignore_inspect_messages"
       },
       
       "chkIgnoreInspectMessages": {

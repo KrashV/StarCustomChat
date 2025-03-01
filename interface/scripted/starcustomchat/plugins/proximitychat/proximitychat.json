@@ -27,7 +27,7 @@
       "ru": "Близкий",
       "en": "Proximity"
     },
-    "settings.prox_radius": {
+    "settings.proximity.radius": {
       "ru": "Радиус близких сообщений",
       "en": "Proximity radius"
     },
@@ -35,7 +35,7 @@
       "ru": "Близкий чат",
       "en": "Proximity chat"
     },
-    "settings.plugins.restrict_description": {
+    "settings.proximity.restrict_description": {
       "ru": "Получать близкие сообщения только от персонажей в радиусе",
       "en": "Only receive the proximity based messages from the players in the set radius"
     }
@@ -55,7 +55,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.proximitychat"
       },
       "sldProxRadius" : {
         "type": "slider",
@@ -69,7 +70,8 @@
         "position": [120, 80],
         "color": "lightgray",
         "hAnchor": "mid",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.proximity.radius"
       },
   
       "lblProxRadiusValue" : {
@@ -97,7 +99,8 @@
         "hAnchor": "right",
         "vAnchor": "top",
         "color": "lightgray",
-        "wrapWidth": 120
+        "wrapWidth": 120,
+        "translationKey": "settings.proximity.restrict_description"
       }
     }
   },

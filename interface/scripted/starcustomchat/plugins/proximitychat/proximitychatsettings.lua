@@ -17,12 +17,6 @@ function proximitychat:init()
   widget.setChecked(self.layoutWidget .. ".chkRestrictReceiving", root.getConfiguration("scc_proximity_restricted") or false)
 end
 
-function proximitychat:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".lblProxRadiusHint", starcustomchat.utils.getTranslation("settings.prox_radius"))
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.proximitychat"))
-  widget.setText(self.layoutWidget .. ".lblRestrictingInfo", starcustomchat.utils.getTranslation("settings.plugins.restrict_description"))
-end
-
 function proximitychat:cursorOverride(screenPosition)
   if widget.active(self.layoutWidget) and (widget.inMember(self.layoutWidget .. ".sldProxRadius", screenPosition) 
     or widget.inMember(self.layoutWidget .. ".lblProxRadiusValue", screenPosition) 

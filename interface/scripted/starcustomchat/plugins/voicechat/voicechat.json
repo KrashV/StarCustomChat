@@ -19,9 +19,13 @@
       "en": "Voice chat"
     },
     "settings.voice.settings": "/voice",
-    "settings.voice.binds_label": {
-      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat.\nНастройки голосового чата StarExtensions находятся в /voice\nДля OpenStarbound в найстройках, кнопки отключены.",
-      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat.\nVoice chat settings are located in /voice\nFor OpenStarbound in settings, buttons are disabled."
+    "settings.voice.binds.starextensions": {
+      "ru": "Настройки кнопок выбираются в /binds -> StarExtensions -> Voice Chat.\nНастройки голосового чата StarExtensions находятся в /voice",
+      "en": "Button configs are selected in /binds -> StarExtensions -> Voice Chat.\nVoice chat settings are located in /voice"
+    },
+    "settings.voice.binds.openstarbound": {
+      "ru": "Настройки голосового чата вынесены в Меню - Опции - Voice Chat Settings",
+      "en": "Voice chat settings moved to Game Menu - Options - Voice Chat Settings"
     },
     "settings.voice.binds_button": "/binds",
     "settings.voice.default_enable": {
@@ -44,7 +48,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.voicechat"
       },
       "btnOpenVoiceSettings": {
         "type": "button",
@@ -52,7 +57,8 @@
         "hover": "/interface/buttonhover.png",
         "caption": "",
         "position": [180, 100],
-        "callback": "openVoiceSettings"
+        "callback": "openVoiceSettings",
+        "translationKey": "settings.voice.settings"
       },
       
       "btnBinds": {
@@ -61,16 +67,31 @@
         "hover": "/interface/buttonhover.png",
         "caption": "",
         "position": [180, 80],
-        "callback": "binds"
+        "callback": "binds",
+        "translationKey": "settings.voice.binds_button"
       },
-      "lblBindsDesc": {
+
+      "lblStarExtentions": {
         "type": "label",
         "value": "",
         "color": "lightgray",
         "hAnchor": "left",
         "vAnchor": "top",
         "wrapWidth": 150,
-        "position": [12, 110]
+        "position": [12, 110],
+        "translationKey": "settings.voice.binds.starextensions"
+      },
+
+      "lblOpenStarbound": {
+        "type": "label",
+        "value": "",
+        "color": "lightgray",
+        "hAnchor": "mid",
+        "visible": false,
+        "vAnchor": "top",
+        "wrapWidth": 150,
+        "position": [120, 100],
+        "translationKey": "settings.voice.binds.openstarbound"
       }
     }
   },

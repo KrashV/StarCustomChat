@@ -1,1 +1,2 @@
 - Fixed the crash during processing empty custom images
+- Refactored the way to store location keys in plugin settings

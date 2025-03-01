@@ -20,9 +20,7 @@ function colors:init(chat)
 end
 
 function colors:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.colors"))
-  widget.setText(self.layoutWidget .. ".btnDropToDefault", starcustomchat.utils.getTranslation("settings.colors.drop_to_default"))
-  self:populateList()
+  self:populateList() -- we need to load the localized names first
 end
 
 function colors:populateList()

@@ -184,7 +184,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.mainchat"
       },
       "portraitCanvas": {
         "type": "canvas",
@@ -226,7 +227,8 @@
         "zlevel": 20,
         "caption": "",
         "base" : "/interface/scripted/starcustomchatsettings/button.png?flipx;",
-        "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90"
+        "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90",
+        "translationKey": "settings.reset_avatar"
       },
   
       "btnDeleteChat" : {
@@ -235,7 +237,8 @@
         "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
         "position" : [162, 21],
         "caption" : "Cancel",
-        "callback": "clearHistory"
+        "callback": "clearHistory",
+        "translationKey": "settings.clear_chat_history"
       },
       
 
@@ -252,7 +255,8 @@
         "position": [155, 103],
         "hAnchor": "mid",
         "color": "lightgray",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.font_size"
       },
   
       "lblFontSizeValue" : {
@@ -276,7 +280,8 @@
         "hAnchor": "mid",
         "vAnchor": "top",
         "color": "lightgray",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.chat_collapse"
       },
   
       "lblMessageLengthValue" : {
@@ -299,7 +304,8 @@
         "position": [190, 47],
         "base": "/interface/scripted/starcustomchatsettings/bt.png",
         "hover": "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-        "callback": "setPortrait"
+        "callback": "setPortrait",
+        "translationKey": "settings.mainchat.setportrait"
       },
 
       "lblCustomPortrait": {
@@ -307,7 +313,8 @@
         "position": [97, 40],
         "value": "",
         "color": "lightgray",
-        "mouseTransparent": true
+        "mouseTransparent": true,
+        "translationKey": "settings.mainchat.customavatar"
       }
     }
   },

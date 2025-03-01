@@ -7,6 +7,7 @@ function init()
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
   self.localePluginConfig = {}
+  self.translations = config.getParameter("translations", jarray())
   local plugins = {}
 
   self.chatMode = root.getConfiguration("iccMode") or "modern"
@@ -97,6 +98,11 @@ function localeSettings()
   widget.setText("btnLanguage", starcustomchat.utils.getTranslation("name"))
   widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
   pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle"))
+
+  for _, translation in ipairs(self.translations) do 
+    widget.setText(translation.widget, starcustomchat.utils.getTranslation(translation.key))
+  end
+
   self.runCallbackForPlugins("onLocaleChange", self.localePluginConfig)
 end
 
@@ -109,6 +115,7 @@ end
 
 function changePluginPage()
   local li = widget.getListSelected("saPlugins.listPluginTabs")
+  if not li then return end
   local data = widget.getData("saPlugins.listPluginTabs." .. li)
 
   for pluginName, layoutName in pairs(self.pluginLayouts) do 

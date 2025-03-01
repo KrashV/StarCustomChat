@@ -32,7 +32,7 @@ end
 
 function starcustomchat.utils.getTranslation(key, ...)
   if not starcustomchat.locale[key] then
-    sb.logError("Can't get transaction of key: %s", key)
+    sb.logWarn("Can't get transaction of key: %s", key)
     return "???"
   else
     return ... and string.format(starcustomchat.locale[key], ...) or starcustomchat.locale[key]

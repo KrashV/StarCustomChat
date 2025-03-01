@@ -74,7 +74,8 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.colors"
       },
       "cnvColorPicker": {
         "type": "canvas",
@@ -116,7 +117,8 @@
         "hover": "/interface/buttonredhover.png",
         "position": [140, 45],
         "visible": false,
-        "callback": "dropToDefault"
+        "callback": "dropToDefault",
+        "translationKey": "settings.colors.drop_to_default"
       },
 
       "saScrollArea": {

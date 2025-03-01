@@ -76,16 +76,6 @@ function mainchat:save()
   })
 end
 
-function mainchat:onLocaleChange(localeConfig)
-  widget.setText(self.layoutWidget .. ".lblFontSizeHint", starcustomchat.utils.getTranslation("settings.font_size"))
-  widget.setText(self.layoutWidget .. ".lblMessageLengthHint", starcustomchat.utils.getTranslation("settings.chat_collapse"))
-  widget.setText(self.layoutWidget .. ".btnDeleteChat", starcustomchat.utils.getTranslation("settings.clear_chat_history"))
-  widget.setText(self.layoutWidget .. ".btnResetAvatar", starcustomchat.utils.getTranslation("settings.reset_avatar"))
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
-  widget.setText(self.layoutWidget .. ".lblCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.customavatar"))
-  widget.setText(self.layoutWidget .. ".btnSetCustomPortrait", starcustomchat.utils.getTranslation("settings.mainchat.setportrait"))
-end
-
 function mainchat:resetAvatar()
   
   self.portraitSettings.offset = self.defaultPortraitSettings.offset

@@ -38,13 +38,15 @@
         "position": [12, 130],
         "fontSize": 12,
         "hAnchor": "left",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.plugins.afk"
       },
       "lblAfk": {
         "type": "label",
         "position": [103, 90],
         "value": "",
-        "hAnchor": "right"
+        "hAnchor": "right",
+        "translationKey": "settings.afk_mode"
       },
       "afkTimerSpinner" : {
         "type": "spinner",
@@ -63,7 +65,8 @@
         "type": "label",
         "position": [137, 90],
         "value": "",
-        "hAnchor": "left"
+        "hAnchor": "left",
+        "translationKey": "settings.afk_min"
       },
       
       "lblAfk0Warning": {
@@ -71,7 +74,8 @@
         "position": [120, 70],
         "hAnchor": "mid",
         "color": "lightgray",
-        "value": ""
+        "value": "",
+        "translationKey": "settings.afk_description"
       }
     }
   },

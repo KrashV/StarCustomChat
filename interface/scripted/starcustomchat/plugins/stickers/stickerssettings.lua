@@ -23,12 +23,6 @@ function stickers:populateList(search)
   end
 end
 
-function stickers:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.stickers"))
-  widget.setText(self.layoutWidget .. ".btnAdd", starcustomchat.utils.getTranslation("settings.plugins.stickers.add"))
-  widget.setText(self.layoutWidget .. ".btnRemove", starcustomchat.utils.getTranslation("settings.plugins.stickers.remove"))
-end
-
 function stickers:addStickerToList(name, image)
   local li = widget.addListItem(self.layoutWidget .. ".saSavedStickers.listStickers")
   table.insert(self.stickerIndexes, li)

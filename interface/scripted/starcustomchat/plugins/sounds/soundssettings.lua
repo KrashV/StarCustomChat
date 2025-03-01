@@ -59,15 +59,6 @@ function sounds:changeSpecies()
   end
 end
 
-function sounds:onLocaleChange()
-  widget.setText(self.layoutWidget .. ".lblSoundsDescription", starcustomchat.utils.getTranslation("settings.plugins.sounds.description"))
-  widget.setText(self.layoutWidget .. ".lblSoundsEnabled", starcustomchat.utils.getTranslation("settings.plugins.sounds.enable"))
-  widget.setText(self.layoutWidget .. ".lblSoundsEnabledWhisper", starcustomchat.utils.getTranslation("settings.plugins.sounds.enablewhisper"))
-  widget.setText(self.layoutWidget .. ".lblSoundPitch", starcustomchat.utils.getTranslation("settings.plugins.sounds.pitch"))
-  widget.setText(self.layoutWidget .. ".btnPlay", starcustomchat.utils.getTranslation("settings.plugins.sounds.test"))
-  widget.setText(self.layoutWidget .. ".titleText", starcustomchat.utils.getTranslation("settings.plugins.sounds"))
-end
-
 function sounds:enableSounds()
   self.soundsEnabled = widget.getChecked(self.layoutWidget .. ".chkEnabled")
   player.setProperty("scc_sounds_enabled", self.soundsEnabled)

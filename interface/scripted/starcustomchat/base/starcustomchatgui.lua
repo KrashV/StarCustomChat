@@ -159,6 +159,8 @@ function init()
   checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 
+
+  self.settingsInterface = buildSettingsInterface()
 end
 
 function createPromiseFunction()
@@ -706,7 +708,7 @@ function toBottom()
 end
 
 function openSettings()
-  local chatConfigInterface = buildSettingsInterface()
+  local chatConfigInterface = self.settingsInterface
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
   chatConfigInterface.chatConfig = self.customChat.config
   player.interact("ScriptPane", chatConfigInterface)
