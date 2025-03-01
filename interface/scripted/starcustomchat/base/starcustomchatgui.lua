@@ -330,7 +330,6 @@ function localeChat(localePluginConfig)
 
   local savedText = widget.getText("tbxInput")
   local hasFocus = widget.hasFocus("tbxInput")
-  widget.setText("lblTextboxHint", starcustomchat.utils.getTranslation("chat.textbox.hint"))
 
   self.chatMode = root.getConfiguration("iccMode") or "modern"
   if self.chatMode ~= "compact" then self.chatMode = "modern" end
@@ -340,11 +339,17 @@ function localeChat(localePluginConfig)
     widget.setText("rgChatMode." .. i, starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
-  local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
-
-  if not savedText or savedText == "" then
-    widget.setText("lblTextboxHint", hint)
+  if not widget.setHint then 
+    widget.setText("lblTextboxHint", starcustomchat.utils.getTranslation("chat.textbox.hint"))
+    local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
+  
+    if not savedText or savedText == "" then
+      widget.setText("lblTextboxHint", hint)
+    end
+  else
+    widget.setHint("tbxInput", starcustomchat.utils.getTranslation("chat.textbox.hint"))
   end
+
 
   self.runCallbackForPlugins("onLocaleChange")
 

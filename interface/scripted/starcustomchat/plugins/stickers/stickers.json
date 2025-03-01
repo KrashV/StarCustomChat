@@ -34,6 +34,14 @@
       "en": "A sticker with this name already exists",
       "ru": "Стикер с таким именем уже существует"
     },
+    "settings.plugins.stickers.name": {
+      "en": "Название",
+      "ru": "Name"
+    },
+    "settings.plugins.stickers.search": {
+      "en": "Search",
+      "ru": "Поиск"
+    },
     "settings.colors.stickerselect": {
       "en": "Stickers",
       "ru": "Стикеры"
@@ -115,7 +123,8 @@
         "position": [140, 130],
         "hint": "search",
         "maxWidth": 40,
-        "regex": "[a-zA-Z0-9]{0,30}"
+        "regex": "[a-zA-Z0-9]{0,30}",
+        "hintTranslationKey": "settings.plugins.stickers.search"
       },
       "tbxStickerName": {
         "type": "textbox",
@@ -123,7 +132,8 @@
         "position": [25, 35],
         "hint": "name",
         "maxWidth": 40,
-        "regex": "[a-zA-Z0-9]{0,30}"
+        "regex": "[a-zA-Z0-9]{0,30}",
+        "hintTranslationKey": "settings.plugins.stickers.name"
       },
       "tbxStickerDirectives": {
         "type": "textbox",

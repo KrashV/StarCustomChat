@@ -8,6 +8,7 @@ function init()
 
   self.localePluginConfig = {}
   self.translations = config.getParameter("translations", jarray())
+  self.hintTranslations = config.getParameter("hintTranslations", jarray())
   local plugins = {}
 
   self.chatMode = root.getConfiguration("iccMode") or "modern"
@@ -101,6 +102,12 @@ function localeSettings()
 
   for _, translation in ipairs(self.translations) do 
     widget.setText(translation.widget, starcustomchat.utils.getTranslation(translation.key))
+  end
+
+  for _, translation in ipairs(self.hintTranslations) do 
+    if widget.setHint then -- not in the current release of OSB
+      widget.setHint(translation.widget, starcustomchat.utils.getTranslation(translation.key))
+    end
   end
 
   self.runCallbackForPlugins("onLocaleChange", self.localePluginConfig)

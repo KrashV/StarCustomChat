@@ -202,6 +202,8 @@ function buildSettingsInterface()
   local enabledPlugins = safeAssetJson("/scripts/starcustomchat/enabledplugins.json")
 
   baseSettingsInterface["translations"] = jarray()
+  baseSettingsInterface["hintTranslations"] = jarray()
+
 
   for i, pluginName in ipairs(enabledPlugins) do 
     local pluginConfig = safeAssetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
@@ -233,6 +235,13 @@ function buildSettingsInterface()
               table.insert(baseSettingsInterface["translations"], {
                 widget = "lytPluginSettings." .. pluginName .. "." .. widgetName,
                 key = widgetConfig.translationKey
+              })
+            end
+
+            if widgetConfig.hintTranslationKey then
+              table.insert(baseSettingsInterface["hintTranslations"], {
+                widget = "lytPluginSettings." .. pluginName .. "." .. widgetName,
+                key = widgetConfig.hintTranslationKey
               })
             end
 
