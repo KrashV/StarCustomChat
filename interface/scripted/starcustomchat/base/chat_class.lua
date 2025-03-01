@@ -343,9 +343,11 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
   end
 
   local function drawImage(image, offset)
-    local frameSize = root.imageSize(image)
-    local size = portraitSizeFromBaseFont(self.config.fontSize)
-    self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + size, offset[2] + size})
+    local frameSize = starcustomchat.utils.safeImageSize(image)
+    if frameSize then
+      local size = portraitSizeFromBaseFont(self.config.fontSize)
+      self.canvas:drawImageRect(image, {0, 0, frameSize[1], frameSize[2]}, {offset[1], offset[2], offset[1] + size, offset[2] + size})
+    end
   end
 
   local function drawPortrait(portrait, messageOffset, cropArea, portraitSettings, color)

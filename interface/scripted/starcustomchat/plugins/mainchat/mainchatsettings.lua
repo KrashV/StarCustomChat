@@ -23,7 +23,10 @@ function mainchat:init()
 
   self.customImage = player.getProperty("icc_custom_portrait") or nil
   if self.customImage then
-    self.customImageSize = root.imageSize(self.customImage)
+    self.customImageSize = starcustomchat.utils.safeImageSize(self.customImage)
+    if not self.customImageSize then
+      self.customImage = nil
+    end
   end
 
   self:drawCharacter()
@@ -146,8 +149,8 @@ function mainchat:setPortrait(widgetName, data)
     player.setProperty("icc_custom_portrait", nil)
     self.customImage = nil
   else
-    if pcall(function() root.imageSize("/assetmissing.png" .. text) end) then
-      local imageSize = root.imageSize("/assetmissing.png" .. text)
+    local imageSize = starcustomchat.utils.safeImageSize("/assetmissing.png" .. text)
+    if imageSize then
       if imageSize[1] <= 64 and imageSize[2] <= 64 then
         widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
         self.customImage = "/assetmissing.png" .. text

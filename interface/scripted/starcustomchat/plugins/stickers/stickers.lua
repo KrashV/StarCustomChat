@@ -72,12 +72,14 @@ function stickers:onReceiveMessage(message)
   if message and (message.image and string.find(message.image, "^/%w+%.png"))
     or (message.text and string.find(message.text, "^/%w+%.png")) then
 
-    local imageSize = root.imageSize(message.image or message.text)
-    if imageSize[1] > self.maxSize[1] or imageSize[2] > self.maxSize[2] then
-      starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
-    else
-      message.image = message.image or message.text
-      message.imageSize = imageSize
+    local imageSize = starcustomchat.utils.safeImageSize(message.image or message.text)
+    if imageSize then
+      if imageSize[1] > self.maxSize[1] or imageSize[2] > self.maxSize[2] then
+        starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
+      else
+        message.image = message.image or message.text
+        message.imageSize = imageSize
+      end
     end
   end
 end

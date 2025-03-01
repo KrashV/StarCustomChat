@@ -170,3 +170,19 @@ function starcustomchat.utils.drawCircle(center, radius, color, sections)
     end
   end
 end
+
+function starcustomchat.utils.safeImageSize(image)
+  if image and type(image) == "string" and image ~= "" then
+    local imageSize
+    if pcall(function() imageSize = root.imageSize(image) end) then
+      if imageSize[1] == 0 or imageSize[2] == 0 then
+        return nil
+      end
+      return imageSize
+    else
+      return nil
+    end
+  end
+
+  return nil
+end

@@ -54,9 +54,9 @@ function stickers:addSticker()
   end
 
   local newImage = "/assetmissing.png" .. directives
-  if pcall(function() root.imageSize(newImage) end) then
-    local imageSize = root.imageSize(newImage)
 
+  local imageSize = starcustomchat.utils.safeImageSize(newImage)
+  if imageSize then
     if imageSize[1] > self.maxSize[1] or imageSize[2] > self.maxSize[2] then
       starcustomchat.utils.alert("settings.plugins.stickers.alerts.size_error", self.maxSize[1], self.maxSize[2])
       widget.setText(self.layoutWidget .. ".tbxStickerDirectives", "")

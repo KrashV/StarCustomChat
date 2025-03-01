@@ -1,1 +1,1 @@
-- Fixed warping breaking receiving the changes made in settings
+- Fixed the crash during processing empty custom images
