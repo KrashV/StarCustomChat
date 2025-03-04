@@ -278,8 +278,10 @@ function StarCustomChat:processCommand(text)
   if not self.callbackPlugins("onProcessCommand", text) then
     local commandResult = chat.command(text) or {}
 
-      for _, line in ipairs(commandResult) do 
-        if self.isOSB or xsb then
+      for _, line in ipairs(commandResult) do
+        if xsb then
+          -- Nothing needs to be done.
+        elseif self.isOSB then
           self:addMessage({
             connection = 0,
             mode = "CommandResult",
