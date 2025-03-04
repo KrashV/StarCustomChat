@@ -827,6 +827,10 @@ function visible()
   return 1.0
 end
 
+function clearMessages(_)
+  self.customChat:clearHistory()
+end
+
 function sendMode()
   local mode = widget.getSelectedData("rgChatMode").mode
   if mode == "Local" or mode == "Broadcast" or mode == "Party" then

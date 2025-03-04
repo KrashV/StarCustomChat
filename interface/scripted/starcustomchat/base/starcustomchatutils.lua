@@ -56,14 +56,47 @@ end
 function starcustomchat.utils.getCommands(allCommands, substr)
   local availableCommands = {}
 
+  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+
   for type, commlist in pairs(allCommands) do 
     for _, comm in ipairs(commlist) do
-      if type ~= "admin" or (type == "admin" and player.isAdmin()) then
-        if string.find(comm, substr, nil, true) then
-          table.insert(availableCommands, {
-            name = comm,
-            color = nil
-          })
+      if type ~= "admin" or type ~= "xsbadmin" or type ~= "starextensions" or type ~= "custom"
+        or type ~= "xsb" or (type == "admin" and player.isAdmin()) then
+          if string.find(comm, substr, nil, true) then
+            table.insert(availableCommands, {
+              name = comm,
+              color = nil
+            })
+          end
+      end
+      if starExtensions then
+        if type == "starextensions" or type == "custom" then
+          if string.find(comm, substr, nil, true) then
+            table.insert(availableCommands, {
+              name = comm,
+              color = nil
+            })
+          end
+        end
+      end
+      if self.isOpenSB then
+        if type == "custom" then
+          if string.find(comm, substr, nil, true) then
+            table.insert(availableCommands, {
+              name = comm,
+              color = nil
+            })
+          end
+        end
+      end
+      if xsb then
+        if type == "xsb" or (type == "xsbadmin" and player.isAdmin()) then
+          if string.find(comm, substr, nil, true) then
+            table.insert(availableCommands, {
+              name = comm,
+              color = nil
+            })
+          end
         end
       end
     end
