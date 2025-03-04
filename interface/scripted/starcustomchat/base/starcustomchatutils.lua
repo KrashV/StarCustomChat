@@ -90,7 +90,7 @@ function starcustomchat.utils.getCommands(allCommands, substr)
         end
       end
       if xsb then
-        if type == "xsb" or (type == "xsbadmin" and player.isAdmin()) then
+        if type == "xsb" or type == "custom" or (type == "xsbadmin" and player.isAdmin()) then
           if string.find(comm, substr, nil, true) then
             table.insert(availableCommands, {
               name = comm,
