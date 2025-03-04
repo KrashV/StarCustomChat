@@ -279,12 +279,15 @@ function StarCustomChat:processCommand(text)
     local commandResult = chat.command(text) or {}
 
       for _, line in ipairs(commandResult) do 
-        if self.isOSB then
+        if self.isOSB or xsb then
           self:addMessage({
             connection = 0,
             mode = "CommandResult",
             text = line
           })
+          if xsb then
+            sb.logInfo("Chat: %s", line)
+          end
         else
           chat.addMessage(line)
           table.insert(self.messages, {
@@ -292,9 +295,6 @@ function StarCustomChat:processCommand(text)
           })
           if #self.messages > self.config.chatHistoryLimit then
             table.remove(self.messages, 1)
-          end
-          if xsb then
-            sb.logInfo("Chat: %s", line)
           end
         end
     end

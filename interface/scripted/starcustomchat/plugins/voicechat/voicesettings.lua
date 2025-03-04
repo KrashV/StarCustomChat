@@ -13,7 +13,7 @@ function voicechat:init()
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
 
-  if self.isOSB then
+  if xsb or self.isOSB then
     widget.setVisible(self.layoutWidget .. ".btnOpenVoiceSettings", false)
     widget.setVisible(self.layoutWidget .. ".btnBinds", false)
     widget.setVisible(self.layoutWidget .. ".lblOpenStarbound", true)
@@ -31,7 +31,7 @@ function voicechat:binds()
 end
 
 function voicechat:uninit()
-  if self.isOSB then
+  if xsb or self.isOSB then
     root.setConfiguration("scc_voice_enabled", voice.getSettings()["enabled"])
   else
     root.setConfiguration("scc_voice_enabled", voice.enabled())
