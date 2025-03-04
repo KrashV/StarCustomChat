@@ -293,6 +293,9 @@ function StarCustomChat:processCommand(text)
           if #self.messages > self.config.chatHistoryLimit then
             table.remove(self.messages, 1)
           end
+          if xsb then
+            sb.logInfo("Chat: %s", line)
+          end
         end
     end
   end
