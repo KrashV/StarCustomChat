@@ -60,8 +60,8 @@ function starcustomchat.utils.getCommands(allCommands, substr)
 
   for type, commlist in pairs(allCommands) do 
     for _, comm in ipairs(commlist) do
-      if type ~= "admin" or type ~= "xsbadmin" or type ~= "starextensions" or type ~= "custom"
-        or type ~= "xsb" or (type == "admin" and player.isAdmin()) then
+      if type ~= "xsbadmin" and type ~= "starextensions" and type ~= "custom"
+        and type ~= "xsb" and (type ~= "admin" and not player.isAdmin()) then
           if string.find(comm, substr, nil, true) then
             table.insert(availableCommands, {
               name = comm,
