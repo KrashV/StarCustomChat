@@ -39,7 +39,7 @@ function autohide:onReceiveMessage(message)
 
   if message.connection and (message.connection == 0 and not self.ignoreServerMessages) or (message.connection ~= 0 and not (self.ignoreInspectMessages and isInspecting(message))) then
     self.autohideTime = self.timer
-    if self.isOpenSB then
+    if self.isOpenSB or xsb then
       pane.show()
     end
   end

@@ -1,15 +1,10 @@
+require "/scripts/messageutil.lua"
+
 local shared = getmetatable('').shared
 if type(shared) ~= "table" then
   shared = {}
   getmetatable('').shared = shared
 end
-
-function init()
-  self.soundName = "ouch"
-
-  shared.sccTalkingSound = sccTalkingSound
-end
-
 
 function sccTalkingSound(soundData)
   if type(soundData) == "string" then
@@ -25,6 +20,21 @@ function sccTalkingSound(soundData)
   end
 end
 
+function init()
+  self.soundName = "ouch"
+
+  if xsb then
+    message.setHandler("SCC::TalkingSound", localHandler(sccTalkingSound))
+    world.setGlobal("SCC::TalkingSound", true)
+  else
+    shared.sccTalkingSound = sccTalkingSound
+  end
+end
+
 function uninit()
-  shared.sccTalkingSound = nil
+  if xsb then
+    world.setGlobal("SCC::TalkingSound", nil)
+  else
+    shared.sccTalkingSound = nil
+  end
 end

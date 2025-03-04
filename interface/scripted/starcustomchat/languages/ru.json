@@ -31,9 +31,9 @@
   "chat.alerts.ping_failed": "Не смогли пингануть %s",
   "chat.alerts.was_pinged": "Вас пинганул %s",
 
-  "greeting.se_osb_not_found": "Добро пожаловать в Кастомный Чат Дегранона!\n\nТребуется StarExtensions версии 1.9.24+ или OpenStarbound 0.1.8+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound",
+  "greeting.se_osb_xsb_not_found": "Добро пожаловать в Кастомный Чат Дегранона!\n\nТребуется StarExtensions версии 1.9.24+, OpenStarbound 0.1.8+ или xStarbound версии 1.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.se_version": "Добро пожаловать в Кастомный Чат Дегранона!\n\nПожалуйста, обнови StarExtensions до версии 1.9.24+",
-  "greeting.osb_version": "Добро пожаловать в Кастомный Чат Дегранона!\n\nПожалуйста, обнови OpenStarbound до версии 0.1.8+\nhttps://github.com/OpenStarbound/OpenStarbound",
+  "greeting.osb_xsb_version": "Добро пожаловать в Кастомный Чат Дегранона!\n\nПожалуйста, обнови OpenStarbound до версии 0.1.8+ или OpenStarbound до версии 1.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.unbind_controls": "Добро пожаловать в Кастомный Чат Дегранона!\n\nЧтобы начать, вручную удали следующие кнопки из настроек игры (Нажми Esc - Опции - Управление - Игра):\n\n* Начало команды в чате\n* Чат\n* Повтор посл. команды ^gray;(для этого используй /binds - Repeat last command)^reset;\n\nНажми принять, перезайди - и всё должно быть готово!",
   "greeting.unknown": "Добро пожаловать в Кастомный Чат Дегранона!\n\nЧто-то пошло не так. Упс!",
   "greeting.close": "Понял!",

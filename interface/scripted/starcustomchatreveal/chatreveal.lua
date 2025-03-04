@@ -29,11 +29,14 @@ function checkUUID()
 end
 
 function registerCallbacks()
-  shared.setMessageHandler("scc_close_revealing_interface", localHandler(function()
+  local setMessageHandler
+  if message then setMessageHandler = message.setHandler else setMessageHandler = shared.setMessageHandler end
+
+  setMessageHandler("scc_close_revealing_interface", localHandler(function()
     openChat()
   end))
 
-  shared.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
+  setMessageHandler("scc_check_uuid", localHandler(function(uuid)
     if uuid ~= self.hiddenChatUUID then
       pane.dismiss()
     end

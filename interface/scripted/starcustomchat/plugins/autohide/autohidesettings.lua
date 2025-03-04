@@ -20,7 +20,7 @@ function autohide:init()
   
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
-  if not self.isOpenSB then
+  if not self.isOpenSB or xsb then
     widget.setVisible(self.layoutWidget .. ".chkIgnoreInspectMessages", false)
     widget.setVisible(self.layoutWidget .. ".lblIgnoreInspectMessages", false)
   end

@@ -18,7 +18,10 @@ function reactions:contextMenuButtonFilter(buttonName, screenPosition, selectedM
 end
 
 function reactions:registerMessageHandlers(shared)
-  shared.setMessageHandler( "scc_add_reaction", function(_, _, data)
+  local setMessageHandler
+  if message then setMessageHandler = message.setHandler else setMessageHandler = shared.setMessageHandler end
+
+  setMessageHandler( "scc_add_reaction", function(_, _, data)
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     local reaction = data.reaction
 

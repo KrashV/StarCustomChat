@@ -29,15 +29,15 @@ function init()
     self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
     self.chatHidden = root.getConfiguration("scc_chat_hidden") or false
 
-    shared.setMessageHandler = message.setHandler
+    if not xsb then shared.setMessageHandler = message.setHandler end
 
 
-    if not self.isOpenSB then
+    if not (self.isOpenSB) and (not xsb) then
       self.interface = buildChatInterface()
       SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
     end
 
-    if self.chatHidden and not self.isOpenSB then
+    if self.chatHidden and (not self.isOpenSB) and (not xsb) then
       hideChat()
     end
   end
@@ -50,12 +50,12 @@ function init()
 end
 
 function checkSEAndControls()
-  if not _ENV["starExtensions"] and not self.isOpenSB then
-    return "se_osb_not_found"
+  if not _ENV["starExtensions"] and not self.isOpenSB and not xsb then
+    return "se_osb_xsb_not_found"
   elseif not root.assetData and (not root.assetData("/scripts/starextensions/lib/chat_callback.lua") and not player.questIds) then
     return "se_version"
   else
-    if not self.isOpenSB then
+    if (not self.isOpenSB) and (not xsb) then
       require("/scripts/starextensions/lib/chat_callback.lua")
       if not setChatMessageHandler then
         return "se_version"
@@ -67,7 +67,7 @@ function checkSEAndControls()
       end
     else
       if not world.loungingEntities then
-        return "osb_version"
+        return "osb_xsb_version"
       end
     end
   end
@@ -83,7 +83,11 @@ function receiveMessage(message)
 end
 
 function hideChat(mode)
-  shared.chatIsOpen = false
+  if xsb then
+    world.setGlobal("SCC::ChatIsOpen", false)
+  else
+    shared.chatIsOpen = false
+  end
   self.chatHidden = true
   root.setConfiguration("scc_chat_hidden", self.chatHidden)
   message.setHandler("icc_sendToUser", simpleHandler(receiveMessage))
@@ -94,7 +98,7 @@ function hideChat(mode)
 end
 
 function openChat(forceFocus, mode)
-  if not self.isOpenSB then
+  if (not self.isOpenSB) and (not xsb) then
     self.chatHidden = false
     root.setConfiguration("scc_chat_hidden", self.chatHidden)
     self.interface.storedMessages = self.storedMessages
@@ -103,14 +107,25 @@ function openChat(forceFocus, mode)
 
     player.interact("ScriptPane", self.interface)
     self.storedMessages = {}
-    shared.chatIsOpen = true
+    if xsb then
+      world.setGlobal("SCC::ChatIsOpen", false)
+    else
+      shared.chatIsOpen = true
+    end
   end
 end
 
 function update(dt)
   SCChatTimer:update(dt)
 
-  if not shared.chatIsOpen and self.interface and not self.chatHidden and not self.isOpenSB then
+  local chatIsOpen
+  if xsb then
+    chatIsOpen = world.getGlobal("SCC::ChatIsOpen")
+  else
+    chatIsOpen = shared.chatIsOpen
+  end
+
+  if not chatIsOpen and self.interface and not self.chatHidden and not self.isOpenSB and not xsb then
     openChat()
   end
 end

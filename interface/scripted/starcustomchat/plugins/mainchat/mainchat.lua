@@ -21,8 +21,10 @@ function mainchat:init(chat)
 end
 
 function mainchat:registerMessageHandlers(shared)
+  local setMessageHandler
+  if message then setMessageHandler = message.setHandler else setMessageHandler = shared.setMessageHandler end
 
-  shared.setMessageHandler( "icc_ping", function(_, _, source)
+  setMessageHandler( "icc_ping", function(_, _, source)
     starcustomchat.utils.alert("chat.alerts.was_pinged", source)
     if type(self.pingSound) == "table" then
       pane.playSound(self.pingSound[math.random(1, #self.pingSound)])

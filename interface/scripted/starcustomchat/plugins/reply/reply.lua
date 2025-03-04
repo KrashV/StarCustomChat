@@ -22,7 +22,10 @@ function reply:init(chat)
 end
 
 function reply:registerMessageHandlers(shared)
-  shared.setMessageHandler( "icc_message_reply", function(_, _, data)
+  local setMessageHandler
+  if message then setMessageHandler = message.setHandler else setMessageHandler = shared.setMessageHandler end
+
+  setMessageHandler( "icc_message_reply", function(_, _, data)
     if data and data.originalMessageUUID  then
       local oldMessageInd = self.customChat:findMessageByUUID(data.originalMessageUUID)
       local newMessageInd = self.customChat:findMessageByUUID(data.newMessageUUID)

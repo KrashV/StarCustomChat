@@ -35,10 +35,17 @@ function sounds:playSound()
       pitch = self.soundPitch,
       volume = 1.3
     }
-    if not shared.sccTalkingSound then
-      status.addPersistentEffect("scctalking", "scctalking")
+    if xsb then
+      if not world.getGlobal("SCC::TalkingSound") then
+        status.addPersistentEffect("scctalking", "scctalking")
+      end
+      world.sendEntityMessage(player.id(), "SCC::TalkingSound", soundTable)
+    else
+      if not shared.sccTalkingSound then
+        status.addPersistentEffect("scctalking", "scctalking")
+      end
+      shared.sccTalkingSound(soundTable)
     end
-    shared.sccTalkingSound(soundTable)
   end
 end
 

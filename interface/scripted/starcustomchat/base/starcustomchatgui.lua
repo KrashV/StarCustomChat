@@ -21,13 +21,13 @@ ICChatTimer = TimerKeeper.new()
 function init()
 
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-  if self.isOpenSB then shared.setMessageHandler = nil end
+  if self.isOpenSB or xsb then shared.setMessageHandler = nil end
   
   self.chatFunctionCallback = function(message)
     self.customChat:addMessage(message)
   end
   
-  if not self.isOpenSB then
+  if (not self.isOpenSB) and (not xsb) then
     require("/scripts/starextensions/lib/chat_callback.lua")
     ICChatTimer:add(2, checkUUID)
     handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
@@ -201,14 +201,16 @@ function checkUUID()
 end
 
 function registerCallbacks(shared)
+  local setMessageHandler
+  if message then setMessageHandler = message.setHandler else setMessageHandler = shared.setMessageHandler end
 
-  if not shared.setMessageHandler then
+  if not (shared.setMessageHandler or message) then
     return false
   end
 
-  shared.setMessageHandler( "scc_reload_callbacks", localHandler(prepareForCallbacks))
+  setMessageHandler( "scc_reload_callbacks", localHandler(prepareForCallbacks))
 
-  shared.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
+  setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then
       return {
         portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
@@ -224,7 +226,7 @@ function registerCallbacks(shared)
     end
   end))
 
-  shared.setMessageHandler("scc_set_message_bigchat", localHandler(function(text)
+  setMessageHandler("scc_set_message_bigchat", localHandler(function(text)
     widget.focus("tbxInput")
     if text and utf8.len(text) > 0 then
       widget.setText("tbxInput", text)
@@ -236,30 +238,30 @@ function registerCallbacks(shared)
     end
   end))
 
-  shared.setMessageHandler("icc_sendToUser", simpleHandler(function(message)
+  setMessageHandler("icc_sendToUser", simpleHandler(function(message)
     self.customChat:addMessage(message)
   end))
 
-  shared.setMessageHandler("icc_is_chat_open", localHandler(function(message)
+  setMessageHandler("icc_is_chat_open", localHandler(function(message)
     return shared.chatIsOpen
   end))
 
-  shared.setMessageHandler("icc_close_chat", localHandler(function(message)
+  setMessageHandler("icc_close_chat", localHandler(function(message)
     uninit()
     pane.dismiss()
   end))
 
-  shared.setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
+  setMessageHandler("icc_send_player_portrait", simpleHandler(function(data)
     self.customChat:updatePortrait(data)
   end))
 
-  shared.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
+  setMessageHandler("scc_check_uuid", localHandler(function(uuid)
     if self.chatUUID ~= uuid then
       pane.dismiss()
     end
   end))
 
-  shared.setMessageHandler( "icc_reset_settings", localHandler(function(data)
+  setMessageHandler( "icc_reset_settings", localHandler(function(data)
     if shared.chatIsOpen then
       createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
       self.runCallbackForPlugins("onSettingsUpdate", data)
@@ -269,11 +271,11 @@ function registerCallbacks(shared)
     end
   end))
 
-  shared.setMessageHandler( "icc_clear_history", localHandler(function(data)
+  setMessageHandler( "icc_clear_history", localHandler(function(data)
     self.customChat:clearHistory()
   end))
 
-  shared.setMessageHandler( "/clearchat", localHandler(function(data)
+  setMessageHandler( "/clearchat", localHandler(function(data)
     self.customChat:clearHistory()
   end))
 
@@ -358,8 +360,11 @@ function localeChat(localePluginConfig)
 end
 
 function update(dt)
-
-  shared.chatIsOpen = true
+  if xsb then
+    world.setGlobal("SCC::ChatIsOpen", true)
+  else
+    shared.chatIsOpen = true
+  end
   
   ICChatTimer:update(dt)
   promises:update()
@@ -373,8 +378,12 @@ function update(dt)
   checkCommandsPreview()
   processButtonEvents(dt)
 
-  if not self.isOpenSB and (not player.id() or not world.entityExists(player.id()) or world.type() == "Nowhere") then
-    shared.chatIsOpen = false
+  if (not (self.isOpenSB or xsb)) and (not player.id() or not world.entityExists(player.id()) or world.type() == "Nowhere") then
+    if xsb then
+      world.setGlobal("SCC::ChatIsOpen", false)
+    else
+      shared.chatIsOpen = false
+    end
     pane.dismiss()
   end
 
@@ -458,7 +467,7 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
   widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)
 
-  if self.isOpenSB then
+  if self.isOpenSB or xsb then
     pane.setSize(expanded and {pane.getSize()[1], chatParameters.expandedBodyHeight + 25} or {pane.getSize()[1], chatParameters.bodyHeight + 25})
     widget.setSize("background", expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight} or {self.chatWindowWidth, chatParameters.bodyHeight})
     widget.setSize(self.canvasName, currentSizes and vec2.add(currentSizes.canvasSize, {0,2}) or vec2.add(defaultSizes.canvasSize, {0,2}))
@@ -476,7 +485,7 @@ function canvasClickEvent(position, button, isButtonDown)
     self.customChat.expanded = not self.customChat.expanded
     root.setConfiguration("icc_is_expanded", self.customChat.expanded)
 
-    if self.isOpenSB then
+    if self.isOpenSB or xsb then
       setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
       self.customChat:processQueue()
     else
@@ -551,7 +560,7 @@ end
 function processButtonEvents(dt)
 
   -- StarExtensions only
-  if not self.isOpenSB then
+  if (not self.isOpenSB) and (not xsb) then
     if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
       if input.keyDown("/") then
         widget.setText("tbxInput", "/")
@@ -771,7 +780,7 @@ function saveEverythingDude()
 end
 
 function closeChat()
-  if not self.isOpenSB then
+  if (not self.isOpenSB) and (not xsb) then
     pane.dismiss()
     world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
   else
@@ -779,18 +788,52 @@ function closeChat()
   end
 end
 
--- OpenStarbound chat
+-- OpenStarbound/xStarbound chat callbacks
 function startChat()
   pane.show()
   widget.focus("tbxInput")
-  chat.setInput("")
+  if not xsb then chat.setInput("") end
+end
+
+function stopChat()
+  widget.blur("tbxInput")
 end
 
 function startCommand()
   pane.show()
   widget.setText("tbxInput", "/")
   widget.focus("tbxInput")
-  chat.setInput("")
+  if not xsb then chat.setInput("/") end
+end
+
+function currentChat()
+  return widget.getText("tbxInput")
+end
+
+function setCurrentChat(text)
+  widget.setText("tbxInput", text)
+  return true
+end
+
+function clearCurrentChat()
+  widget.setText("tbxInput", "")
+end
+
+function hasFocus()
+  return widget.hasFocus("tbxInput")
+end
+
+function visible()
+  return 1.0
+end
+
+function sendMode()
+  local mode = widget.getSelectedData("rgChatMode").mode
+  if mode == "Local" or mode == "Broadcast" or mode == "Party" then
+    return mode
+  else
+    return "Local"
+  end
 end
 
 function convertToChatMessage(oldMessage)
@@ -806,6 +849,11 @@ end
 function addMessages(messages, showPane) 
   for _, message in ipairs(messages) do
     self.customChat:addMessage(convertToChatMessage(message))
+    if message.fromNick then
+      sb.logInfo("Chat: <%s> %s", message.fromNick, message.text)
+    else
+      sb.logInfo("Chat: %s", message.text)
+    end
   end
 end
 

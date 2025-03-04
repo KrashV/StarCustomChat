@@ -155,7 +155,7 @@ function starcustomchat.utils.drawCircle(center, radius, color, sections)
     local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
     local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
 
-    if self.isOpenSB then
+    if self.isOpenSB or xsb then
       if not self.drawingCanvas then
         self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
       end

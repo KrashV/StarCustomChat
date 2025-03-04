@@ -16,7 +16,7 @@ end
 
 function voicechat:setEnabled(enabled)
   -- Avoid audio stutters by checking and setting voice settings efficiently
-  if self.isOSB then
+  if self.isOSB or xsb then
     local voiceSettings = voice.getSettings()
     voiceSettings["enabled"] = enabled
     voice.mergeSettings(voiceSettings)
