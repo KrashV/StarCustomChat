@@ -74,7 +74,14 @@ function StarCustomChat:addMessage(msg)
     if message.mode == "RadioMessage" and message.portrait then
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
     end
-    message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or message.text:match("%^%a+;(%d+:%d+)%^reset;")
+    local wrapperTime = (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or message.text:match("%^%a+;(%d+:%d+)%^reset;")
+    if wrapperTime then
+      -- Remove the StarryPy3k time indicator from nicks before display.
+      local nick = (message.nickname and message.nickname:match("%^%a+;%d+:%d+%^reset;> <(.*)")) or message.text:match("%^%a+;%d+:%d+%^reset;> <(.*)")
+      message.nickname = nick or message.nickname
+      if message.nickname == "" then message.nickname = nil end
+    end
+    message.time = message.time or wrapperTime
 
     message = self.callbackPlugins("formatIncomingMessage", message)
 
