@@ -160,7 +160,9 @@ function init()
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 
 
-  self.settingsInterface = buildSettingsInterface()  
+  self.settingsInterface = buildSettingsInterface()
+
+  self.sccChatShown = true
 end
 
 function createPromiseFunction()
@@ -790,12 +792,14 @@ function closeChat()
     pane.dismiss()
     world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
   else
+    self.sccChatShown = false
     pane.hide()
   end
 end
 
 -- OpenStarbound/xStarbound chat callbacks
 function startChat()
+  self.sccChatShown = true
   pane.show()
   widget.focus("tbxInput")
   if not xsb then chat.setInput("") end
@@ -806,6 +810,7 @@ function stopChat()
 end
 
 function startCommand()
+  self.sccChatShown = true
   pane.show()
   widget.setText("tbxInput", "/")
   widget.focus("tbxInput")
@@ -830,7 +835,7 @@ function hasFocus()
 end
 
 function visible()
-  return 1.0
+  return self.sccChatShown and 1.0 or 0.0
 end
 
 function clearMessages(_)
