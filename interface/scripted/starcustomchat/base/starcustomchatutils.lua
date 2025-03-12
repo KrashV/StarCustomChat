@@ -70,9 +70,7 @@ function starcustomchat.utils.getCommands(allCommands, substr)
   local function runThroughCommands(commType, commandList, prefix, level)
     for _, comm in ipairs(commandList) do
       if type(comm) == "string" then
-        if not string.find(commType, "admin") or player.isAdmin() then
           addCommandToList(prefix .. comm, comm, nil)
-        end
       elseif type(comm) == "table" then
         if not comm.admin or player.isAdmin() then
           local fullCommand = prefix .. comm.command
@@ -86,12 +84,16 @@ function starcustomchat.utils.getCommands(allCommands, substr)
   end
 
   for commType, commlist in pairs(allCommands) do
-    runThroughCommands(commType, commlist, "", 0)
+    if (not string.find(commType, "admin") or player.isAdmin()) 
+      and (commType ~= "openstarbound" or self.isOpenSB)
+      and (commType ~= "starextentions" or not self.isOpenSB) then
+        runThroughCommands(commType, commlist, "", 0)
+    end
   end
 
   self.runCallbackForPlugins("addCustomCommandPreview", availableCommands, substr)
 
-  table.sort(availableCommands, function(a, b) return a.name:upper() < b.name:upper() end)
+  --table.sort(availableCommands, function(a, b) return a.name:upper() < b.name:upper() end)
   return availableCommands
 end
 
