@@ -1,13 +1,8 @@
-local shared = getmetatable('').shared
-if type(shared) ~= "table" then
-  shared = {}
-  getmetatable('').shared = shared
-end
+require "/scripts/messageutil.lua"
 
 function init()
   self.soundName = "ouch"
-
-  shared.sccTalkingSound = sccTalkingSound
+  message.setHandler("sccTalkingSound", localHandler(sccTalkingSound))
 end
 
 
@@ -16,15 +11,14 @@ function sccTalkingSound(soundData)
     animator.setSoundPool(self.soundName, {soundData})
     animator.setSoundVolume(self.soundName, 1)
     animator.setSoundPitch(self.soundName, 1)
-    animator.playSound(self.soundName)
   elseif type(soundData) == "table" then
     animator.setSoundPool(self.soundName, soundData.pool or {})
     animator.setSoundVolume(self.soundName, soundData.volume or 1)
     animator.setSoundPitch(self.soundName, soundData.pitch or 1)
-    animator.playSound(self.soundName)
   end
+  animator.playSound(self.soundName)
 end
 
 function uninit()
-  shared.sccTalkingSound = nil
+
 end

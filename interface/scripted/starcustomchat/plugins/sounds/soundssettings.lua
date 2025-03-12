@@ -1,11 +1,5 @@
 require "/interface/scripted/starcustomchatsettings/settingsplugin.lua"
 
-local shared = getmetatable('').shared
-if type(shared) ~= "table" then
-  shared = {}
-  getmetatable('').shared = shared
-end
-
 sounds = SettingsPluginClass:new(
   { name = "sounds" }
 )
@@ -77,10 +71,8 @@ function sounds:playSound()
     pitch = self.soundPitch,
     volume = 1.3
   }
-  if not shared.sccTalkingSound then
-    status.addPersistentEffect("scctalking", "scctalking")
-  end
-  shared.sccTalkingSound(soundTable)
+
+  world.sendEntityMessage(player.id(), "sccTalkingSound", soundTable)
 end
 
 function sounds:setTalkingPitch()
