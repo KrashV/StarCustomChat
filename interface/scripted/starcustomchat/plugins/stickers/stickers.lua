@@ -61,7 +61,8 @@ function stickers:addCustomCommandPreview(availableCommands, substr)
     if string.find("/" .. name, substr, nil, true) then
       table.insert(availableCommands, {
         name = "/" .. name,
-        color = "stickercommands"
+        color = "stickercommands",
+        data = "/" .. name
       })
     end
   end

@@ -631,13 +631,14 @@ function sendMessageToBeSent(text, mode)
       return
     end
 
-    if string.sub(text, 1, 2) == "//" then
+    if string.sub(text, 1, 2) == "//" and not self.isOpenSB then
       starcustomchat.utils.alert("chat.alerts.cannot_start_two_slashes")
       return
     end
 
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
       widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
+      self.savedCommandSelection = 0
       return
     else
       processCommand(text)

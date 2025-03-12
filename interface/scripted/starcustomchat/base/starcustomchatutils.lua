@@ -56,17 +56,37 @@ end
 function starcustomchat.utils.getCommands(allCommands, substr)
   local availableCommands = {}
 
-  for type, commlist in pairs(allCommands) do 
-    for _, comm in ipairs(commlist) do
-      if type ~= "admin" or (type == "admin" and player.isAdmin()) then
-        if string.find(comm, substr, nil, true) then
-          table.insert(availableCommands, {
-            name = comm,
-            color = nil
-          })
+  local function addCommandToList(command, data, description)
+    if string.find(command, substr, nil, true) then
+      table.insert(availableCommands, {
+        name = command,
+        description = description,
+        data = data,
+        color = nil
+      })
+    end
+  end
+
+  local function runThroughCommands(commType, commandList, prefix, level)
+    for _, comm in ipairs(commandList) do
+      if type(comm) == "string" then
+        if not string.find(commType, "admin") or player.isAdmin() then
+          addCommandToList(prefix .. comm, comm, nil)
+        end
+      elseif type(comm) == "table" then
+        if not comm.admin or player.isAdmin() then
+          local fullCommand = prefix .. comm.command
+          addCommandToList(fullCommand, comm.command, comm.description)
+          if string.find(substr, fullCommand .. " ", 1, true) then
+            runThroughCommands(commType, comm.subcommands or {}, fullCommand .. " ", level + 1)
+          end
         end
       end
     end
+  end
+
+  for commType, commlist in pairs(allCommands) do
+    runThroughCommands(commType, commlist, "", 0)
   end
 
   self.runCallbackForPlugins("addCustomCommandPreview", availableCommands, substr)

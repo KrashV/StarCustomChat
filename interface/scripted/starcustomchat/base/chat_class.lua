@@ -320,12 +320,15 @@ function StarCustomChat:previewCommands(commands, selected)
   self.commandPreviewCanvas:clear()
 
   local result = ""
-  for i, command in ipairs(commands) do 
-    result = result .. "^" .. (i == selected and self:getColor(command.color or "commandselecttext") or self:getColor("chattext")) .. ";" .. command.name .. " "
+  local n = #commands
+
+  for j = 0, n - 1 do
+    local i = (selected + j - 1) % n + 1
+    result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i].data .. " "
   end
 
   self.commandPreviewCanvas:drawText(result, {
-    position = {0, 0},
+    position = self.config.previewCommandOffset,
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "bottom" -- top, mid, bottom
   }, self.config.previewCommandFontSize)
