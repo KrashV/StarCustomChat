@@ -1,3 +1,2 @@
-- Fixed OSB not logging messages.
-- Fixed entity map script crash (@FezzedOne)
-- Enhanced command system
+- xStarbound support
+- Potentially fixed doubling of the chat in SE

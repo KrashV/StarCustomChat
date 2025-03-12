@@ -12,7 +12,6 @@ local handlerCutter = nil
 
 ICChatTimer = TimerKeeper.new()
 function init()
-  
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   self.isOSBXSB = self.isOpenSB or xsb
   
@@ -23,6 +22,7 @@ function init()
   if not self.isOSBXSB then
     require("/scripts/starextensions/lib/chat_callback.lua")
     handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
+    starcustomchat.utils.setSharedValue("dismissPane", pane.dismiss)
   else
     starcustomchat.utils.setMessageHandler = nil
     self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
@@ -179,10 +179,6 @@ function prepareForCallbacks()
   
   if not calbacksReady then
     ICChatTimer:add(0.5, prepareForCallbacks)
-  else
-    if not self.isOSBXSB then
-      checkUUID()
-    end
   end
 end
 
@@ -204,6 +200,8 @@ function registerCallbacks()
   end
   
   starcustomchat.utils.setMessageHandler( "scc_reload_callbacks", localHandler(prepareForCallbacks))
+  starcustomchat.utils.setMessageHandler( "scc_is_open", localHandler(function() return true end))
+
 
   starcustomchat.utils.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then

@@ -111,6 +111,7 @@ end
 
 function update(dt)
   SCChatTimer:update(dt)
+  promises:update()
 end
 
 function uninit()
@@ -120,5 +121,9 @@ function uninit()
 
   if root.setConfiguration then 
     root.setConfiguration("scc_stored_messages", self.storedMessages)
+  end
+
+  if not self.isOSBXSB and shared.dismissPane then
+    shared.dismissPane()
   end
 end
