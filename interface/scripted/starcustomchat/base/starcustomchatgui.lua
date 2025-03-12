@@ -99,7 +99,7 @@ function init()
 
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, "lytCommandPreview.cnvCommandsCanvas",
+  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName,
     chatConfig, storedMessages, self.chatMode,
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
     sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
@@ -481,6 +481,10 @@ function canvasClickEvent(position, button, isButtonDown)
     if self.isOpenSB then
       setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
       self.customChat:processQueue()
+
+      if widget.getText("tbxInput") ~= "" then
+        widget.focus("tbxInput")
+      end
     else
       if not self.reopening then
         

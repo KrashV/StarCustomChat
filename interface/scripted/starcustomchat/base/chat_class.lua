@@ -16,7 +16,6 @@ StarCustomChat = {
   lineOffset = 0,
   canvas = nil,
   highlightCanvas = nil,
-  commandPreviewCanvas = nil,
   totalHeight = 0,
   config = {},
   expanded = false,
@@ -33,7 +32,7 @@ StarCustomChat = {
 
 StarCustomChat.__index = StarCustomChat
 
-function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, commandPreviewWid, config, messages, 
+function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, config, messages, 
   chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, defaultColors, callbackPlugins)
 
   local o = {}
@@ -45,7 +44,6 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.canvas = widget.bindCanvas(canvasWid)
   o.backgroundCanvas = widget.bindCanvas(backgroundCanvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
-  o.commandPreviewCanvas = widget.bindCanvas(commandPreviewWid)
   o.config = config
   o.chatMode = chatMode
   o.expanded = expanded
@@ -317,7 +315,6 @@ function portraitSizeFromBaseFont(font)
 end
 
 function StarCustomChat:previewCommands(commands, selected)
-  self.commandPreviewCanvas:clear()
 
   local result = ""
   local n = #commands
@@ -327,11 +324,13 @@ function StarCustomChat:previewCommands(commands, selected)
     result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i].data .. " "
   end
 
-  self.commandPreviewCanvas:drawText(result, {
-    position = self.config.previewCommandOffset,
-    horizontalAnchor = "left", -- left, mid, right
-    verticalAnchor = "bottom" -- top, mid, bottom
-  }, self.config.previewCommandFontSize)
+  widget.setText("lytCommandPreview.lblCommandPreview", result)
+
+  if commands[selected].description then
+    widget.setText("lytCommandPreview.lblDescription", starcustomchat.utils.getTranslation(commands[selected].description))
+  else
+    widget.setText("lytCommandPreview.lblDescription", "")
+  end
 end
 
 function StarCustomChat:getUnknownPortrait(connection)

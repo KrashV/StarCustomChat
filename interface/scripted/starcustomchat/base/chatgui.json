@@ -74,7 +74,7 @@
     "lytCommandPreview": {
       "type": "layout",
       "layoutType": "basic",
-      "rect": [21, 25, 300, 53],
+      "rect": [21, 25, 289, 65],
       "zlevel": 10,
       "visible": false,
       "children": {
@@ -83,12 +83,24 @@
           "file": "/interface/scripted/starcustomchat/base/commandpreview.png",
           "zlevel": 11
         },
-        "cnvCommandsCanvas": {
-          "type": "canvas",
-          "zlevel": 12,
-          "rect": [2, 1, 265, 12],
-          "mouseTransparent": false,
-          "captureMouseEvents": false
+        "imgDescription": {
+          "type": "image",
+          "file": "/interface/scripted/starcustomchat/base/commandpreview.png",
+          "zlevel": 11,
+          "position": [0, 12]
+        },
+        "lblDescription": {
+          "type": "label",
+          "zlevel": 11,
+          "fontSize": 7,
+          "color": "#bbbbbbAA",
+          "position": [4, 14]
+        },
+        "lblCommandPreview": {
+          "type": "label",
+          "zlevel": 11,
+          "fontSize": 8,
+          "position": [2, 1]
         }
       }
     },
