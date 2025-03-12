@@ -48,7 +48,6 @@ function init()
   message.setHandler("scc_chat_opened", localHandler(openChat))
   message.setHandler("scc_uuid", localHandler(function() return self.chatUUID end))
 
-  world.sendEntityMessage(player.id(), "scc_reload_callbacks")
 end
 
 function checkSEAndControls()

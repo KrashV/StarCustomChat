@@ -24,7 +24,6 @@ function init()
     handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
     starcustomchat.utils.setSharedValue("dismissPane", pane.dismiss)
   else
-    starcustomchat.utils.setMessageHandler = nil
     self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
   end
 
@@ -163,10 +162,9 @@ function createPromiseFunction()
           if not self.chatUUID or not self.chatUUID ~= uuid then
             prepareForCallbacks()
             self.chatUUID = uuid
-            return
           end
-          ICChatTimer:add(0.5, pullPromise)
-      end, function() ICChatTimer:add(0.5, pullPromise) end)
+          ICChatTimer:add(0.2, pullPromise)
+      end, function() ICChatTimer:add(0.2, pullPromise) end)
     end)
   end
   
@@ -174,11 +172,11 @@ function createPromiseFunction()
 end
 
 function prepareForCallbacks()
-  starcustomchat.utils.resetShared()
   local calbacksReady = registerCallbacks()
   
   if not calbacksReady then
     ICChatTimer:add(0.5, prepareForCallbacks)
+    starcustomchat.utils.resetShared()
   end
 end
 

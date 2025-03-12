@@ -11,20 +11,15 @@ starcustomchat = {
   currentLocale = "en"
 }
 
+
 function starcustomchat.utils.setSharedValue(key, value)
-  if type(shared) ~= "table" then
-    shared = {}
-    getmetatable('').shared = shared
-  end
+  starcustomchat.utils.resetShared()
   shared[key] = value
   starcustomchat.shared = shared
 end
 
 function starcustomchat.utils.getSharedValue(key)
-  if type(shared) ~= "table" then
-    shared = {}
-    getmetatable('').shared = shared
-  end
+  starcustomchat.utils.resetShared()
   return starcustomchat.shared[key]
 end
 
