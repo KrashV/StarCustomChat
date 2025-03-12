@@ -5,7 +5,8 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 function init()
 
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-
+  self.isOSBXSB = self.isOpenSB or xsb
+  
   self.localePluginConfig = {}
   self.translations = config.getParameter("translations", jarray())
   self.hintTranslations = config.getParameter("hintTranslations", jarray())

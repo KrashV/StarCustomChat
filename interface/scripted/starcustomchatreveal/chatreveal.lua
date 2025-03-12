@@ -1,18 +1,13 @@
 require "/scripts/messageutil.lua"
 require "/scripts/scctimer.lua"
+require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
-
-local shared = getmetatable('').shared
-if type(shared) ~= "table" then
-  shared = {}
-  getmetatable('').shared = shared
-end
 
 ICChatTimer = TimerKeeper.new()
 
 function init()
   self.hiddenChatUUID = sb.makeUuid()
-
+  starcustomchat.utils.resetShared()
   ICChatTimer:add(0.5, registerCallbacks)
 
   ICChatTimer:add(2, checkUUID)
@@ -29,11 +24,16 @@ function checkUUID()
 end
 
 function registerCallbacks()
-  shared.setMessageHandler("scc_close_revealing_interface", localHandler(function()
+  if not starcustomchat.utils.setMessageHandler then
+    ICChatTimer:add(0.5, registerCallbacks)
+    return
+  end
+
+  starcustomchat.utils.setMessageHandler("scc_close_revealing_interface", localHandler(function()
     openChat()
   end))
 
-  shared.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
+  starcustomchat.utils.setMessageHandler("scc_check_uuid", localHandler(function(uuid)
     if uuid ~= self.hiddenChatUUID then
       pane.dismiss()
     end

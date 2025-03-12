@@ -1,5 +1,7 @@
-function require(path)
-  loadstring(assets.bytes(path), path)()
+if not xsb then
+  function require(path)
+    loadstring(assets.bytes(path), path)()
+  end
 end
 
 require "/interface/scripted/starcustomchat/chatbuilder.lua"

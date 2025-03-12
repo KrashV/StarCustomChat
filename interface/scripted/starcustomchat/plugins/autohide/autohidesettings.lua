@@ -19,8 +19,9 @@ function autohide:init()
   widget.setChecked(self.layoutWidget .. ".chkIgnoreInspectMessages", root.getConfiguration("scc_autohide_ignore_inspect_messages") or false)
   
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-
-  if not self.isOpenSB then
+  self.isOSBXSB = self.isOpenSB or xsb
+  
+  if not self.isOSBXSB then
     widget.setVisible(self.layoutWidget .. ".chkIgnoreInspectMessages", false)
     widget.setVisible(self.layoutWidget .. ".lblIgnoreInspectMessages", false)
   end

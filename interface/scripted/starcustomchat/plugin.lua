@@ -11,6 +11,11 @@ function PluginClass:new(obj)
     return obj
 end
 
+function PluginClass:init(chat)
+  self.customChat = chat
+  self:_loadConfig()
+end
+
 function PluginClass:_loadConfig()
   local parms = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", self.name, self.name)).parameters
   if parms then
@@ -24,7 +29,7 @@ function PluginClass:update(dt)
 
 end
 
-function PluginClass:registerMessageHandlers(shared)
+function PluginClass:registerMessageHandlers()
 
 end
 

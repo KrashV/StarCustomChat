@@ -4,21 +4,14 @@ require "/scripts/rect.lua"
 reactions = PluginClass:new(
   { name = "reactions" }
 )
-
-function reactions:init(chat)
-  self:_loadConfig()
-
-  self.customChat = chat
-end
-
 function reactions:contextMenuButtonFilter(buttonName, screenPosition, selectedMessage)
   if selectedMessage and buttonName == "add_reacton" then
     return selectedMessage.mode ~= "CommandResult"
   end
 end
 
-function reactions:registerMessageHandlers(shared)
-  shared.setMessageHandler( "scc_add_reaction", function(_, _, data)
+function reactions:registerMessageHandlers()
+  starcustomchat.utils.setMessageHandler( "scc_add_reaction", function(_, _, data)
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     local reaction = data.reaction
 

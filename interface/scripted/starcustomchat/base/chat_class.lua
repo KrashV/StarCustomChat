@@ -53,9 +53,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.maxCharactersAllowed = maxCharactersAllowed
   o.callbackPlugins = callbackPlugins
   
-
-  o.isOSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-
+  o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
 
   o.colorTable = defaultColors
   return o
@@ -67,6 +65,7 @@ function StarCustomChat:drawBackground()
 end
 
 function StarCustomChat:addMessage(msg)
+
   function formatMessage(message)
 
     if message.mode == "RadioMessage" and message.portrait then
@@ -277,7 +276,7 @@ function StarCustomChat:processCommand(text)
     local commandResult = chat.command(text) or {}
 
       for _, line in ipairs(commandResult) do 
-        if self.isOSB then
+        if self.isOpenSB then
           self:addMessage({
             connection = 0,
             mode = "CommandResult",

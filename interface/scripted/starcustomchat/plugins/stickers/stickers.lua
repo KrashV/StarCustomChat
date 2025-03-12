@@ -5,8 +5,7 @@ stickers = PluginClass:new(
 )
 
 function stickers:init(chat)
-  self:_loadConfig()
-  self.customChat = chat
+  PluginClass.init(self, chat)
   self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
 end
 

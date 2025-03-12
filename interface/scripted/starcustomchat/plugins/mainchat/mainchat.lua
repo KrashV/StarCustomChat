@@ -5,10 +5,7 @@ mainchat = PluginClass:new(
 )
 
 function mainchat:init(chat)
-  self:_loadConfig()
-
-  self.customChat = chat
-
+  PluginClass.init(self, chat)
   self.ReplyTimer = 5
   self.ReplyTime = 0
 
@@ -20,9 +17,9 @@ function mainchat:init(chat)
   end
 end
 
-function mainchat:registerMessageHandlers(shared)
+function mainchat:registerMessageHandlers()
 
-  shared.setMessageHandler( "icc_ping", function(_, _, source)
+  starcustomchat.utils.setMessageHandler( "icc_ping", function(_, _, source)
     starcustomchat.utils.alert("chat.alerts.was_pinged", source)
     if type(self.pingSound) == "table" then
       pane.playSound(self.pingSound[math.random(1, #self.pingSound)])

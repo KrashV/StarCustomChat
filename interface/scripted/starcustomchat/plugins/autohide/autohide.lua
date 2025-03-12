@@ -13,6 +13,7 @@ function autohide:init()
   self.ignoreInspectMessages = root.getConfiguration("scc_autohide_ignore_inspect_messages") or false
 
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+  self.isOSBXSB = self.isOpenSB or xsb
 end
 
 function autohide:onCursorOverride()
@@ -39,7 +40,7 @@ function autohide:onReceiveMessage(message)
 
   if message.connection and (message.connection == 0 and not self.ignoreServerMessages) or (message.connection ~= 0 and not (self.ignoreInspectMessages and isInspecting(message))) then
     self.autohideTime = self.timer
-    if self.isOpenSB then
+    if self.isOSBXSB then
       pane.show()
     end
   end

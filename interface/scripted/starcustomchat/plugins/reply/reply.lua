@@ -7,9 +7,7 @@ reply = PluginClass:new(
 )
 
 function reply:init(chat)
-  self:_loadConfig()
-
-  self.customChat = chat
+  PluginClass.init(self, chat)
   self.replyingToMessage = config.getParameter("replyingToMessage")
 
   if self.replyingToMessage then
@@ -21,8 +19,8 @@ function reply:init(chat)
   self.desaturateTime = 0
 end
 
-function reply:registerMessageHandlers(shared)
-  shared.setMessageHandler( "icc_message_reply", function(_, _, data)
+function reply:registerMessageHandlers()
+  starcustomchat.utils.setMessageHandler( "icc_message_reply", function(_, _, data)
     if data and data.originalMessageUUID  then
       local oldMessageInd = self.customChat:findMessageByUUID(data.originalMessageUUID)
       local newMessageInd = self.customChat:findMessageByUUID(data.newMessageUUID)

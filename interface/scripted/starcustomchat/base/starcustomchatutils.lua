@@ -1,8 +1,44 @@
+local shared = getmetatable('').shared
+
+if type(shared) ~= "table" then
+  shared = {}
+  getmetatable('').shared = shared
+end
+
 starcustomchat = {
   utils = {},
   locale = {},
   currentLocale = "en"
 }
+
+function starcustomchat.utils.setSharedValue(key, value)
+  if type(shared) ~= "table" then
+    shared = {}
+    getmetatable('').shared = shared
+  end
+  shared[key] = value
+  starcustomchat.shared = shared
+end
+
+function starcustomchat.utils.getSharedValue(key)
+  if type(shared) ~= "table" then
+    shared = {}
+    getmetatable('').shared = shared
+  end
+  return starcustomchat.shared[key]
+end
+
+function starcustomchat.utils.resetShared()
+  if type(shared) ~= "table" then
+    shared = {}
+    getmetatable('').shared = shared
+  end
+
+  shared = getmetatable('').shared
+  starcustomchat.shared = shared
+
+  starcustomchat.utils.setMessageHandler = _ENV["message"] and _ENV["message"].setHandler or shared.setMessageHandler
+end
 
 function starcustomchat.utils.getLocale()
   return root.getConfiguration("iccLocale") or "en"
@@ -11,6 +47,8 @@ end
 function starcustomchat.utils.clearNick(nick)
   return string.gsub(nick, "%^#?%w+;", "")
 end
+
+
 
 function starcustomchat.utils.buildLocale(localePluginConfig)
   local addLocaleKeys = copy(localePluginConfig or {})
@@ -177,7 +215,7 @@ function starcustomchat.utils.drawCircle(center, radius, color, sections)
     local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
     local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
 
-    if self.isOpenSB then
+    if self.isOSBXSB then
       if not self.drawingCanvas then
         self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
       end

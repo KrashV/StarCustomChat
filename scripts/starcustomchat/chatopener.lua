@@ -6,6 +6,7 @@ require "/scripts/scctimer.lua"
 SCChatTimer = TimerKeeper.new()
 
 local shared = getmetatable('').shared
+
 if type(shared) ~= "table" then
   shared = {}
   getmetatable('').shared = shared
@@ -15,6 +16,7 @@ local innerHandlerCutter = nil
 
 function init()
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
+  self.isOSBXSB = self.isOpenSB or xsb
 
   self.chatUUID = sb.makeUuid()
 
@@ -29,33 +31,33 @@ function init()
     self.storedMessages = root.getConfiguration("scc_stored_messages") or {}
     self.chatHidden = root.getConfiguration("scc_chat_hidden") or false
 
-    shared.setMessageHandler = message.setHandler
+    if not xsb then shared.setMessageHandler = message.setHandler end
 
-
-    if not self.isOpenSB then
+    if not self.isOSBXSB then
       self.interface = buildChatInterface()
       SCChatTimer:add(0.5, function() innerHandlerCutter = setChatMessageHandler(receiveMessage) end)
+      openChat()
     end
 
-    if self.chatHidden and not self.isOpenSB then
+    if self.chatHidden and not self.isOSBXSB then
       hideChat()
     end
   end
 
   message.setHandler("scc_chat_hidden", localHandler(hideChat))
   message.setHandler("scc_chat_opened", localHandler(openChat))
-  message.setHandler("scc_is_ready", localHandler(function() return self.chatUUID end))
+  message.setHandler("scc_uuid", localHandler(function() return self.chatUUID end))
 
   world.sendEntityMessage(player.id(), "scc_reload_callbacks")
 end
 
 function checkSEAndControls()
-  if not _ENV["starExtensions"] and not self.isOpenSB then
-    return "se_osb_not_found"
+  if not _ENV["starExtensions"] and not self.isOSBXSB then
+    return "se_osb_xsb_not_found"
   elseif not root.assetData and (not root.assetData("/scripts/starextensions/lib/chat_callback.lua") and not player.questIds) then
     return "se_version"
   else
-    if not self.isOpenSB then
+    if not self.isOSBXSB then
       require("/scripts/starextensions/lib/chat_callback.lua")
       if not setChatMessageHandler then
         return "se_version"
@@ -67,7 +69,7 @@ function checkSEAndControls()
       end
     else
       if not world.loungingEntities then
-        return "osb_version"
+        return "osb_xsb_version"
       end
     end
   end
@@ -94,7 +96,7 @@ function hideChat(mode)
 end
 
 function openChat(forceFocus, mode)
-  if not self.isOpenSB then
+  if not self.isOSBXSB then
     self.chatHidden = false
     root.setConfiguration("scc_chat_hidden", self.chatHidden)
     self.interface.storedMessages = self.storedMessages
@@ -109,10 +111,6 @@ end
 
 function update(dt)
   SCChatTimer:update(dt)
-
-  if not shared.chatIsOpen and self.interface and not self.chatHidden and not self.isOpenSB then
-    openChat()
-  end
 end
 
 function uninit()
