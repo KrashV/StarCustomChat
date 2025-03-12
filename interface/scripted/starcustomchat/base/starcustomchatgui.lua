@@ -805,7 +805,16 @@ end
 
 function addMessages(messages, showPane) 
   for _, message in ipairs(messages) do
-    self.customChat:addMessage(convertToChatMessage(message))
+    local message = convertToChatMessage(message)
+    self.customChat:addMessage(message)
+
+    if message.text and message.text ~= "" then
+      if message.nickname then
+        sb.logInfo("Chat: <%s> %s", message.nickname, message.text)
+      else
+        sb.logInfo("Chat: %s", message.text)
+      end
+    end
   end
 end
 
