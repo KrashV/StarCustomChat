@@ -139,7 +139,7 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
-  createPromiseFunction()
+  self.entityMapReady = createPromiseFunction()
   
   requestPortraits()
 
@@ -166,16 +166,18 @@ end
 function createPromiseFunction()
   -- Since in OSB chat is ready before the other scripts, we should pool ourself before we can actually use it
   local function pullPromise()
-    promises:add(world.sendEntityMessage(player.id(), "scc_is_ready"), function(uuid)
-        if self.chatUUID ~= uuid then
-          prepareForCallbacks()
-          self.chatUUID = uuid
-        end
-        ICChatTimer:add(0.5, pullPromise)
-    end, function() ICChatTimer:add(0.5, pullPromise) end)
+    return pcall(function()
+      promises:add(world.sendEntityMessage(player.id(), "scc_is_ready"), function(uuid)
+          if self.chatUUID ~= uuid then
+            prepareForCallbacks()
+            self.chatUUID = uuid
+          end
+          ICChatTimer:add(0.5, pullPromise)
+      end, function() ICChatTimer:add(0.5, pullPromise) end)
+    end)
   end
   
-  pullPromise()
+  return pullPromise()
 end
 
 function prepareForCallbacks()

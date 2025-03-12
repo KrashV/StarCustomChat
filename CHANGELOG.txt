@@ -1,1 +1,2 @@
 - Fixed OSB not logging messages.
+- Fixed entity map script crash (@FezzedOne)
