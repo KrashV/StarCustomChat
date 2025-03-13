@@ -28,11 +28,6 @@ function getConfiguration(key)
   end
 end
 
--- OSB hack
-local player = player or {
-  isAdmin = function() return false end
-}
-
 function buildChatInterface()
 
   local function sortByPriority(tbl)
@@ -90,7 +85,7 @@ function buildChatInterface()
   local function modesThatHaveTabs(modes)
     local n = 0
     for _, mode in ipairs(modes) do 
-      n = (mode.has_tab and (not mode.admin or player.isAdmin())) and n + 1 or n 
+      n = mode.has_tab and n + 1 or n 
     end
     return n 
   end
@@ -99,7 +94,7 @@ function buildChatInterface()
   local tabWidth = safeImageSize(string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%d.png", totalNModes))[1]
 
   for _, mode in ipairs(chatModes) do
-    if mode.has_tab and (not mode.admin or player.isAdmin()) then
+    if mode.has_tab then
       table.insert(baseInterface["gui"]["rgChatMode"]["buttons"], {
         id = tab_id,
         baseImage = string.format("/interface/scripted/starcustomchat/base/tabmodes/chatmode%d.png", totalNModes),
@@ -110,7 +105,8 @@ function buildChatInterface()
         position = {(tab_id - 1) * tabWidth, 0},
         selected = tab_id == 1,
         data = {
-          mode = mode.name
+          mode = mode.name,
+          admin = mode.admin
         }
       })
       tab_id = tab_id + 1

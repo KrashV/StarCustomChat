@@ -150,8 +150,19 @@ function init()
   checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 
+  -- Apparently, we don't know on init if we're admin or not.
+  ICChatTimer:add(0.2, disableAdminModes)
 
   self.settingsInterface = buildSettingsInterface()
+end
+
+function disableAdminModes()
+  local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
+  for i, button in ipairs(buttons) do
+    if button.data.admin then
+      widget.setButtonEnabled("rgChatMode." .. i, player.isAdmin())
+    end
+  end
 end
 
 function createPromiseFunction()
@@ -338,6 +349,7 @@ function localeChat(localePluginConfig)
   end
 
   self.runCallbackForPlugins("onLocaleChange")
+
 
   if hasFocus then
     widget.focus("tbxInput")

@@ -1,2 +1,3 @@
 - xStarbound support
 - Potentially fixed doubling of the chat in SE
+- Fixed the admin modes never shown up in OSB/XSB
