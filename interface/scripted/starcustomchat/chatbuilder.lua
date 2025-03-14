@@ -251,6 +251,16 @@ function buildSettingsInterface()
                     }
                 })
                 widgetConfig.callback = "_generalSpinnerCallback"
+            elseif widgetConfig.type == "radioGroup" then
+              for i, btn in ipairs(widgetConfig.buttons) do
+                widgetConfig.buttons[i].data = sb.jsonMerge(btn.data or {}, {
+                  actualPluginCallback = {
+                    pluginName = pluginName,
+                    callback = widgetConfig.callback
+                  }
+                })
+              end
+              widgetConfig.callback = "_generalCallback"
             elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
                 widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
                     actualPluginCallback = {

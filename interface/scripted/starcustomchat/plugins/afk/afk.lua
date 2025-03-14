@@ -4,17 +4,20 @@ afk = PluginClass:new(
   { name = "afk" }
 )
 
-function afk:init()
-  self:_loadConfig()
+function afk:init(chat)
+  PluginClass.init(self, chat)
 
-  self.timer = (root.getConfiguration("icc_afk_timer") or 0) * 60
+  self.timer = (root.getConfiguration("scc_afk_timer") or 0) * 60
   self.afkTime = self.timer
   self.afkActive = false
   self.forcedAfkTimer = 0
+
+  self.effect = root.getConfiguration("scc_afk_effect") or "starchatafk"
   -- On init, deactivate AFK by force
   --self:deactivateAFK(true)
   status.clearPersistentEffects("starchatafk")
-  widget.setVisible("btnStartAfk", self.timer ~= 0)
+  widget.setVisible("btnStartAfk", not root.getConfiguration("scc_afk_button_disabled"))
+
 end
 
 function afk:update(dt)
@@ -68,8 +71,10 @@ function afk:deactivateAFK(force)
 end
 
 function afk:onSettingsUpdate(data)
-  self.timer = (root.getConfiguration("icc_afk_timer") or 0) * 60
-  widget.setVisible("btnStartAfk", self.timer ~= 0)
+  self.timer = (root.getConfiguration("scc_afk_timer") or 0) * 60
+  self.effect = root.getConfiguration("scc_afk_effect") or "starchatafk"
+  widget.setVisible("btnStartAfk", not root.getConfiguration("scc_afk_button_disabled"))
+  status.setStatusProperty("afkcolor", self.customChat:getColor("afkcolor"):sub(2))
 end
 
 function afk:uninit()

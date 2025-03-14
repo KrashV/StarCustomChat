@@ -21,6 +21,38 @@
     "settings.afk_description": {
       "ru": "Значение 0 отключает AFK плагин",
       "en": "Value 0 disables the AFK plugin"
+    },
+    "settings.afk_effects": {
+      "ru": "AFK эффект:",
+      "en": "AFK effect:"
+    },
+    "settings.afk_modes.plain": {
+      "ru": "Простой",
+      "en": "Plain"
+    },
+    "settings.afk_modes.lines": {
+      "ru": "Линии",
+      "en": "Lines"
+    },
+    "settings.colors.afkcolor": {
+      "ru": "AFK",
+      "en": "AFK"
+    },
+    "settings.plugins.afk.button_disabled": {
+      "ru": "Убрать кнопку AFK",
+      "en": "Disable AFK button"
+    }
+  },
+
+  "settingsPluginAddons": {
+    "colors": {
+      "items": [
+        {
+          "name": "afkcolor",
+          "label": "settings.colors.afkcolor",
+          "default": "161616bc"
+        }
+      ]
     }
   },
 
@@ -41,6 +73,28 @@
         "value": "",
         "translationKey": "settings.plugins.afk"
       },
+
+      "lblDisableAfkButton": {
+        "type": "label",
+        "position": [120, 110],
+        "hAnchor": "right",
+        "color": "lightgray",
+        "translationKey": "settings.plugins.afk.button_disabled"
+      },
+
+      "btnDisableAfkButton": {
+        "type": "button",
+        "position": [130, 110],
+        "checkable": true,
+        "checked": false,
+        "base": "/interface/crafting/checkboxnocheck.png",
+        "hover": "/interface/crafting/checkboxnocheck.png",
+        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+        "callback": "disableAFKButton"
+      },
+
+
       "lblAfk": {
         "type": "label",
         "position": [103, 90],
@@ -71,11 +125,56 @@
       
       "lblAfk0Warning": {
         "type": "label",
-        "position": [120, 70],
+        "position": [120, 75],
         "hAnchor": "mid",
         "color": "lightgray",
         "value": "",
         "translationKey": "settings.afk_description"
+      },
+
+      "lblAfkEffects": {
+        "type": "label",
+        "position": [103, 50],
+        "value": "",
+        "hAnchor": "right",
+        "translationKey": "settings.afk_effects"
+      },
+
+      "rgAfkModes" : {
+        "type": "radioGroup",
+        "callback": "selectAfkMode",
+        "position": [
+          120,
+          45
+        ],
+        "zlevel": 1,
+        "buttons": [
+          {
+            "id" : 0,
+            "baseImage": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/plain.png:unselected",
+            "hoverImage": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/plain.png:unselected?brightness=30",
+            "baseImageChecked": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/plain.png:selected",
+            "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/plain.png:selected?brightness=30",
+            "pressedOffset": [ 0, -1 ],
+            "data": {
+              "effect": "starchatafk",
+              "displayText": "settings.afk_modes.plain"
+            }
+          },
+          {
+            "id" : 1,
+            "baseImage": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/lines.png:unselected",
+            "hoverImage": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/lines.png:unselected?brightness=30",
+            "baseImageChecked": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/lines.png:selected",
+            "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/afk/afkmodes/lines.png:selected?brightness=30",
+            "pressedOffset": [ 0, -1 ],
+            "position": [ 19, 0 ],
+            "data": {
+              "effect": "starchatafklines",
+              "displayText": "settings.afk_modes.lines"
+            }
+          }
+        ]
       }
     }
   },

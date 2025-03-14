@@ -1,3 +1,4 @@
 - xStarbound support
 - Potentially fixed doubling of the chat in SE
 - Fixed the admin modes never shown up in OSB/XSB
+- AFK plugin overhaul: added color support, new mode and ability to hide the AFK button in the chat
