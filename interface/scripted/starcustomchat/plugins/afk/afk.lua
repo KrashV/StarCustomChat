@@ -18,18 +18,26 @@ function afk:init(chat)
   status.clearPersistentEffects("starchatafk")
   widget.setVisible("btnStartAfk", not root.getConfiguration("scc_afk_button_disabled"))
 
+  self.buttonPressed = false
 end
 
 function afk:update(dt)
+
   if self.forcedAfkTimer > 0 then
     self.forcedAfkTimer = math.max(self.forcedAfkTimer - dt, 0)
     if self.putToSleep then
       player.emote("sleep")
     end
   else
-    if self.timer == 0 or #input.events() > 0 then
+    if #input.events() > 0 or (self.timer == 0 and not self.buttonPressed) then
       self.afkTime = self.timer
+      self.buttonPressed = false
       self:deactivateAFK()
+    elseif self.afkActive then
+      self.afkTime = math.max(self.afkTime - dt, 0)
+      if self.putToSleep then
+        player.emote("sleep")
+      end
     else
       self.afkTime = math.max(self.afkTime - dt, 0)
       if self.afkTime <= 0 then
@@ -42,6 +50,7 @@ end
 function afk:onCustomButtonClick(btnName, data)
   if btnName == "btnStartAfk" then
     self.forcedAfkTimer = self.forcedAfkTimer == 0 and self.afkIgnoreTime or 0
+    self.buttonPressed = true
     self.afkTime = 0
     self:activateAFK()
   end
