@@ -93,6 +93,11 @@ function init()
     end
   end
 
+  for _, spinnerName in ipairs(config.getParameter("spinnerNames")) do 
+    widget.setData(spinnerName .. ".up", widget.getData(spinnerName))
+    widget.setData(spinnerName .. ".down", widget.getData(spinnerName))
+  end
+
   self.runCallbackForPlugins("init", starcustomchat.locale)
   localeSettings()
   

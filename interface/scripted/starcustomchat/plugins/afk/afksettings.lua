@@ -13,9 +13,6 @@ function afk:init()
   self.widget.setText("lblAfkTimer", self.settingsTimer)
   self.widget.setData("lblAfkTimer", self.settingsTimer)
 
-  self.widget.setData("afkTimerSpinner.up", self.widget.getData("afkTimerSpinner"))
-  self.widget.setData("afkTimerSpinner.down", self.widget.getData("afkTimerSpinner"))
-
   self.widget.setChecked("btnDisableAfkButton", root.getConfiguration("scc_afk_button_disabled"))
 
   local effect = root.getConfiguration("scc_afk_effect") or "starchatafk"

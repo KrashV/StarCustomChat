@@ -197,6 +197,7 @@ function buildSettingsInterface()
 
   local enabledPlugins = safeAssetJson("/scripts/starcustomchat/enabledplugins.json")
 
+  local spinnerNames = {}
   baseSettingsInterface["translations"] = jarray()
   baseSettingsInterface["hintTranslations"] = jarray()
 
@@ -243,7 +244,7 @@ function buildSettingsInterface()
 
             if widgetConfig.type == "spinner" then
                 local callbackName = widgetConfig.callback or widgetName
-                
+                table.insert(spinnerNames, "lytPluginSettings." .. pluginName .. "." .. widgetName)
                 widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
                     actualPluginCallback = {
                         pluginName = pluginName,
@@ -298,5 +299,6 @@ function buildSettingsInterface()
     end
   end
 
+  baseSettingsInterface["spinnerNames"] = copy(spinnerNames)
   return baseSettingsInterface
 end
