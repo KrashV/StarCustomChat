@@ -14,7 +14,7 @@ function stickers:init()
 end
 
 function stickers:populateList(search)
-  widget.clearListItems(self.layoutWidget .. ".saSavedStickers.listStickers") 
+  self.widget.clearListItems("saSavedStickers.listStickers") 
   self.stickerIndexes = {}
   for name, image in pairs(self.savedStickers) do 
     if not search or string.find(name, search, nil, true) then
@@ -24,19 +24,19 @@ function stickers:populateList(search)
 end
 
 function stickers:addStickerToList(name, image)
-  local li = widget.addListItem(self.layoutWidget .. ".saSavedStickers.listStickers")
+  local li = self.widget.addListItem("saSavedStickers.listStickers")
   table.insert(self.stickerIndexes, li)
-  widget.setImage(self.layoutWidget .. ".saSavedStickers.listStickers." .. li .. ".sticker", image)
-  widget.setText(self.layoutWidget .. ".saSavedStickers.listStickers." .. li .. ".name", name)
-  widget.setData(self.layoutWidget .. ".saSavedStickers.listStickers." .. li, {
+  self.widget.setImage("saSavedStickers.listStickers." .. li .. ".sticker", image)
+  self.widget.setText("saSavedStickers.listStickers." .. li .. ".name", name)
+  self.widget.setData("saSavedStickers.listStickers." .. li, {
     name = name,
     image = image
   })
 end
 
 function stickers:addSticker()
-  local directives = widget.getText(self.layoutWidget .. ".tbxStickerDirectives")
-  local name = widget.getText(self.layoutWidget .. ".tbxStickerName")
+  local directives = self.widget.getText("tbxStickerDirectives")
+  local name = self.widget.getText("tbxStickerName")
   if not directives or directives == "" or not name or name == "" then
     starcustomchat.utils.alert("settings.plugins.stickers.alerts.name_error")
     return
@@ -53,45 +53,45 @@ function stickers:addSticker()
   if imageSize then
     if imageSize[1] > self.maxSize[1] or imageSize[2] > self.maxSize[2] then
       starcustomchat.utils.alert("settings.plugins.stickers.alerts.size_error", self.maxSize[1], self.maxSize[2])
-      widget.setText(self.layoutWidget .. ".tbxStickerDirectives", "")
+      self.widget.setText("tbxStickerDirectives", "")
       return
     end
 
     self.savedStickers[name] = newImage
     self:addStickerToList(name, newImage)
-    widget.setText(self.layoutWidget .. ".tbxStickerDirectives", "")
-    widget.setText(self.layoutWidget .. ".tbxStickerName", "")
+    self.widget.setText("tbxStickerDirectives", "")
+    self.widget.setText("tbxStickerName", "")
     save()
   else
     starcustomchat.utils.alert("settings.plugins.stickers.alerts.image_error")
-    widget.setText(self.layoutWidget .. ".tbxStickerDirectives", "")
+    self.widget.setText("tbxStickerDirectives", "")
   end
 end
 
 function stickers:searchSticker()
-  local text = widget.getText(self.layoutWidget .. ".tbxStickerSearch")
+  local text = self.widget.getText("tbxStickerSearch")
   self:populateList(text)
 end
 
 function stickers:removeSticker()
-  local li = widget.getListSelected(self.layoutWidget .. ".saSavedStickers.listStickers")
+  local li = self.widget.getListSelected("saSavedStickers.listStickers")
   if li then
-    local data = widget.getData(self.layoutWidget .. ".saSavedStickers.listStickers." .. li)
+    local data = self.widget.getData("saSavedStickers.listStickers." .. li)
     local ind = index(self.stickerIndexes, li)
     if ind then
-      widget.removeListItem(self.layoutWidget .. ".saSavedStickers.listStickers", ind - 1)
+      self.widget.removeListItem("saSavedStickers.listStickers", ind - 1)
       self.savedStickers[data.name] = nil
       table.remove(self.stickerIndexes, ind)
-      widget.setVisible(self.layoutWidget .. ".btnRemove", false)
+      self.widget.setVisible("btnRemove", false)
       save()
     end
   end
 end
 
 function stickers:onStickerSelected()
-  local li = widget.getListSelected(self.layoutWidget .. ".saSavedStickers.listStickers")
+  local li = self.widget.getListSelected("saSavedStickers.listStickers")
   if li then
-    widget.setVisible(self.layoutWidget .. ".btnRemove", true)
+    self.widget.setVisible("btnRemove", true)
   end
 end
 

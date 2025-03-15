@@ -4,10 +4,22 @@ SettingsPluginClass = {
 }
 
 function SettingsPluginClass:new(obj)
-    local obj = obj or {}
-    setmetatable(obj, self)
-    self.__index = self
-    return obj
+  local obj = obj or {}
+  setmetatable(obj, self)
+  self.__index = self
+
+      -- Wrap the widget table for this instance
+  local originalWidget = widget
+  obj.widget = setmetatable({}, {
+    __index = function(_, funcName)
+      return function(widName, ...)
+        local fullWidName = obj.layoutWidget .. "." .. widName
+        return originalWidget[funcName](fullWidName, ...)
+      end
+    end
+  })
+
+  return obj
 end
 
 -- Warning: it is called BEFORE the init.

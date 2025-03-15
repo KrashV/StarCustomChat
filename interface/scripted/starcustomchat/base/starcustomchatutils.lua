@@ -131,6 +131,32 @@ function starcustomchat.utils.getCommands(allCommands, substr)
 end
 
 function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
+  local function sendMessageToStagehand()
+    if not player.id() or not world.entityPosition(player.id()) then 
+      return false
+    end
+
+    for _, sh in ipairs(world.entityQuery(world.entityPosition(player.id()), 10, {
+      includedTypes = {"stagehand"}
+    })) do
+      if world.stagehandType(sh) == stagehandType then
+        promises:add(world.sendEntityMessage(sh, message, data), callback, errcallback)
+        return true
+      end
+    end
+  end
+
+  world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
+
+  local sendMessagePromise = {
+    finished = sendMessageToStagehand,
+    succeeded = function() return true end
+  }
+
+  promises:add(sendMessagePromise)
+end
+
+function starcustomchat.utils.sendMessageToUniqueStagehand(stagehandType, message, data, callback, errcallback)
 
   local ensureSending = function ()
     promises:add(world.sendEntityMessage(stagehandType, message, data), function (result)

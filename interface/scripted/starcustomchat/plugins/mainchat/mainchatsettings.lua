@@ -19,7 +19,7 @@ function mainchat:init()
   self.fontSize = root.getConfiguration("icc_font_size") or self.chatConfig.fontSize
   self.maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.portraitCanvas = widget.bindCanvas(self.layoutWidget .. ".portraitCanvas")
+  self.portraitCanvas = self.widget.bindCanvas("portraitCanvas")
 
   self.customImage = player.getProperty("icc_custom_portrait") or nil
   if self.customImage then
@@ -31,15 +31,15 @@ function mainchat:init()
 
   self:drawCharacter()
   
-  widget.setSliderRange(self.layoutWidget .. ".sldFontSize", 0, 4, 1)
-  widget.setSliderValue(self.layoutWidget .. ".sldFontSize", self.fontSize - 6)
+  self.widget.setSliderRange("sldFontSize", 0, 4, 1)
+  self.widget.setSliderValue("sldFontSize", self.fontSize - 6)
 
   self.maxCharactersStep = 300
-  widget.setSliderRange(self.layoutWidget .. ".sldMessageLength", 0, 10, 1)
-  widget.setSliderValue(self.layoutWidget .. ".sldMessageLength", self.maxCharactersAllowed // self.maxCharactersStep)
+  self.widget.setSliderRange("sldMessageLength", 0, 10, 1)
+  self.widget.setSliderValue("sldMessageLength", self.maxCharactersAllowed // self.maxCharactersStep)
 
-  widget.setText(self.layoutWidget .. ".lblFontSizeValue", self.fontSize)
-  widget.setText(self.layoutWidget .. ".lblMessageLengthValue", self.maxCharactersAllowed)
+  self.widget.setText("lblFontSizeValue", self.fontSize)
+  self.widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
 
   self.portraitAnchor = false
 end
@@ -60,7 +60,7 @@ function mainchat:cursorOverride(screenPosition)
     end
     
     for _, event in ipairs(input.events()) do
-      if event.type == "MouseWheel" and widget.inMember(self.layoutWidget .. ".portraitCanvas", screenPosition) then
+      if event.type == "MouseWheel" and self.widget.inMember("portraitCanvas", screenPosition) then
         self.portraitSettings.scale = util.clamp(self.portraitSettings.scale + event.data.mouseWheel / 2, 2, 4)
         save()
         self:drawCharacter()
@@ -82,14 +82,14 @@ function mainchat:resetAvatar()
   self.portraitSettings.scale = self.defaultPortraitSettings.scale
   player.setProperty("icc_custom_portrait", nil)
   self.customImage = nil
-  widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+  self.widget.setText("tbxCustomPortrait", "")
   self:drawCharacter()
   save()
 end
 
 function mainchat:drawCharacter()
   self.portraitCanvas:clear()
-  local canvasPosition = widget.getPosition(self.layoutWidget .. ".portraitCanvas")
+  local canvasPosition = self.widget.getPosition("portraitCanvas")
   local canvasSize =  self.portraitCanvas:size()
   local backImageSize = root.imageSize(self.backImage)
   self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
@@ -109,15 +109,15 @@ function mainchat:drawCharacter()
 end
 
 function mainchat:updateFontSize(widgetName)
-  self.fontSize = widget.getSliderValue(self.layoutWidget .. "." .. widgetName) + 6
-  widget.setText(self.layoutWidget .. ".lblFontSizeValue", self.fontSize)
+  self.fontSize = self.widget.getSliderValue("" .. widgetName) + 6
+  self.widget.setText("lblFontSizeValue", self.fontSize)
   root.setConfiguration("icc_font_size", self.fontSize)
   save()
 end
 
 function mainchat:updateMessageLength(widgetName)
-  self.maxCharactersAllowed = widget.getSliderValue(self.layoutWidget .. "." .. widgetName) * self.maxCharactersStep
-  widget.setText(self.layoutWidget .. ".lblMessageLengthValue", self.maxCharactersAllowed)
+  self.maxCharactersAllowed = self.widget.getSliderValue("" .. widgetName) * self.maxCharactersStep
+  self.widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
   root.setConfiguration("icc_max_allowed_characters", self.maxCharactersAllowed)
   save()
 end
@@ -134,7 +134,7 @@ function mainchat:clickCanvasCallback(position, button, isDown)
 end
 
 function mainchat:setPortrait(widgetName, data)
-  local text = widget.getText(self.layoutWidget .. ".tbxCustomPortrait")
+  local text = self.widget.getText("tbxCustomPortrait")
   if text == "" then
     player.setProperty("icc_custom_portrait", nil)
     self.customImage = nil
@@ -142,17 +142,17 @@ function mainchat:setPortrait(widgetName, data)
     local imageSize = starcustomchat.utils.safeImageSize("/assetmissing.png" .. text)
     if imageSize then
       if imageSize[1] <= 64 and imageSize[2] <= 64 then
-        widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+        self.widget.setText("tbxCustomPortrait", "")
         self.customImage = "/assetmissing.png" .. text
         self.customImageSize = imageSize
         player.setProperty("icc_custom_portrait", "/assetmissing.png" .. text)
         self:drawCharacter()
       else
-        widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+        self.widget.setText("tbxCustomPortrait", "")
         starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
       end
     else
-      widget.setText(self.layoutWidget .. ".tbxCustomPortrait", "")
+      self.widget.setText("tbxCustomPortrait", "")
       starcustomchat.utils.alert("settings.mainchat.alerts.image_error")
     end
   end

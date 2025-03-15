@@ -18,35 +18,35 @@ function sounds:init()
   self.soundsPool = currentRaceSounds[player.gender()] 
 
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
-  widget.setChecked(self.layoutWidget .. ".chkEnabled", self.soundsEnabled or false)
+  self.widget.setChecked("chkEnabled", self.soundsEnabled or false)
 
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
-  widget.setChecked(self.layoutWidget .. ".chkEnabledWhisper", self.soundsWhispersEnabled or false)
+  self.widget.setChecked("chkEnabledWhisper", self.soundsWhispersEnabled or false)
 
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
-  widget.setSliderRange(self.layoutWidget .. ".sldSoundPitch", 0, 20, 2)
-  widget.setSliderValue(self.layoutWidget .. ".sldSoundPitch", self.soundPitch * 10)
+  self.widget.setSliderRange("sldSoundPitch", 0, 20, 2)
+  self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
 
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 end
 
 function sounds:populateScrollArea(allRaceSounds, selectedSpecies)
-  widget.clearListItems(self.layoutWidget .. ".saSpecies.listItems")
+  self.widget.clearListItems("saSpecies.listItems")
 
   for speciesName, _ in pairs(allRaceSounds) do
-    local li = widget.addListItem(self.layoutWidget .. ".saSpecies.listItems")
-    widget.setText(self.layoutWidget .. ".saSpecies.listItems." .. li .. ".name", speciesName)
-    widget.setData(self.layoutWidget .. ".saSpecies.listItems." .. li, speciesName)
+    local li = self.widget.addListItem("saSpecies.listItems")
+    self.widget.setText("saSpecies.listItems." .. li .. ".name", speciesName)
+    self.widget.setData("saSpecies.listItems." .. li, speciesName)
     if speciesName == selectedSpecies then
-      widget.setListSelected(self.layoutWidget .. ".saSpecies.listItems", li)
+      self.widget.setListSelected("saSpecies.listItems", li)
     end
   end
 end
 
 function sounds:changeSpecies()
-  local li = widget.getListSelected(self.layoutWidget .. ".saSpecies.listItems") 
+  local li = self.widget.getListSelected("saSpecies.listItems") 
   if li then
-    local newSpecies = widget.getData(self.layoutWidget .. ".saSpecies.listItems." .. li)
+    local newSpecies = self.widget.getData("saSpecies.listItems." .. li)
     player.setProperty("scc_sound_species", newSpecies)
     self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
     save()
@@ -54,13 +54,13 @@ function sounds:changeSpecies()
 end
 
 function sounds:enableSounds()
-  self.soundsEnabled = widget.getChecked(self.layoutWidget .. ".chkEnabled")
+  self.soundsEnabled = self.widget.getChecked("chkEnabled")
   player.setProperty("scc_sounds_enabled", self.soundsEnabled)
   save()
 end
 
 function sounds:enableWhisperSounds()
-  self.soundsWhispersEnabled = widget.getChecked(self.layoutWidget .. ".chkEnabledWhisper")
+  self.soundsWhispersEnabled = self.widget.getChecked("chkEnabledWhisper")
   player.setProperty("scc_sounds_whisper_enabled", self.soundsWhispersEnabled)
   save()
 end
@@ -76,8 +76,8 @@ function sounds:playSound()
 end
 
 function sounds:setTalkingPitch()
-  self.soundPitch = math.max(widget.getSliderValue(self.layoutWidget .. ".sldSoundPitch") / 10, 0.4)
-  widget.setSliderValue(self.layoutWidget .. ".sldSoundPitch", self.soundPitch * 10)
+  self.soundPitch = math.max(self.widget.getSliderValue("sldSoundPitch") / 10, 0.4)
+  self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
   player.setProperty("scc_sound_pitch", self.soundPitch)
   save()
 end

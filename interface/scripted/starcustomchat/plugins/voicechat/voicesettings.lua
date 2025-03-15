@@ -13,7 +13,7 @@ function voicechat:init()
   self.isOSBXSB = self.isOpenSB or xsb
 
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
-  widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
+  self.widget.setChecked("chkEnableDefault", self.enabled)
 end
 
 function voicechat:isAvailable()

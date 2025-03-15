@@ -9,7 +9,7 @@ function colors:init(chat)
   self:_loadConfig()
   self.picker = colorpicker.new(self.layoutWidget .. ".cnvColorPicker")
   self.currentColor = ""
-  self.coursorCanvas = widget.bindCanvas(self.layoutWidget .. ".coursorCanvas")
+  self.coursorCanvas = self.widget.bindCanvas("coursorCanvas")
   local defaultColors = {}
 
   for _, color in ipairs(self.items) do 
@@ -24,14 +24,14 @@ function colors:onLocaleChange()
 end
 
 function colors:populateList()
-  widget.clearListItems(self.layoutWidget .. ".saScrollArea.listItems")
+  self.widget.clearListItems("saScrollArea.listItems")
   self.currentListItem = nil
   self.currentItemName = nil
-  widget.setVisible(self.layoutWidget .. ".btnDropToDefault", false)
+  self.widget.setVisible("btnDropToDefault", false)
 
 
   for _, item in ipairs(self.items) do 
-    local li = widget.addListItem(self.layoutWidget .. ".saScrollArea.listItems")
+    local li = self.widget.addListItem("saScrollArea.listItems")
     local newListItem = self.layoutWidget .. ".saScrollArea.listItems." .. li
 
     widget.setText(newListItem .. ".name", starcustomchat.utils.getTranslation(item.label))
@@ -44,13 +44,13 @@ function colors:populateList()
 end
 
 function colors:changedColorItem()
-  local selectedItem = widget.getListSelected(self.layoutWidget .. ".saScrollArea.listItems")
+  local selectedItem = self.widget.getListSelected("saScrollArea.listItems")
   if selectedItem then
-    local data = widget.getData(self.layoutWidget .. ".saScrollArea.listItems." .. selectedItem)
+    local data = self.widget.getData("saScrollArea.listItems." .. selectedItem)
     self.currentListItem = selectedItem
     self.currentItemName = data.name
     self.picker:setColor(self.colors[self.currentItemName] or data.defaultColor)
-    widget.setVisible(self.layoutWidget .. ".btnDropToDefault", true)
+    self.widget.setVisible("btnDropToDefault", true)
   end
 end
 
@@ -70,9 +70,9 @@ function colors:update()
       self.colors[self.currentItemName] = self.currentColor
       root.setConfiguration("scc_custom_colors", self.colors)
       save()
-      widget.setFontColor(self.layoutWidget .. ".saScrollArea.listItems." .. self.currentListItem .. ".name", 
+      self.widget.setFontColor("saScrollArea.listItems." .. self.currentListItem .. ".name", 
         "#" .. self.currentColor)
-      widget.setImage(self.layoutWidget .. ".previewImage", "/interface/scripted/starcustomchatsettings/colorpicker/previewcolor.png?replace;FFFF=" .. self.currentColor)
+      self.widget.setImage("previewImage", "/interface/scripted/starcustomchatsettings/colorpicker/previewcolor.png?replace;FFFF=" .. self.currentColor)
     end
 
     self.coursorCanvas:drawImage("/interface/easel/spectrumcursor.png", vec2.sub(self.picker.color_mouse, 3), 1)
@@ -82,7 +82,7 @@ end
 
 function colors:dropToDefault()
   if self.currentListItem then
-    local defaultColor = widget.getData(self.layoutWidget .. ".saScrollArea.listItems." .. self.currentListItem).defaultColor
+    local defaultColor = self.widget.getData("saScrollArea.listItems." .. self.currentListItem).defaultColor
     self.picker:setColor(defaultColor)
     self.colors[self.currentItemName] = defaultColor
     root.setConfiguration("scc_custom_colors", self.colors)
@@ -94,7 +94,7 @@ function colors:clickCanvasCallback(position, button, isDown)
   if widget.active(self.layoutWidget) then
     if button == 0 then
       self.picker.down = isDown
-      widget.blur(self.layoutWidget .. ".cnvColorPicker")
+      self.widget.blur("cnvColorPicker")
     end
   end
 end
