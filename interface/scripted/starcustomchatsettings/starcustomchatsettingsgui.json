@@ -11,7 +11,7 @@
     "bgShine" : {
       "type" : "image",
       "file" : "/interface/confirmation/shine.png",
-      "position" : [0, 20],
+      "position" : [0, 15],
       "zlevel" : -1,
       "mouseTransparent": true
     },
