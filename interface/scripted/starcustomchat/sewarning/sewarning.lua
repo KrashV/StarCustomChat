@@ -3,7 +3,7 @@ function init()
   local locales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
   self.selectedLocale = 1
   self.localeConfigs = {}
-  for _, loc in ipairs(locales) do 
+  for loc, conf in ipairs(locales) do 
     table.insert(self.localeConfigs, root.assetJson(string.format("/interface/scripted/starcustomchat/languages/%s.json", loc)))
   end
 

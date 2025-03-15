@@ -1,0 +1,12 @@
+{
+    "settings.afk_mode": "AFK",
+    "chat.buttons.afk_mode": "Turn on AFK Mode",
+    "settings.afk_min": "min",
+    "settings.plugins.afk": "AFK settings",
+    "settings.afk_description": "Value 0 disables the AFK plugin",
+    "settings.afk_effects": "AFK effect:",
+    "settings.afk_modes.plain": "Plain",
+    "settings.afk_modes.lines": "Lines",
+    "settings.colors.afkcolor": "AFK",
+    "settings.plugins.afk.button_disabled": "Disable AFK button"
+  }

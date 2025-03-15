@@ -1,0 +1,16 @@
+{
+    "settings.plugins.stickers": "Stickers",
+    "settings.plugins.stickers.add": "Add",
+    "settings.plugins.stickers.remove": "Remove",
+    "settings.plugins.stickers.alerts.name_error": "Stickers should have directives and a name",
+    "settings.plugins.stickers.alerts.image_error": "Could not load the image",
+    "settings.plugins.stickers.alerts.size_error": "Image should not exceed %sx%s",
+    "settings.plugins.stickers.alerts.empty_error": "Paste the directives in the text field",
+    "settings.plugins.stickers.alerts.already_exists": "A sticker with this name already exists",
+    "settings.plugins.stickers.name": "Название",
+    "settings.plugins.stickers.search": "Search",
+    "settings.colors.stickerselect": "Stickers",
+    "chat.commands.save_sticker": "Save sticker",
+    "chat.commands.alerts.saved": "Sticker %s saved!",
+    "stickers.name_preview": "Sticker: %s"
+}

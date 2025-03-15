@@ -6,6 +6,9 @@ mainchat = SettingsPluginClass:new(
 
 function mainchat:init()
   self:_loadConfig()
+  self.availableModes = {"compact", "modern"}
+
+  self.chatMode = root.getConfiguration("sccMode") or "modern"
 
   self.backImage = self.chatConfig.icons.empty
   self.frameImage = self.chatConfig.icons.frame
@@ -42,6 +45,11 @@ function mainchat:init()
   self.widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
 
   self.portraitAnchor = false
+
+end
+
+function mainchat:onLocaleChange()
+  self.widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
 end
 
 function mainchat:cursorOverride(screenPosition)
@@ -67,6 +75,17 @@ function mainchat:cursorOverride(screenPosition)
       end
     end
   end
+end
+
+
+
+function mainchat:changeMode()
+  local i = index(self.availableModes, self.chatMode)
+  self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
+  root.setConfiguration("sccMode", self.chatMode)
+  
+  self.widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
+  save()
 end
 
 function mainchat:save()

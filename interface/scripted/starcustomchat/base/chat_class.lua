@@ -241,7 +241,7 @@ end
 function StarCustomChat:resetChat()
   local newChatSize = root.getConfiguration("icc_font_size") or self.config.fontSize
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
-  local newChatMode = root.getConfiguration("iccMode") or "modern"
+  local newChatMode = root.getConfiguration("sccMode") or "modern"
   
   if newChatSize ~= self.config.fontSize or maxCharactersAllowed ~= self.maxCharactersAllowed or self.chatMode ~= newChatMode then
     self.recalculateHeight = true

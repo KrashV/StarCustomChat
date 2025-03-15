@@ -12,6 +12,7 @@ local handlerCutter = nil
 
 ICChatTimer = TimerKeeper.new()
 function init()
+
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   self.isOSBXSB = self.isOpenSB or xsb
   
@@ -38,7 +39,13 @@ function init()
   self.chatUUID = nil
 
   local plugins = {}
-  self.localePluginConfig = {}
+  local localePluginConfig = {}
+  local availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
+  for locale, localeConfig in pairs(availableLocales) do 
+    local translations = root.assetJson(string.format("/interface/scripted/starcustomchat/languages/%s.json", locale))
+    localePluginConfig[locale] = sb.jsonMerge(localePluginConfig, translations)
+  end
+
 
   -- Load plugins
   for i, pluginName in ipairs(config.getParameter("enabledPlugins", {})) do 
@@ -59,8 +66,11 @@ function init()
       chatConfig = sb.jsonMerge(chatConfig, pluginConfig.baseConfigValues)
     end
 
-    if pluginConfig.localeKeys then
-      self.localePluginConfig = sb.jsonMerge(self.localePluginConfig, pluginConfig.localeKeys)
+    for locale, localeConfig in pairs(availableLocales) do 
+      pcall(function()
+        local translations = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale))
+        localePluginConfig[locale] = sb.jsonMerge(localePluginConfig[locale], translations)
+      end)
     end
   end
 
@@ -73,7 +83,8 @@ function init()
     return result
   end
 
-  localeChat(self.localePluginConfig)
+  starcustomchat.utils.buildLocale(localePluginConfig)
+  localeChat()
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
@@ -155,6 +166,8 @@ function init()
 
   self.settingsInterface = buildSettingsInterface()
 end
+
+
 
 function disableAdminModes()
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
@@ -259,11 +272,12 @@ function registerCallbacks()
     end
   end))
 
-  starcustomchat.utils.setMessageHandler( "icc_reset_settings", localHandler(function(data)
+  starcustomchat.utils.setMessageHandler( "scc_reset_settings", localHandler(function(data)
+    starcustomchat.utils.getLocale()
     createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
     self.runCallbackForPlugins("onSettingsUpdate", data)
     
-    localeChat(self.localePluginConfig)
+    localeChat()
     self.customChat:resetChat()
   end))
 
@@ -323,13 +337,12 @@ function findButtonByMode(mode)
   return -1
 end
 
-function localeChat(localePluginConfig)
-  starcustomchat.utils.buildLocale(localePluginConfig)
+function localeChat()
 
   local savedText = widget.getText("tbxInput")
   local hasFocus = widget.hasFocus("tbxInput")
 
-  self.chatMode = root.getConfiguration("iccMode") or "modern"
+  self.chatMode = root.getConfiguration("sccMode") or "modern"
   if self.chatMode ~= "compact" then self.chatMode = "modern" end
 
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
@@ -712,6 +725,7 @@ function openSettings()
   local chatConfigInterface = self.settingsInterface
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
   chatConfigInterface.chatConfig = self.customChat.config
+  chatConfigInterface.localizationTable = starcustomchat.locale
   player.interact("ScriptPane", chatConfigInterface)
 end
 

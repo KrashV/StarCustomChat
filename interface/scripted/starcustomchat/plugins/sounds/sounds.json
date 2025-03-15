@@ -1,33 +1,6 @@
 {
   "name": "Sounds",
 
-  "localeKeys": {
-    "settings.plugins.sounds": {
-      "ru": "Звуки",
-      "en": "Sounds"
-    },
-    "settings.plugins.sounds.enable": {
-      "ru": "Включить",
-      "en": "Enabled"
-    },
-    "settings.plugins.sounds.enablewhisper": {
-      "ru": "Звуки при ЛС",
-      "en": "DM sounds"
-    },
-    "settings.plugins.sounds.pitch": {
-      "ru": "Тон",
-      "en": "Pitch"
-    },
-    "settings.plugins.sounds.test": {
-      "ru": "Тест",
-      "en": "Test"
-    },
-    "settings.plugins.sounds.description": {
-      "ru": "При отправке сообщения проигрывает звук разговора, связанный с вашей расой",
-      "en": "At message sending plays a talking sound related to your species"
-    }
-  },
-
   "settingsPage": {
     "tabButtons": {
       "baseImage": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tab.png",

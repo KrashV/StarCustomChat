@@ -13,17 +13,6 @@
     }
   },
 
-  "localeKeys": {
-    "chat.commands.reply": {
-      "ru": "Ответить",
-      "en": "Reply"
-    },
-    "chat.reply.recipient": {
-      "ru": "Ответить %s",
-      "en": "Reply to %s"
-    }
-  },
-
   "contextMenuButtons": [
     {
       "name": "reply",
@@ -35,7 +24,7 @@
   ],
 
   "parameters": {
-    //"stagehandType": "irdencustomchat",
+    "stagehandType": "",
     "highlightReplyColor": "#1f84c17f",
     "messageRadius": 100,
     "trimLength": 40,

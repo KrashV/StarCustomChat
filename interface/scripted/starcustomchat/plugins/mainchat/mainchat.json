@@ -35,96 +35,6 @@
     "pingSound": "/sfx/instruments/bones/a4.ogg"
   },
 
-  "localeKeys": {
-    "chat.commands.copy": {
-      "ru": "Скопировать",
-      "en": "Copy message"
-    },
-    "chat.commands.ping": {
-      "ru": "Пингануть",
-      "en": "Ping user"
-    },
-    "chat.commands.delete": {
-      "ru": "Удалить",
-      "en": "Delete"
-    },
-    "chat.commands.confirm_delete": {
-      "ru": "Подтвердить удаление",
-      "en": "Confirm deletion"
-    },
-    "chat.commands.cancel_delete": {
-      "ru": "Отмена удаления",
-      "en": "Cancel deletion"
-    },
-    
-    "chat.dming.hint": {
-      "en": "Send DM to:",
-      "ru": "Отправить ЛС:"
-    },
-    "chat.commands.dm": {
-      "ru": "Личное сообщение",
-      "en": "DM user"
-    },
-    "chat.commands.collapse": {
-      "ru": "Свернуть сообщение",
-      "en": "Collapse message"
-    },
-    "chat.commands.uncollapse": {
-      "ru": "Развернуть сообщение",
-      "en": "Expand message"
-    },
-
-    "settings.plugins.mainchat": {
-      "ru": "Общие",
-      "en": "General"
-    },
-    
-    "settings.chat_mode": {
-      "en": "Chat mode",
-      "ru": "Режим чата"
-    },
-    "settings.font_size": {
-      "en": "Chat size",
-      "ru": "Размер чата"
-    },
-    "settings.clear_chat_history": {
-      "en": "Clear chat",
-      "ru": "Очистить чат"
-    },
-    "settings.reset_avatar": {
-      "en": "Reset avatar",
-      "ru": "Сброс портрета"
-    },
-    "settings.chat_collapse": {
-      "en": "Max characters in message\n0 = do not collapse",
-      "ru": "Макс. символов в сообщении\n0 = не сворачивать"
-    },
-    "settings.modes.compact": {
-      "en": "Compact",
-      "ru": "Компакт."
-    },
-    "settings.modes.modern": {
-      "en": "Modern",
-      "ru": "Полный"
-    },
-    "settings.mainchat.customavatar": {
-      "en": "Custom portrait (up to 64x64)",
-      "ru": "Кастомный портрет (до 64х64)"
-    },
-    "settings.mainchat.setportrait": {
-      "en": "Set",
-      "ru": "Выбрать"
-    },
-    "settings.mainchat.alerts.size_error": {
-      "en": "Max image size is 64x64",
-      "ru": "Макс размер изображения - 64x64"
-    },
-    "settings.mainchat.alerts.image_error": {
-      "en": "Could not load the image",
-      "ru": "Изображение не найдено"
-    }
-  },
-
   "contextMenuButtons": [
     {
       "name": "collapse",
@@ -192,7 +102,22 @@
         "rect": [8, 53, 78, 123],
         "captureMouseEvents": true
       },
-  
+
+      "lblChatMode": {
+        "type":"label",
+        "hAnchor": "right",
+        "position": [180, 128],
+        "translationKey": "settings.mainchat.chatmode"
+      },
+
+      "btnMode": {
+        "type": "button",
+        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "position": [185, 126],
+        "callback": "changeMode"
+      },
+
       "saScrollArea": {
         "type": "scrollArea",
         "rect": [8, 53, 78, 123],

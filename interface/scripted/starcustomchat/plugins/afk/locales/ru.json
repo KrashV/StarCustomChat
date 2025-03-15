@@ -1,0 +1,12 @@
+{
+  "settings.afk_mode": "АФК",
+  "chat.buttons.afk_mode": "Включить AFK режим",
+  "settings.afk_min": "мин",
+  "settings.plugins.afk": "Настройки AFK",
+  "settings.afk_description": "Значение 0 отключает AFK плагин",
+  "settings.afk_effects": "AFK эффект:",
+  "settings.afk_modes.plain": "Простой",
+  "settings.afk_modes.lines": "Линии",
+  "settings.colors.afkcolor": "AFK",
+  "settings.plugins.afk.button_disabled": "Убрать кнопку AFK"
+}

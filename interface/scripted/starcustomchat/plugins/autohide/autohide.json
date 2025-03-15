@@ -1,33 +1,6 @@
 {
   "name": "Autohide",
 
-  "localeKeys": {
-    "settings.plugins.autohide": {
-      "ru": "Автосокрытие",
-      "en": "Autohide"
-    },
-    "settings.autohide.after": {
-      "ru": "Скрывать через",
-      "en": "Hide after"
-    },
-    "settings.autohide.sec": {
-      "ru": "сек",
-      "en": "sec"
-    },
-    "settings.autohide.description": {
-      "ru": "Значение 0 держит чат открытым",
-      "en": "Value 0 keeps the chat open"
-    },
-    "settings.autohide.ignore_server_messages": {
-      "ru": "Игнорировать сообщения сервера",
-      "en": "Ignore server messages"
-    },
-    "settings.autohide.ignore_inspect_messages": {
-      "ru": "Игнорировать осмотр объектов",
-      "en": "Ignore inspect item messages"
-    }
-  },
-
   "settingsPage": {
     "tabButtons": {
       "baseImage": "/interface/scripted/starcustomchat/plugins/autohide/settingstabs/tab.png",

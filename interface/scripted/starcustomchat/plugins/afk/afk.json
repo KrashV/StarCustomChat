@@ -1,49 +1,6 @@
 {
   "name": "AFK",
 
-  "localeKeys": {
-    "settings.afk_mode": {
-      "ru": "АФК",
-      "en": "AFK"
-    },
-    "chat.buttons.afk_mode": {
-      "ru": "Включить AFK режим",
-      "en": "Turn on AFK Mode"
-    },
-    "settings.afk_min": {
-      "ru": "мин",
-      "en": "min"
-    },
-    "settings.plugins.afk": {
-      "ru": "Настройки AFK",
-      "en": "AFK settings"
-    },
-    "settings.afk_description": {
-      "ru": "Значение 0 отключает AFK плагин",
-      "en": "Value 0 disables the AFK plugin"
-    },
-    "settings.afk_effects": {
-      "ru": "AFK эффект:",
-      "en": "AFK effect:"
-    },
-    "settings.afk_modes.plain": {
-      "ru": "Простой",
-      "en": "Plain"
-    },
-    "settings.afk_modes.lines": {
-      "ru": "Линии",
-      "en": "Lines"
-    },
-    "settings.colors.afkcolor": {
-      "ru": "AFK",
-      "en": "AFK"
-    },
-    "settings.plugins.afk.button_disabled": {
-      "ru": "Убрать кнопку AFK",
-      "en": "Disable AFK button"
-    }
-  },
-
   "settingsPluginAddons": {
     "colors": {
       "items": [

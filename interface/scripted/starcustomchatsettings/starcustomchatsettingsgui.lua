@@ -7,16 +7,13 @@ function init()
   self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   self.isOSBXSB = self.isOpenSB or xsb
   
-  self.localePluginConfig = {}
   self.translations = config.getParameter("translations", jarray())
   self.hintTranslations = config.getParameter("hintTranslations", jarray())
   local plugins = {}
 
-  self.chatMode = root.getConfiguration("iccMode") or "modern"
-  self.currentLanguage = root.getConfiguration("iccLocale") or "en"
+  self.currentLanguage = root.getConfiguration("scclocale") or "en"
 
   self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/languages/locales.json")
-  self.availableModes = {"compact", "modern"}
 
   self.pluginSettingsButtons = {}
 
@@ -34,10 +31,6 @@ function init()
           table.insert(plugins, _ENV[pluginName]:new())
         end
       end
-    end
-
-    if pluginConfig.localeKeys then
-      self.localePluginConfig = sb.jsonMerge(self.localePluginConfig, pluginConfig.localeKeys)
     end
   end
 
@@ -98,15 +91,20 @@ function init()
     widget.setData(spinnerName .. ".down", widget.getData(spinnerName))
   end
 
-  self.runCallbackForPlugins("init", starcustomchat.locale)
-  localeSettings()
-  
+  self.localization = config.getParameter("localizationTable")
+  self.runCallbackForPlugins("init", self.localization)
+  populateLanguagesList()
 end
 
 function localeSettings()
-  starcustomchat.utils.buildLocale(self.localePluginConfig)
-  widget.setText("btnLanguage", starcustomchat.utils.getTranslation("name"))
-  widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
+  starcustomchat.utils.buildLocale(self.localization)
+  local selectedLocale = root.getConfiguration("scclocale")
+  widget.setButtonImages("btnLanguage", {
+    base = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?border=1;000F",
+    hover = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?brightness=90?border=1;000F"
+  })
+
+  
   pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle"))
 
   for _, translation in ipairs(self.translations) do 
@@ -122,11 +120,47 @@ function localeSettings()
   self.runCallbackForPlugins("onLocaleChange", self.localePluginConfig)
 end
 
+function populateLanguagesList()
+  widget.clearListItems("lytSelectLanguage.saLanguages.listLanguages")
+  local selectedLocale = root.getConfiguration("scclocale")
 
+  for locale, localeConfig in pairs(self.availableLocales) do 
+    local flagImage = "/interface/scripted/starcustomchatsettings/flags/" .. locale .. ".png"
+    local li = widget.addListItem("lytSelectLanguage.saLanguages.listLanguages")
+
+    if li then
+      widget.setImage("lytSelectLanguage.saLanguages.listLanguages." .. li .. ".language", flagImage)
+      widget.setData("lytSelectLanguage.saLanguages.listLanguages." .. li .. ".language", {
+        lang = locale,
+        displayPlainText = localeConfig.name
+      })
+      widget.setData("lytSelectLanguage.saLanguages.listLanguages." .. li, {
+        lang = locale,
+        displayPlainText = localeConfig.name
+      })
+
+      if locale == selectedLocale then
+        widget.setListSelected("lytSelectLanguage.saLanguages.listLanguages", li)
+      end
+    end
+  end
+end
+
+function setLanguage()
+  local li = widget.getListSelected("lytSelectLanguage.saLanguages.listLanguages")
+  if li then
+    local data = widget.getData("lytSelectLanguage.saLanguages.listLanguages." .. li)
+    root.setConfiguration("scclocale", data.lang)
+  
+    localeSettings()
+    save()
+    widget.setVisible("lytSelectLanguage", false)
+  end
+end
 
 function save()
   self.runCallbackForPlugins("save", starcustomchat.locale)
-  world.sendEntityMessage(player.id(), "icc_reset_settings")
+  world.sendEntityMessage(player.id(), "scc_reset_settings")
 end
 
 function changePluginPage()
@@ -139,7 +173,7 @@ function changePluginPage()
   end
 
   for pluginName, li in pairs(self.pluginSettingsButtons) do 
-      widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", false)
+    widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", false)
   end
 end
 
@@ -175,22 +209,8 @@ function cursorOverride(screenPosition)
   self.runCallbackForPlugins("cursorOverride", screenPosition)
 end
 
-function changeLanguage()
-  local i = index(self.availableLocales, self.currentLanguage)
-  self.currentLanguage = self.availableLocales[(i % #self.availableLocales) + 1]
-  root.setConfiguration("iccLocale", self.currentLanguage)
-  
-  localeSettings()
-  save()
-end
-
-
-function changeMode()
-  local i = index(self.availableModes, self.chatMode)
-  self.chatMode = self.availableModes[(i % #self.availableModes) + 1]
-  root.setConfiguration("iccMode", self.chatMode)
-  widget.setText("btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
-  save()
+function toggleLanguageSelection()
+  widget.setVisible("lytSelectLanguage", not widget.active("lytSelectLanguage"))
 end
 
 -- Utility function: return the index of a value in the given array
@@ -218,6 +238,8 @@ function createTooltip(screenPosition)
         return starcustomchat.utils.getTranslation("settings.plugins." .. wData.pluginTabName)
       elseif wData.displayText then
         return starcustomchat.utils.getTranslation(wData.displayText)
+      elseif wData.displayPlainText then
+        return wData.displayPlainText
       end
     end
   end

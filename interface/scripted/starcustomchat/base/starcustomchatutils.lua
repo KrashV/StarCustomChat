@@ -8,7 +8,8 @@ end
 starcustomchat = {
   utils = {},
   locale = {},
-  currentLocale = "en"
+  currentLocale = "en",
+  defaultLocale = "en"
 }
 
 
@@ -36,7 +37,8 @@ function starcustomchat.utils.resetShared()
 end
 
 function starcustomchat.utils.getLocale()
-  return root.getConfiguration("iccLocale") or "en"
+  starcustomchat.currentLocale = root.getConfiguration("scclocale") or starcustomchat.defaultLocale
+  return starcustomchat.currentLocale
 end
 
 function starcustomchat.utils.clearNick(nick)
@@ -44,31 +46,18 @@ function starcustomchat.utils.clearNick(nick)
 end
 
 
-
-function starcustomchat.utils.buildLocale(localePluginConfig)
-  local addLocaleKeys = copy(localePluginConfig or {})
-
-  local locale = root.getConfiguration("iccLocale") or "en"
-  starcustomchat.currentLocale = locale
-  
-  for key, translates in pairs(addLocaleKeys) do 
-    if type(translates) == "table" then 
-      addLocaleKeys[key] = translates[locale]
-    end
-  end
-
-  -- Get base locale
-  starcustomchat.locale = root.assetJson(string.format("/interface/scripted/starcustomchat/languages/%s.json", locale))
-  -- Merge the plugin locale on top of it
-  starcustomchat.locale = sb.jsonMerge(starcustomchat.locale, addLocaleKeys)
+function starcustomchat.utils.buildLocale(fullLocalizationTable)
+  starcustomchat.currentLocale = starcustomchat.utils.getLocale()
+  starcustomchat.locale = copy(fullLocalizationTable)
 end
 
 function starcustomchat.utils.getTranslation(key, ...)
-  if not starcustomchat.locale[key] then
+  local translation = starcustomchat.locale[starcustomchat.currentLocale][key] or starcustomchat.locale[starcustomchat.defaultLocale][key]
+  if not translation then
     sb.logWarn("Can't get transaction of key: %s", key)
     return "???"
   else
-    return ... and string.format(starcustomchat.locale[key], ...) or starcustomchat.locale[key]
+    return ... and string.format(translation, ...) or translation
   end
 end
 

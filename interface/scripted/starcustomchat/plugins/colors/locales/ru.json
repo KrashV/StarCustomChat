@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Цвета",
+    "settings.colors.drop_to_default": "Сбросить",
+    "settings.colors.chattext": "Текст чата",
+    "settings.colors.background": "Фон",
+    "settings.colors.time": "Время",
+    "settings.colors.servertext": "Серверные сбщ",
+    "settings.colors.commandselect": "Команда"
+}

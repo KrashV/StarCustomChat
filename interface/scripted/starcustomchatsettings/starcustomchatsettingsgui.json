@@ -88,19 +88,84 @@
 
     "btnLanguage": {
       "type": "button",
-      "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-      "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-      "position": [75, 21],
-      "callback": "changeLanguage"
+      "base" : "/interface/scripted/starcustomchatsettings/flags/en.png",
+      "hover" : "/interface/scripted/starcustomchatsettings/flags/en.png?brightness=90",
+      "position": [200, 152],
+      "callback": "toggleLanguageSelection",
+      "data": {
+        "displayText": "settings.change_language"
+      }
     },
 
-
-    "btnMode": {
-      "type": "button",
-      "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-      "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-      "position": [118, 21],
-      "callback": "changeMode"
+    "lytSelectLanguage": {
+      "type": "layout",
+      "visible": false,
+      "zlevel": 99,
+      "layoutType": "basic",
+      "size": [32, 85],
+      "position": [194, 66],
+      "children": {
+        "background": {
+          "type": "image",
+          "file": "/interface/scripted/starcustomchatsettings/languageselect/background.png",
+          "position": [0, 0]
+        },
+        "saLanguages": {
+          "type": "scrollArea",
+          "size": [32, 75],
+          "position": [6, 2],
+          
+          "buttons" : {
+            "vertical" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            }
+          },
+          "thumbs" : {
+            "vertical" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            }
+          },
+          "children": {
+            "listLanguages": {
+              "type": "list",
+              "callback": "setLanguage",
+              "schema": {
+                "spacing" : [0, 10],
+                "memberSize" : [17, 12],
+                "selectedBG" : "/interface/scripted/starcustomchatsettings/languageselect/listitemselected.png",
+                "unselectedBG" : "/interface/scripted/starcustomchatsettings/languageselect/listitem.png",
+                "listTemplate": {
+                  "background": {
+                    "type": "image",
+                    "position": [0, 0],
+                    "file": "/interface/scripted/starcustomchatsettings/languageselect/listitem.png"
+                  },
+                  "language" : {
+                    "type": "image",
+                    "file": "/interface/scripted/starcustomchatsettings/flags/en.png",
+                    "position": [1, 1],
+                    "data": {
+                      "displayPlainText": "???"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     
     "close" : {
@@ -109,10 +174,13 @@
       "hover" : "/interface/xhover.png",
       "pressed" : "/interface/xpress.png",
       "pressedOffset" : [0, 0],
-      "position" : [223, 152]
+      "position" : [223, 152],
+      "data": {
+        "displayText": "settings.close"
+      }
     }
   },
-  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "changePluginPage", "_generalSpinnerCallback.down", "changeMode", "changeLanguage"],
+  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage"],
 
   "canvasClickCallbacks" : {
 

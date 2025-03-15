@@ -1,0 +1,8 @@
+{
+    "settings.plugins.sounds": "Звуки",
+    "settings.plugins.sounds.enable": "Включить",
+    "settings.plugins.sounds.enablewhisper": "Звуки при ЛС",
+    "settings.plugins.sounds.pitch": "Тон",
+    "settings.plugins.sounds.test": "Тест",
+    "settings.plugins.sounds.description": "При отправке сообщения проигрывает звук разговора, связанный с вашей расой"
+}

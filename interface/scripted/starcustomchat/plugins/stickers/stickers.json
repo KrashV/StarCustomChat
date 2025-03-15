@@ -1,65 +1,6 @@
 {
   "name": "Stickers",
 
-  "localeKeys": {
-    "settings.plugins.stickers": {
-      "ru": "Стикеры",
-      "en": "Stickers"
-    },
-    "settings.plugins.stickers.add": {
-      "ru": "Добавить",
-      "en": "Add"
-    },
-    "settings.plugins.stickers.remove": {
-      "ru": "Удалить",
-      "en": "Remove"
-    },
-    "settings.plugins.stickers.alerts.name_error": {
-      "en": "Stickers should have directives and a name",
-      "ru": "Стикеры должны иметь директивы и имя"
-    },
-    "settings.plugins.stickers.alerts.image_error": {
-      "en": "Could not load the image",
-      "ru": "Изображение не найдено"
-    },
-    "settings.plugins.stickers.alerts.size_error": {
-      "en": "Image should not exceed %sx%s",
-      "ru": "Изображение не должно быть больше %sх%s"
-    },
-    "settings.plugins.stickers.alerts.empty_error": {
-      "en": "Paste the directives in the text field",
-      "ru": "Вставь директивы в текстовое поле"
-    },
-    "settings.plugins.stickers.alerts.already_exists": {
-      "en": "A sticker with this name already exists",
-      "ru": "Стикер с таким именем уже существует"
-    },
-    "settings.plugins.stickers.name": {
-      "en": "Название",
-      "ru": "Name"
-    },
-    "settings.plugins.stickers.search": {
-      "en": "Search",
-      "ru": "Поиск"
-    },
-    "settings.colors.stickerselect": {
-      "en": "Stickers",
-      "ru": "Стикеры"
-    },
-    "chat.commands.save_sticker": {
-      "en": "Save sticker",
-      "ru": "Сохранить стикер"
-    },
-    "chat.commands.alerts.saved": {
-      "en": "Sticker %s saved!",
-      "ru": "Стикер %s сохранён!"
-    },
-    "stickers.name_preview": {
-      "en": "Sticker: %s",
-      "ru": "Стикер: %s"
-    }
-  },
-
   "settingsPage": {
     "tabButtons": {
       "baseImage": "/interface/scripted/starcustomchat/plugins/stickers/settingstabs/tab.png",

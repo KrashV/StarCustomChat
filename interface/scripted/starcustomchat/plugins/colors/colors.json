@@ -29,36 +29,7 @@
       }
     ]
   },
-  "localeKeys": {
-    "settings.plugins.colors": {
-      "ru": "Цвета",
-      "en": "Colors"
-    },
-    "settings.colors.drop_to_default": {
-      "ru": "Сбросить",
-      "en": "Default"
-    },
-    "settings.colors.chattext": {
-      "ru": "Текст чата",
-      "en": "Chat text"
-    },
-    "settings.colors.background": {
-      "ru": "Фон",
-      "en": "Background"
-    },
-    "settings.colors.time": {
-      "ru": "Время",
-      "en": "Time"
-    },
-    "settings.colors.servertext": {
-      "ru": "Серверные сбщ",
-      "en": "Server msgs"
-    },
-    "settings.colors.commandselect": {
-      "ru": "Команда",
-      "en": "Command"
-    }
-  },
+
   "settingsPage": {
     "tabButtons": {
       "baseImage": "/interface/scripted/starcustomchat/plugins/colors/settingstabs/tab.png",

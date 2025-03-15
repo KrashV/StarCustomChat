@@ -1,13 +1,6 @@
 {
   "name": "Reactions",
 
-  "localeKeys": {
-    "chat.commands.add_reaction": {
-      "ru": "Добавить реакцию",
-      "en": "Add reaction"
-    }
-  },
-
 
   "contextMenuButtons": [
     {

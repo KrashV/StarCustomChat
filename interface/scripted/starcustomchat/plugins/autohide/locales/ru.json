@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Автосокрытие",
+    "settings.autohide.after": "Скрывать через",
+    "settings.autohide.sec": "сек",
+    "settings.autohide.description": "Значение 0 держит чат открытым",
+    "settings.autohide.ignore_server_messages": "Игнорировать сообщения сервера",
+    "settings.autohide.ignore_inspect_messages": "Игнорировать осмотр объектов"
+}
