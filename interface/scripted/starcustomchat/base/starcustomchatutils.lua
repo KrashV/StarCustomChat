@@ -135,13 +135,28 @@ function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, dat
     end
   end
 
-  world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
+  local sendMessagePromise
+  if player.id() and world.entityPosition(player.id()) then
+    world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
 
-  local sendMessagePromise = {
-    finished = sendMessageToStagehand,
-    succeeded = function() return true end
-  }
+    sendMessagePromise = {
+      finished = sendMessageToStagehand,
+      succeeded = function() return true end
+    }
+  else
+    sendMessagePromise = {
+      finished = function() return player.id() and world.entityPosition(player.id()) end,
+      succeeded = function() 
+        world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
 
+        promises:add({
+          finished = sendMessageToStagehand,
+          succeeded = function() return true end
+        })
+      end
+    }
+
+  end
   promises:add(sendMessagePromise)
 end
 
