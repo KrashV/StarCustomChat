@@ -14,14 +14,10 @@ function voicechat:init()
 
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked(self.layoutWidget .. ".chkEnableDefault", self.enabled)
+end
 
-  if self.isOSBXSB then
-    widget.setVisible(self.layoutWidget .. ".btnOpenVoiceSettings", false)
-    widget.setVisible(self.layoutWidget .. ".btnBinds", false)
-    widget.setVisible(self.layoutWidget .. ".lblOpenStarbound", true)
-    widget.setVisible(self.layoutWidget .. ".lblStarExtentions", false)
-  end
-  
+function voicechat:isAvailable()
+  return not (root.assetOrigin and root.assetOrigin("/opensb/coconut.png") or xsb)
 end
 
 function voicechat:openVoiceSettings()

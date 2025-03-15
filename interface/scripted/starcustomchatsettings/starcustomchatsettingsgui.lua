@@ -30,8 +30,9 @@ function init()
       if not _ENV[pluginName] then
         sb.logError("Failed to load settings plugin %s", pluginName)
       else
-        local classInstance = _ENV[pluginName]:new()
-        table.insert(plugins, classInstance)
+        if _ENV[pluginName]:isAvailable() then
+          table.insert(plugins, _ENV[pluginName]:new())
+        end
       end
     end
 
@@ -67,27 +68,29 @@ function init()
 
   widget.clearListItems("saPlugins.listPluginTabs")
   for i, layoutConfig in pairs(sortedLayouts) do 
-    self.pluginLayouts[layoutConfig.data.pluginName] = layoutConfig.data.pluginName
-    local li = widget.addListItem("saPlugins.listPluginTabs")
+    if _ENV[layoutConfig.data.pluginName]:isAvailable() then
+      self.pluginLayouts[layoutConfig.data.pluginName] = layoutConfig.data.pluginName
+      local li = widget.addListItem("saPlugins.listPluginTabs")
 
-    self.pluginSettingsButtons[layoutConfig.data.pluginName] = li
+      self.pluginSettingsButtons[layoutConfig.data.pluginName] = li
 
-    widget.setButtonImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
-      base = layoutConfig.data.base,
-      hover = layoutConfig.data.hover,
-      pressed = layoutConfig.data.baseImageChecked
-    })
-    widget.setButtonCheckedImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
-      base = layoutConfig.data.baseImageChecked,
-      hover = layoutConfig.data.hoverImageChecked,
-      pressed = layoutConfig.data.base
-    })
+      widget.setButtonImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+        base = layoutConfig.data.base,
+        hover = layoutConfig.data.hover,
+        pressed = layoutConfig.data.baseImageChecked
+      })
+      widget.setButtonCheckedImages("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+        base = layoutConfig.data.baseImageChecked,
+        hover = layoutConfig.data.hoverImageChecked,
+        pressed = layoutConfig.data.base
+      })
 
-    widget.setData("saPlugins.listPluginTabs." .. li, layoutConfig.data)
-    widget.setData("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
-      pluginTabName = layoutConfig.data.pluginName
-    })
-    widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", i == 1)
+      widget.setData("saPlugins.listPluginTabs." .. li, layoutConfig.data)
+      widget.setData("saPlugins.listPluginTabs." .. li .. ".pluginSetting", {
+        pluginTabName = layoutConfig.data.pluginName
+      })
+      widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", i == 1)
+    end
   end
 
   self.runCallbackForPlugins("init", starcustomchat.locale)

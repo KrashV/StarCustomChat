@@ -10,6 +10,11 @@ function SettingsPluginClass:new(obj)
     return obj
 end
 
+-- Warning: it is called BEFORE the init.
+function SettingsPluginClass:isAvailable()
+  return true
+end
+
 function SettingsPluginClass:_loadConfig()
   local parms = config.getParameter("pluginParameters")[self.name]
   if parms then
