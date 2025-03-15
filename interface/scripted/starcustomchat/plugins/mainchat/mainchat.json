@@ -226,11 +226,13 @@
 
       "btnSetCustomPortrait": {
         "type": "button",
-        "position": [190, 47],
-        "base": "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover": "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "position": [200, 50],
+        "base": "/interface/crafting/checkboxcheck.png?scalenearest=2",
+        "hover": "/interface/crafting/checkboxcheck.png?scalenearest=2?hueshift=120",
         "callback": "setPortrait",
-        "translationKey": "settings.mainchat.setportrait"
+        "data": {
+          "displayText": "settings.mainchat.set_custom_directives"
+        }
       },
 
       "lblCustomPortrait": {
