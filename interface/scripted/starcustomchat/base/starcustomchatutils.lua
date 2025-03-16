@@ -120,6 +120,7 @@ function starcustomchat.utils.getCommands(allCommands, substr)
 end
 
 function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
+  local totalTries = 10
   local function sendMessageToStagehand()
     if not player.id() or not world.entityPosition(player.id()) then 
       return false
@@ -132,6 +133,11 @@ function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, dat
         promises:add(world.sendEntityMessage(sh, message, data), callback, errcallback)
         return true
       end
+    end
+    totalTries = totalTries - 1
+    if totalTries < 0 then 
+      if errcallback then errcallback("TIMEOUT") end
+      return true
     end
   end
 
