@@ -1,1 +1,2 @@
-- Fixed the default color table not loading properly
+- Print the version in the status chat
+- Slight background changes
