@@ -20,7 +20,7 @@ function reply:init(chat)
 end
 
 function reply:registerMessageHandlers()
-  starcustomchat.utils.setMessageHandler( "icc_message_reply", function(_, _, data)
+  starcustomchat.utils.setMessageHandler( "scc_add_relpy", function(_, _, data)
     if data and data.originalMessageUUID  then
       local oldMessageInd = self.customChat:findMessageByUUID(data.originalMessageUUID)
       local newMessageInd = self.customChat:findMessageByUUID(data.newMessageUUID)
@@ -74,16 +74,15 @@ function reply:onTextboxEnter()
 
   if self.replyingToMessage then
     local dataToSend = {
-      message = "replying", 
       originalMessageUUID = self.replyingToMessage.uuid,
       newMessageUUID = calculateNewMessageUUID(player.id() // -65536, widget.getText("tbxInput"), 
         widget.getSelectedData("rgChatMode").mode, player.name()) 
   }
     if self.stagehandType then
-      starcustomchat.utils.createStagehandWithData(self.stagehandType, dataToSend)
+      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
       for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), self.messageRadius)) do 
-        world.sendEntityMessage(pl, "icc_message_reply", dataToSend)
+        world.sendEntityMessage(pl, "scc_add_relpy", dataToSend)
       end
     end
 

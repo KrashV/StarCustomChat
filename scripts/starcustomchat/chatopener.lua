@@ -87,7 +87,7 @@ function hideChat(mode)
   shared.chatIsOpen = false
   self.chatHidden = true
   root.setConfiguration("scc_chat_hidden", self.chatHidden)
-  message.setHandler("icc_sendToUser", simpleHandler(receiveMessage))
+  message.setHandler("scc_add_message", simpleHandler(receiveMessage))
   
   local revealAssets = root.assetJson("/interface/scripted/starcustomchatreveal/chatreveal.json")
   revealAssets.mode = mode

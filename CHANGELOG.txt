@@ -1,3 +1,5 @@
 - Print the version in the status chat
 - Slight background changes
 - Fixed the mod crashing in case of modded races not having their own chatting sounds
+- Aligned the code across the plugins
+- Created description for server configuration in README.md

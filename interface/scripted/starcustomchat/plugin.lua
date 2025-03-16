@@ -29,6 +29,10 @@ function PluginClass:update(dt)
 
 end
 
+function PluginClass:openSettings(settingsConfig)
+  return settingsConfig
+end
+
 function PluginClass:registerMessageHandlers()
 
 end

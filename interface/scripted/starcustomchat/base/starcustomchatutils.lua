@@ -132,51 +132,38 @@ function starcustomchat.utils.getCommands(allCommands, substr)
 end
 
 function starcustomchat.utils.sendMessageToStagehand(stagehandType, message, data, callback, errcallback)
-  local totalTries = 10
-  local function sendMessageToStagehand()
-    if not player.id() or not world.entityPosition(player.id()) then 
-      return false
-    end
+  return coroutine.create(function()
+      local totalTries = 600 -- That's basically 10 seconds
 
-    for _, sh in ipairs(world.entityQuery(world.entityPosition(player.id()), 10, {
-      includedTypes = {"stagehand"}
-    })) do
-      if world.stagehandType(sh) == stagehandType then
-        promises:add(world.sendEntityMessage(sh, message, data), callback, errcallback)
-        return true
+      while not player.id() or not world.entityPosition(player.id()) do
+          coroutine.yield()
       end
-    end
-    totalTries = totalTries - 1
-    if totalTries < 0 then 
-      if errcallback then errcallback("TIMEOUT") end
-      return true
-    end
-  end
 
-  local sendMessagePromise
-  if player.id() and world.entityPosition(player.id()) then
-    world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
+      world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
 
-    sendMessagePromise = {
-      finished = sendMessageToStagehand,
-      succeeded = function() return true end
-    }
-  else
-    sendMessagePromise = {
-      finished = function() return player.id() and world.entityPosition(player.id()) end,
-      succeeded = function() 
-        world.spawnStagehand(world.entityPosition(player.id()), stagehandType)
+      while totalTries > 0 do
+          coroutine.yield()
 
-        promises:add({
-          finished = sendMessageToStagehand,
-          succeeded = function() return true end
-        })
+          local playerPos = world.entityPosition(player.id())
+          if not playerPos then break end
+
+          for _, sh in ipairs(world.entityQuery(playerPos, 10, { includedTypes = {"stagehand"} })) do
+              if world.stagehandType(sh) == stagehandType then
+                  promises:add(world.sendEntityMessage(sh, message, data), callback, errcallback)
+                  return
+              end
+          end
+
+          totalTries = totalTries - 1
       end
-    }
 
-  end
-  promises:add(sendMessagePromise)
+      -- If we run out of retries, call error callback
+      if errcallback then 
+        errcallback("TIMEOUT") 
+      end
+  end)
 end
+
 
 function starcustomchat.utils.sendMessageToUniqueStagehand(stagehandType, message, data, callback, errcallback)
 
@@ -199,8 +186,8 @@ function starcustomchat.utils.sendMessageToUniqueStagehand(stagehandType, messag
   end)
 end
 
-function starcustomchat.utils.createStagehandWithData(stagehandType, data)
-  world.spawnStagehand(world.entityPosition(player.id()), stagehandType, {data = data})
+function starcustomchat.utils.createStagehandWithData(stagehandType, overrides)
+  world.spawnStagehand(world.entityPosition(player.id()), stagehandType, overrides)
 end
 
 function starcustomchat.utils.cropMessage(text, trimLength)

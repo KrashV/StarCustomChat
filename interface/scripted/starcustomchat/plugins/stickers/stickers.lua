@@ -30,14 +30,14 @@ function stickers:onProcessCommand(text)
   
         local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
         if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
-        world.sendEntityMessage(data.id, "icc_sendToUser", message)
-        world.sendEntityMessage(player.id(), "icc_sendToUser", message)
+        world.sendEntityMessage(data.id, "scc_add_message", message)
+        world.sendEntityMessage(player.id(), "scc_add_message", message)
     elseif message.mode == "Party" then
       if self.stagehandType and self.stagehandType ~= "" then
         starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message, players = util.map(player.teamMembers(), function(p) return p.entity end)})
       else
         for _, pl in ipairs(player.teamMembers()) do 
-          world.sendEntityMessage(pl.entity, "icc_sendToUser", message)
+          world.sendEntityMessage(pl.entity, "scc_add_message", message)
         end
       end
     else
@@ -45,7 +45,7 @@ function stickers:onProcessCommand(text)
         starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message})
       else
         for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
-          world.sendEntityMessage(pl, "icc_sendToUser", message)
+          world.sendEntityMessage(pl, "scc_add_message", message)
         end
       end
     end

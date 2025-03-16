@@ -252,7 +252,7 @@ function registerCallbacks()
     end
   end))
 
-  starcustomchat.utils.setMessageHandler("icc_sendToUser", simpleHandler(function(message)
+  starcustomchat.utils.setMessageHandler("scc_add_message", simpleHandler(function(message)
     self.customChat:addMessage(message)
   end))
 
@@ -725,6 +725,8 @@ function openSettings()
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
   chatConfigInterface.chatConfig = self.customChat.config
   chatConfigInterface.localizationTable = starcustomchat.locale
+
+  chatConfigInterface = self.runCallbackForPlugins("openSettings", chatConfigInterface)
   player.interact("ScriptPane", chatConfigInterface)
 end
 
