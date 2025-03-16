@@ -753,7 +753,7 @@ function createTooltip(screenPosition)
       if wData.tooltipMode then
         return wData.mode and starcustomchat.utils.getTranslation("chat.modes." .. wData.mode) or wData.tooltipMode
       elseif wData.displayText then
-        return starcustomchat.utils.getTranslation(wData.displayText)
+        return starcustomchat.utils.getTranslation(wData.displayText, wData.displayParams)
       elseif wData.displayPlainText then
         return wData.displayPlainText
       end
