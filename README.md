@@ -18,7 +18,7 @@ Custom chat provides you with several in-built functions like these:
 ![Full avatar mode](https://i.imgur.com/yLO8qWg.png)
 ![Short mode with disabled commands showcase](https://i.imgur.com/oXtXDp7.png)
 # Prerequirements
-This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensions) by [Novaenia](https://github.com/Novaenia) v.1.9.24+ or [OpenStarbound](https://github.com/OpenStarbound/OpenStarbound) 0.1.8+
+This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensions) v.1.9.24+ by Kae, [OpenStarbound](https://github.com/OpenStarbound/OpenStarbound) 0.1.8+ or [xStarbound](https://github.com/xStarbound/xStarbound) v3.5.2.1+ by FezzedOne.
 
 # Controls
 
@@ -34,13 +34,6 @@ They are disabled by default and require patching the **/scripts/starcustomchat/
 
     [  {"op": "add", "path": "/-", "value": "oocchat" },   { "op": "add", "path": "/-", "value": "proximitychat" } ]
 If you want to create your own plugins - which I strongly recommend you to do! - you can look at the configuration there.
-## Proximity chat
-You can specify the stagehand that would receive the message and then resend it to people around, or you can skip the stagehand and send the message around your character. 
-![Proximity chat showcase](https://i.imgur.com/fbnNKF0.png)
-*Obviously, only people with the mod installed will receive this message*
-## OOC chat
-A simple tab that automatically adds double brackets around your message (( )). Also places the OOC messages in a separate channel which you can turn off.
-![OOC chat showcase](https://i.imgur.com/AeTFO7a.png)
 
 # Contact me
 If you have bug reports, suggestions or other ideas, you can contact me on Discord (@Degranon) or join [my Discord server](https://discord.gg/gnu8xRjS9p)
