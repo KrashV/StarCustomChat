@@ -1,6 +1,1 @@
-- xStarbound support
-- Potentially fixed doubling of the chat in SE
-- Localization overhaul
-- Plugin settings can now be hidden. I.e. voice chat panel will be hidden in OSB/XSB since it's not used
-- Fixed the admin modes never shown up in OSB/XSB
-- AFK plugin overhaul: added color support, new mode and ability to hide the AFK button in the chat
+- Fixed the default color table not loading properly

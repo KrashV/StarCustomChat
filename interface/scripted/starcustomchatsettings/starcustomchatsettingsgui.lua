@@ -105,8 +105,17 @@ function localeSettings()
     hover = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?brightness=90?border=1;000F"
   })
 
+  -- Trying to pull up the version
+  local version = ""
+  if root.assetSourceMetadata then
+    local assetPath = root.assetOrigin("/interface/scripted/starcustomchat/base/chatgui.json")
+    local metadata = root.assetSourceMetadata(assetPath)
+    if metadata then
+      version = " v" .. metadata.version
+    end
+  end
   
-  pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle"))
+  pane.setTitle(starcustomchat.utils.getTranslation("settings.title"), starcustomchat.utils.getTranslation("settings.subtitle") .. version)
 
   for _, translation in ipairs(self.translations) do 
     widget.setText(translation.widget, starcustomchat.utils.getTranslation(translation.key))
