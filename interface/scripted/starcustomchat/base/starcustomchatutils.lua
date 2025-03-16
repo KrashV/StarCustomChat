@@ -36,6 +36,18 @@ function starcustomchat.utils.resetShared()
   starcustomchat.utils.setMessageHandler = _ENV["message"] and _ENV["message"].setHandler or shared.setMessageHandler
 end
 
+function starcustomchat.utils.getVersion(path)
+  if root.assetSourceMetadata then
+    local assetPath = root.assetOrigin(path or "/interface/scripted/starcustomchat/base/chatgui.json")
+    if assetPath then
+      local metadata = root.assetSourceMetadata(assetPath)
+      if metadata then
+        return metadata.version
+      end
+    end
+  end
+end
+
 function starcustomchat.utils.getLocale()
   starcustomchat.currentLocale = root.getConfiguration("scclocale") or starcustomchat.defaultLocale
   return starcustomchat.currentLocale
