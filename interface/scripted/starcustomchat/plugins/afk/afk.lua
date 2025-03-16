@@ -18,6 +18,8 @@ function afk:init(chat)
   status.clearPersistentEffects("starchatafk")
   widget.setVisible("btnStartAfk", not root.getConfiguration("scc_afk_button_disabled"))
 
+  status.setStatusProperty("afkcolor", self.customChat:getColor("afkcolor"):sub(2))
+
   self.buttonPressed = false
 end
 

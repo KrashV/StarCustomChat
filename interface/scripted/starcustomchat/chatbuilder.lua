@@ -43,11 +43,19 @@ function buildChatInterface()
   local enabledPlugins = safeAssetJson("/scripts/starcustomchat/enabledplugins.json")
   local disabledModes = safeAssetJson("/scripts/starcustomchat/disabledmodes.json")
 
+  -- Special case: calculate colors
+  local defaultColors = safeAssetJson("/interface/scripted/starcustomchat/plugins/colors/colors.json")["parameters"]["items"]
+
   -- First, collect all the modes from the plugins
   local chatModes = {}
   baseInterface["chatModes"] = {}
   baseInterface["contextMenuButtons"] = {}
   baseInterface["enabledPlugins"] = {}
+  baseInterface["defaultColors"] = {}
+  for _, color in ipairs(defaultColors) do 
+    baseInterface.defaultColors[color.name] = color.default
+  end
+
   for _, pluginName in ipairs(enabledPlugins) do 
     local pluginConfig = safeAssetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
     table.insert(baseInterface["enabledPlugins"], pluginName)
@@ -69,6 +77,17 @@ function buildChatInterface()
 
     if pluginConfig.guiAddons then
       baseInterface["gui"] = sb.jsonMerge(baseInterface["gui"], pluginConfig.guiAddons)
+    end
+
+    -- Fetching the default colors from the settings
+    if pluginConfig.settingsPluginAddons then
+      for basePlugName, newConfig in pairs(pluginConfig.settingsPluginAddons) do 
+        if contains(enabledPlugins, basePlugName) and basePlugName == "colors" then
+          for _, item in ipairs(newConfig["items"] or {}) do 
+            baseInterface["defaultColors"][item.name] = item.default
+          end
+        end
+      end
     end
   end
 
@@ -140,12 +159,8 @@ function buildChatInterface()
   end
 
   baseInterface.expanded = getConfiguration("icc_is_expanded")
-  local defaultColors = safeAssetJson("/interface/scripted/starcustomchat/plugins/colors/colors.json")["parameters"]["items"]
 
-  baseInterface.defaultColors = {}
-  for _, color in ipairs(defaultColors) do 
-    baseInterface.defaultColors[color.name] = color.default
-  end
+  
 
   baseInterface["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", baseInterface.expanded and "body" or "shortbody")
   return baseInterface
