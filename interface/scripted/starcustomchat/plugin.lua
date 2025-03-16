@@ -33,8 +33,8 @@ function PluginClass:registerMessageHandlers()
 
 end
 
-function PluginClass:onChatScroll()
-
+function PluginClass:onChatScroll(screenPosition)
+  return false
 end
 
 function PluginClass:onCanvasClick(screenPosition, button, isButtonDown)
