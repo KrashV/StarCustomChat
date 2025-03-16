@@ -8,14 +8,18 @@ function sounds:init()
   self:_loadConfig()
 
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
-  local selectedSpecies = player.getProperty("scc_sound_species") or player.species()
-  local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
-
-  self.soundsPool = currentRaceSounds[player.gender()] 
+  self:resetSoundPool()
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   status.addPersistentEffect("scctalking", "scctalking")
+end
+
+function sounds:resetSoundPool()
+  local selectedSpecies = player.getProperty("scc_sound_species") or player.species()
+  local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
+
+  self.soundsPool = currentRaceSounds[player.gender()]
 end
 
 function sounds:onSendMessage()
@@ -44,7 +48,7 @@ function sounds:onSettingsUpdate()
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
-  self.soundsPool = self.allRaceSounds[player.getProperty("scc_sound_species") or player.species()][player.gender()]
+  self:resetSoundPool()
 end
 
 function sounds:uninit()
