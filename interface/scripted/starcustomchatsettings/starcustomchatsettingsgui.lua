@@ -92,13 +92,14 @@ function init()
   end
 
   self.localization = config.getParameter("localizationTable")
+
   self.runCallbackForPlugins("init", self.localization)
   populateLanguagesList()
 end
 
 function localeSettings()
   starcustomchat.utils.buildLocale(self.localization)
-  local selectedLocale = root.getConfiguration("scclocale")
+  local selectedLocale = root.getConfiguration("scclocale") or "en"
   widget.setButtonImages("btnLanguage", {
     base = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?border=1;000F",
     hover = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?brightness=90?border=1;000F"
@@ -122,7 +123,7 @@ end
 
 function populateLanguagesList()
   widget.clearListItems("lytSelectLanguage.saLanguages.listLanguages")
-  local selectedLocale = root.getConfiguration("scclocale")
+  local selectedLocale = root.getConfiguration("scclocale") or "en"
 
   for locale, localeConfig in pairs(self.availableLocales) do 
     local flagImage = "/interface/scripted/starcustomchatsettings/flags/" .. locale .. ".png"
