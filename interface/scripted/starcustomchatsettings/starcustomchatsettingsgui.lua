@@ -12,7 +12,7 @@ function init()
   local plugins = {}
 
   self.currentLanguage = root.getConfiguration("scclocale") or "en"
-
+  
   self.availableLocales = root.assetJson("/interface/scripted/starcustomchat/locales/locales.json")
 
   self.pluginSettingsButtons = {}

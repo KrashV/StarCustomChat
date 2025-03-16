@@ -41,9 +41,8 @@ function init()
   local plugins = {}
   local localePluginConfig = {}
   local availableLocales = root.assetJson("/interface/scripted/starcustomchat/locales/locales.json")
-  for locale, localeConfig in pairs(availableLocales) do 
-    local translations = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", locale))
-    localePluginConfig[locale] = sb.jsonMerge(localePluginConfig, translations)
+  for locale, localeConfig in pairs(availableLocales) do
+    localePluginConfig[locale] = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", locale))
   end
 
 
