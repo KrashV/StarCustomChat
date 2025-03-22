@@ -80,7 +80,6 @@ function StarCustomChat:addMessage(msg)
     if message.mode == "RadioMessage" and message.portrait then
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
     end
-    message.time = message.time or (message.nickname and message.nickname:match("%^%a+;(%d+:%d+)%^reset;")) or message.text:match("%^%a+;(%d+:%d+)%^reset;")
 
     message = self.callbackPlugins("formatIncomingMessage", message)
 
