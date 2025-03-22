@@ -1,5 +1,2 @@
-- Print the version in the status chat
-- Slight background changes
-- Fixed the mod crashing in case of modded races not having their own chatting sounds
-- Aligned the code across the plugins
-- Created description for server configuration in README.md
+- Fixed the warning crash on changing the language.
+- Removed the time formatting from the main chat.
