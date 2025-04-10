@@ -132,6 +132,12 @@
   "commands.openstarbound.identity.get": "Получает атрибуты идентичности.",
   "commands.openstarbound.render": "Сгенерировать выбранное изображение в папке storage.",
 
+  "commands.xstarbound.swapuuid": "Сменить текущего персонажа по UUID.",
+  "commands.xstarbound.add": "Добавить управляемого клиентом персонажа.",
+  "commands.xstarbound.adduuid": "Добавить управляемого клиентом персонажа по UUID.",
+  "commands.xstarbound.remove": "Удалить управляемого клиентом персонажа.",
+  "commands.xstarbound.removeuuid": "Удалить управляемого клиентом персонажа по UUID.",
+
   "commands.starcustomchat.clearchat": "Очищает историю чата.",
 
   "commands.custom.hotreload": "Перезагружает конфигурацию."
