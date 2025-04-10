@@ -230,7 +230,7 @@ function registerCallbacks()
         portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
-        connection = player.id() // -65536,
+        connection = (player.id() - 65535) // -65536,
         settings = player.getProperty("icc_portrait_settings") or {
           offset = self.customChat.config.defaultPortraitOffset,
           scale = self.customChat.config.defaultPortraitScale

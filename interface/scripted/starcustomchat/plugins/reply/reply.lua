@@ -75,7 +75,7 @@ function reply:onTextboxEnter()
   if self.replyingToMessage then
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, widget.getText("tbxInput"), 
+      newMessageUUID = calculateNewMessageUUID((player.id() - 65535) // -65536, widget.getText("tbxInput"), 
         widget.getSelectedData("rgChatMode").mode, player.name()) 
   }
     if self.stagehandType then

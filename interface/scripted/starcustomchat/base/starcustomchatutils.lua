@@ -12,6 +12,25 @@ starcustomchat = {
   defaultLocale = "en"
 }
 
+ -- FezzedOne: Helper function to try to get a rendered player ID.
+ -- Needed on all receivers' ends for portraits and entity messages because
+ -- xStarbound clients that send messages are *NOT* guaranteed to be controlling
+ -- a player with the entity ID `connectionID * -65536`.
+ function starcustomchat.utils.getPlayerIdFromConnection(cId)
+  local entityId = cId * -65536
+  if not (world.entityExists(entityId) and world.entityType(entityId) == "player") then
+    -- FezzedOne: Tested this. Should not cause any noticeable frame spikes at 60 FPS,
+    -- even if the entire ID space is checked.
+    for id = entityId + 1, entityId + 65535, 1 do
+      -- FezzedOne: Actually faster than just checking `entityType`.
+      if world.entityExists(id) and world.entityType(id) == "player" then
+        entityId = id
+        break
+      end
+    end
+  end
+  return entityId
+end
 
 function starcustomchat.utils.setSharedValue(key, value)
   starcustomchat.utils.resetShared()
