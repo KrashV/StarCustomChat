@@ -138,8 +138,8 @@ function starcustomchat.utils.getCommands(allCommands, substr)
 
   for commType, commlist in pairs(allCommands) do
     if (not string.find(commType, "admin") or player.isAdmin()) 
+      and (commType ~= "xstarbound" or xsb) -- FezzedOne: Moved up to make sure /swap is suggested before /swapuuid.
       and (commType ~= "openstarbound" or self.isOpenSB)
-      and (commType ~= "xstarbound" or xsb)
       and (commType ~= "starextentions" or not self.isOpenSB) then
         runThroughCommands(commType, commlist, "", 0)
     end
