@@ -697,7 +697,7 @@ function processCommand(command)
 end
 
 function sendMessage(message)
-  self.customChat:sendMessage(message.text, message.mode)
+  self.customChat:sendMessage(message)
 end
 
 function setMode(id, data)

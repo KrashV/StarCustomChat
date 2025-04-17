@@ -307,21 +307,16 @@ function StarCustomChat:processCommand(text)
   end
 end
 
-function StarCustomChat:sendMessage(text, mode)
-  if text == "" then return end
+function StarCustomChat:sendMessage(message)
+  if message.text == "" then return end
 
-  local data = {
-    text = text,
-    -- FezzedOne: Ensured that xStarbound clients always send the correct connection ID even after 
-    -- swapping players. This is safe to do on all clients because the math below always returns
-    -- the correct connection ID.
-    connection = (player.id() - 65535) // -65536,
-    portrait = "", --TODO: Add portrait,
-    mode = mode,
-    nickname = player.name()
-  }
+  -- FezzedOne: Ensured that xStarbound clients always send the correct connection ID even after 
+  -- swapping players. This is safe to do on all clients because the math below always returns
+  -- the correct connection ID.
+  message.connection = message.connection or (player.id() - 65535) // -65536
+  message.nickname = message.nickname or player.name()
 
-  self.callbackPlugins("onSendMessage", data)
+  self.callbackPlugins("onSendMessage", message)
 end
 
 function portraitSizeFromBaseFont(font)

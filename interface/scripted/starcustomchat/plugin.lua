@@ -49,7 +49,7 @@ function PluginClass:addCustomCommandPreview(availableCommands, substr)
 
 end
 
-function PluginClass:onSendMessage(data)
+function PluginClass:onSendMessage(message)
 
 end
 

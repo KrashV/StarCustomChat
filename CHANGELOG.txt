@@ -1,2 +1,1 @@
-- Fixed the warning crash on changing the language.
-- Removed the time formatting from the main chat.
+- Added an ability to send messages silently.
