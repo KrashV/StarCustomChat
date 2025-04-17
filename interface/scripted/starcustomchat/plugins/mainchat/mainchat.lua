@@ -74,7 +74,6 @@ end
 
 function mainchat:onSendMessage(message)
   local silent = message.silent
-  if xsb then silent = not silent end -- FezzedOne: xSB has the boolean the other way around.
   if message.mode == "Broadcast" or message.mode == "Local" or message.mode == "Party" then
     chat.send(message.text, message.mode, not silent, message.data)
   end
