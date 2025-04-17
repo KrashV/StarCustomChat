@@ -72,9 +72,9 @@ function mainchat:formatIncomingMessage(message)
   return message
 end
 
-function mainchat:onSendMessage(data)
-  if data.mode == "Broadcast" or data.mode == "Local" or data.mode == "Party" then
-    chat.send(data.text, data.mode)
+function mainchat:onSendMessage(message)
+  if message.mode == "Broadcast" or message.mode == "Local" or message.mode == "Party" then
+    chat.send(message.text, message.mode, not message.silent, message.data)
   end
 end
 

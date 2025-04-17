@@ -306,18 +306,13 @@ function StarCustomChat:processCommand(text)
   end
 end
 
-function StarCustomChat:sendMessage(text, mode)
-  if text == "" then return end
+function StarCustomChat:sendMessage(message)
+  if message.text == "" then return end
 
-  local data = {
-    text = text,
-    connection = player.id() // -65536,
-    portrait = "", --TODO: Add portrait,
-    mode = mode,
-    nickname = player.name()
-  }
+  message.connection = message.connection or player.id() // -65536
+  message.nickname = message.nickname or player.name()
 
-  self.callbackPlugins("onSendMessage", data)
+  self.callbackPlugins("onSendMessage", message)
 end
 
 function portraitSizeFromBaseFont(font)
