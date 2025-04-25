@@ -185,7 +185,7 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
           starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
         else
           -- FezzedOne: Ensures an xStarbound client can always be pinged if any player controlled by it is rendered.
-          target = world.entityExists(selectedMessage.senderId) and selectedMessage.senderId
+          target = (selectedMessage.senderId and world.entityExists(selectedMessage.senderId)) and selectedMessage.senderId
             or starcustomchat.utils.getPlayerIdFromConnection(selectedMessage.connection)
           promises:add(world.sendEntityMessage(target, "icc_ping", player.name()), function()
             starcustomchat.utils.alert("chat.alerts.pinged", selectedMessage.nickname)
