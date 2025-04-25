@@ -624,8 +624,12 @@ function sendMessageToBeSent(text, mode)
 
   local message = {
     text = text,
-    mode = mode
+    mode = mode,
+    data = jobject()
   }
+
+  -- FezzedOne: Add the sender ID to the chat message metadata. Done this way to preserve StarExtensions compatibility.
+  message.data.senderId = player.id()
 
   if self.runCallbackForPlugins("preventTextboxCallback", message) then
     return
@@ -673,6 +677,10 @@ function sendMessageToBeSent(text, mode)
     else
       starcustomchat.utils.saveMessage(message.text)
       message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+      -- FezzedOne: For legacy plugins that don't set the receiver ID in the metadata.
+      if message.receiverId and not message.data.receiverId then
+        message.data.receiverId = message.receiverId
+      end
       sendMessage(message)
     end
   end

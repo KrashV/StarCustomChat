@@ -81,6 +81,16 @@ function StarCustomChat:addMessage(msg)
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
     end
 
+    -- FezzedOne: Pull the sender and receiver IDs from chat metadata if available. Requires xStarbound v3.5.3+ or OpenStarbound v0.1.9+.
+    if message.data then
+      if math.tointeger(message.data.senderId) then
+        message.senderId = message.data.senderId
+      end
+      if math.tointeger(message.data.receiverId) then
+        message.receiverId = message.data.receiverId
+      end
+    end
+
     message = self.callbackPlugins("formatIncomingMessage", message)
 
     if not message or ((not message.text or message.text == "") and not message.image) then return nil end
