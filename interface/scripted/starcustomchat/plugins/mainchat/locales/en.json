@@ -21,5 +21,6 @@
     "settings.mainchat.alerts.size_error": "Max image size is 64x64",
     "settings.mainchat.alerts.image_error": "Could not load the image",
     "settings.mainchat.chatmode": "Chat mode:",
-    "settings.mainchat.set_custom_directives": "Set Single Texture Directives"
+    "settings.mainchat.set_custom_directives": "Set custom portrait directives",
+    "settings.mainchat.utc_offset": "UTC offset: "
 }

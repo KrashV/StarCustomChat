@@ -1,1 +1,1 @@
-- Added an ability to send messages silently.
+- Time! Now you can set your UTC offset, and all the messages will have their time printed correctly.

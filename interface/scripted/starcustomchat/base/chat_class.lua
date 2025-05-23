@@ -27,7 +27,8 @@ StarCustomChat = {
   lastWhisper = nil,
   maxCharactersAllowed = 0,
   defaultColors = {},
-  callbackPlugins = function() end
+  callbackPlugins = function() end,
+  timezoneOffset = 0
 }
 
 StarCustomChat.__index = StarCustomChat
