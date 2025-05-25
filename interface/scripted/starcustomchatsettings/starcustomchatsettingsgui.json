@@ -180,7 +180,9 @@
       }
     }
   },
-  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage"],
+  "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage", 
+    "comboboxSelect", "comboboxClick", "comboboxFilter"
+  ],
 
   "canvasClickCallbacks" : {
 

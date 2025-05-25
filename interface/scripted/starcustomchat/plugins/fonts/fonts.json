@@ -1,0 +1,44 @@
+{
+  "name": "Fonts",
+
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/fonts/settingstabs/tab.png",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/fonts/settingstabs/tabhover.png",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/fonts/settingstabs/tabselected.png",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/fonts/settingstabs/tabselectedhover.png"
+    },
+    "priority": 1,
+    "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": "",
+        "translationKey": "settings.plugins.fonts"
+      },
+
+      "lblSetFont": {
+        "type": "label",
+        "position": [120, 100],
+        "hAnchor": "mid",
+        "value": "",
+        "translationKey": "settings.plugins.fonts.setFont"
+      },
+
+      "btnSelectFont": {
+        "type": "button",
+        "position": [65, 80],
+        "caption": "Heyo",
+        "callback": "testFonts",
+        "base": "/interface/scripted/starcustomchat/plugins/fonts/buttonlarge.png",
+        "hover": "/interface/scripted/starcustomchat/plugins/fonts/buttonlargehover.png"
+      }
+    }
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/fonts/fonts.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/fonts/fontssettings.lua"
+
+}
