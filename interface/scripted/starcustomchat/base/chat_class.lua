@@ -29,7 +29,7 @@ StarCustomChat = {
   defaultColors = {},
   callbackPlugins = function() end,
   timezoneOffset = 0,
-  font = "hobo"
+  fontTable = {}
 }
 
 StarCustomChat.__index = StarCustomChat
@@ -56,7 +56,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.callbackPlugins = callbackPlugins
   
   o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-  o.font = root.getConfiguration("scc_font") or "hobo"
+  o.fontTable = root.getConfiguration("scc_custom_fonts") or {}
   o.colorTable = defaultColors
   return o
 end
@@ -449,7 +449,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     position = nameOffset,
     horizontalAnchor = "left", -- left, mid, right
     verticalAnchor = "top" -- top, mid, bottom
-  }, self.config.fontSize + 1, (color or self:getColor("chattext")), nil, self.font)
+  }, self.config.fontSize + 1, (color or self:getColor("chattext")), nil, self:getFont("chattext"))
 
   if time then
     local timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], nameOffset[2] + self.config.timeOffset[2]}
@@ -457,7 +457,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
       position = timePosition,
       horizontalAnchor = "right", -- left, mid, right
       verticalAnchor = "top" -- top, mid, bottom
-    }, self.config.fontSize - 1, self:getColor("timetext"), nil, self.font)
+    }, self.config.fontSize - 1, self:getColor("timetext"), nil, self:getFont("timetext"))
   end
 end
 
@@ -571,8 +571,12 @@ function StarCustomChat:getTextSize(text)
   return sizeOfText
 end
 
-function StarCustomChat:setFont(newFont)
-  self.font = newFont or "hobo"
+function StarCustomChat:getFont(name)
+  return self.fontTable[name] or "hobo"
+end
+
+function StarCustomChat:setFonts(fontTable)
+  self.fontTable = fontTable
   self:processQueue()
 end
 
@@ -677,7 +681,7 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self.font)
+          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
         end
 
 
@@ -700,7 +704,7 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self.font)
+          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
         else
           local text = createNameForCompactMode(message.nickname, 
@@ -712,7 +716,7 @@ function StarCustomChat:processQueue()
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
-          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self.font)
+          }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
           local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)
@@ -742,7 +746,7 @@ function StarCustomChat:processQueue()
         position = vec2.add(replyStartOffset, {size / 2, 0}),
         horizontalAnchor = "left",
         verticalAnchor = "bottom"
-      }, self.config.fontSize / 1.2, self:getColor("replytext"), nil, self.font)
+      }, self.config.fontSize / 1.2, self:getColor("replytext"), nil, self:getFont("chattext"))
         
       message.height = message.height + replyOffset
     end

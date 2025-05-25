@@ -1,5 +1,19 @@
 {
   "name": "Fonts",
+  "parameters": {
+    "items": [
+      {
+        "name": "chattext",
+        "label": "settings.fonts.chatfont",
+        "default": "hobo"
+      },
+      {
+        "name": "timetext",
+        "label": "settings.fonts.timefont",
+        "default": "hobo"
+      }
+    ]
+  },
 
   "settingsPage": {
     "tabButtons": {
@@ -19,18 +33,60 @@
         "translationKey": "settings.plugins.fonts"
       },
 
+      "btnDropToDefault": {
+        "type": "button",
+        "base": "/interface/buttonred.png",
+        "hover": "/interface/buttonredhover.png",
+        "position": [140, 45],
+        "visible": false,
+        "callback": "dropToDefault",
+        "translationKey": "settings.fonts.drop_to_default"
+      },
+
+      "saScrollArea": {
+        "type": "scrollArea",
+        "rect": [5, 35, 65, 130],
+        "children": {
+          "listItems": {
+            "type": "list",
+            "callback": "changedFontItem",
+            "schema": {
+              "selectedBG" : "/interface/scripted/starcustomchatsettings/colorpicker/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchatsettings/colorpicker/listunselected.png",
+              "spacing" : [0, 1],
+              "memberSize" : [55, 15],
+              "listTemplate" : {
+                "background" : {
+                  "type" : "image",
+                  "file" : "/interface/scripted/starcustomchatsettings/colorpicker/listunselected.png",
+                  "position" : [2, 0],
+                  "zlevel" : -1
+                },
+                "name" : {
+                  "type" : "label",
+                  "hAnchor": "mid",
+                  "vAnchor": "mid",
+                  "position": [27, 7],
+                  "wrapWidth": 50
+                }
+              }
+            }
+          }
+        }
+      },
+
       "lblSetFont": {
         "type": "label",
-        "position": [120, 100],
+        "position": [160, 100],
         "hAnchor": "mid",
         "value": "",
-        "translationKey": "settings.plugins.fonts.setFont"
+        "translationKey": "settings.fonts.setFont"
       },
 
       "btnSelectFont": {
         "type": "button",
-        "position": [65, 80],
-        "caption": "Heyo",
+        "position": [105, 80],
+        "caption": "...",
         "callback": "testFonts",
         "base": "/interface/scripted/starcustomchat/plugins/fonts/buttonlarge.png",
         "hover": "/interface/scripted/starcustomchat/plugins/fonts/buttonlargehover.png"

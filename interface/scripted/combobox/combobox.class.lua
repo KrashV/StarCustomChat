@@ -5,6 +5,7 @@ Combobox = {
   widgetName = "",
   callback = function() end,
   values = {},
+  listMap = {},
   defaultValue = nil
 }
 
@@ -16,6 +17,7 @@ function Combobox:_new(widgetName, callback, values, defaultValue)
   obj.callback = callback
   obj.values = values or {}
   obj.defaultValue = defaultValue or nil
+  obj.listMap = {}
 
   setmetatable(obj, self)
   self.__index = self
@@ -27,6 +29,11 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
     if not widget.getChecked(widgetName) == nil then
         sb.logError("Combobox:bind - Widget '" .. widgetName .. "' does not exist or is not a button.")
         return nil
+    end
+
+    -- Reformat values to a table if it's an array
+    for k, v in pairs(values or {}) do
+        values[k or v] = v
     end
 
     local cbUUID = sb.makeUuid()
@@ -150,21 +157,35 @@ end
 function Combobox:fillValues(searchText, defaultValue)
     widget.clearListItems(self.widgetName .. ".scrollAreaCombobox.listCombobox")
 
-    for _, value in ipairs(self.values) do
+    for value, name in pairs(self.values) do
         if not searchText or value:lower():find(searchText:lower(), nil, true) then
             local li = widget.addListItem(self.widgetName .. ".scrollAreaCombobox.listCombobox")
-            widget.setText(self.widgetName .. ".scrollAreaCombobox.listCombobox." .. li .. ".option", value)
+            widget.setText(self.widgetName .. ".scrollAreaCombobox.listCombobox." .. li .. ".option", name)
             widget.setData(self.widgetName .. ".scrollAreaCombobox.listCombobox." .. li, value)
 
             if defaultValue and value == defaultValue then
                 widget.setListSelected(self.widgetName .. ".scrollAreaCombobox.listCombobox", li)
             end
+
+            self.listMap[value] = li
         end
     end
 end
 
 function Combobox:toggle()
     widget.setVisible(self.widgetName, not widget.active(self.widgetName))
+end
+
+function Combobox:close()
+    widget.setVisible(self.widgetName, false)
+end
+
+function Combobox:open()
+    widget.setVisible(self.widgetName, true)
+end
+
+function Combobox:setSelected(value)
+    widget.setListSelected(self.widgetName .. ".scrollAreaCombobox.listCombobox", self.listMap[value] or "")
 end
 
 function getCombobox(uuid)

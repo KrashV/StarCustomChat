@@ -10,43 +10,11 @@ function fonts:init(chat)
   self:_loadConfig()
   self.chat = chat
 
-  self.fonts = self:getFonts()
+  self.currentFonts = root.getConfiguration("scc_custom_fonts") or {}
 
-  local currentFont = root.getConfiguration("scc_font") or "hobo"
-
-  Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", function(data)
+  self.combobox = Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", function(data)
     self:selectedCombobox(data)
-  end, self.fonts, currentFont, true)
-
-  
-  self.widget.setText("btnSelectFont", currentFont)
-
-end
-
-
-local function getFontName(fontPath)
-  local name = fontPath:match("([^/]+)%.%w+$") or fontPath:match("([^/]+)%.%w+$")
-  return name or fontPath
-end
-
-function fonts:getFonts()
-
-  local woff2 = root.assetsByExtension("woff2") or {}
-  local ttf = root.assetsByExtension("ttf") or {}
-
-  local fontTable = {
-    woff2, ttf
-  }
-
-  local allFonts = {}
-
-  for _, tbl in ipairs(fontTable) do
-      for _, value in ipairs(tbl) do
-          table.insert(allFonts, getFontName(value))
-      end
-  end
-
-  return allFonts
+  end, config.getParameter("allFontsTable"), nil, true)
 end
 
 function fonts:isAvailable()
@@ -54,10 +22,70 @@ function fonts:isAvailable()
 end
 
 
+function fonts:onLocaleChange()
+  self:populateList() -- we need to load the localized names first
+end
+
+function fonts:populateList()
+  self.widget.clearListItems("saScrollArea.listItems")
+
+  self.currentListItem = nil
+  self.currentItemName = nil
+  self.currentLabel = nil
+
+  self.widget.setVisible("btnDropToDefault", false)
+
+  for _, item in ipairs(self.items) do 
+    local li = self.widget.addListItem("saScrollArea.listItems")
+    local newListItem = "saScrollArea.listItems." .. li
+
+    local font = self.currentFonts[item.name] or "hobo"
+
+    self.widget.setText(newListItem .. ".name", string.format("^font=%s;%s", font or "hobo", starcustomchat.utils.getTranslation(item.label)))
+    self.widget.setData(newListItem, {
+      name = item.name,
+      font = font,
+      label = item.label
+    })
+  end
+end
+
+function fonts:changedFontItem()
+  local selectedItem = self.widget.getListSelected("saScrollArea.listItems")
+  if selectedItem then
+    local data = self.widget.getData("saScrollArea.listItems." .. selectedItem)
+    self.currentListItem = selectedItem
+    self.currentItemName = data.name
+    self.currentLabel = data.label
+
+    self.combobox:setSelected(self.currentFonts[self.currentItemName] or "hobo")
+    self.widget.setText("btnSelectFont", self.currentFonts[self.currentItemName] or "hobo")
+    self.widget.setVisible("btnDropToDefault", true)
+  end
+
+end
+
+function fonts:dropToDefault()
+  self:selectedCombobox(newFont)
+end
+
 function fonts:selectedCombobox(newFont)
-  self.widget.setText("btnSelectFont", newFont)
-  root.setConfiguration("scc_font", newFont)
-  save()
+  self.widget.setText("btnSelectFont", newFont or "hobo")
+
+  if self.currentListItem then
+    self.widget.setText("saScrollArea.listItems." .. self.currentListItem .. ".name", string.format("^font=%s;%s", newFont or "hobo", starcustomchat.utils.getTranslation(self.currentLabel)))
+    self.widget.setData("saScrollArea.listItems." .. self.currentListItem, {
+      name = self.currentItemName,
+      font = font,
+      label = self.currentLabel
+    })
+
+    self.currentFonts[self.currentItemName] = newFont
+    root.setConfiguration("scc_custom_fonts", self.currentFonts)
+    save()
+  end
+
+  self.combobox:close()
 end
 
 function fonts:uninit()
