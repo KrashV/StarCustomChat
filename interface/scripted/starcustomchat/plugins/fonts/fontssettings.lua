@@ -61,6 +61,7 @@ function fonts:changedFontItem()
     self.combobox:setSelected(self.currentFonts[self.currentItemName] or "hobo")
     self.widget.setText("btnSelectFont", self.currentFonts[self.currentItemName] or "hobo")
     self.widget.setVisible("btnDropToDefault", true)
+    self.widget.setVisible("btnSelectFont", true)
   end
 
 end

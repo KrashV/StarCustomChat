@@ -1,3 +1,1 @@
-- Fixed the context menu behaving weird from time to time.
-- Time! Now you can set your UTC offset, and all the messages will have their time printed correctly. (Note: in future versions of OSB will be detected automatically )
-- Fonts! A new plugin for OSB that supports changing the fonts used in chat. (OSB only)
+- Quick fix to hide the change font button before selecting the font to change.

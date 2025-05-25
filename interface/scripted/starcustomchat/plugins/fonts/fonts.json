@@ -87,6 +87,7 @@
         "type": "button",
         "position": [105, 80],
         "caption": "...",
+        "visible": false,
         "callback": "testFonts",
         "base": "/interface/scripted/starcustomchat/plugins/fonts/buttonlarge.png",
         "hover": "/interface/scripted/starcustomchat/plugins/fonts/buttonlargehover.png"

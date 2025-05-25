@@ -6,8 +6,7 @@ fonts = PluginClass:new(
 )
 
 function fonts:init(chat)
-  self:_loadConfig()
-  self.customChat = chat
+  PluginClass.init(self, chat)
 
   self.allFontsTable = self:getFonts()
 end
