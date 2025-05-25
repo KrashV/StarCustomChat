@@ -46,6 +46,14 @@ function mainchat:init()
 
   self.portraitAnchor = false
 
+  if os.date then
+    self.widget.setVisible("spnUTCOffset", false)
+    self.widget.setVisible("lblUTCOffset", false)
+    self.widget.setVisible("lblUTCHint", false)
+  else
+    self.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
+    self.widget.setText("lblUTCOffset", self:formatOffset(self.timezoneOffset))
+  end
 end
 
 function mainchat:onLocaleChange()
@@ -77,7 +85,14 @@ function mainchat:cursorOverride(screenPosition)
   end
 end
 
+function mainchat:formatOffset(offset)
+    local sign = offset >= 0 and "+" or "-"
+    local absOffset = math.abs(offset)
+    local hours = math.floor(absOffset)
+    local minutes = math.floor((absOffset - hours) * 60)
 
+    return string.format("%s%02d:%02d", sign, hours, minutes)
+end
 
 function mainchat:changeMode()
   local i = index(self.availableModes, self.chatMode)
@@ -134,6 +149,10 @@ function mainchat:updateFontSize(widgetName)
   save()
 end
 
+function mainchat:update()
+  self.widget.setVisible("btnSetCustomPortrait", self.widget.getText("tbxCustomPortrait") ~= "")
+end
+
 function mainchat:updateMessageLength(widgetName)
   self.maxCharactersAllowed = self.widget.getSliderValue("" .. widgetName) * self.maxCharactersStep
   self.widget.setText("lblMessageLengthValue", self.maxCharactersAllowed)
@@ -144,6 +163,25 @@ end
 function mainchat:clearHistory()
   world.sendEntityMessage(player.id(), "icc_clear_history")
 end
+
+mainchat.utcOffsetSpinner = {}
+
+function mainchat.utcOffsetSpinner.up(self)
+  self.timezoneOffset = self.timezoneOffset + 0.5
+  self.widget.setText("lblUTCOffset", self:formatOffset(self.timezoneOffset))
+  root.setConfiguration("scc_timezone_offset", self.timezoneOffset)
+  save()
+end
+
+function mainchat.utcOffsetSpinner.down(self)
+  self.timezoneOffset = self.timezoneOffset - 0.5
+  self.widget.setText("lblUTCOffset", self:formatOffset(self.timezoneOffset))
+
+  root.setConfiguration("scc_timezone_offset", self.timezoneOffset)
+  save()
+end
+
+
 
 function mainchat:clickCanvasCallback(position, button, isDown)
   if button == 0 then

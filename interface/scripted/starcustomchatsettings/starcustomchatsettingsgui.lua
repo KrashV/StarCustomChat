@@ -1,6 +1,7 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
+require "/interface/scripted/combobox/combobox.class.lua"
 
 function init()
 

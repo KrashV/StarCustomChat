@@ -50,6 +50,24 @@ function mainchat:update(dt)
   self.ReplyTime = math.max(self.ReplyTime - dt, 0)
 end
 
+function mainchat:getTime(timezoneOffset)
+  if os.date then
+    local time = os.date("*t")
+    return string.format("%02d:%02d", time.hour, time.min)
+  else
+    local timestamp = os.time()
+    -- Adjust timestamp by timezone offset (in seconds)
+    local adjusted = timestamp + (timezoneOffset * 3600)
+
+    local secondsInDay = adjusted % 86400
+    local hour = math.floor(secondsInDay / 3600)
+    local minute = math.floor((secondsInDay % 3600) / 60)
+
+    return string.format("%02d:%02d", hour, minute)
+  end
+end
+
+
 function mainchat:formatIncomingMessage(message)
   if message.mode == "CommandResult" then
     message.portrait = self.modeIcons.console
@@ -69,6 +87,7 @@ function mainchat:formatIncomingMessage(message)
     end
   end
 
+  message.time = self:getTime(self.customChat.timezoneOffset)
   return message
 end
 
@@ -245,4 +264,8 @@ function mainchat:onCustomButtonClick(buttonName, data)
       widget.focus("tbxInput")
     end
   end
+end
+
+function mainchat:onSettingsUpdate()
+  self.customChat.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
 end

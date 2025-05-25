@@ -1,4 +1,4 @@
-require"/scripts/colorpicker/widget.lua"
+require"/interface/scripted/starcustomchatsettings/colorpicker/widget.lua"
 require"/scripts/vec2.lua"
 require"/scripts/messageutil.lua"
 

@@ -161,7 +161,7 @@
         "base" : "/interface/scripted/starcustomchatsettings/button.png",
         "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
         "position" : [162, 21],
-        "caption" : "Cancel",
+        "caption" : "Clear",
         "callback": "clearHistory",
         "translationKey": "settings.clear_chat_history"
       },
@@ -218,30 +218,48 @@
 
       "tbxCustomPortrait": {
         "type": "textbox",
-        "position": [97, 50],
+        "position": [8, 40],
         "callback": "null",
-        "maxWidth": 80,
-        "hint": "?directives"
+        "maxWidth": 70,
+        "hint": "?directives",
+        "data": {
+          "displayText": "settings.mainchat.customavatar"
+        }
       },
 
       "btnSetCustomPortrait": {
         "type": "button",
-        "position": [200, 50],
-        "base": "/interface/crafting/checkboxcheck.png?scalenearest=2",
-        "hover": "/interface/crafting/checkboxcheck.png?scalenearest=2?hueshift=120",
+        "position": [92, 21],
+        "base": "/interface/buttonactive.png",
+        "hover": "/interface/buttonactivehover.png",
         "callback": "setPortrait",
+        "visible": false,
         "data": {
           "displayText": "settings.mainchat.set_custom_directives"
-        }
+        },
+        "translationKey": "settings.mainchat.setportrait"
       },
 
-      "lblCustomPortrait": {
+      "lblUTCHint": {
         "type": "label",
-        "position": [97, 40],
+        "position": [165, 53],
+        "hAnchor": "right",
+        "vAnchor": "top",
         "value": "",
-        "color": "lightgray",
-        "mouseTransparent": true,
-        "translationKey": "settings.mainchat.customavatar"
+        "translationKey": "settings.mainchat.utc_offset"
+      },
+
+      "spnUTCOffset" : {
+        "type": "spinner",
+        "position" : [170, 45],
+        "upOffset" : 40,
+        "callback": "utcOffsetSpinner"
+      },
+      "lblUTCOffset": {
+        "type": "label",
+        "position": [195, 45],
+        "value": "",
+        "hAnchor": "mid"
       }
     }
   },

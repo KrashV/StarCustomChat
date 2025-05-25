@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Шрифты",
+    "settings.fonts.setFont": "Выбрать шрифт",
+    "settings.fonts.drop_to_default": "Сбросить",
+    "settings.fonts.chatfont": "Чат",
+    "settings.fonts.timefont": "Время"
+}

@@ -21,5 +21,6 @@
     "settings.mainchat.alerts.size_error": "Макс размер изображения - 64x64",
     "settings.mainchat.alerts.image_error": "Изображение не найдено",
     "settings.mainchat.chatmode": "Режим чата:",
-    "settings.mainchat.set_custom_directives": "Установить Single Texture Directives"
+    "settings.mainchat.set_custom_directives": "Установить новый портрет",
+    "settings.mainchat.utc_offset": "UTC смещение: "
 }

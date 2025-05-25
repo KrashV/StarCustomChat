@@ -1,1 +1,1 @@
-- Added an ability to send messages silently.
+- Quick fix to hide the change font button before selecting the font to change.

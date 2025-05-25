@@ -4,6 +4,9 @@ function contextMenu_init(buttonsConfig)
   self.contextMenu.dotsSize = root.imageSize(config.getParameter("gui")["lytContext"]["children"]["dots"]["base"])
 
   local position = {0, 0}
+
+  widget.removeAllChildren("lytContext")
+  widget.addChild("lytContext", config.getParameter("gui")["lytContext"]["children"]["dots"], "dots")
   for _, btnConfig in ipairs(buttonsConfig) do 
     local buttonSize = root.imageSize(btnConfig["base"])
 
@@ -56,7 +59,7 @@ function processContextMenu(screenPosition)
     self.runCallbackForPlugins("contextMenuReset")
     
     widget.setVisible("lytContext.dots", true)
-    for _, btnConfig in ipairs(self.contextMenu.buttonConfigs) do 
+    for _, btnConfig in ipairs(self.contextMenu.buttonConfigs) do
       widget.setVisible("lytContext." .. btnConfig.name, false)
     end
 
