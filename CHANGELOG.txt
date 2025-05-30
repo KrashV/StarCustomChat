@@ -1,1 +1,1 @@
-- Quick fix to hide the change font button before selecting the font to change.
+- Fixed the timezone offset picking up only at settings opening

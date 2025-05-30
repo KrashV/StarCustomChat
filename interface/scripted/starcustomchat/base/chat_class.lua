@@ -55,6 +55,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.maxCharactersAllowed = maxCharactersAllowed
   o.callbackPlugins = callbackPlugins
   
+  o.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
   o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.fontTable = root.getConfiguration("scc_custom_fonts") or {}
   o.colorTable = defaultColors
