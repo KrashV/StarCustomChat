@@ -13,9 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Pak the repository
-        run: |
-          .github/tools/asset_packer.exe . -c .github/tools/packing.config StarCustomChat.pak
+      - name: Run Asset Packer
+        uses: KrashV/starbound-asset-packer-action@v1
+        with:
+          output: StarCustomChat.pak
 
       - name: Get version
         id: extract_version
