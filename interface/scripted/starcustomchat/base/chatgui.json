@@ -200,7 +200,7 @@
       "callback": "textboxCallback",
       "maxWidth": 247,
       "zlevel": 4,
-      "regex": "[^]*",
+      "regex": ".*",
       "enterKey": "textboxEnterKey",
       "escapeKey": "escapeTextbox"
     },
