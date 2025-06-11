@@ -1,1 +1,1 @@
-- Fixed the timezone offset picking up only at settings opening
+- Removed the ability to paste multiple lines in chat - it breaks!
