@@ -357,6 +357,7 @@ function localeChat()
       widget.setText("lblTextboxHint", hint)
     end
   else
+    widget.setText("lblTextboxHint", "")
     widget.setHint("tbxInput", starcustomchat.utils.getTranslation("chat.textbox.hint"))
   end
 
