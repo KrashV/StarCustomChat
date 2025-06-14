@@ -1,12 +1,12 @@
 require "/interface/scripted/starcustomchatsettings/settingsplugin.lua"
 
-sounds = SettingsPluginClass:new(
-  { name = "sounds" }
+charactervoice = SettingsPluginClass:new(
+  { name = "charactervoice" }
 )
 
 
 -- Settings
-function sounds:init()
+function charactervoice:init()
   self:_loadConfig()
 
   self.selectedSpecies = player.getProperty("scc_sound_species") or player.species()
@@ -30,7 +30,7 @@ function sounds:init()
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 end
 
-function sounds:populateScrollArea(allRaceSounds, selectedSpecies)
+function charactervoice:populateScrollArea(allRaceSounds, selectedSpecies)
   self.widget.clearListItems("saSpecies.listItems")
 
   for speciesName, _ in pairs(allRaceSounds) do
@@ -43,7 +43,7 @@ function sounds:populateScrollArea(allRaceSounds, selectedSpecies)
   end
 end
 
-function sounds:changeSpecies()
+function charactervoice:changeSpecies()
   local li = self.widget.getListSelected("saSpecies.listItems") 
   if li then
     local newSpecies = self.widget.getData("saSpecies.listItems." .. li)
@@ -53,19 +53,19 @@ function sounds:changeSpecies()
   end
 end
 
-function sounds:enableSounds()
+function charactervoice:enableSounds()
   self.soundsEnabled = self.widget.getChecked("chkEnabled")
   player.setProperty("scc_sounds_enabled", self.soundsEnabled)
   save()
 end
 
-function sounds:enableWhisperSounds()
+function charactervoice:enableWhisperSounds()
   self.soundsWhispersEnabled = self.widget.getChecked("chkEnabledWhisper")
   player.setProperty("scc_sounds_whisper_enabled", self.soundsWhispersEnabled)
   save()
 end
 
-function sounds:playSound()
+function charactervoice:playSound()
   local soundTable = {
     pool = self.soundsPool,
     pitch = self.soundPitch,
@@ -75,7 +75,7 @@ function sounds:playSound()
   world.sendEntityMessage(player.id(), "sccTalkingSound", soundTable)
 end
 
-function sounds:setTalkingPitch()
+function charactervoice:setTalkingPitch()
   self.soundPitch = math.max(self.widget.getSliderValue("sldSoundPitch") / 10, 0.4)
   self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
   player.setProperty("scc_sound_pitch", self.soundPitch)

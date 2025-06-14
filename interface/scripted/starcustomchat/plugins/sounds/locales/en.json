@@ -1,8 +1,0 @@
-{
-    "settings.plugins.sounds": "Sounds",
-    "settings.plugins.sounds.enable": "Enabled",
-    "settings.plugins.sounds.enablewhisper": "DM sounds",
-    "settings.plugins.sounds.pitch": "Pitch",
-    "settings.plugins.sounds.test": "Test",
-    "settings.plugins.sounds.description": "At message sending plays a talking sound related to your species"
-}

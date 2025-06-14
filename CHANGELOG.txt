@@ -1,1 +1,1 @@
-- Removed the ability to paste multiple lines in chat - it breaks!
+- Renamed the "Sounds" plugin to "Character Voice"
