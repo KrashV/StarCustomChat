@@ -17,9 +17,17 @@ end
 
 function charactervoice:resetSoundPool()
   local selectedSpecies = player.getProperty("scc_sound_species") or player.species()
-  local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
+  if selectedSpecies == "custom" then
+    local customSound = player.getProperty("scc_charactervoice_custom")
+    if customSound and customSound ~= "" then
+      self.soundsPool = {customSound}
+    end
+  else
+    local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
 
-  self.soundsPool = currentRaceSounds[player.gender()]
+    self.soundsPool = currentRaceSounds[player.gender()]
+  end
+
 end
 
 function charactervoice:onSendMessage()

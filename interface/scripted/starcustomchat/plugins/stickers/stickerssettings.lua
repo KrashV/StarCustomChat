@@ -8,6 +8,9 @@ stickers = SettingsPluginClass:new(
 -- Settings
 function stickers:init()
   self:_loadConfig()
+end
+
+function stickers:openTab()
   self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
   self.stickerIndexes = {}
   self:populateList()

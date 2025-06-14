@@ -1,0 +1,6 @@
+{
+    "settings.plugins.modesounds": "Message Sounds",
+    "settings.plugins.modesounds.mode_list": "Mode List",
+    "settings.plugins.modesounds.sound_list": "Sound List",
+    "settings.plugins.modesounds.clear": "Clear sound"
+}

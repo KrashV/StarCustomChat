@@ -11,11 +11,16 @@ function charactervoice:init()
 
   self.selectedSpecies = player.getProperty("scc_sound_species") or player.species()
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
-  self.selectedSpecies = self.allRaceSounds[self.selectedSpecies] and self.selectedSpecies or "human"
 
-  local currentRaceSounds = self.allRaceSounds[self.selectedSpecies]
+  if self.selectedSpecies ~= "custom" then
+    self.selectedSpecies = self.allRaceSounds[self.selectedSpecies] and self.selectedSpecies or "human"
 
-  self.soundsPool = currentRaceSounds[player.gender()] 
+    local currentRaceSounds = self.allRaceSounds[self.selectedSpecies]
+
+    self.soundsPool = currentRaceSounds[player.gender()] 
+  else
+    self.soundsPool = player.getProperty("scc_charactervoice_custom") and {player.getProperty("scc_charactervoice_custom")} or self.allRaceSounds["human"][player.gender()]
+  end
 
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.widget.setChecked("chkEnabled", self.soundsEnabled or false)
@@ -26,7 +31,10 @@ function charactervoice:init()
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
   self.widget.setSliderRange("sldSoundPitch", 0, 20, 2)
   self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
+  self.widget.setText("tbxCustomSound", player.getProperty("scc_charactervoice_custom") or "")
+end
 
+function charactervoice:openTab()
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 end
 
@@ -41,6 +49,14 @@ function charactervoice:populateScrollArea(allRaceSounds, selectedSpecies)
       self.widget.setListSelected("saSpecies.listItems", li)
     end
   end
+
+-- Add custom option
+  local li = self.widget.addListItem("saSpecies.listItems")
+  self.widget.setText("saSpecies.listItems." .. li .. ".name", starcustomchat.utils.getTranslation("settings.plugins.charactervoice.customItem"))
+  self.widget.setData("saSpecies.listItems." .. li, "custom")
+  if selectedSpecies == "custom" then
+    self.widget.setListSelected("saSpecies.listItems", li)
+  end
 end
 
 function charactervoice:changeSpecies()
@@ -48,8 +64,30 @@ function charactervoice:changeSpecies()
   if li then
     local newSpecies = self.widget.getData("saSpecies.listItems." .. li)
     player.setProperty("scc_sound_species", newSpecies)
-    self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
+    if newSpecies == "custom" then
+      self.widget.setVisible("tbxCustomSound", true)
+      self.widget.setVisible("btnSave", true)
+    else
+      self.widget.setVisible("tbxCustomSound", false)
+      self.widget.setVisible("btnSave", false)
+      self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
+    end
+    
     save()
+  end
+end
+
+function charactervoice:saveCustomSound()
+  local customSound = self.widget.getText("tbxCustomSound")
+  if customSound and customSound ~= "" then
+    if root.assetOrigin(customSound) then
+      pane.playSound(customSound)
+      player.setProperty("scc_charactervoice_custom", customSound)
+      self.soundsPool = {customSound}
+      save()
+    else
+      starcustomchat.utils.alert("settings.plugins.charactervoice.soundNotFound")
+    end
   end
 end
 

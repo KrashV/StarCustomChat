@@ -19,10 +19,6 @@ function colors:init(chat)
   self.colors = sb.jsonMerge(defaultColors, root.getConfiguration("scc_custom_colors") or {})
 end
 
-function colors:onLocaleChange()
-  self:populateList() -- we need to load the localized names first
-end
-
 function colors:populateList()
   self.widget.clearListItems("saScrollArea.listItems")
   self.currentListItem = nil
@@ -41,6 +37,10 @@ function colors:populateList()
       name = item.name
     })
   end
+end
+
+function colors:openTab()
+  self:populateList()
 end
 
 function colors:changedColorItem()

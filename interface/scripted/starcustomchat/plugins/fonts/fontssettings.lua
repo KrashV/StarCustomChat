@@ -12,18 +12,17 @@ function fonts:init(chat)
 
   self.currentFonts = root.getConfiguration("scc_custom_fonts") or {}
 
-  self.combobox = Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", function(data)
-    self:selectedCombobox(data)
-  end, config.getParameter("allFontsTable"), nil, true)
 end
 
 function fonts:isAvailable()
   return root.assetsByExtension
 end
 
-
-function fonts:onLocaleChange()
-  self:populateList() -- we need to load the localized names first
+function fonts:openTab()
+  self.combobox = Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", function(data)
+    self:selectedCombobox(data)
+  end, config.getParameter("allFontsTable"), nil, true)
+  self:populateList()
 end
 
 function fonts:populateList()

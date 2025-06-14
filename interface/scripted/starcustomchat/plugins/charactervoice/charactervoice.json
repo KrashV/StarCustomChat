@@ -51,16 +51,6 @@
         }
       },
 
-      "lblcharactervoiceDescription": {
-        "type": "label",
-        "position": [120, 80],
-        "hAnchor": "mid",
-        "vAnchor": "top",
-        "color": "lightgray",
-        "wrapWidth": 110,
-        "translationKey": "settings.plugins.charactervoice.description"
-      },
-
       "lblcharactervoiceEnabledWhisper": {
         "type": "label",
         "position": [120, 100],
@@ -79,7 +69,10 @@
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "enableWhispercharactervoice"
+        "callback": "enableWhispercharactervoice",
+        "data": {
+          "displayText": "settings.plugins.charactervoice.wisperDescription"
+        }
       },
 
       "lblcharactervoiceEnabled": {
@@ -100,12 +93,15 @@
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "enablecharactervoice"
+        "callback": "enablecharactervoice",
+        "data": {
+          "displayText": "settings.plugins.charactervoice.description"
+        }
       },
 
       "lblSoundPitch": {
         "type": "label",
-        "position": [120, 90],
+        "position": [120, 85],
         "hAnchor": "right",
         "color": "lightgray",
         "translationKey": "settings.plugins.charactervoice.pitch"
@@ -114,7 +110,7 @@
       "sldSoundPitch" : {
         "type": "slider",
         "gridImage" : "/interface/optionsmenu/smallselection.png",
-        "position": [130, 90],
+        "position": [130, 85],
         "callback": "setTalkingPitch"
       },
 
@@ -123,8 +119,27 @@
         "base" : "/interface/scripted/starcustomchatsettings/bt.png",
         "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
         "callback": "playSound",
-        "position": [180, 40],
+        "position": [180, 120],
         "translationKey": "settings.plugins.charactervoice.test"
+      },
+
+      "tbxCustomSound": {
+        "type": "textbox",
+        "position": [65, 60],
+        "visible": false,
+        "hintTranslationKey": "settings.plugins.charactervoice.customSoundHint",
+        "callback": "null",
+        "color": "lightgray"
+      },
+
+      "btnSave" : {
+        "type": "button",
+        "base": "/interface/buttonactive.png",
+        "hover": "/interface/buttonactivehover.png",
+        "callback": "saveCustomSound",
+        "visible": false,
+        "position": [65, 40],
+        "translationKey": "settings.plugins.charactervoice.save"
       }
     }
   },

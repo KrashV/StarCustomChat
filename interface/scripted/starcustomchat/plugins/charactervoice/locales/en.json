@@ -4,5 +4,10 @@
     "settings.plugins.charactervoice.enablewhisper": "DM speaking",
     "settings.plugins.charactervoice.pitch": "Pitch",
     "settings.plugins.charactervoice.test": "Test",
-    "settings.plugins.charactervoice.description": "At message sending plays a talking sound related to your species"
+    "settings.plugins.charactervoice.description": "At message sending plays a selected talking sound",
+    "settings.plugins.charactervoice.wisperDescription": "At whisper message sending plays a selected talking sound",
+    "settings.plugins.charactervoice.customItem": "^green;Custom",
+    "settings.plugins.charactervoice.customSoundHint": "/inter/path/to/your_sound.ogg",
+    "settings.plugins.charactervoice.save": "Save",
+    "settings.plugins.charactervoice.soundNotFound": "^red;Sound not found"
 }

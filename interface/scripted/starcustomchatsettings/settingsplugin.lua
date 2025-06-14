@@ -38,8 +38,19 @@ function SettingsPluginClass:_loadConfig()
   self.layoutWidget = "lytPluginSettings." .. self.name
 end
 
-function SettingsPluginClass:init(localeConfig)
+function SettingsPluginClass:init()
   
+end
+
+function SettingsPluginClass:__openTab()
+  if not self.opened then
+    self.opened = true
+    return self:openTab()
+  end
+end
+
+function SettingsPluginClass:openTab()
+
 end
 
 function SettingsPluginClass:update(dt)
