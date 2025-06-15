@@ -84,6 +84,16 @@ function StarCustomChat:addMessage(msg)
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
     end
 
+    -- FezzedOne: Pull the sender and receiver IDs from chat metadata if available. Requires xStarbound v3.5.3+ or OpenStarbound v0.1.9+.
+    if message.data then
+      if math.tointeger(message.data.senderId) then
+        message.senderId = message.data.senderId
+      end
+      if math.tointeger(message.data.receiverId) then
+        message.receiverId = message.data.receiverId
+      end
+    end
+
     message = self.callbackPlugins("formatIncomingMessage", message)
 
     if not message or ((not message.text or message.text == "") and not message.image) then return nil end
@@ -118,7 +128,7 @@ function StarCustomChat:addMessage(msg)
         end
       end
 
-      self:requestPortrait(message.connection)
+      self:requestPortrait(message.connection, message.senderId)
       
     end
     return message
@@ -199,8 +209,9 @@ function StarCustomChat:closeSubMenu()
   end
 end
 
-function StarCustomChat:requestPortrait(connection)
-  local entityId = connection * -65536
+function StarCustomChat:requestPortrait(connection, senderId)
+  -- FezzedOne: Now always returns the correct value even if the player ID isn't the first in the cID block.
+  local entityId = senderId or starcustomchat.utils.getPlayerIdFromConnection(connection)
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
   if uuid and not self.savedPortraits[uuid] then
@@ -304,7 +315,10 @@ end
 function StarCustomChat:sendMessage(message)
   if message.text == "" then return end
 
-  message.connection = message.connection or player.id() // -65536
+  -- FezzedOne: Ensured that xStarbound clients always send the correct connection ID even after 
+  -- swapping players. This is safe to do on all clients because the math below always returns
+  -- the correct connection ID.
+  message.connection = message.connection or (player.id() - 65535) // -65536
   message.nickname = message.nickname or player.name()
 
   self.callbackPlugins("onSendMessage", message)
@@ -337,7 +351,7 @@ function StarCustomChat:getUnknownPortrait(connection)
   return string.format(self.config.unknownPortraits, connection % self.config.numberOfUnknownPortraits)
 end
 
-function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, recipient)
+function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, recipient, senderId)
   local function drawModeIcon(offset)
     local frameSize = root.imageSize(self.config.icons.frame)
     local squareSize = self.config.modeIndicatorSize
@@ -413,7 +427,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
 
 
   if type(target) == "number" then
-    local entityId = target * -65536
+    local entityId = senderId or starcustomchat.utils.getPlayerIdFromConnection(target)
 
     local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[tostring(target)]
 
@@ -682,7 +696,7 @@ function StarCustomChat:processQueue()
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
           self:drawIcon(message.portrait, message.nickname, offset, self.config.modeColors[messageMode], 
-            message.time, message.recipient)
+            message.time, message.recipient, message.senderId)
           message.height = message.height + self.config.spacings.name + self.config.fontSize + 1
         end
       end
