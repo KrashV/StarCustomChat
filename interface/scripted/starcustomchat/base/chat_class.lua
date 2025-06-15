@@ -125,14 +125,6 @@ function StarCustomChat:addMessage(msg)
         if self.lastWhisper and message.text == self.lastWhisper.text then
           message.recipient = self.lastWhisper.recipient
           self.lastWhisper = nil
-        else
-          if message.nickname ~= player.name() then
-            if type(self.config.notificationSound) == "table" then
-              pane.playSound(self.config.notificationSound[math.random(1, #self.config.notificationSound)])
-            else
-              pane.playSound(self.config.notificationSound)
-            end
-          end
         end
       end
 

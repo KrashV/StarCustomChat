@@ -10,6 +10,7 @@ function init()
   
   self.translations = config.getParameter("translations", jarray())
   self.hintTranslations = config.getParameter("hintTranslations", jarray())
+
   local plugins = {}
 
   self.currentLanguage = root.getConfiguration("scclocale") or "en"
@@ -42,6 +43,25 @@ function init()
       result = plugin[method](plugin, ...)
     end
     return result
+  end
+
+  self.runCallback = function(pluginName, method, ...)
+    if not pluginName or not method then return end
+
+    for _, plugin in ipairs(plugins) do 
+      if plugin.name == pluginName then
+        if plugin[method] then
+          return plugin[method](plugin, ...)
+        else
+          sb.logError("Plugin %s does not have method %s", pluginName, method)
+          return
+        end
+      end
+    end
+
+    sb.logError("Plugin %s does not exist", pluginName)
+
+    return
   end
 
   self.pluginLayouts = {}
@@ -178,6 +198,8 @@ function changePluginPage()
   for pluginName, li in pairs(self.pluginSettingsButtons) do 
     widget.setChecked("saPlugins.listPluginTabs." .. li .. ".pluginSetting", false)
   end
+
+  self.runCallback(data.pluginName, "__openTab")
 end
 
 function update(dt)

@@ -1,12 +1,12 @@
 {
-  "name": "Sounds",
+  "name": "charactervoice",
 
   "settingsPage": {
     "tabButtons": {
-      "baseImage": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tab.png",
-      "hoverImage": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabhover.png",
-      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabselected.png",
-      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/sounds/settingstabs/tabselectedhover.png"
+      "baseImage": "/interface/scripted/starcustomchat/plugins/charactervoice/settingstabs/charactervoice.png:base",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/charactervoice/settingstabs/charactervoice.png:hover",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/charactervoice/settingstabs/charactervoice.png:selected",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/charactervoice/settingstabs/charactervoice.png:selectedhover"
     },
     "priority": 2,
     "gui": {
@@ -16,7 +16,7 @@
         "fontSize": 12,
         "hAnchor": "left",
         "value": "",
-        "translationKey": "settings.plugins.sounds"
+        "translationKey": "settings.plugins.charactervoice"
       },
 
       "saSpecies": {
@@ -27,14 +27,14 @@
             "type": "list",
             "callback": "changeSpecies",
             "schema": {
-              "selectedBG" : "/interface/scripted/starcustomchat/plugins/sounds/listselected.png",
-              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/sounds/listunselected.png",
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/charactervoice/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/charactervoice/listunselected.png",
               "spacing" : [0, 1],
               "memberSize" : [55, 15],
               "listTemplate" : {
                 "background" : {
                   "type" : "image",
-                  "file" : "/interface/scripted/starcustomchat/plugins/sounds/listunselected.png",
+                  "file" : "/interface/scripted/starcustomchat/plugins/charactervoice/listunselected.png",
                   "position" : [2, 0],
                   "zlevel" : -1
                 },
@@ -51,22 +51,12 @@
         }
       },
 
-      "lblSoundsDescription": {
-        "type": "label",
-        "position": [120, 80],
-        "hAnchor": "mid",
-        "vAnchor": "top",
-        "color": "lightgray",
-        "wrapWidth": 110,
-        "translationKey": "settings.plugins.sounds.description"
-      },
-
-      "lblSoundsEnabledWhisper": {
+      "lblcharactervoiceEnabledWhisper": {
         "type": "label",
         "position": [120, 100],
         "hAnchor": "right",
         "color": "lightgray",
-        "translationKey": "settings.plugins.sounds.enablewhisper"
+        "translationKey": "settings.plugins.charactervoice.enablewhisper"
       },
       
 
@@ -79,15 +69,18 @@
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "enableWhisperSounds"
+        "callback": "enableWhispercharactervoice",
+        "data": {
+          "displayText": "settings.plugins.charactervoice.wisperDescription"
+        }
       },
 
-      "lblSoundsEnabled": {
+      "lblcharactervoiceEnabled": {
         "type": "label",
         "position": [120, 120],
         "hAnchor": "right",
         "color": "lightgray",
-        "translationKey": "settings.plugins.sounds.enable"
+        "translationKey": "settings.plugins.charactervoice.enable"
       },
       
 
@@ -100,21 +93,24 @@
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "enableSounds"
+        "callback": "enablecharactervoice",
+        "data": {
+          "displayText": "settings.plugins.charactervoice.description"
+        }
       },
 
       "lblSoundPitch": {
         "type": "label",
-        "position": [120, 90],
+        "position": [120, 85],
         "hAnchor": "right",
         "color": "lightgray",
-        "translationKey": "settings.plugins.sounds.pitch"
+        "translationKey": "settings.plugins.charactervoice.pitch"
       },
 
       "sldSoundPitch" : {
         "type": "slider",
         "gridImage" : "/interface/optionsmenu/smallselection.png",
-        "position": [130, 90],
+        "position": [130, 85],
         "callback": "setTalkingPitch"
       },
 
@@ -123,13 +119,32 @@
         "base" : "/interface/scripted/starcustomchatsettings/bt.png",
         "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
         "callback": "playSound",
-        "position": [180, 40],
-        "translationKey": "settings.plugins.sounds.test"
+        "position": [180, 120],
+        "translationKey": "settings.plugins.charactervoice.test"
+      },
+
+      "tbxCustomSound": {
+        "type": "textbox",
+        "position": [65, 60],
+        "visible": false,
+        "hintTranslationKey": "settings.plugins.charactervoice.customSoundHint",
+        "callback": "null",
+        "color": "lightgray"
+      },
+
+      "btnSave" : {
+        "type": "button",
+        "base": "/interface/buttonactive.png",
+        "hover": "/interface/buttonactivehover.png",
+        "callback": "saveCustomSound",
+        "visible": false,
+        "position": [65, 40],
+        "translationKey": "settings.plugins.charactervoice.save"
       }
     }
   },
 
-  "script": "/interface/scripted/starcustomchat/plugins/sounds/sounds.lua",
-  "settingsScript": "/interface/scripted/starcustomchat/plugins/sounds/soundssettings.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/charactervoice/charactervoice.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/charactervoice/charactervoicesettings.lua"
 
 }

@@ -1,7 +1,0 @@
-{
-  "name": "scctalking",
-  "animationConfig" : "/player/stat_primary.animation",
-  "scripts": [
-    "/interface/scripted/starcustomchat/plugins/sounds/stats/effects/scctalking/scctalking.lua"
-  ]
-}

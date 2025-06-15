@@ -1,10 +1,10 @@
 require "/interface/scripted/starcustomchat/plugin.lua"
 
-sounds = PluginClass:new(
-  { name = "sounds" }
+charactervoice = PluginClass:new(
+  { name = "charactervoice" }
 )
 
-function sounds:init()
+function charactervoice:init()
   self:_loadConfig()
 
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
@@ -15,18 +15,26 @@ function sounds:init()
   status.addPersistentEffect("scctalking", "scctalking")
 end
 
-function sounds:resetSoundPool()
+function charactervoice:resetSoundPool()
   local selectedSpecies = player.getProperty("scc_sound_species") or player.species()
-  local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
+  if selectedSpecies == "custom" then
+    local customSound = player.getProperty("scc_charactervoice_custom")
+    if customSound and customSound ~= "" then
+      self.soundsPool = {customSound}
+    end
+  else
+    local currentRaceSounds = self.allRaceSounds[selectedSpecies] or self.allRaceSounds["human"]
 
-  self.soundsPool = currentRaceSounds[player.gender()]
+    self.soundsPool = currentRaceSounds[player.gender()]
+  end
+
 end
 
-function sounds:onSendMessage()
+function charactervoice:onSendMessage()
   self:playSound()
 end
 
-function sounds:playSound()
+function charactervoice:playSound()
   if self.soundsEnabled then
     local soundTable = {
       pool = self.soundsPool,
@@ -37,20 +45,20 @@ function sounds:playSound()
   end
 end
 
-function sounds:onProcessCommand(text)
+function charactervoice:onProcessCommand(text)
   if string.sub(text, 1, 3) == "/w " and self.soundsWhispersEnabled then
     self:playSound()
     player.emote("blabbering")
   end
 end
 
-function sounds:onSettingsUpdate()
+function charactervoice:onSettingsUpdate()
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
   self:resetSoundPool()
 end
 
-function sounds:uninit()
+function charactervoice:uninit()
   status.clearPersistentEffects("scctalking")
 end

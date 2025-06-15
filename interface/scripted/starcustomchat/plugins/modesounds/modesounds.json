@@ -1,0 +1,125 @@
+{
+  "name": "modesounds",
+
+  "settingsPage": {
+    "tabButtons": {
+      "baseImage": "/interface/scripted/starcustomchat/plugins/modesounds/settingstabs/modesounds.png:base",
+      "hoverImage": "/interface/scripted/starcustomchat/plugins/modesounds/settingstabs/modesounds.png:hover",
+      "baseImageChecked": "/interface/scripted/starcustomchat/plugins/modesounds/settingstabs/modesounds.png:selected",
+      "hoverImageChecked": "/interface/scripted/starcustomchat/plugins/modesounds/settingstabs/modesounds.png:selectedhover"
+    },
+    "priority": 2,
+    "gui": {
+      "titleText": {
+        "type": "label",
+        "position": [12, 130],
+        "fontSize": 12,
+        "hAnchor": "left",
+        "value": "",
+        "translationKey": "settings.plugins.modesounds"
+      },
+
+      "lblModeList": {
+        "type": "label",
+        "position": [42, 115],
+        "fontSize": 10,
+        "hAnchor": "mid",
+        "value": "",
+        "translationKey": "settings.plugins.modesounds.mode_list"
+      },
+
+      "saModes": {
+        "type": "scrollArea",
+        "rect": [5, 35, 80, 110],
+        "children": {
+          "listItems": {
+            "type": "list",
+            "callback": "changeMode",
+            "schema": {
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
+              "spacing" : [0, 1],
+              "memberSize" : [75, 15],
+              "listTemplate" : {
+                "background" : {
+                  "type" : "image",
+                  "file" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
+                  "position" : [2, 0],
+                  "zlevel" : -1
+                },
+                "name" : {
+                  "type" : "label",
+                  "hAnchor": "mid",
+                  "vAnchor": "mid",
+                  "position": [37, 7],
+                  "wrapWidth": 70
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "lblSoundList": {
+        "type": "label",
+        "position": [155, 115],
+        "fontSize": 10,
+        "hAnchor": "mid",
+        "value": "",
+        "translationKey": "settings.plugins.modesounds.sound_list"
+      },
+
+      "saSounds": {
+        "type": "scrollArea",
+        "rect": [100, 35, 230, 110],
+        "children": {
+          "listItems": {
+            "type": "list",
+            "callback": "setModeSound",
+            "schema": {
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listselected.png",
+              "unselectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
+              "spacing" : [0, 1],
+              "memberSize" : [130, 15],
+              "listTemplate" : {
+                "background" : {
+                  "type" : "image",
+                  "file" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
+                  "position" : [0, 0],
+                  "zlevel" : -1
+                },
+                "name" : {
+                  "type" : "label",
+                  "vAnchor": "mid",
+                  "position": [5, 7],
+                  "wrapWidth": 125
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "btnClear": {
+        "type": "button",
+        "position": [220, 114],
+        "base": "/interface/x.png",
+        "hover": "/interface/xhover.png",
+        "pressed": "/interface/xpress.png",
+        "visible": false,
+        "callback": "clearModeSound",
+        "data": {
+          "displayText": "settings.plugins.modesounds.clear"
+        }
+      }
+    }
+  },
+
+  "parameters": {
+    "sounds": ["/sfx/instruments/bones/a4.ogg", "/sfx/interface/aichatter1.ogg", "/sfx/interface/aichatter2.ogg"]
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/modesounds/modesounds.lua",
+  "settingsScript": "/interface/scripted/starcustomchat/plugins/modesounds/modesoundssettings.lua"
+
+}

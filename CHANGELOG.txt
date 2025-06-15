@@ -1,1 +1,5 @@
-- Fixed the timezone offset picking up only at settings opening
+- Renamed the "Sounds" plugin to "Character Voice"
+- CharacterVoice: Added an ability to set your own sound
+- Added the "Message sounds" plugin
+- Slightly optimizes the loading of the settings
+- Fixed the textbox hint sometimes doubling when changing languages
