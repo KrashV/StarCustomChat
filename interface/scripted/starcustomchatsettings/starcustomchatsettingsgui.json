@@ -181,7 +181,7 @@
     }
   },
   "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage", 
-    "comboboxSelect", "comboboxClick", "comboboxFilter"
+    "comboboxSelect", "comboboxClick", "comboboxFilter", "_generalTextBoxCallback", "_generalTextBoxCallbackEnter", "_generalTextBoxCallbackEscape"
   ],
 
   "canvasClickCallbacks" : {

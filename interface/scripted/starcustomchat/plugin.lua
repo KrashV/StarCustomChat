@@ -95,6 +95,10 @@ function PluginClass:formatOutcomingMessage(message)
   return message
 end
 
+function PluginClass:onDrawMessage(message)
+
+end
+
 function PluginClass:onSettingsUpdate(data)
 
 end

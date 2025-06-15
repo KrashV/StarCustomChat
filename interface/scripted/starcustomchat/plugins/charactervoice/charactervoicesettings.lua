@@ -66,10 +66,8 @@ function charactervoice:changeSpecies()
     player.setProperty("scc_sound_species", newSpecies)
     if newSpecies == "custom" then
       self.widget.setVisible("tbxCustomSound", true)
-      self.widget.setVisible("btnSave", true)
     else
       self.widget.setVisible("tbxCustomSound", false)
-      self.widget.setVisible("btnSave", false)
       self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
     end
     
