@@ -64,6 +64,15 @@ function SettingsPluginClass:_callback(callbackInfo, widgetName, widgetData)
   end
 end
 
+function SettingsPluginClass:_textBoxCallback(callbackInfo, widgetName, widgetData, callbackType)
+  if callbackInfo and callbackInfo.pluginName and callbackInfo.pluginName == self.name then
+    widgetData["actualPluginCallback"] = nil
+    if self[callbackInfo[callbackType]] then
+      self[callbackInfo[callbackType]](self, widgetName, widgetData)
+    end
+  end
+end
+
 function SettingsPluginClass:_spinner_callback(callbackInfo, direction, widgetName, widgetData)
   if callbackInfo and callbackInfo.pluginName and callbackInfo.pluginName == self.name and self[callbackInfo.callback] then
     widgetData["actualPluginCallback"] = nil

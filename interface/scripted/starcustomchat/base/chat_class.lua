@@ -503,7 +503,9 @@ function StarCustomChat:highlightMessage(message, color)
   for i = #self.drawnMessageIndexes, 1, -1 do 
     if message.uuid == self.messages[self.drawnMessageIndexes[i]].uuid then
       local y1, y2 = message.offset, message.offset + message.height + self.config.spacings.messages
-      self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, color or self.config.highlightColor)
+      if self:isInsideChat(message, message.offset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+        self.highlightCanvas:drawRect({2, y1, self.highlightCanvas:size()[1] - 2, y2}, color or self.config.highlightColor)
+      end
       return
     end
   end
@@ -761,6 +763,8 @@ function StarCustomChat:processQueue()
     message.offset = messageOffset
     self.totalHeight = self.totalHeight + message.height
     self.messages[self.drawnMessageIndexes[i]] = message
+
+    self.callbackPlugins("onDrawMessage", message)
   end
 
   self.recalculateHeight = nil

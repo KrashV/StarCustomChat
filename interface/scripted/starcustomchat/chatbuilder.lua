@@ -287,6 +287,20 @@ function buildSettingsInterface()
                 widgetConfig.callback = "_generalCallback"
             elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
                 baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
+            elseif widgetConfig.type == "textbox" then
+
+              widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+                  actualPluginCallback = {
+                      pluginName = pluginName,
+                      callback = widgetConfig.callback ~= "null" and widgetConfig.callback or nil,
+                      enterKey = widgetConfig.enterKey,
+                      escapeKey = widgetConfig.escapeKey
+                  }
+              })
+
+              widgetConfig.callback = "_generalTextBoxCallback"
+              widgetConfig.enterKey = "_generalTextBoxCallbackEnter"
+              widgetConfig.escapeKey = "_generalTextBoxCallbackEscape"
             end
             layout["children"][widgetName] = widgetConfig
             

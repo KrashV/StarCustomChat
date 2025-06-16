@@ -79,17 +79,10 @@
       "tbxStickerDirectives": {
         "type": "textbox",
         "callback": "null",
+        "enterKey": "addSticker",
         "position": [70, 35],
         "maxWidth": 80,
         "hint": "?directives"
-      },
-      "btnAdd": {
-        "type": "button",
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-        "position": [170, 35],
-        "callback": "addSticker",
-        "translationKey": "settings.plugins.stickers.add"
       },
       "btnRemove": {
         "type": "button",

@@ -226,6 +226,24 @@ function _generalCallback(widgetName, data)
   end
 end
 
+function _generalTextBoxCallback(widgetName, data)
+  if data and data["actualPluginCallback"] then
+    self.runCallbackForPlugins("_textBoxCallback", data["actualPluginCallback"], widgetName, data, "callback")
+  end
+end
+
+function _generalTextBoxCallbackEnter(widgetName, data)
+  if data and data["actualPluginCallback"] then
+    self.runCallbackForPlugins("_textBoxCallback", data["actualPluginCallback"], widgetName, data, "enterKey")
+  end
+end
+
+function _generalTextBoxCallbackEscape(widgetName, data)
+  if data and data["actualPluginCallback"] then
+    self.runCallbackForPlugins("_textBoxCallback", data["actualPluginCallback"], widgetName, data, "escapeKey")
+  end
+end
+
 function _generalCanvasClick(position, button, isDown)
   self.runCallbackForPlugins("_canvasClick", position, button, isDown)
 end

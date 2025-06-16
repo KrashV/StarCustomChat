@@ -1,5 +1,3 @@
-- Renamed the "Sounds" plugin to "Character Voice"
-- CharacterVoice: Added an ability to set your own sound
-- Added the "Message sounds" plugin
-- Slightly optimizes the loading of the settings
-- Fixed the textbox hint sometimes doubling when changing languages
+- Instead of the ugly buttons, use Enter Key to accept textbox input
+- New bindings for settings
+- Additional optimization and fixes

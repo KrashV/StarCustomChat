@@ -220,24 +220,12 @@
         "type": "textbox",
         "position": [8, 40],
         "callback": "null",
+        "enterKey": "setPortrait",
         "maxWidth": 70,
         "hint": "?directives",
         "data": {
           "displayText": "settings.mainchat.customavatar"
         }
-      },
-
-      "btnSetCustomPortrait": {
-        "type": "button",
-        "position": [92, 21],
-        "base": "/interface/buttonactive.png",
-        "hover": "/interface/buttonactivehover.png",
-        "callback": "setPortrait",
-        "visible": false,
-        "data": {
-          "displayText": "settings.mainchat.set_custom_directives"
-        },
-        "translationKey": "settings.mainchat.setportrait"
       },
 
       "lblUTCHint": {

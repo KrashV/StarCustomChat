@@ -129,17 +129,8 @@
         "visible": false,
         "hintTranslationKey": "settings.plugins.charactervoice.customSoundHint",
         "callback": "null",
+        "enterKey": "saveCustomSound",
         "color": "lightgray"
-      },
-
-      "btnSave" : {
-        "type": "button",
-        "base": "/interface/buttonactive.png",
-        "hover": "/interface/buttonactivehover.png",
-        "callback": "saveCustomSound",
-        "visible": false,
-        "position": [65, 40],
-        "translationKey": "settings.plugins.charactervoice.save"
       }
     }
   },
