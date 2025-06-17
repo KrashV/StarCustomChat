@@ -89,7 +89,7 @@ function charactervoice:saveCustomSound()
   end
 end
 
-function charactervoice:enableSounds()
+function charactervoice:enableCharacterVoice()
   self.soundsEnabled = self.widget.getChecked("chkEnabled")
   player.setProperty("scc_sounds_enabled", self.soundsEnabled)
   save()
