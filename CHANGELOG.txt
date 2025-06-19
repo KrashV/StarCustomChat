@@ -1,1 +1,2 @@
-- Fixed the Character Voice Enabled button not actually working
+- Fixed localisation for stickers
+- Utilised the new functionality for reply messages

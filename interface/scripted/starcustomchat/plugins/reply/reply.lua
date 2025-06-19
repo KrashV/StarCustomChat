@@ -36,8 +36,8 @@ function reply:registerMessageHandlers()
 end
 
 function reply:onReceiveMessage(message)
-  if self.messagesToReply[message.uuid] then
-    message.replyUUID = self.messagesToReply[message.uuid]
+  if self.messagesToReply[message.uuid] or (message.data and message.data.replyUUID) then
+    message.replyUUID = self.messagesToReply[message.uuid] or message.data.replyUUID
     self.messagesToReply[message.uuid] = nil
   end
 end
@@ -73,12 +73,23 @@ function reply:onTextboxEnter()
   end
 
   if self.replyingToMessage then
+    local mode = widget.getSelectedData("rgChatMode").mode
+    local nickname = player.name()
+
+    local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
+      text = widget.getText("tbxInput"),
+      connection = player.id() // -65536,
+      mode = mode,
+      nickname = nickname
+    })
+
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, widget.getText("tbxInput"), 
-        widget.getSelectedData("rgChatMode").mode, player.name()) 
-  }
-    if self.stagehandType then
+      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, futureMessage.text, 
+        mode, nickname) 
+    }
+
+    if self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
       for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), self.messageRadius)) do 
@@ -87,8 +98,16 @@ function reply:onTextboxEnter()
     end
 
     self.customChat:closeSubMenu()
-    self.replyingToMessage = nil
     return false
+  end
+end
+
+function reply:onSendMessage(message)
+  if self.replyingToMessage then
+    message.data = message.data or {}
+    message.data.replyUUID = self.replyingToMessage.uuid
+
+    self.replyingToMessage = nil
   end
 end
 
