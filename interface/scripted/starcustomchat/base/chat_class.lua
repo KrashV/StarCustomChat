@@ -737,7 +737,7 @@ function StarCustomChat:processQueue()
       self.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png", 
         replyStartOffset, 1 / 8 * self.config.fontSize)
         
-      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text, self.canvas:size()[1] // 10) ), {
+      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text:gsub("%^.-;", ""), self.canvas:size()[1] // 10) ), {
         position = vec2.add(replyStartOffset, {size / 2, 0}),
         horizontalAnchor = "left",
         verticalAnchor = "bottom"
