@@ -1,2 +1,3 @@
 - Fixed localisation for stickers
 - Utilised the new functionality for reply messages
+- Fixed the delete button not changing its image after executing the deletion

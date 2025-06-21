@@ -232,6 +232,13 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
     elseif buttonName == "confirm_delete" then
       self.customChat:deleteMessage(selectedMessage.uuid)
       self.pressedDelete = false
+      widget.setButtonImages("lytContext.delete", {
+        base = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
+        hover = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover"
+      })
+      widget.setData("lytContext.delete", {
+        displayText = "chat.commands.delete"
+      })
     end
   end
 end
