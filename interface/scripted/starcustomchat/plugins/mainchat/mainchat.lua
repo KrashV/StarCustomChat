@@ -10,10 +10,13 @@ function mainchat:init(chat)
   self.ReplyTime = 0
 
   self.pressedDelete = false
-  self.DMingTo = config.getParameter("DMingTo")
+  local DMIngToUUID = config.getParameter("DMingTo")
 
-  if self.DMingTo then
-    self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+  if DMIngToUUID then
+    self.DMingTo = self.customChat:findMessageByUUID(DMIngToUUID)
+    if self.DMingTo then
+      self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo.displayName or self.DMingTo.nickname)
+    end
   end
 end
 
@@ -32,7 +35,7 @@ end
 
 function mainchat:onLocaleChange()
   if self.DMingTo then
-    self.customChat:setSubMenuTexts(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+    self.customChat:setSubMenuTexts(starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo.displayName or self.DMingTo.nickname)
   end
 end
 
@@ -150,25 +153,25 @@ end
 
 function mainchat:onTextboxEnter(message)
   if self.DMingTo then
-    local whisperName = self.DMingTo
+    local whisperName = self.DMingTo.nickname
     self.customChat:closeSubMenu()
-    self.DMingTo = nil
 
     local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
       or "/w " .. whisperName .. " " .. message.text
 
     self.customChat:processCommand(whisper)
     self.customChat.lastWhisper = {
-      recipient = whisperName,
+      recipient = self.DMingTo.displayName or self.DMingTo.nickname,
       text = message.text
     }
     starcustomchat.utils.saveMessage(whisper)
+    self.DMingTo = nil
     return true
   end
 end
 
 function mainchat:onBackgroundChange(chatConfig)
-  chatConfig.DMingTo = self.DMingTo
+  chatConfig.DMingTo = self.DMingTo.uuid
   return chatConfig
 end
 
@@ -184,8 +187,8 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       clipboard.setText(selectedMessage.text)
       starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
     elseif buttonName == "dm" then
-      self.DMingTo = selectedMessage.recipient or selectedMessage.nickname
-      self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo)
+      self.DMingTo = selectedMessage
+      self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), selectedMessage.displayName or selectedMessage.nickname)
       widget.focus("tbxInput")
 
     elseif buttonName == "ping" then

@@ -51,7 +51,7 @@ end
 function reply:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage and selectedMessage.uuid and buttonName == "reply" then
     self.replyingToMessage = selectedMessage
-    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.nickname), self:cropMessage(selectedMessage.text:gsub("%^.-;", "")))
+    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname), self:cropMessage(selectedMessage.text:gsub("%^.-;", "")))
     widget.focus("tbxInput")
   end
 end
