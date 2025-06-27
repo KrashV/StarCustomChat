@@ -171,7 +171,7 @@ function mainchat:onTextboxEnter(message)
 end
 
 function mainchat:onBackgroundChange(chatConfig)
-  chatConfig.DMingTo = self.DMingTo.uuid
+  chatConfig.DMingTo = self.DMingTo and self.DMingTo.uuid or nil
   return chatConfig
 end
 

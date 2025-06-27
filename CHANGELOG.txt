@@ -1,4 +1,1 @@
-- Fixed localisation for stickers
-- Utilised the new functionality for reply messages
-- Fixed the delete button not changing its image after executing the deletion
-- Added an ability to replace the drawn name with message.displayName
+- Fixed a rare crash when selecting the DMs option
