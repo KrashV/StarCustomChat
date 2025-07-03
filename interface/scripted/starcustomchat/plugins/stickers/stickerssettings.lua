@@ -13,6 +13,11 @@ end
 function stickers:openTab()
   self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
   self.stickerIndexes = {}
+
+  self.widget.registerMemberCallback("saSavedStickers.listStickers", "removeSticker", function(_, data)
+    self:removeSticker(_, data)
+  end)
+
   self:populateList()
 end
 
@@ -85,7 +90,6 @@ function stickers:removeSticker()
       self.widget.removeListItem("saSavedStickers.listStickers", ind - 1)
       self.savedStickers[data.name] = nil
       table.remove(self.stickerIndexes, ind)
-      self.widget.setVisible("btnRemove", false)
       save()
     end
   end
@@ -94,7 +98,7 @@ end
 function stickers:onStickerSelected()
   local li = self.widget.getListSelected("saSavedStickers.listStickers")
   if li then
-    self.widget.setVisible("btnRemove", true)
+    --pass
   end
 end
 

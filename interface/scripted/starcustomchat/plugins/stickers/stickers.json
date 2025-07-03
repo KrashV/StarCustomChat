@@ -26,12 +26,12 @@
             "type": "list",
             "columns" : 5,            
             "fillDown" : true,
-            "callback": "onStickerSelected",
+            "callback": "null",
             "scissoring" : false,
             "schema": {
               "memberSize": [32, 36],
               "spacing" : [10, 10],
-              "selectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frameselected.png",
+              "selectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
               "unselectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
               "listTemplate": {
                 "background": {
@@ -52,6 +52,16 @@
                   "vAnchor": "mid",
                   "position": [16, 0],
                   "zLevel": 3
+                },
+                "btnRemove": {
+                  "type": "button",
+                  "position": [28, 30],
+                  "base": "/interface/scripted/starcustomchatsettings/remove/remove.png:base",
+                  "hover": "/interface/scripted/starcustomchatsettings/remove/remove.png:hover",
+                  "callback": "removeSticker",
+                  "data": {
+                    "displayText": "settings.plugins.stickers.remove"
+                  }
                 }
               }
             }
@@ -70,6 +80,7 @@
       "tbxStickerName": {
         "type": "textbox",
         "callback": "null",
+        "enterKey": "addSticker",
         "position": [25, 35],
         "hint": "name",
         "maxWidth": 40,
@@ -83,15 +94,6 @@
         "position": [70, 35],
         "maxWidth": 80,
         "hint": "?directives"
-      },
-      "btnRemove": {
-        "type": "button",
-        "visible": false,
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?multiply=ff0000?brightness=90",
-        "position": [170, 20],
-        "callback": "removeSticker",
-        "translationKey": "settings.plugins.stickers.remove"
       }
     }
   },
