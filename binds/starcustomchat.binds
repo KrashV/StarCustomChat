@@ -9,6 +9,9 @@
           "value": "P"
         }],
         "name": "Repeat last command"
+      },
+      "enableAfk": {
+        "name": "Toggle AFK mode"
       }
     }
   }

@@ -1,1 +1,2 @@
 - Log command result into the Log
+- Add Toggle Afk bind to Mod Binds
