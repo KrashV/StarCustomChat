@@ -1,1 +1,1 @@
-- Fixed a rare crash when selecting the DMs option
+- Log command result into the Log

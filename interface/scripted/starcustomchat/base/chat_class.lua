@@ -288,6 +288,7 @@ function StarCustomChat:processCommand(text)
           mode = "CommandResult",
           text = line
         })
+        sb.logInfo("CommandResult: %s", line)
       else
         chat.addMessage(line)
         table.insert(self.messages, {
@@ -296,6 +297,7 @@ function StarCustomChat:processCommand(text)
         if #self.messages > self.config.chatHistoryLimit then
           table.remove(self.messages, 1)
         end
+        sb.logInfo("CommandResult: %s", line)
       end
     end
   end
