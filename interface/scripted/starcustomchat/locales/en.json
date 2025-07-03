@@ -9,7 +9,6 @@
   "chat.modes.CommandResult": "CommandResult",
 
   "chat.textbox.hint": "Type here",
-  "chat.message.edited": "edited",
 
   "chat.buttons.bottom": "To bottom",
   "chat.buttons.settings": "Settings",
