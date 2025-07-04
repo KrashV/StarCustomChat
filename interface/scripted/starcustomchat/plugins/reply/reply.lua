@@ -78,7 +78,7 @@ function reply:onTextboxEnter()
 
     local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
       text = widget.getText("tbxInput"),
-      connection = player.id() // -65536,
+      connection = (player.id() - 65535) // -65536,
       mode = mode,
       nickname = nickname
     })
