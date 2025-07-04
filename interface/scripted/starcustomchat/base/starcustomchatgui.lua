@@ -833,7 +833,7 @@ function addMessages(messages, showPane)
 
     if message.text and message.text ~= "" then
       if message.nickname then
-        sb.logInfo("Chat: <%s> %s", message.nickname, message.text)
+        sb.logInfo("Chat: <%s> %s", message.displayName or message.nickname, message.text)
       else
         sb.logInfo("Chat: %s", message.text)
       end

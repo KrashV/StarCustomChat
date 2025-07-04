@@ -7,7 +7,7 @@
     "settings.plugins.stickers.alerts.size_error": "Изображение не должно быть больше %sх%s",
     "settings.plugins.stickers.alerts.empty_error": "Вставь директивы в текстовое поле",
     "settings.plugins.stickers.alerts.already_exists": "Стикер с таким именем уже существует",
-    "settings.plugins.stickers.name": "Name",
+    "settings.plugins.stickers.name": "Название",
     "settings.plugins.stickers.search": "Поиск",
     "settings.colors.stickerselect": "Стикеры",
     "chat.commands.save_sticker": "Сохранить стикер",

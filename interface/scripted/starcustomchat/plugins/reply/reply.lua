@@ -36,8 +36,8 @@ function reply:registerMessageHandlers()
 end
 
 function reply:onReceiveMessage(message)
-  if self.messagesToReply[message.uuid] then
-    message.replyUUID = self.messagesToReply[message.uuid]
+  if self.messagesToReply[message.uuid] or (message.data and message.data.replyUUID) then
+    message.replyUUID = self.messagesToReply[message.uuid] or message.data.replyUUID
     self.messagesToReply[message.uuid] = nil
   end
 end
@@ -51,7 +51,7 @@ end
 function reply:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage and selectedMessage.uuid and buttonName == "reply" then
     self.replyingToMessage = selectedMessage
-    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.nickname), self:cropMessage(selectedMessage.text))
+    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname), self:cropMessage(selectedMessage.text:gsub("%^.-;", "")))
     widget.focus("tbxInput")
   end
 end
@@ -73,11 +73,21 @@ function reply:onTextboxEnter()
   end
 
   if self.replyingToMessage then
+    local mode = widget.getSelectedData("rgChatMode").mode
+    local nickname = player.name()
+
+    local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
+      text = widget.getText("tbxInput"),
+      connection = player.id() // -65536,
+      mode = mode,
+      nickname = nickname
+    })
+
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID((player.id() - 65535) // -65536, widget.getText("tbxInput"), 
-        widget.getSelectedData("rgChatMode").mode, player.name()) 
-  }
+      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, futureMessage.text, 
+        mode, nickname) 
+    }
     if self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
@@ -87,8 +97,16 @@ function reply:onTextboxEnter()
     end
 
     self.customChat:closeSubMenu()
-    self.replyingToMessage = nil
     return false
+  end
+end
+
+function reply:onSendMessage(message)
+  if self.replyingToMessage then
+    message.data = message.data or {}
+    message.data.replyUUID = self.replyingToMessage.uuid
+
+    self.replyingToMessage = nil
   end
 end
 

@@ -1,4 +1,4 @@
 {
     "chat.commands.reply": "Reply",
-    "chat.reply.recipient": "Reply to %s"
+    "chat.reply.recipient": "Reply to %s:"
 }

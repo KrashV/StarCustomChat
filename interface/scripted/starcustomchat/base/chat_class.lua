@@ -612,7 +612,7 @@ function StarCustomChat:processQueue()
 
 
     local text = self.chatMode == "modern" and message.text 
-      or createNameForCompactMode(message.nickname, 
+      or createNameForCompactMode(message.displayName or message.nickname, 
         self.config.modeColors[messageMode] or self.config.modeColors.default, 
         message.text, message.time, self:getColor("timetext"))
 
@@ -716,7 +716,7 @@ function StarCustomChat:processQueue()
           }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
         else
-          local text = createNameForCompactMode(message.nickname, 
+          local text = createNameForCompactMode(message.displayName or message.nickname, 
           self.config.modeColors[messageMode] or self.config.modeColors.default, 
             "", message.time, self:getColor("timetext"))
           
@@ -727,7 +727,7 @@ function StarCustomChat:processQueue()
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
           }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
-          local nameWidth = self:getTextSize("<" .. message.nickname .. ">: ")
+          local nameWidth = self:getTextSize("<" .. message.displayName or message.nickname .. ">: ")
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)
         end
 
@@ -751,7 +751,7 @@ function StarCustomChat:processQueue()
       self.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png", 
         replyStartOffset, 1 / 8 * self.config.fontSize)
         
-      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text, self.canvas:size()[1] // 10) ), {
+      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].displayName or self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text:gsub("%^.-;", ""), self.canvas:size()[1] // 10) ), {
         position = vec2.add(replyStartOffset, {size / 2, 0}),
         horizontalAnchor = "left",
         verticalAnchor = "bottom"
