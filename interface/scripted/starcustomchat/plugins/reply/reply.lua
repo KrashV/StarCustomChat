@@ -85,7 +85,7 @@ function reply:onTextboxEnter()
 
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, futureMessage.text, 
+      newMessageUUID = calculateNewMessageUUID((player.id() - 65535) // -65536, futureMessage.text, 
         mode, nickname) 
     }
     if self.stagehandType and self.stagehandType ~= "" then
