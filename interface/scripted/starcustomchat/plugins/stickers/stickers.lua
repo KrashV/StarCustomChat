@@ -16,8 +16,9 @@ function stickers:onProcessCommand(text)
     local message = {
       image = self.savedStickers[stripped],
       mode = widget.getSelectedData("rgChatMode").mode,
-      connection = player.id() // -65536,
+      connection = (player.id() - 65535) // -65536,
       nickname = player.name(),
+      senderId = player.id(),
       text = stripped
     }
 

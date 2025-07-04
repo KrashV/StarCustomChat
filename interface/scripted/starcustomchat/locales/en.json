@@ -135,6 +135,12 @@
   "commands.openstarbound.identity.get": "Gets identity attributes.",
   "commands.openstarbound.render": "Renders various parts of the character and saves it in the storage folder.",
 
+  "commands.xstarbound.swapuuid": "Swap current character by UUID.",
+  "commands.xstarbound.add": "Add client-controlled character.",
+  "commands.xstarbound.adduuid": "Add client-controlled character by UUID.",
+  "commands.xstarbound.remove": "Remove client-controlled character.",
+  "commands.xstarbound.removeuuid": "Remove client-controlled character by UUID.",
+
   "commands.starcustomchat.clearchat": "Clears the chat history.",
 
   "commands.custom.hotreload": "Reloads the configuration."
