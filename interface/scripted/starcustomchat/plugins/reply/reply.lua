@@ -78,7 +78,7 @@ function reply:onTextboxEnter()
       newMessageUUID = calculateNewMessageUUID((player.id() - 65535) // -65536, widget.getText("tbxInput"), 
         widget.getSelectedData("rgChatMode").mode, player.name()) 
   }
-    if self.stagehandType then
+    if self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
       for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), self.messageRadius)) do 
