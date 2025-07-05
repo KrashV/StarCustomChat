@@ -300,7 +300,7 @@
                     "btnSelectPortrait": {
                       "type": "button",
                       "base": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
-                      "hover": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                      "hover": "/interface/scripted/starcustomchat/plugins/stickers/frameselected.png",
                       "callback": "selectPortrait",
                       "position": [0, 2],
                       "pressedOffset": [0, 0]
