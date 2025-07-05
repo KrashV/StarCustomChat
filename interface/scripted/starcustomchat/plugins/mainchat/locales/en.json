@@ -12,7 +12,7 @@
     "settings.chat_mode": "Chat mode",
     "settings.font_size": "Font size",
     "settings.clear_chat_history": "Clear chat",
-    "settings.reset_avatar": "Reset avatar",
+    "settings.reset_avatar": "Reset offset",
     "settings.chat_collapse": "Max characters in message\n0 = do not collapse",
     "settings.modes.compact": "Compact",
     "settings.modes.modern": "Modern",
@@ -22,5 +22,13 @@
     "settings.mainchat.alerts.image_error": "Could not load the image",
     "settings.mainchat.chatmode": "Chat mode:",
     "settings.mainchat.set_custom_directives": "Set custom portrait directives",
-    "settings.mainchat.utc_offset": "UTC offset: "
+    "settings.mainchat.utc_offset": "UTC offset: ",
+    "settings.mainchat.select_portrait": "Select portrait",
+    "settings.mainchat.portraits.remove": "Remove portrait",
+    "settings.mainchat.portraits.default": "Player",
+    "settings.stickers.dialogs.remove.title": "Remove portrait",
+    "settings.stickers.dialogs.remove.subtitle": "^red;This action cannot be undone",
+    "settings.stickers.dialogs.remove.message": "Are you sure you want to delete this portrait?",
+    "settings.stickers.dialogs.remove.ok": "Delete",
+    "settings.stickers.dialogs.remove.cancel": "Cancel"
 }

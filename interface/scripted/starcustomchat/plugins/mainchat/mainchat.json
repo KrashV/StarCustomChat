@@ -97,157 +97,236 @@
         "value": "",
         "translationKey": "settings.plugins.mainchat"
       },
-      "portraitCanvas": {
-        "type": "canvas",
-        "rect": [8, 53, 78, 123],
-        "captureMouseEvents": true
-      },
 
-      "lblChatMode": {
-        "type":"label",
-        "hAnchor": "right",
-        "position": [180, 128],
-        "translationKey": "settings.mainchat.chatmode"
-      },
-
-      "btnMode": {
-        "type": "button",
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
-        "position": [185, 126],
-        "callback": "changeMode"
-      },
-
-      "saScrollArea": {
-        "type": "scrollArea",
-        "rect": [8, 53, 78, 123],
-        "buttons" : {
-          "horizontal" : {
-            "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
-            "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
+      "lytBase": {
+        "type": "layout",
+        "layoutType": "basic",
+        "rect": [0, 0, 300, 200],
+        "children": {
+          "btnResetAvatar": {
+            "type": "button",
+            "position": [1, 21],
+            "callback": "resetAvatar",
+            "zlevel": 20,
+            "caption": "",
+            "base" : "/interface/scripted/starcustomchatsettings/button.png?flipx;",
+            "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90",
+            "translationKey": "settings.reset_avatar"
           },
-          "vertical" : {
-            "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
-            "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
-          }
-        },
-        "thumbs" : {
-          "horizontal" : {
-            "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-            "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-            "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+      
+          "btnDeleteChat" : {
+            "type" : "button",
+            "base" : "/interface/scripted/starcustomchatsettings/button.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
+            "position" : [162, 21],
+            "caption" : "Clear",
+            "callback": "clearHistory",
+            "translationKey": "settings.clear_chat_history"
           },
-          "vertical" : {
-            "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-            "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
-            "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+          
+
+
+          "sldFontSize" : {
+            "type": "slider",
+            "gridImage" : "/interface/optionsmenu/largeselection.png",
+            "position": [97, 113],
+            "callback": "updateFontSize"
+          },
+      
+          "lblFontSizeHint" : {
+            "type": "label",
+            "position": [155, 103],
+            "hAnchor": "mid",
+            "color": "lightgray",
+            "value": "",
+            "translationKey": "settings.font_size"
+          },
+      
+          "lblFontSizeValue" : {
+            "type": "label",
+            "position": [225, 113],
+            "hAnchor": "mid",
+            "value": ""
+          },
+          
+      
+          "sldMessageLength" : {
+            "type": "slider",
+            "gridImage" : "/interface/optionsmenu/largeselection.png",
+            "position": [97, 90],
+            "callback": "updateMessageLength"
+          },
+      
+          "lblMessageLengthHint" : {
+            "type": "label",
+            "position": [155, 85],
+            "hAnchor": "mid",
+            "vAnchor": "top",
+            "color": "lightgray",
+            "value": "",
+            "translationKey": "settings.chat_collapse"
+          },
+      
+          "lblMessageLengthValue" : {
+            "type": "label",
+            "position": [225, 90],
+            "hAnchor": "mid",
+            "value": ""
+          },
+
+          "tbxCustomPortrait": {
+            "type": "textbox",
+            "position": [8, 40],
+            "callback": "null",
+            "enterKey": "setPortrait",
+            "maxWidth": 70,
+            "hint": "?directives",
+            "data": {
+              "displayText": "settings.mainchat.customavatar"
+            }
+          },
+
+          "lblUTCHint": {
+            "type": "label",
+            "position": [165, 53],
+            "hAnchor": "right",
+            "vAnchor": "top",
+            "value": "",
+            "translationKey": "settings.mainchat.utc_offset"
+          },
+
+          "spnUTCOffset" : {
+            "type": "spinner",
+            "position" : [170, 45],
+            "upOffset" : 40,
+            "callback": "utcOffsetSpinner"
+          },
+          "lblUTCOffset": {
+            "type": "label",
+            "position": [195, 45],
+            "value": "",
+            "hAnchor": "mid"
+          },
+
+          "portraitCanvas": {
+            "type": "canvas",
+            "rect": [8, 53, 78, 123],
+            "captureMouseEvents": true
+          },
+
+          "lblChatMode": {
+            "type":"label",
+            "hAnchor": "right",
+            "position": [180, 128],
+            "translationKey": "settings.mainchat.chatmode"
+          },
+
+          "btnMode": {
+            "type": "button",
+            "base" : "/interface/scripted/starcustomchatsettings/bt.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+            "position": [185, 126],
+            "callback": "changeMode"
+          },
+
+          "saScrollArea": {
+            "type": "scrollArea",
+            "rect": [8, 53, 78, 123],
+            "buttons" : {
+              "horizontal" : {
+                "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
+                "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
+              },
+              "vertical" : {
+                "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
+                "backward" :{ "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" }
+              }
+            },
+            "thumbs" : {
+              "horizontal" : {
+                "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+                "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+                "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+              },
+              "vertical" : {
+                "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+                "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+                "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+              }
+            }
+          },
+
+          "btnTogglePortrait": {
+            "type": "button",
+            "position": [71, 117],
+            "callback": "togglePortraitSelection",
+            "base" : "/interface/scripted/starcustomchatsettings/down.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/downhover.png",
+            "data": {
+              "displayText": "settings.mainchat.select_portrait"
+            }
           }
         }
       },
-  
-      "btnResetAvatar": {
-        "type": "button",
-        "position": [1, 21],
-        "callback": "resetAvatar",
-        "zlevel": 20,
-        "caption": "",
-        "base" : "/interface/scripted/starcustomchatsettings/button.png?flipx;",
-        "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90",
-        "translationKey": "settings.reset_avatar"
-      },
-  
-      "btnDeleteChat" : {
-        "type" : "button",
-        "base" : "/interface/scripted/starcustomchatsettings/button.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
-        "position" : [162, 21],
-        "caption" : "Clear",
-        "callback": "clearHistory",
-        "translationKey": "settings.clear_chat_history"
-      },
-      
 
-
-      "sldFontSize" : {
-        "type": "slider",
-        "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 113],
-        "callback": "updateFontSize"
-      },
-  
-      "lblFontSizeHint" : {
-        "type": "label",
-        "position": [155, 103],
-        "hAnchor": "mid",
-        "color": "lightgray",
-        "value": "",
-        "translationKey": "settings.font_size"
-      },
-  
-      "lblFontSizeValue" : {
-        "type": "label",
-        "position": [225, 113],
-        "hAnchor": "mid",
-        "value": ""
-      },
-      
-  
-      "sldMessageLength" : {
-        "type": "slider",
-        "gridImage" : "/interface/optionsmenu/largeselection.png",
-        "position": [97, 90],
-        "callback": "updateMessageLength"
-      },
-  
-      "lblMessageLengthHint" : {
-        "type": "label",
-        "position": [155, 85],
-        "hAnchor": "mid",
-        "vAnchor": "top",
-        "color": "lightgray",
-        "value": "",
-        "translationKey": "settings.chat_collapse"
-      },
-  
-      "lblMessageLengthValue" : {
-        "type": "label",
-        "position": [225, 90],
-        "hAnchor": "mid",
-        "value": ""
-      },
-
-      "tbxCustomPortrait": {
-        "type": "textbox",
-        "position": [8, 40],
-        "callback": "null",
-        "enterKey": "setPortrait",
-        "maxWidth": 70,
-        "hint": "?directives",
-        "data": {
-          "displayText": "settings.mainchat.customavatar"
+      "lytPortraitSelection": {
+        "type": "layout",
+        "layoutType": "basic",
+        "rect": [15, 50, 230, 140],
+        "visible": false,
+        "zLevel": 40,
+        "children": {
+          "saSavedPortraits": {
+            "type": "scrollArea",
+            "rect": [0, 0, 215, 90],
+            "children": {
+              "listPortraits": {
+                "type": "list",
+                "columns" : 5,            
+                "fillDown" : true,
+                "callback": "null",
+                "scissoring" : false,
+                "schema": {
+                  "memberSize": [32, 36],
+                  "spacing" : [10, 10],
+                  "selectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frameselected.png",
+                  "unselectedBG" : "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                  "listTemplate": {
+                    "background": {
+                      "type": "image",
+                      "file": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                      "position": [0, 2]
+                    },
+                    "btnSelectPortrait": {
+                      "type": "button",
+                      "base": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                      "hover": "/interface/scripted/starcustomchat/plugins/stickers/frame.png",
+                      "callback": "selectPortrait",
+                      "position": [0, 2],
+                      "pressedOffset": [0, 0]
+                    },
+                    "portrait": {
+                      "type": "canvas",
+                      "rect": [0, 2, 32, 34],
+                      "captureMouseEvents": false
+                    },
+                    "btnRemove": {
+                      "type": "button",
+                      "position": [28, 30],
+                      "base": "/interface/scripted/starcustomchatsettings/remove/remove.png:base",
+                      "hover": "/interface/scripted/starcustomchatsettings/remove/remove.png:hover",
+                      "zLevel": 2,
+                      "callback": "removePortrait",
+                      "data": {
+                        "displayText": "settings.mainchat.portraits.remove"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-      },
-
-      "lblUTCHint": {
-        "type": "label",
-        "position": [165, 53],
-        "hAnchor": "right",
-        "vAnchor": "top",
-        "value": "",
-        "translationKey": "settings.mainchat.utc_offset"
-      },
-
-      "spnUTCOffset" : {
-        "type": "spinner",
-        "position" : [170, 45],
-        "upOffset" : 40,
-        "callback": "utcOffsetSpinner"
-      },
-      "lblUTCOffset": {
-        "type": "label",
-        "position": [195, 45],
-        "value": "",
-        "hAnchor": "mid"
       }
     }
   },

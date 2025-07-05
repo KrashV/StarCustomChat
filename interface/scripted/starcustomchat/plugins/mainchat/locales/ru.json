@@ -12,7 +12,7 @@
     "settings.chat_mode": "Режим чата",
     "settings.font_size": "Размер шрифта",
     "settings.clear_chat_history": "Очистить чат",
-    "settings.reset_avatar": "Сброс портрета",
+    "settings.reset_avatar": "Сброс смещения",
     "settings.chat_collapse": "Макс. символов в сообщении\n0 = не сворачивать",
     "settings.modes.compact": "Компакт.",
     "settings.modes.modern": "Полный",
@@ -22,5 +22,13 @@
     "settings.mainchat.alerts.image_error": "Изображение не найдено",
     "settings.mainchat.chatmode": "Режим чата:",
     "settings.mainchat.set_custom_directives": "Установить новый портрет",
-    "settings.mainchat.utc_offset": "UTC смещение: "
+    "settings.mainchat.utc_offset": "UTC смещение: ",
+    "settings.mainchat.select_portrait": "Выбрать портрет",
+    "settings.mainchat.portraits.remove": "Удалить портрет",
+    "settings.mainchat.portraits.default": "Игрок",
+    "settings.stickers.dialogs.remove.title": "Удалить портрет",
+    "settings.stickers.dialogs.remove.subtitle": "^red;ThisЭто действие не может быть отменено.",
+    "settings.stickers.dialogs.remove.message": "Вы уверены, что хотите удалить этот портрет?",
+    "settings.stickers.dialogs.remove.ok": "Удалить",
+    "settings.stickers.dialogs.remove.cancel": "Отмена"
 }

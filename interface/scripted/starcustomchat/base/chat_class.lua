@@ -257,8 +257,16 @@ function StarCustomChat:resetChat()
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
   if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
+    local portrait = player.getProperty("icc_custom_portrait")
+    local portraitSelected = player.getProperty("icc_custom_portrait_selected")
+    if portrait then
+      if type(portrait) == "table" then
+        portrait = portraitSelected and portraitSelected ~= 0 and portrait[portraitSelected or #portrait] or nil
+      end
+    end
+
     self.savedPortraits[player.uniqueId()] = {
-      portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
+      portrait = portrait or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
       settings = player.getProperty("icc_portrait_settings") or {
         offset = self.config.defaultPortraitOffset,
         scale = self.config.defaultPortraitScale
@@ -542,8 +550,8 @@ function filterMessages(messages)
   return drawnMessageIndexes
 end
 
-function createNameForCompactMode(name, color, text, time, timeColor)
-  local timeString = time and string.format("^%s;[%s] ", timeColor, time) or ""
+function createNameForCompactMode(name, color, text, time, timeColor, timeFont)
+  local timeString = time and string.format("^%s;^font=%s;[%s]^reset; ", timeColor, timeFont, time) or ""
   local formattedString = string.format(" %s^reset;<^%s;%s^reset;>: %s", timeString, color, name, text)
 
   return formattedString
@@ -602,7 +610,7 @@ function StarCustomChat:processQueue()
     local text = self.chatMode == "modern" and message.text 
       or createNameForCompactMode(message.displayName or message.nickname, 
         self.config.modeColors[messageMode] or self.config.modeColors.default, 
-        message.text, message.time, self:getColor("timetext"))
+        message.text, message.time, self:getColor("timetext"), self:getFont("timetext"))
 
     if self.maxCharactersAllowed ~= 0 then
       local toCheckLength = message.collapsed == nil and true or message.collapsed
@@ -706,7 +714,7 @@ function StarCustomChat:processQueue()
         else
           local text = createNameForCompactMode(message.displayName or message.nickname, 
           self.config.modeColors[messageMode] or self.config.modeColors.default, 
-            "", message.time, self:getColor("timetext"))
+            "", message.time, self:getColor("timetext"), self:getFont("timetext"))
           
           self.canvas:drawText(text, {
             position = {offset[1], offset[2] + reactionOffset},
