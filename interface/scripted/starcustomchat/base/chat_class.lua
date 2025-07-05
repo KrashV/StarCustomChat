@@ -715,7 +715,7 @@ function StarCustomChat:processQueue()
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
           }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
-          local nameWidth = self:getTextSize("<" .. message.displayName or message.nickname .. ">: ")
+          local nameWidth = self:getTextSize(text)
           self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)
         end
 

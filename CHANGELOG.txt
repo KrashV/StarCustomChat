@@ -1,3 +1,4 @@
 - Log command result into the Log
 - Add Toggle Afk bind to Mod Binds
 - Sticker deletion now asks for confirmation
+- Fixed drawing stickers in compact mode
