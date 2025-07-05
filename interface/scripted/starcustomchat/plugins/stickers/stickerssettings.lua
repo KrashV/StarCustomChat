@@ -82,16 +82,32 @@ function stickers:searchSticker()
 end
 
 function stickers:removeSticker()
+
   local li = self.widget.getListSelected("saSavedStickers.listStickers")
   if li then
     local data = self.widget.getData("saSavedStickers.listStickers." .. li)
-    local ind = index(self.stickerIndexes, li)
-    if ind then
-      self.widget.removeListItem("saSavedStickers.listStickers", ind - 1)
-      self.savedStickers[data.name] = nil
-      table.remove(self.stickerIndexes, ind)
-      save()
-    end
+
+    local dialogConfig = {
+      paneLayout = "/interface/windowconfig/simpleconfirmation.config:paneLayout",
+      icon = self.savedStickers[data.name] or "/assetmissing.png",
+      title = starcustomchat.utils.getTranslation("settings.plugins.stickers.dialogs.remove.title"),
+      subtitle = starcustomchat.utils.getTranslation("settings.plugins.stickers.dialogs.remove.subtitle"),
+      message = starcustomchat.utils.getTranslation("settings.plugins.stickers.dialogs.remove.message", data.name),
+      okCaption = starcustomchat.utils.getTranslation("settings.plugins.stickers.dialogs.remove.ok"),
+      cancelCaption = starcustomchat.utils.getTranslation("settings.plugins.stickers.dialogs.remove.cancel")
+    }
+
+    promises:add(player.confirm(dialogConfig), function(confirmed)
+      if confirmed then
+        local ind = index(self.stickerIndexes, li)
+        if ind then
+          self.widget.removeListItem("saSavedStickers.listStickers", ind - 1)
+          self.savedStickers[data.name] = nil
+          table.remove(self.stickerIndexes, ind)
+          save()
+        end
+      end
+    end)
   end
 end
 

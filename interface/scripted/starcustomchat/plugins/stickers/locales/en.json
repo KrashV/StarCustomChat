@@ -12,5 +12,10 @@
     "settings.colors.stickerselect": "Stickers",
     "chat.commands.save_sticker": "Save sticker",
     "chat.commands.alerts.saved": "Sticker %s saved!",
-    "stickers.name_preview": "Sticker: %s"
+    "stickers.name_preview": "Sticker: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Remove sticker",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;This action cannot be undone.",
+    "settings.plugins.stickers.dialogs.remove.message": "Are you sure you want to remove the sticker ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Remove",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Cancel"
 }
