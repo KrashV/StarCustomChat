@@ -8,10 +8,10 @@ stickers = SettingsPluginClass:new(
 -- Settings
 function stickers:init()
   self:_loadConfig()
+  self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
 end
 
 function stickers:openTab()
-  self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
   self.stickerIndexes = {}
 
   self.widget.registerMemberCallback("saSavedStickers.listStickers", "removeSticker", function(_, data)
