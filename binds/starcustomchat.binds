@@ -1,7 +1,7 @@
 {
   "starcustomchat": {
     "name": "Star Custom Chat",
-    "bannerName" : "Advanced chat by Degranon",
+    "bannerName" : "StarCustomChat by Degranon",
     "binds": {
       "repeatcommand": {
         "default": [{
