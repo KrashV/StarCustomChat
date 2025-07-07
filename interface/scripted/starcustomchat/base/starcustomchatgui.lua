@@ -70,6 +70,8 @@ function init()
       if root.assetOrigin(localeFile) then
         local translations = root.assetJson(localeFile)
         localePluginConfig[locale] = sb.jsonMerge(localePluginConfig[locale], translations)
+      else
+        sb.logWarn("The %s localization file is missing", localeFile)
       end
     end
   end
