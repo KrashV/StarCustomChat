@@ -66,10 +66,11 @@ function init()
     end
 
     for locale, localeConfig in pairs(availableLocales) do 
-      pcall(function()
-        local translations = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale))
+      local localeFile = string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale)
+      if root.assetOrigin(localeFile) then
+        local translations = root.assetJson(localeFile)
         localePluginConfig[locale] = sb.jsonMerge(localePluginConfig[locale], translations)
-      end)
+      end
     end
   end
 
