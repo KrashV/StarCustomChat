@@ -12,5 +12,10 @@
     "settings.colors.stickerselect": "Стикеры",
     "chat.commands.save_sticker": "Сохранить стикер",
     "chat.commands.alerts.saved": "Стикер %s сохранён!",
-    "stickers.name_preview": "Стикер: %s"
+    "stickers.name_preview": "Стикер: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Удалить стикер",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Это действие не может быть отменено.",
+    "settings.plugins.stickers.dialogs.remove.message": "Вы уверены, что хотите удалить стикер ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Удалить",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Отмена"
 }

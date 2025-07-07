@@ -241,78 +241,81 @@ function buildSettingsInterface()
         hoverImageChecked = pluginConfig.settingsPage["tabButtons"]["hoverImageChecked"],
       }
 
-      local function processWidgets(widgets)
-        for widgetName, widgetConfig in pairs(widgets or {}) do 
-            if widgetConfig.translationKey then
-              table.insert(baseSettingsInterface["translations"], {
-                widget = "lytPluginSettings." .. pluginName .. "." .. widgetName,
-                key = widgetConfig.translationKey
+      local function processWidgets(widgets, targetTable, pathPrefix)
+        for widgetName, widgetConfig in pairs(widgets or {}) do
+          local fullWidgetPath = pathPrefix .. "." .. widgetName
+
+          if widgetConfig.translationKey then
+            table.insert(baseSettingsInterface["translations"], {
+              widget = fullWidgetPath,
+              key = widgetConfig.translationKey
+            })
+          end
+
+          if widgetConfig.hintTranslationKey then
+            table.insert(baseSettingsInterface["hintTranslations"], {
+              widget = fullWidgetPath,
+              key = widgetConfig.hintTranslationKey
+            })
+          end
+
+          -- Spinner, textbox, etc. processing remains the same...
+          if widgetConfig.type == "spinner" then
+            local callbackName = widgetConfig.callback or widgetName
+            table.insert(spinnerNames, fullWidgetPath)
+            widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+              actualPluginCallback = {
+                pluginName = pluginName,
+                callback = callbackName
+              }
+            })
+            widgetConfig.callback = "_generalSpinnerCallback"
+          elseif widgetConfig.type == "radioGroup" then
+            for i, btn in ipairs(widgetConfig.buttons) do
+              widgetConfig.buttons[i].data = sb.jsonMerge(btn.data or {}, {
+                actualPluginCallback = {
+                  pluginName = pluginName,
+                  callback = widgetConfig.callback
+                }
               })
             end
+            widgetConfig.callback = "_generalCallback"
+          elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
+            widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+              actualPluginCallback = {
+                pluginName = pluginName,
+                callback = widgetConfig.callback
+              }
+            })
+            widgetConfig.callback = "_generalCallback"
+          elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
+            baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
+          elseif widgetConfig.type == "textbox" then
+            widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
+              actualPluginCallback = {
+                pluginName = pluginName,
+                callback = widgetConfig.callback ~= "null" and widgetConfig.callback or nil,
+                enterKey = widgetConfig.enterKey,
+                escapeKey = widgetConfig.escapeKey
+              }
+            })
+            widgetConfig.callback = "_generalTextBoxCallback"
+            widgetConfig.enterKey = "_generalTextBoxCallbackEnter"
+            widgetConfig.escapeKey = "_generalTextBoxCallbackEscape"
+          end
 
-            if widgetConfig.hintTranslationKey then
-              table.insert(baseSettingsInterface["hintTranslations"], {
-                widget = "lytPluginSettings." .. pluginName .. "." .. widgetName,
-                key = widgetConfig.hintTranslationKey
-              })
-            end
+          targetTable[widgetName] = widgetConfig
 
-            if widgetConfig.type == "spinner" then
-                local callbackName = widgetConfig.callback or widgetName
-                table.insert(spinnerNames, "lytPluginSettings." .. pluginName .. "." .. widgetName)
-                widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
-                    actualPluginCallback = {
-                        pluginName = pluginName,
-                        callback = callbackName
-                    }
-                })
-                widgetConfig.callback = "_generalSpinnerCallback"
-            elseif widgetConfig.type == "radioGroup" then
-              for i, btn in ipairs(widgetConfig.buttons) do
-                widgetConfig.buttons[i].data = sb.jsonMerge(btn.data or {}, {
-                  actualPluginCallback = {
-                    pluginName = pluginName,
-                    callback = widgetConfig.callback
-                  }
-                })
-              end
-              widgetConfig.callback = "_generalCallback"
-            elseif widgetConfig.callback and widgetConfig.callback ~= "null" then
-                widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
-                    actualPluginCallback = {
-                        pluginName = pluginName,
-                        callback = widgetConfig.callback
-                    }
-                })
-                widgetConfig.callback = "_generalCallback"
-            elseif widgetConfig.type == "canvas" and widgetConfig.captureMouseEvents then
-                baseSettingsInterface["canvasClickCallbacks"][widgetName] = "_generalCanvasClick"
-            elseif widgetConfig.type == "textbox" then
-
-              widgetConfig.data = sb.jsonMerge(widgetConfig.data or {}, {
-                  actualPluginCallback = {
-                      pluginName = pluginName,
-                      callback = widgetConfig.callback ~= "null" and widgetConfig.callback or nil,
-                      enterKey = widgetConfig.enterKey,
-                      escapeKey = widgetConfig.escapeKey
-                  }
-              })
-
-              widgetConfig.callback = "_generalTextBoxCallback"
-              widgetConfig.enterKey = "_generalTextBoxCallbackEnter"
-              widgetConfig.escapeKey = "_generalTextBoxCallbackEscape"
-            end
-            layout["children"][widgetName] = widgetConfig
-            
-            -- If this widget has its own children, process them recursively
-            if widgetConfig.children then
-                processWidgets(widgetConfig.children)
-            end
+          -- Recurse if this widget has children
+          if widgetConfig.children then
+            processWidgets(widgetConfig.children, widgetConfig.children, fullWidgetPath)
+          end
         end
       end
+
     
       -- Initial call to process the top-level widgets
-      processWidgets(pluginConfig.settingsPage["gui"])
+      processWidgets(pluginConfig.settingsPage["gui"], layout["children"], "lytPluginSettings." .. pluginName)
     end
 
     if pluginConfig.parameters then

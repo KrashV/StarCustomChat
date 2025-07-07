@@ -1,7 +1,7 @@
 {
   "starcustomchat": {
     "name": "Star Custom Chat",
-    "bannerName" : "Advanced chat by Degranon",
+    "bannerName" : "StarCustomChat by Degranon",
     "binds": {
       "repeatcommand": {
         "default": [{
@@ -9,6 +9,9 @@
           "value": "P"
         }],
         "name": "Repeat last command"
+      },
+      "enableAfk": {
+        "name": "Toggle AFK mode"
       }
     }
   }

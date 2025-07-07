@@ -1,1 +1,7 @@
-- Fixed a rare crash when selecting the DMs option
+- Log command result into the Log
+- Add Toggle Afk bind to Mod Binds
+- Fixed stored strickers being deleted on settings opening
+- Sticker deletion now asks for confirmation
+- Fixed drawing stickers in compact mode
+- Time font for compact mode
+- Store several portraits per player

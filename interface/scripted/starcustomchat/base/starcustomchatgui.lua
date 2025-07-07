@@ -226,8 +226,16 @@ function registerCallbacks()
 
   starcustomchat.utils.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then
+      local portrait = player.getProperty("icc_custom_portrait")
+      local portraitSelected = player.getProperty("icc_custom_portrait_selected")
+      if portrait then
+        if type(portrait) == "table" then
+          portrait = portraitSelected and portraitSelected ~= 0 and portrait[portraitSelected or #portrait] or nil
+        end
+      end
+
       return {
-        portrait = player.getProperty("icc_custom_portrait") or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
+        portrait = portrait or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = (player.id() - 65535) // -65536,

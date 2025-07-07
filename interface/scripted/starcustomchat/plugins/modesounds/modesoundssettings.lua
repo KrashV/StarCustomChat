@@ -115,5 +115,7 @@ function modesounds:clearModeSound()
 end
 
 function modesounds:uninit()
-  pane.stopAllSounds(self.modeSoundTable[self.selectedMode])
+  if self.modeSoundTable[self.selectedMode] then
+    pane.stopAllSounds(self.modeSoundTable[self.selectedMode])
+  end
 end

@@ -1,5 +1,6 @@
 require "/scripts/vec2.lua"
 require "/scripts/util.lua"
+require "/scripts/messageutil.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/combobox/combobox.class.lua"
 
@@ -203,6 +204,7 @@ function changePluginPage()
 end
 
 function update(dt)
+  promises:update()
   self.runCallbackForPlugins("update", dt)
 end
 

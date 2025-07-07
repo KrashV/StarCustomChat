@@ -47,6 +47,13 @@ function afk:update(dt)
       end
     end
   end
+
+  if input.bindDown("starcustomchat", "enableAfk") then
+    self.forcedAfkTimer = self.forcedAfkTimer == 0 and self.afkIgnoreTime or 0
+    self.buttonPressed = true
+    self.afkTime = 0
+    self:activateAFK()
+  end
 end
 
 function afk:onCustomButtonClick(btnName, data)
