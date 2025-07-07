@@ -1,5 +1,5 @@
 {
-    "settings.plugins.charactervoice": "Character Voice Voz del personaje",
+    "settings.plugins.charactervoice": "Voz del personaje",
     "settings.plugins.charactervoice.enable": "Habilitado",
     "settings.plugins.charactervoice.enablewhisper": "Mensaje directo",
     "settings.plugins.charactervoice.pitch": "Tono",
