@@ -17,7 +17,6 @@
 
   "chat.alerts.dm_not_specified": "Elije al destinatario",
   "chat.alerts.dm_not_found": "Este jugador tiene que estar en el mismo planeta",
-  "chat.alerts.stagehand_not_found": "^red;Este servidor no tiene soporte para este chat",
   "chat.alerts.copied_to_clipboard": "Copiado al cortapapeles",
   "chat.alerts.cannot_start_two_slashes": "El comando no puede empezar con dos barras",
   "chat.alerts.cannot_ping_server": "No se puede notificar los mensajes del servidor",

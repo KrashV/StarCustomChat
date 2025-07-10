@@ -17,7 +17,6 @@
 
   "chat.alerts.dm_not_specified": "Выбери персонажа, чтобы отправить текст",
   "chat.alerts.dm_not_found": "Игрок не на планете",
-  "chat.alerts.stagehand_not_found": "^red;Сервер не поддерживает данный чат",
   "chat.alerts.copied_to_clipboard": "Скопировано",
   "chat.alerts.cannot_start_two_slashes": "Команда не должна начинаться с двух слешей",
   "chat.alerts.cannot_ping_server": "Нельзя упоминать сервер",
