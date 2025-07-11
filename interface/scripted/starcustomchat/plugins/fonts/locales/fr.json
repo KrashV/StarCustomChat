@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Police",
+    "settings.fonts.setFont": "Sélectionner la police",
+    "settings.fonts.drop_to_default": "Par défaut",
+    "settings.fonts.chatfont": "Chat",
+    "settings.fonts.timefont": "Heure"
+}

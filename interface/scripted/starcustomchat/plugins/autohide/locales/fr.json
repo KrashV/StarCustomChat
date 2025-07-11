@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Masquage automatique",
+    "settings.autohide.after": "Masquer après",
+    "settings.autohide.sec": "sec",
+    "settings.autohide.description": "La valeur 0 garde le chat ouvert",
+    "settings.autohide.ignore_server_messages": "Ignorer les messages du serveur",
+    "settings.autohide.ignore_inspect_messages": "Ignorer les messages d’inspection d’objet"
+}
