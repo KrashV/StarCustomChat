@@ -166,6 +166,14 @@ function init()
   -- Apparently, we don't know on init if we're admin or not.
   ICChatTimer:add(0.2, disableAdminModes)
 
+
+  if pane.setPosition then
+    widget.setVisible("btnMoveChat", true)
+    ICChatTimer:add(0.1, function()
+      local newPosition = root.getConfiguration("scc_chat_position") or {0, 0}
+      pane.setPosition(newPosition)
+    end)
+  end
   self.settingsInterface = buildSettingsInterface()
 end
 
@@ -381,7 +389,7 @@ function localeChat()
 end
 
 function update(dt)
-  
+
   ICChatTimer:update(dt)
   promises:update()
   
@@ -393,6 +401,11 @@ function update(dt)
   checkTyping()
   checkCommandsPreview()
   processButtonEvents(dt)
+
+  if self.toggleMoveChat then
+    local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), widget.getSize("btnMoveChat"))
+    pane.setPosition(vec2.sub(cursorPosition, widget.getPosition("btnMoveChat")))
+  end
 
   self.runCallbackForPlugins("update", dt)
 end
@@ -788,12 +801,18 @@ function openBiggerChat()
   player.interact("ScriptPane", biggerChat)
 end
 
+function toggleChatMovement()
+  self.toggleMoveChat = widget.getChecked("btnMoveChat")
+end
+
+
 function saveEverythingDude()
   -- Save messages and last command
   local messages = self.customChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", self.sentMessages)
+  root.setConfiguration("scc_chat_position", pane.getPosition and pane.getPosition() or nil)
 end
 
 function closeChat()
@@ -857,6 +876,7 @@ function uninit()
   if handlerCutter then
     handlerCutter()
   end
+  
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
 end

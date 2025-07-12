@@ -1,3 +1,5 @@
+Added an ability to move the chat pane around the screen
+
 ## Localisation Support
 Spanish
 French

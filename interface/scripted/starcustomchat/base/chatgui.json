@@ -36,6 +36,20 @@
       }
     },
 
+    "btnMoveChat": {
+      "type": "button",
+      "base": "/interface/scripted/starcustomchat/base/move.png",
+      "position": [290, 0],
+      "callback": "toggleChatMovement",
+      "checkable": true,
+      "checked": false,
+      "visible": false,
+      "baseImageChecked": "/interface/scripted/starcustomchat/base/movepressed.png",
+      "data": {
+        "displayText": "chat.buttons.move_chat"
+      }
+    },
+
     "lytContext": {     
       "type": "layout",
       "position": [0, 0],
@@ -349,7 +363,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat"],
+    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
