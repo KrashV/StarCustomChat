@@ -79,7 +79,7 @@
   "commands.admin.spawnvehicle": "Создает транспортное средство.",
   "commands.admin.timewarp": "Искажает время.",
   "commands.admin.unbanip": "Разблокирует IP-адрес.",
-  "commands.admin.unbanuuiud": "Разблокирует UUID.",
+  "commands.admin.unbanuuid": "Разблокирует UUID.",
   "commands.admin.warp": "Телепортируется в указанное место.",
   "commands.admin.whereis": "Отображает координаты указанного игрока.",
 

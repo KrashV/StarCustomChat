@@ -82,7 +82,7 @@
   "commands.admin.spawnvehicle": "Fait apparaître un véhicule.",
   "commands.admin.timewarp": "Modifie le temps.",
   "commands.admin.unbanip": "Révoque le bannissement d’une adresse IP.",
-  "commands.admin.unbanuuiud": "Révoque le bannissement d’une UUID (Identifiant unique).",
+  "commands.admin.unbanuuid": "Révoque le bannissement d’une UUID (Identifiant unique).",
   "commands.admin.warp": "Téléporte vers un emplacement spécifié.",
   "commands.admin.whereis": "Affiche les coordonnées d’un joueur désigné.",
 

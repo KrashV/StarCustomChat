@@ -82,7 +82,7 @@
   "commands.admin.spawnvehicle": "Spawns a vehicle.",
   "commands.admin.timewarp": "Warps time.",
   "commands.admin.unbanip": "Unbans an IP address.",
-  "commands.admin.unbanuuiud": "Unbans a UUID.",
+  "commands.admin.unbanuuid": "Unbans a UUID.",
   "commands.admin.warp": "Warps to a specified location.",
   "commands.admin.whereis": "Displays the coordinates of a specified player.",
 
