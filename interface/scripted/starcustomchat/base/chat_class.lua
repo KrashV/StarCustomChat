@@ -604,7 +604,7 @@ function StarCustomChat:processQueue()
     
     -- If the message should contain an avatar and name:
     local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
-    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait)
+    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait or message.edited)
 
 
     local text = self.chatMode == "modern" and message.text 

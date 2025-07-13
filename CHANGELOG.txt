@@ -1,4 +1,5 @@
-Added an ability to move the chat pane around the screen
++ Added an ability to move the chat pane around the screen
++ The edited messages are now correctly indicated as such
 
 ## Localisation Support
 Spanish
