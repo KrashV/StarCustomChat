@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Automatisch verstecken",
+    "settings.autohide.after": "Verstecken nach",
+    "settings.autohide.sec": "Sekunden",
+    "settings.autohide.description": "Wert 0 lässt den Chat immer offen",
+    "settings.autohide.ignore_server_messages": "Server ignorieren",
+    "settings.autohide.ignore_inspect_messages": "Item-Inspektion ignorieren"
+}

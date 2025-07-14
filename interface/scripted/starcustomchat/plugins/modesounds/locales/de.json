@@ -1,0 +1,6 @@
+{
+    "settings.plugins.modesounds": "Nachrichtentöne",
+    "settings.plugins.modesounds.mode_list": "Modusliste",
+    "settings.plugins.modesounds.sound_list": "Tonliste",
+    "settings.plugins.modesounds.clear": "Ton entfernen"
+}

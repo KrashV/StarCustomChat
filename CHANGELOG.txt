@@ -4,3 +4,4 @@
 ## Localisation Support
 Spanish
 French
+German
