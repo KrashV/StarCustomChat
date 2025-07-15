@@ -19,7 +19,7 @@
     },
     "scrollArea": {
       "type": "scrollArea",
-      "rect": [10, 27, 290, 140],
+      "rect": [15, 27, 290, 140],
       "children": {
         "reactList": {
           "type": "list",
