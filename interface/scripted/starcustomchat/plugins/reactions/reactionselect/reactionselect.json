@@ -14,16 +14,16 @@
       "icon" : {
         "type" : "image",
         "file" : "/emotes/smile.emote.png",
-        "offset": [1, 1]
+        "offset": [1, 5]
       }
     },
     "scrollArea": {
       "type": "scrollArea",
-      "rect": [10, 25, 175, 90],
+      "rect": [10, 27, 290, 140],
       "children": {
         "reactList": {
           "type": "list",
-          "columns" : 6,
+          "columns" : 10,
           "fillDown": true,
           "callback": "onEmojiSelect",
           "schema": {
@@ -42,9 +42,10 @@
     },
     "tbxSearch": {
       "type": "textbox",
-      "position": [7, 10],
+      "position": [10, 10],
       "callback": "searchEmoji",
-      "hint": "Search..."
+      "hint": "Search...",
+      "maxWidth": 250
     },
     "close" : {
       "type" : "button",
@@ -52,7 +53,7 @@
       "hover" : "/interface/xhover.png",
       "pressed" : "/interface/xpress.png",
       "pressedOffset" : [0, 0],
-      "position" : [161, 101]
+      "position" : [276, 148]
     }
   },
 
