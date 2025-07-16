@@ -1,3 +1,4 @@
 {
-    "chat.commands.add_reaction": "Reaktion hinzufügen"
+    "chat.commands.add_reaction": "Reaktion hinzufügen",
+    "reactions.reactselect.hint": "Suchen..."
 }

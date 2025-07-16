@@ -52,6 +52,7 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
     selectEmojiPane.text = selectedMessage.text
     selectEmojiPane.nickname = selectedMessage.nickname
     selectEmojiPane.stagehandType = self.stagehandType
+    selectEmojiPane.textboxHint = starcustomchat.utils.getTranslation("reactions.reactselect.hint")
 
     player.interact("ScriptPane", selectEmojiPane)
   end

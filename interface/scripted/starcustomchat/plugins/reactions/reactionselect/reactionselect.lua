@@ -10,6 +10,10 @@ function init()
   pane.setTitle(getTitle(config.getParameter("text")), config.getParameter("nickname"))
   pane.setTitleIcon(string.format("/emotes/%s.emote.png", self.emojiList[math.random(#self.emojiList)]))
 
+  if widget.setHint then
+    widget.setHint("tbxSearch", config.getParameter("textboxHint"))
+  end
+
 end
 
 
