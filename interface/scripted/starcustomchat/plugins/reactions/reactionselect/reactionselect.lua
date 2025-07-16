@@ -16,13 +16,8 @@ function init()
 
 end
 
-
-function clearMetatags(text)
-  return text:gsub("%^.-;", "")
-end
-
 function getTitle(text)
-  local cleanText = clearMetatags(text)
+  local cleanText = starcustomchat.utils.clearMetatags(text)
   return utf8.len(cleanText) > self.maxLength and starcustomchat.utils.utf8Substring(cleanText, 1, self.maxLength) .. "..." or text
 end
 
