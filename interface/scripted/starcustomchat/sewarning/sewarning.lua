@@ -2,8 +2,8 @@ function init()
   self.reason = config.getParameter("reason")
   local locales = root.assetJson("/interface/scripted/starcustomchat/locales/locales.json")
   self.localeConfigs = {}
-  for loc, conf in pairs(locales) do 
-    self.localeConfigs[loc] = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", loc))
+  for _, conf in ipairs(locales) do 
+    self.localeConfigs[conf.code] = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", conf.code))
   end
 
   populateLanguagesList()

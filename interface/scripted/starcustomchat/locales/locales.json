@@ -1,17 +1,22 @@
-{
-  "en": {
-    "name": "English"
+[
+  {
+    "name": "English",
+    "code": "en"
   },
-  "ru": {
-    "name": "Русский"
+  {
+    "name": "Russian",
+    "code": "ru"
   },
-  "es": {
-    "name": "Español"
+  {
+    "name": "Español",
+    "code": "es"
   },
-  "fr": {
-    "name": "Français"
+  {
+    "name": "Français",
+    "code": "fr"
   },
-  "de": {
-    "name": "Deutsch"
+  {
+    "name": "Deutsch",
+    "code": "de"
   }
-}
+]
