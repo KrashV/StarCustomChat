@@ -1,8 +1,5 @@
 --[[
   Chat Class instance
-
-  TODO:
-    6. Set avatar: image
 ]]
 
 require "/scripts/vec2.lua"
