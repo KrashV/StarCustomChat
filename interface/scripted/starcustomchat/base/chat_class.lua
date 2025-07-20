@@ -305,6 +305,7 @@ function StarCustomChat:processCommand(text)
         sb.logInfo("CommandResult: %s", line)
       end
     end
+    return commandResult
   end
 end
 

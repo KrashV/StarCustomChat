@@ -1,6 +1,7 @@
 + Added an ability to move the chat pane around the screen
 + The edited messages are now correctly indicated as such
 + Enlarged the reaction selection menu
++ The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
 
 ## Localisation Support
 Spanish

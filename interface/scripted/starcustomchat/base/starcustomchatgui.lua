@@ -687,15 +687,33 @@ function sendMessageToBeSent(text, mode)
 
       whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
   
-      local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
-        or "/w " .. whisperName .. " " .. message.text
-  
-      self.customChat:processCommand(whisper)
-      self.customChat.lastWhisper = {
-        recipient = whisperName,
-        text = message.text
-      }
-      starcustomchat.utils.saveMessage(whisper)
+      if string.find(whisperName, "%s") then
+        -- Oops, not gonna work, gonna send SEM
+        message.connection = player.id() // -65536
+        message.nickname = player.name()
+        starcustomchat.utils.saveMessage(message.text)
+        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+
+        promises:add(world.sendEntityMessage(data.id, "scc_add_message", message), function() 
+          if data.id ~= player.id() then
+            message.nickname = message.nickname .. "-> " .. whisperName
+            world.sendEntityMessage(player.id(), "scc_add_message", message)
+          end
+        end, function() 
+          starcustomchat.utils.alert("chat.alerts.dm_not_found")
+        end)
+
+      else
+        local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
+          or "/w " .. whisperName .. " " .. message.text
+
+
+        self.customChat.lastWhisper = {
+          recipient = whisperName,
+          text = message.text
+        }
+        starcustomchat.utils.saveMessage(whisper)
+      end
     else
       starcustomchat.utils.saveMessage(message.text)
       message = self.runCallbackForPlugins("formatOutcomingMessage", message)
