@@ -8,5 +8,6 @@
     "settings.afk_modes.plain": "Schlicht",
     "settings.afk_modes.lines": "Flackernd",
     "settings.colors.afkcolor": "AFK",
-    "settings.plugins.afk.button_disabled": "AFK-Schalter verstecken"
+    "settings.plugins.afk.button_disabled": "AFK-Schalter verstecken",
+    "settings.plugins.afk.ignore_mouse": "Mauseingabe ignorieren"
   }

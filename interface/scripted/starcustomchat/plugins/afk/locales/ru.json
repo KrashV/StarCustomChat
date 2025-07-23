@@ -8,5 +8,6 @@
   "settings.afk_modes.plain": "Простой",
   "settings.afk_modes.lines": "Линии",
   "settings.colors.afkcolor": "AFK",
-  "settings.plugins.afk.button_disabled": "Убрать кнопку AFK"
+  "settings.plugins.afk.button_disabled": "Убрать кнопку AFK",
+  "settings.plugins.afk.ignore_mouse": "Игнорировать движения мышки в AFK"
 }

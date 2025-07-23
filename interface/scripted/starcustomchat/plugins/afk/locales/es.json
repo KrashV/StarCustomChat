@@ -8,5 +8,6 @@
     "settings.afk_modes.plain": "Plano",
     "settings.afk_modes.lines": "Líneas",
     "settings.colors.afkcolor": "AFK",
-    "settings.plugins.afk.button_disabled": "Desabilitar el botón AFK"
+    "settings.plugins.afk.button_disabled": "Ocultar el botón AFK",
+    "settings.plugins.afk.ignore_mouse": "Ignorar movimiento del ratón en AKF"
   }

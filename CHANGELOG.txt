@@ -2,6 +2,7 @@
 + The edited messages are now correctly indicated as such
 + Enlarged the reaction selection menu
 + The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
++ AFK plugin option to ignore the mouse movement
 
 ## Localisation Support
 Spanish

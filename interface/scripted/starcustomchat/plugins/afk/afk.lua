@@ -13,6 +13,8 @@ function afk:init(chat)
   self.forcedAfkTimer = 0
 
   self.effect = root.getConfiguration("scc_afk_effect") or "starchatafk"
+  self.ignoreMouse = root.getConfiguration("scc_afk_ignore_mouse") or false
+
   -- On init, deactivate AFK by force
   --self:deactivateAFK(true)
   status.clearPersistentEffects("starchatafk")
@@ -31,7 +33,7 @@ function afk:update(dt)
       player.emote("sleep")
     end
   else
-    if #input.events() > 0 or (self.timer == 0 and not self.buttonPressed) then
+    if (#input.events() > 0 and (input.events()[1].type ~= "MouseMove" or not self.ignoreMouse)) or (self.timer == 0 and not self.buttonPressed) then
       self.afkTime = self.timer
       self.buttonPressed = false
       self:deactivateAFK()
@@ -93,6 +95,7 @@ function afk:onSettingsUpdate(data)
   self.effect = root.getConfiguration("scc_afk_effect") or "starchatafk"
   widget.setVisible("btnStartAfk", not root.getConfiguration("scc_afk_button_disabled"))
   status.setStatusProperty("afkcolor", self.customChat:getColor("afkcolor"):sub(2))
+  self.ignoreMouse = root.getConfiguration("scc_afk_ignore_mouse") or false
 end
 
 function afk:uninit()
