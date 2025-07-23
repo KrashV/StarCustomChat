@@ -99,7 +99,7 @@ end
 * @Novaenia - OpenStarbound support
 * @FezzedOne - xStarbound suppport
 
-## Localiztion
+## Localization
 
 * @hansby - Spanish
 * @hydra_idryliah - French
