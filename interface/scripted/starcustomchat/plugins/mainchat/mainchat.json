@@ -342,14 +342,14 @@
 
           "lblCustomFrameInput": {
             "type": "label",
-            "position": [88, 5],
+            "position": [88, 15],
             "hAnchor": "right",
             "translationKey": "settings.add"
           },
 
           "tbxCustomPortrait": {
             "type": "textbox",
-            "position": [95, 5],
+            "position": [95, 15],
             "callback": "null",
             "enterKey": "addCustomImage",
             "maxWidth": 70,
