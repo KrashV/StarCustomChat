@@ -712,7 +712,7 @@ function sendMessageToBeSent(text, mode)
         local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
           or "/w " .. whisperName .. " " .. message.text
 
-
+        self.customChat:processCommand(whisper)
         self.customChat.lastWhisper = {
           recipient = whisperName,
           text = message.text
