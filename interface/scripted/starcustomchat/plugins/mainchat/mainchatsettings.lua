@@ -232,7 +232,6 @@ function mainchat:addCustomImage(widgetName, data)
     local imageSize = starcustomchat.utils.safeImageSize("/assetmissing.png" .. text)
     if imageSize then
       if imageSize[1] <= 64 and imageSize[2] <= 64 then
-        self.widget.setText("lytPortraitSelection.tbxCustomPortrait", "")
 
         if self.portraitSelectionMode == "portraits" then
           table.insert(self.customPortraits, "/assetmissing.png" .. text)
@@ -247,14 +246,16 @@ function mainchat:addCustomImage(widgetName, data)
         self:drawCharacter()
         save()
       else
-        self.widget.setText("lytPortraitSelection.tbxCustomPortrait", "")
         starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
       end
     else
-      self.widget.setText("lytPortraitSelection.tbxCustomPortrait", "")
       starcustomchat.utils.alert("settings.mainchat.alerts.image_error")
     end
   end
+
+  
+  self.widget.setText("lytPortraitSelection.tbxCustomPortrait", "")
+  self.widget.blur("lytPortraitSelection.tbxCustomPortrait")
 end
 
 function mainchat:togglePortraitSelection(_, data)
