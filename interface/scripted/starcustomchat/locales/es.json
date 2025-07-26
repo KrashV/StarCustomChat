@@ -43,6 +43,9 @@
   "settings.cancel": "Cancelar",
   "settings.change_language": "Cambiar idioma",
   "settings.close": "Cerrar",
+  "settings.back": "Atrás",
+  "settings.add": "Añadir",
+  "settings.remove": "Eliminar",
 
   "commands.general.admin": "Activa o desactiva el modo administrador, que habilita todas las recetas de creación, evita el daño o la pérdida de energía y permite el acceso a comandos solo para administradores.",
   "commands.general.help": "Usa /help nombreComando para obtener documentación detallada.",

@@ -1,7 +1,5 @@
 {
     "settings.plugins.stickers": "Stickers",
-    "settings.plugins.stickers.add": "Añadir",
-    "settings.plugins.stickers.remove": "Eliminar",
     "settings.plugins.stickers.alerts.name_error": "Los stickers deben tener directivas y un nombre",
     "settings.plugins.stickers.alerts.image_error": "No se pudo cargar la imagen",
     "settings.plugins.stickers.alerts.size_error": "La imagen no debe exceder %sx%s",

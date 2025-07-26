@@ -3,6 +3,7 @@
 + Enlarged the reaction selection menu
 + The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
 + AFK plugin option to ignore the mouse movement
++ Custom frame support
 
 ## Localisation Support
 Spanish

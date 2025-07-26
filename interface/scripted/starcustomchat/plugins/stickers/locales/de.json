@@ -1,7 +1,5 @@
 {
     "settings.plugins.stickers": "Sticker",
-    "settings.plugins.stickers.add": "Hinzufügen",
-    "settings.plugins.stickers.remove": "Entfernen",
     "settings.plugins.stickers.alerts.name_error": "Sticker sollten Directives und einen Namen haben",
     "settings.plugins.stickers.alerts.image_error": "Konnte dieses Bild nicht laden",
     "settings.plugins.stickers.alerts.size_error": "Bild sollte %sx%s nicht überschreiten",

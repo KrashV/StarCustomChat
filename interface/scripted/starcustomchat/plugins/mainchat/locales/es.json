@@ -24,11 +24,17 @@
     "settings.mainchat.set_custom_directives": "Establecer directivas de retrato personalizadas",
     "settings.mainchat.utc_offset": "Desfase UTC: ",
     "settings.mainchat.select_portrait": "Seleccionar retrato",
+    "settings.mainchat.select_frame": "Seleccionar marco",
     "settings.mainchat.portraits.remove": "Eliminar retrato",
+    "settings.mainchat.portraits.customFrame": "Marco personalizado",
+    "settings.mainchat.portraits.customFrameDescription": "Marco personalizado (hasta 64x64)",
+    "settings.mainchat.alerts.frame_cleared": "Marco eliminado",
     "settings.mainchat.portraits.default": "Jugador",
-    "settings.stickers.dialogs.remove.title": "Eliminar retrato",
-    "settings.stickers.dialogs.remove.subtitle": "^red;Esta acción no se puede deshacer",
-    "settings.stickers.dialogs.remove.message": "¿Estás seguro de que quieres eliminar este retrato?",
-    "settings.stickers.dialogs.remove.ok": "Eliminar",
-    "settings.stickers.dialogs.remove.cancel": "Cancelar"
+    "settings.mainchat.dialogs.remove.portraits.title": "Eliminar retrato",
+    "settings.mainchat.dialogs.remove.frames.title": "Eliminar marco",
+    "settings.mainchat.dialogs.remove.subtitle": "^red;Esta acción no se puede deshacer",
+    "settings.mainchat.dialogs.remove.portraits.message": "¿Estás seguro de que quieres eliminar este retrato?",
+    "settings.mainchat.dialogs.remove.frames.message": "¿Estás seguro de que quieres eliminar este marco?",
+    "settings.mainchat.dialogs.remove.ok": "Eliminar",
+    "settings.mainchat.dialogs.remove.cancel": "Cancelar"
 }

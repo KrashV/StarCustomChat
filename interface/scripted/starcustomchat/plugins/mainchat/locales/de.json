@@ -24,11 +24,17 @@
     "settings.mainchat.set_custom_directives": "Directives von benutzerdefiniertem Portrait:",
     "settings.mainchat.utc_offset": "UTC offset: ",
     "settings.mainchat.select_portrait": "Portrait auswählen",
+    "settings.mainchat.select_frame": "Rahmen auswählen",
     "settings.mainchat.portraits.remove": "Portrait entfernen",
+    "settings.mainchat.portraits.customFrame": "Benutzerdefinierten Rahmen festlegen",
+    "settings.mainchat.portraits.customFrameDescription": "Benutzerdefiniertes Rahmen (bis zu 64x64)",
+    "settings.mainchat.alerts.frame_cleared": "Rahmen entfernt",
     "settings.mainchat.portraits.default": "Spieler",
-    "settings.stickers.dialogs.remove.title": "Portrait entfernen",
-    "settings.stickers.dialogs.remove.subtitle": "^red;Diese Aktion ist irreversibel",
-    "settings.stickers.dialogs.remove.message": "Bist du sicher, dass du dieses Portrait löschen willst?",
-    "settings.stickers.dialogs.remove.ok": "Löschen",
-    "settings.stickers.dialogs.remove.cancel": "Abbrechen"
+    "settings.mainchat.dialogs.remove.portraits.title": "Portrait entfernen",
+    "settings.mainchat.dialogs.remove.frames.title": "Rahmen entfernen",
+    "settings.mainchat.dialogs.remove.subtitle": "^red;Diese Aktion ist irreversibel",
+    "settings.mainchat.dialogs.remove.portraits.message": "Bist du sicher, dass du dieses Portrait löschen willst?",
+    "settings.mainchat.dialogs.remove.frames.message": "Bist du sicher, dass du dieses Rahmen löschen willst?",
+    "settings.mainchat.dialogs.remove.ok": "Löschen",
+    "settings.mainchat.dialogs.remove.cancel": "Abbrechen"
 }

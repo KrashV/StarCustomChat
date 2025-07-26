@@ -43,8 +43,9 @@
   "settings.cancel": "Abbrechen",
   "settings.change_language": "Sprache ändern",
   "settings.close": "Schließen",
-
-
+  "settings.back": "Zurück",
+  "settings.add": "Hinzufügen",
+  "settings.remove": "Entfernen",
 
 
   "commands.general.admin": "Aktiviert oder deaktiviert den Admin-Modus, welcher alle Crafting-Rezepte erlaubt, Schaden und Energieverlust verhindert und Zugriff auf Admin-Commands verleiht.",

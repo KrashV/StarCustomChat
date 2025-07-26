@@ -24,11 +24,17 @@
     "settings.mainchat.set_custom_directives": "Définir les directives du portrait personnalisé",
     "settings.mainchat.utc_offset": "Décalage UTC: ",
     "settings.mainchat.select_portrait": "Sélectionner un portrait",
+    "settings.mainchat.select_frame": "Sélectionner un cadre",
     "settings.mainchat.portraits.remove": "Supprimer le portrait",
+    "settings.mainchat.portraits.customFrame": "Cadre personnalisé",
+    "settings.mainchat.portraits.customFrameDescription": "Cadre personnalisé (jusqu’à 64x64)",
+    "settings.mainchat.alerts.frame_cleared": "Cadre supprimé",
     "settings.mainchat.portraits.default": "Joueur",
-    "settings.stickers.dialogs.remove.title": "Supprimer le portrait",
-    "settings.stickers.dialogs.remove.subtitle": "^red;Cette action est irréversible",
-    "settings.stickers.dialogs.remove.message": "Êtes-vous sûr de vouloir supprimer ce portrait?",
-    "settings.stickers.dialogs.remove.ok": "Supprimer",
-    "settings.stickers.dialogs.remove.cancel": "Annuler"
+    "settings.mainchat.dialogs.remove.portraits.title": "Supprimer le portrait",
+    "settings.mainchat.dialogs.remove.frames.title": "Supprimer le cadre",
+    "settings.mainchat.dialogs.remove.subtitle": "^red;Cette action est irréversible",
+    "settings.mainchat.dialogs.remove.portraits.message": "Êtes-vous sûr de vouloir supprimer ce portrait?",
+    "settings.mainchat.dialogs.remove.frames.message": "Êtes-vous sûr de vouloir supprimer ce cadre?",
+    "settings.mainchat.dialogs.remove.ok": "Supprimer",
+    "settings.mainchat.dialogs.remove.cancel": "Annuler"
 }

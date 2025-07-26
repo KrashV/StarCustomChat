@@ -238,11 +238,15 @@ function registerCallbacks()
 
   starcustomchat.utils.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then
-      local portrait = player.getProperty("icc_custom_portrait")
+      local portraitTable = player.getProperty("icc_custom_portrait")
       local portraitSelected = player.getProperty("icc_custom_portrait_selected")
-      if portrait then
-        if type(portrait) == "table" then
-          portrait = portraitSelected and portraitSelected ~= 0 and portrait[portraitSelected or #portrait] or nil
+      local portrait = nil
+      local frameTable = root.getConfiguration("scc_custom_frames") or {}
+      local frameSelected = player.getProperty("scc_custom_frame_selected")
+
+      if portraitTable then
+        if type(portraitTable) == "table" then
+          portrait = portraitSelected and portraitSelected ~= 0 and portraitTable[portraitSelected or #portraitTable] or nil
         end
       end
 
@@ -255,7 +259,8 @@ function registerCallbacks()
           offset = self.customChat.config.defaultPortraitOffset,
           scale = self.customChat.config.defaultPortraitScale
         },
-        uuid = player.uniqueId()
+        uuid = player.uniqueId(),
+        frame = frameTable[frameSelected]
       }
     end
   end))

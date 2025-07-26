@@ -57,11 +57,11 @@
                 "btnRemove": {
                   "type": "button",
                   "position": [28, 30],
-                  "base": "/interface/scripted/starcustomchatsettings/remove/remove.png:base",
-                  "hover": "/interface/scripted/starcustomchatsettings/remove/remove.png:hover",
+                  "base": "/interface/scripted/starcustomchatsettings/common/remove.png:base",
+                  "hover": "/interface/scripted/starcustomchatsettings/common/remove.png:hover",
                   "callback": "removeSticker",
                   "data": {
-                    "displayText": "settings.plugins.stickers.remove"
+                    "displayText": "settings.remove"
                   }
                 }
               }
