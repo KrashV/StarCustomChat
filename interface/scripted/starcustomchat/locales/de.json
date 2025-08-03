@@ -14,6 +14,7 @@
   "chat.buttons.settings": "Einstellungen",
   "chat.buttons.hide": "Chat verbergen",
   "chat.buttons.bigger_chat": "Größerer Chat",
+  "chat.buttons.move_chat": "Chat verschieben",
 
   "chat.alerts.dm_not_specified": "Wähle den Empfänger",
   "chat.alerts.dm_not_found": "Der Spieler muss auf demselben Planeten sein",

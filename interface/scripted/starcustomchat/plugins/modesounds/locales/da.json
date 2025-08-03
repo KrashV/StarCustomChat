@@ -1,0 +1,6 @@
+{
+    "settings.plugins.modesounds": "Berichtgeluiden",
+    "settings.plugins.modesounds.mode_list": "Moduslijst",
+    "settings.plugins.modesounds.sound_list": "Geluidslijst",
+    "settings.plugins.modesounds.clear": "Wis geluid"
+}

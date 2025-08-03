@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Automatisch Verbergen",
+    "settings.autohide.after": "Verberg na",
+    "settings.autohide.sec": "sec",
+    "settings.autohide.description": "Waarde 0 houdt het chatvenster zichtbaar",
+    "settings.autohide.ignore_server_messages": "Negeer serverberichten",
+    "settings.autohide.ignore_inspect_messages": "Negeer inspect berichten"
+}

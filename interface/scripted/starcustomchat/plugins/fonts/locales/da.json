@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Lettertypen",
+    "settings.fonts.setFont": "Selecteer Lettertype",
+    "settings.fonts.drop_to_default": "Standaard",
+    "settings.fonts.chatfont": "Chat",
+    "settings.fonts.timefont": "Tijd"
+}
