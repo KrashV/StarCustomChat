@@ -4,6 +4,7 @@
 + The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
 + AFK plugin option to ignore the mouse movement
 + Custom frame support
++ Proper multiline text support
 
 ## Localisation Support
 Spanish

@@ -39,6 +39,11 @@ function mainchat:onLocaleChange()
   end
 end
 
+function mainchat:formatOutcomingMessage(message)
+  message.text = message.text:gsub("\\n", "\n")
+  return message
+end
+
 function mainchat:update(dt)
   local id = findButtonByMode("Party")
   if #player.teamMembers() == 0 then
