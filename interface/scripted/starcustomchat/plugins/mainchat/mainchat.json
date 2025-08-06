@@ -35,6 +35,27 @@
     "pingSound": "/sfx/instruments/bones/a4.ogg"
   },
 
+  "leftMenuButtons": [
+    {
+      "name": "btnOpenSettings",
+      "base": "/interface/scripted/starcustomchat/base/leftmenu/settings.png",
+      "hover": "/interface/scripted/starcustomchat/base/leftmenu/settingshover.png",
+      "callback": "openSettings",
+      "data": {
+        "displayText": "chat.buttons.settings"
+      }
+    },
+    {
+      "name": "btnToBottom",
+      "base": "/interface/scripted/starcustomchat/base/leftmenu/tobottom.png",
+      "hover": "/interface/scripted/starcustomchat/base/leftmenu/tobottomhover.png",
+      "callback": "toBottom",
+      "data": {
+        "displayText": "chat.buttons.bottom"
+      }
+    }
+  ],
+
   "contextMenuButtons": [
     {
       "name": "collapse",

@@ -319,17 +319,6 @@
       }
     },
 
-    "btnToBottom": {
-      "type": "button",
-      "position": [6, 0],
-      "base": "/interface/scripted/starcustomchat/base/tobottom.png",
-      "hover": "/interface/scripted/starcustomchat/base/tobottomhover.png",
-      "callback": "toBottom",
-      "data": {
-        "displayText": "chat.buttons.bottom"
-      }
-    },
-
     "upButton": {
       "type": "button",
       "position": [-25, -25],
@@ -339,22 +328,50 @@
       "mouseTransparent": true
     },
 
-    "btnSettings": {
-      "type": "button",
-      "position": [6, 13],
-      "base": "/interface/scripted/starcustomchat/base/settings.png",
-      "hover": "/interface/scripted/starcustomchat/base/settingshover.png",
-      "callback": "openSettings",
-      "data": {
-        "displayText": "chat.buttons.settings"
+    "lytLeftMenu": {
+      "type": "layout",
+			"position": [6, 1],
+      "size": [27, 300],
+      "visible": true,
+			"layoutType": "basic",
+			"children": {
+        "saButtons": {
+          "type": "scrollArea",
+          "rect": [0, 0, 28, 26],
+          "buttons" : {
+            "vertical" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            }
+          },
+          "thumbs" : {
+            "vertical" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            }
+          },
+          "children": {
+
+          }
+        }
       }
     },
 
     "btnHideChat": {
       "type": "button",
-      "position": [0, 0],
-      "base": "/interface/scripted/starcustomchat/base/close.png",
-      "hover": "/interface/scripted/starcustomchat/base/closehover.png",
+      "position": [0, 1],
+      "base": "/interface/scripted/starcustomchat/base/leftmenu/close.png",
+      "hover": "/interface/scripted/starcustomchat/base/leftmenu/closehover.png",
       "callback": "closeChat",
       "data": {
         "displayText": "chat.buttons.hide"

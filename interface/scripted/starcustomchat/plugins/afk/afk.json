@@ -31,25 +31,25 @@
         "translationKey": "settings.plugins.afk"
       },
 
-      "lblDisableAfkButton": {
-        "type": "label",
-        "position": [160, 120],
-        "hAnchor": "right",
-        "color": "lightgray",
-        "translationKey": "settings.plugins.afk.button_disabled"
-      },
+      // "lblDisableAfkButton": {
+      //   "type": "label",
+      //   "position": [160, 120],
+      //   "hAnchor": "right",
+      //   "color": "lightgray",
+      //   "translationKey": "settings.plugins.afk.button_disabled"
+      // },
 
-      "btnDisableAfkButton": {
-        "type": "button",
-        "position": [170, 120],
-        "checkable": true,
-        "checked": false,
-        "base": "/interface/crafting/checkboxnocheck.png",
-        "hover": "/interface/crafting/checkboxnocheck.png",
-        "baseImageChecked": "/interface/crafting/checkboxcheck.png",
-        "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "disableAFKButton"
-      },
+      // "btnDisableAfkButton": {
+      //   "type": "button",
+      //   "position": [170, 120],
+      //   "checkable": true,
+      //   "checked": false,
+      //   "base": "/interface/crafting/checkboxnocheck.png",
+      //   "hover": "/interface/crafting/checkboxnocheck.png",
+      //   "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+      //   "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+      //   "callback": "disableAFKButton"
+      // },
 
       "lblIgnoreMouse": {
         "type": "label",
@@ -156,10 +156,9 @@
     }
   },
 
-  "guiAddons": {
-    "btnStartAfk": {
-      "type": "button",
-      "position": [6, 26],
+  "leftMenuButtons": [
+    {
+      "name": "btnStartAfk",
       "base": "/interface/scripted/starcustomchat/plugins/afk/interface/afk.png",
       "hover": "/interface/scripted/starcustomchat/plugins/afk/interface/afkhover.png",
       "callback": "customButtonCallback",
@@ -167,7 +166,7 @@
         "displayText": "chat.buttons.afk_mode"
       }
     }
-  },
+  ],
 
   "parameters": {
     "mode": "effect",

@@ -56,6 +56,8 @@ function buildChatInterface()
     baseInterface.defaultColors[color.name] = color.default
   end
 
+  local leftMenuButtonPosition = {0, 0}
+
   for _, pluginName in ipairs(enabledPlugins) do 
     local pluginConfig = safeAssetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/%s.json", pluginName, pluginName))
     table.insert(baseInterface["enabledPlugins"], pluginName)
@@ -77,6 +79,13 @@ function buildChatInterface()
 
     if pluginConfig.guiAddons then
       baseInterface["gui"] = sb.jsonMerge(baseInterface["gui"], pluginConfig.guiAddons)
+    end
+
+    for _, btnConfig in ipairs(pluginConfig.leftMenuButtons or {}) do
+      btnConfig.type = "button"
+      btnConfig.position = copy(leftMenuButtonPosition)
+      baseInterface["gui"]["lytLeftMenu"]["children"]["saButtons"]["children"][btnConfig.name] = btnConfig
+      leftMenuButtonPosition[2] = leftMenuButtonPosition[2] - 12
     end
 
     -- Fetching the default colors from the settings
