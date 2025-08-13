@@ -5,6 +5,7 @@
 + AFK plugin option to ignore the mouse movement
 + Custom frame support
 + Proper multiline text support
++ An option to preview the custom portraits without the compression
 
 ## Localisation Support
 Spanish

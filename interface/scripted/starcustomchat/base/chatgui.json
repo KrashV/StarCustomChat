@@ -244,6 +244,40 @@
       ]
     },
 
+    "lblPortraitPreview": {
+      "type": "layout",
+      "layoutType": "basic",
+      "mouseTransparent": true,
+      "scissoring": false,
+      "zlevel": 80,
+      "size": [128, 128],
+      "position": [0, 0],
+      "visible": false,
+      "children": {
+        "background": {
+          "type": "image",
+          "zlevel": 1,
+          "mouseTransparent": true,
+          "scissoring": false,
+          "file": "/interface/scripted/starcustomchat/base/icons/empty.png"
+        },
+        "portrait": {
+          "type": "image",
+          "zlevel": 2,
+          "scissoring": false,
+          "mouseTransparent": true,
+          "file": ""
+        },
+        "frame": {
+          "type": "image",
+          "zlevel": 3,
+          "scissoring": false,
+          "mouseTransparent": true,
+          "file": "/interface/scripted/starcustomchat/base/icons/frame.png"
+        }
+      }
+    },
+
     "lytCharactersToDM": {
       "type": "layout",
 			"rect": [1, 28, 27, 313],

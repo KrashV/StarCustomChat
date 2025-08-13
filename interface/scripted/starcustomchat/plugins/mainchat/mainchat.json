@@ -144,7 +144,25 @@
             "callback": "clearHistory",
             "translationKey": "settings.clear_chat_history"
           },
+
+          "lblPortraitsPreview": {
+            "type": "label",
+            "position": [6, 38],
+            "translationKey": "settings.mainchat.portraitpreview",
+            "fontSize": 6
+          },
           
+          "chkPreviewPortraits": {
+            "type": "button",
+            "position": [90, 38],
+            "checkable": true,
+            "checked": false,
+            "base": "/interface/crafting/checkboxnocheck.png",
+            "hover": "/interface/crafting/checkboxnocheck.png",
+            "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+            "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+            "callback": "setPreviewPortraits"
+          },
 
 
           "sldFontSize" : {

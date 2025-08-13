@@ -36,5 +36,6 @@
     "settings.mainchat.dialogs.remove.portraits.message": "¿Estás seguro de que quieres eliminar este retrato?",
     "settings.mainchat.dialogs.remove.frames.message": "¿Estás seguro de que quieres eliminar este marco?",
     "settings.mainchat.dialogs.remove.ok": "Eliminar",
-    "settings.mainchat.dialogs.remove.cancel": "Cancelar"
+    "settings.mainchat.dialogs.remove.cancel": "Cancelar",
+    "settings.mainchat.portraitpreview": "Vista previa de retratos"
 }

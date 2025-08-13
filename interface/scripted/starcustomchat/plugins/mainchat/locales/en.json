@@ -36,5 +36,6 @@
     "settings.mainchat.dialogs.remove.portraits.message": "Are you sure you want to delete this portrait?",
     "settings.mainchat.dialogs.remove.frames.message": "Are you sure you want to delete this frame?",
     "settings.mainchat.dialogs.remove.ok": "Delete",
-    "settings.mainchat.dialogs.remove.cancel": "Cancel"
+    "settings.mainchat.dialogs.remove.cancel": "Cancel",
+    "settings.mainchat.portraitpreview": "Portraits preview"
 }

@@ -36,5 +36,6 @@
     "settings.mainchat.dialogs.remove.portraits.message": "Вы уверены, что хотите удалить этот портрет?",
     "settings.mainchat.dialogs.remove.frames.message": "Вы уверены, что хотите удалить эту рамку?",
     "settings.mainchat.dialogs.remove.ok": "Удалить",
-    "settings.mainchat.dialogs.remove.cancel": "Отмена"
+    "settings.mainchat.dialogs.remove.cancel": "Отмена",
+    "settings.mainchat.portraitpreview": "Превью портретов"
 }

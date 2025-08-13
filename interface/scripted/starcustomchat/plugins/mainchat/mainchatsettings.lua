@@ -74,6 +74,8 @@ function mainchat:init()
   self.widget.registerMemberCallback("lytPortraitSelection.saSavedPortraits.listPortraits", "selectPortrait", function(_, data)
     self:selectPortrait(_, data)
   end)
+
+  self.widget.setChecked("lytBase.chkPreviewPortraits", root.getConfiguration("scc_preview_portraits"))
 end
 
 function mainchat:onLocaleChange()
@@ -421,4 +423,9 @@ function mainchat:removePortrait()
       end
     end)
   end
+end
+
+function mainchat:setPreviewPortraits()
+  root.setConfiguration("scc_preview_portraits", self.widget.getChecked("lytBase.chkPreviewPortraits"))
+  save()
 end

@@ -36,5 +36,6 @@
     "settings.mainchat.dialogs.remove.portraits.message": "Weet je zeker dat je dit portret wilt verwijderen?",
     "settings.mainchat.dialogs.remove.frames.message": "Weet je zeker dat je dit omlijsting wilt verwijderen?",
     "settings.mainchat.dialogs.remove.ok": "Verwijderen",
-    "settings.mainchat.dialogs.remove.cancel": "Annuleren"
+    "settings.mainchat.dialogs.remove.cancel": "Annuleren",
+    "settings.mainchat.portraitpreview": "Voorbeeld van portretten"
 }

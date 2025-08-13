@@ -18,6 +18,8 @@ function mainchat:init(chat)
       self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), self.DMingTo.displayName or self.DMingTo.nickname)
     end
   end
+
+  self.previewPortraits = root.getConfiguration("scc_preview_portraits")
 end
 
 function mainchat:registerMessageHandlers()
@@ -44,6 +46,44 @@ function mainchat:formatOutcomingMessage(message)
   return message
 end
 
+local function isMouseOverPortrait(screenPosition, messageOffset)
+  local offset = vec2.add(widget.getPosition("chatLog"), self.customChat.config.portraitImageOffset)
+  offset[2] = offset[2] + messageOffset
+  local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
+  local rect = {offset[1], offset[2], offset[1] + size, offset[2] + size}
+  
+  return screenPosition[1] >= rect[1] and screenPosition[1] <= rect[3]
+    and screenPosition[2] >= rect[2] and screenPosition[2] <= rect[4]
+
+end
+
+
+function mainchat:onCursorOverride(screenPosition)
+  local selectedMessage = self.customChat:selectMessage()
+  if self.previewPortraits and selectedMessage and selectedMessage.connection and self.customChat.connectionToUuid[tostring(selectedMessage.connection)] then
+    
+    local uuid = self.customChat.connectionToUuid[tostring(selectedMessage.connection)]
+    if self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string" and isMouseOverPortrait(screenPosition, selectedMessage.offset) then
+      local portrait = self.customChat.savedPortraits[uuid].portrait
+      
+      local portraitSize = starcustomchat.utils.safeImageSize(portrait)
+      if portraitSize then
+        widget.setImageScale("lblPortraitPreview.background", portraitSize[1] / root.imageSize("/interface/scripted/starcustomchat/base/icons/empty.png")[1] * self.customChat.config.portraitPreviewSize )
+
+        widget.setImageScale("lblPortraitPreview.portrait", self.customChat.config.portraitPreviewSize )
+        widget.setImage("lblPortraitPreview.portrait", portrait)
+        local frame = self.customChat.savedPortraits[uuid].frame or "/interface/scripted/starcustomchat/base/icons/frame.png"
+
+        widget.setImageScale("lblPortraitPreview.frame", portraitSize[1] / root.imageSize(frame)[1] * self.customChat.config.portraitPreviewSize )
+        widget.setImage("lblPortraitPreview.frame", frame)
+        widget.setPosition("lblPortraitPreview", screenPosition)
+        widget.setVisible("lblPortraitPreview", true)
+      end
+      return
+    end
+  end
+end
+
 function mainchat:update(dt)
   local id = findButtonByMode("Party")
   if #player.teamMembers() == 0 then
@@ -56,6 +96,8 @@ function mainchat:update(dt)
   end
 
   self.ReplyTime = math.max(self.ReplyTime - dt, 0)
+
+  widget.setVisible("lblPortraitPreview", false)
 end
 
 function mainchat:getTime(timezoneOffset)
@@ -274,4 +316,5 @@ end
 
 function mainchat:onSettingsUpdate()
   self.customChat.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
+  self.previewPortraits = root.getConfiguration("scc_preview_portraits")
 end

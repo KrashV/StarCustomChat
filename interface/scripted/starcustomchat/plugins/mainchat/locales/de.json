@@ -36,5 +36,6 @@
     "settings.mainchat.dialogs.remove.portraits.message": "Bist du sicher, dass du dieses Portrait löschen willst?",
     "settings.mainchat.dialogs.remove.frames.message": "Bist du sicher, dass du dieses Rahmen löschen willst?",
     "settings.mainchat.dialogs.remove.ok": "Löschen",
-    "settings.mainchat.dialogs.remove.cancel": "Abbrechen"
+    "settings.mainchat.dialogs.remove.cancel": "Abbrechen",
+    "settings.mainchat.portraitpreview": "Portraitvorschau"
 }
