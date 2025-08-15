@@ -709,6 +709,7 @@ function sendMessageToBeSent(text, mode)
         end)
 
       else
+        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
         local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
           or "/w " .. whisperName .. " " .. message.text
 
