@@ -61,11 +61,13 @@ end
 
 function mainchat:onCursorOverride(screenPosition)
   local selectedMessage = self.customChat:selectMessage()
-  if self.previewPortraits and selectedMessage and selectedMessage.connection and self.customChat.connectionToUuid[tostring(selectedMessage.connection)] then
+  if self.previewPortraits and selectedMessage and selectedMessage.connection and 
+    (self.customChat.connectionToUuid[tostring(selectedMessage.connection)] or selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) then
     
     local uuid = self.customChat.connectionToUuid[tostring(selectedMessage.connection)]
-    if self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string" and isMouseOverPortrait(screenPosition, selectedMessage.offset, selectedMessage.height) then
-      local portrait = self.customChat.savedPortraits[uuid].portrait
+
+    if isMouseOverPortrait(screenPosition, selectedMessage.offset, selectedMessage.height) and (selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string") then
+      local portrait = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].portrait or selectedMessage.portrait
       
       local portraitSize = starcustomchat.utils.safeImageSize(portrait)
       if portraitSize then
@@ -73,7 +75,7 @@ function mainchat:onCursorOverride(screenPosition)
 
         widget.setImageScale("lblPortraitPreview.portrait", self.customChat.config.portraitPreviewSize )
         widget.setImage("lblPortraitPreview.portrait", portrait)
-        local frame = self.customChat.savedPortraits[uuid].frame or "/interface/scripted/starcustomchat/base/icons/frame.png"
+        local frame = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].frame or "/interface/scripted/starcustomchat/base/icons/frame.png"
 
         widget.setImageScale("lblPortraitPreview.frame", portraitSize[1] / root.imageSize(frame)[1] * self.customChat.config.portraitPreviewSize )
         widget.setImage("lblPortraitPreview.frame", frame)
