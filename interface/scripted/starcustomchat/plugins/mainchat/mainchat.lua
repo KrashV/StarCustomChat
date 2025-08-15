@@ -66,7 +66,7 @@ function mainchat:onCursorOverride(screenPosition)
     
     local uuid = self.customChat.connectionToUuid[tostring(selectedMessage.connection)]
 
-    if isMouseOverPortrait(screenPosition, selectedMessage.offset, selectedMessage.height) and (selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string") then
+    if isMouseOverPortrait(screenPosition, selectedMessage.offset, selectedMessage.height) and ((selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string")) then
       local portrait = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].portrait or selectedMessage.portrait
       
       local portraitSize = starcustomchat.utils.safeImageSize(portrait)
