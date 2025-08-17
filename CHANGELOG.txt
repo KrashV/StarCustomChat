@@ -11,3 +11,5 @@
 Spanish
 French
 German
+Italian
+Dutch
