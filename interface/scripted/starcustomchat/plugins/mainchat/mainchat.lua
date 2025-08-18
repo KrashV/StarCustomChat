@@ -46,11 +46,16 @@ function mainchat:formatOutcomingMessage(message)
   return message
 end
 
-local function isMouseOverPortrait(screenPosition, messageOffset, messageHeight)
+local function isMouseOverPortrait(screenPosition, message)
+  local messageOffset = message.offset
+  local messageHeight = message.height
   local offset = vec2.add(widget.getPosition("chatLog"), self.customChat.config.portraitImageOffset)
   local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
 
   offset[2] = offset[2] + messageOffset - math.min(messageHeight, size - messageHeight) + self.customChat.config.nameOffset[2] + self.customChat.config.fontSize + 1
+  if message.replyUUID then
+    offset[2] = offset[2] - self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10
+  end
   local rect = {offset[1], offset[2], offset[1] + size, offset[2] + size}
   
   return screenPosition[1] >= rect[1] and screenPosition[1] <= rect[3]
@@ -66,7 +71,7 @@ function mainchat:onCursorOverride(screenPosition)
     
     local uuid = self.customChat.connectionToUuid[tostring(selectedMessage.connection)]
 
-    if isMouseOverPortrait(screenPosition, selectedMessage.offset, selectedMessage.height) and ((selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string")) then
+    if isMouseOverPortrait(screenPosition, selectedMessage) and ((selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string")) then
       local portrait = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].portrait or selectedMessage.portrait
       
       local portraitSize = starcustomchat.utils.safeImageSize(portrait)
