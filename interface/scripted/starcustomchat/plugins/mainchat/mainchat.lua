@@ -84,7 +84,12 @@ function mainchat:onCursorOverride(screenPosition)
 
         widget.setImageScale("lblPortraitPreview.frame", portraitSize[1] / root.imageSize(frame)[1] * self.customChat.config.portraitPreviewSize )
         widget.setImage("lblPortraitPreview.frame", frame)
-        widget.setPosition("lblPortraitPreview", screenPosition)
+        local layoutPosition = screenPosition
+
+        if layoutPosition[2] > widget.getSize("chatLog")[2] * self.customChat.config.portraitFlipCanvasPart then
+          layoutPosition[2] = layoutPosition[2] - widget.getSize("lblPortraitPreview.background")[2]
+        end
+        widget.setPosition("lblPortraitPreview", layoutPosition)
         widget.setVisible("lblPortraitPreview", true)
       end
       return
