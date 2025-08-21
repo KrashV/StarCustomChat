@@ -14,6 +14,7 @@ function init()
     widget.setHint("tbxSearch", config.getParameter("textboxHint"))
   end
 
+  widget.focus("tbxSearch")
 end
 
 function getTitle(text)
