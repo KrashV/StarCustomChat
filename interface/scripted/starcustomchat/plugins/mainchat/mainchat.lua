@@ -20,6 +20,8 @@ function mainchat:init(chat)
   end
 
   self.previewPortraits = root.getConfiguration("scc_preview_portraits")
+  self.previewPlayerCanvas = widget.bindCanvas("lblPortraitPreview.playerCanvas")
+  self.backImageSize = root.imageSize("/interface/scripted/starcustomchat/base/icons/empty.png")
 end
 
 function mainchat:registerMessageHandlers()
@@ -71,19 +73,38 @@ function mainchat:onCursorOverride(screenPosition)
     
     local uuid = self.customChat.connectionToUuid[tostring(selectedMessage.connection)]
 
-    if isMouseOverPortrait(screenPosition, selectedMessage) and ((selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or (self.customChat.savedPortraits[uuid] and type(self.customChat.savedPortraits[uuid].portrait) == "string")) then
+    if isMouseOverPortrait(screenPosition, selectedMessage) and ((selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) or self.customChat.savedPortraits[uuid]) then
       local portrait = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].portrait or selectedMessage.portrait
       
-      local portraitSize = starcustomchat.utils.safeImageSize(portrait)
-      if portraitSize then
-        widget.setImageScale("lblPortraitPreview.background", portraitSize[1] / root.imageSize("/interface/scripted/starcustomchat/base/icons/empty.png")[1] * self.customChat.config.portraitPreviewSize )
+      if type(portrait) == "string" then
+        self.previewPlayerCanvas:clear()
 
-        widget.setImageScale("lblPortraitPreview.portrait", self.customChat.config.portraitPreviewSize )
-        widget.setImage("lblPortraitPreview.portrait", portrait)
-        local frame = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].frame or "/interface/scripted/starcustomchat/base/icons/frame.png"
+        local portraitSize = starcustomchat.utils.safeImageSize(portrait)
+        if portraitSize then
+          widget.setImageScale("lblPortraitPreview.background", portraitSize[1] / self.backImageSize[1] * self.customChat.config.portraitPreviewSize )
 
-        widget.setImageScale("lblPortraitPreview.frame", portraitSize[1] / root.imageSize(frame)[1] * self.customChat.config.portraitPreviewSize )
-        widget.setImage("lblPortraitPreview.frame", frame)
+          widget.setImageScale("lblPortraitPreview.portrait", self.customChat.config.portraitPreviewSize )
+          widget.setImage("lblPortraitPreview.portrait", portrait)
+          local frame = self.customChat.savedPortraits[uuid] and self.customChat.savedPortraits[uuid].frame or "/interface/scripted/starcustomchat/base/icons/frame.png"
+
+          widget.setImageScale("lblPortraitPreview.frame", portraitSize[1] / root.imageSize(frame)[1] * self.customChat.config.portraitPreviewSize )
+          widget.setImage("lblPortraitPreview.frame", frame)
+
+        end
+      else--if table
+        self.previewPlayerCanvas:clear()
+        widget.setImage("lblPortraitPreview.portrait", "")
+        widget.setImageScale("lblPortraitPreview.background", self.customChat.config.defaultPortraitScale )
+        widget.setImage("lblPortraitPreview.frame", "/interface/scripted/starcustomchat/base/icons/frame.png")
+        widget.setImageScale("lblPortraitPreview.frame", self.customChat.config.defaultPortraitScale )
+
+        for _, layer in ipairs(portrait) do
+          self.previewPlayerCanvas:drawImage(layer.image, 
+            self.customChat.savedPortraits[uuid].settings and self.customChat.savedPortraits[uuid].settings.offset or self.customChat.config.defaultPortraitOffset, 
+            self.customChat.savedPortraits[uuid].settings and self.customChat.savedPortraits[uuid].settings.scale or self.customChat.config.defaultPortraitScale)
+        end
+      end
+
         local layoutPosition = screenPosition
 
         if layoutPosition[2] > widget.getSize("chatLog")[2] * self.customChat.config.portraitFlipCanvasPart then
@@ -91,8 +112,6 @@ function mainchat:onCursorOverride(screenPosition)
         end
         widget.setPosition("lblPortraitPreview", layoutPosition)
         widget.setVisible("lblPortraitPreview", true)
-      end
-      return
     end
   end
 end

@@ -268,9 +268,17 @@
           "mouseTransparent": true,
           "file": ""
         },
+        "playerCanvas": {
+          "type": "canvas",
+          "zlevel": 3,
+          "size": [64, 64],
+          "mouseTransparent": true,
+          "captureKeyboardEvents": false,
+          "captureMouseEvents": false
+        },
         "frame": {
           "type": "image",
-          "zlevel": 3,
+          "zlevel": 4,
           "scissoring": false,
           "mouseTransparent": true,
           "file": "/interface/scripted/starcustomchat/base/icons/frame.png"
