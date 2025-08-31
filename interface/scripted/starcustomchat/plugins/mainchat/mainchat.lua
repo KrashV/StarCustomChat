@@ -52,17 +52,18 @@ local function isMouseOverPortrait(screenPosition, message)
   local messageOffset = message.offset
   local messageHeight = message.height
   local offset = vec2.add(widget.getPosition("chatLog"), self.customChat.config.portraitImageOffset)
+  if pane.getPosition then
+    offset = vec2.add(offset, pane.getPosition())
+  end
+
   local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
 
   offset[2] = offset[2] + messageOffset - math.min(messageHeight, size - messageHeight) + self.customChat.config.nameOffset[2] + self.customChat.config.fontSize + 1
   if message.replyUUID then
     offset[2] = offset[2] - self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10
   end
-  local rect = {offset[1], offset[2], offset[1] + size, offset[2] + size}
   
-  return screenPosition[1] >= rect[1] and screenPosition[1] <= rect[3]
-    and screenPosition[2] >= rect[2] and screenPosition[2] <= rect[4]
-
+  return rect.contains({offset[1], offset[2], offset[1] + size, offset[2] + size}, screenPosition)
 end
 
 
@@ -106,10 +107,15 @@ function mainchat:onCursorOverride(screenPosition)
       end
 
         local layoutPosition = screenPosition
-
+        if pane.getPosition then
+          layoutPosition = vec2.sub(layoutPosition, pane.getPosition())
+        end
+        
         if layoutPosition[2] > widget.getSize("chatLog")[2] * self.customChat.config.portraitFlipCanvasPart then
           layoutPosition[2] = layoutPosition[2] - widget.getSize("lblPortraitPreview.background")[2]
         end
+
+
         widget.setPosition("lblPortraitPreview", layoutPosition)
         widget.setVisible("lblPortraitPreview", true)
     end
