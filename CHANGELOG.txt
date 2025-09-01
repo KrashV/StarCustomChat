@@ -1,1 +1,2 @@
 + Fixed the portrait preview not working when the chat is moved from its original corner.
++ Removed the limit of players drawn on the DM tab.
