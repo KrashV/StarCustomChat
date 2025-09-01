@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Figurinhas",
+    "settings.plugins.stickers.alerts.name_error": "Figurinhas devem ter diretivos e um nome",
+    "settings.plugins.stickers.alerts.image_error": "Não foi possível carregar a imagem",
+    "settings.plugins.stickers.alerts.size_error": "Imagem não pode ultrapassar %sx%s",
+    "settings.plugins.stickers.alerts.empty_error": "Cole os diretivos no campo de texto",
+    "settings.plugins.stickers.alerts.already_exists": "Uma figurinha com esse nome já existe",
+    "settings.plugins.stickers.name": "Nome",
+    "settings.plugins.stickers.search": "Pesquisar",
+    "settings.colors.stickerselect": "Figurinhas",
+    "chat.commands.save_sticker": "Salvar figurinha",
+    "chat.commands.alerts.saved": "Figurinha %s salva!",
+    "stickers.name_preview": "Figurinha: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Remover figurinha",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Essa ação não pode ser desfeita.",
+    "settings.plugins.stickers.dialogs.remove.message": "Deseja realmente remover a figurinha ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Remover",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Cancelar"
+}

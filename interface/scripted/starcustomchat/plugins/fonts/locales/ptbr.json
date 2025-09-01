@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Fontes",
+    "settings.fonts.setFont": "Selecionar Fonte",
+    "settings.fonts.drop_to_default": "Padrão",
+    "settings.fonts.chatfont": "Chat",
+    "settings.fonts.timefont": "Horário"
+}

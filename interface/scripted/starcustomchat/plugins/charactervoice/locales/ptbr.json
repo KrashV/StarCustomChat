@@ -1,0 +1,13 @@
+{
+    "settings.plugins.charactervoice": "Voz do Personagem",
+    "settings.plugins.charactervoice.enable": "Ativado",
+    "settings.plugins.charactervoice.enablewhisper": "Som de Mensagem Direta",
+    "settings.plugins.charactervoice.pitch": "Tom",
+    "settings.plugins.charactervoice.test": "Teste",
+    "settings.plugins.charactervoice.description": "Ao enviar uma mensagem, toca o som escolhido",
+    "settings.plugins.charactervoice.wisperDescription": "Ao enviar uma mensagem direta, toca o som escolhido",
+    "settings.plugins.charactervoice.customItem": "^green;personalizada",
+    "settings.plugins.charactervoice.customSoundHint": "/inter/caminho/para/seu_som.ogg",
+    "settings.plugins.charactervoice.save": "Salvar",
+    "settings.plugins.charactervoice.soundNotFound": "^red;Som não encontrado"
+}

@@ -26,5 +26,9 @@
   {
     "name": "Italiano",
     "code": "it"
+  },
+  {
+    "name": "Português (Brasil)",
+    "code": "ptbr"
   }
 ]
