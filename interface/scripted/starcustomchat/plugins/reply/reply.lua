@@ -79,17 +79,16 @@ function reply:onTextboxEnter()
 
     local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
       text = widget.getText("tbxInput"),
-      connection = player.id() // -65536,
+      connection = (player.id() - 65535) // -65536,
       mode = mode,
       nickname = nickname
     })
 
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, futureMessage.text, 
+      newMessageUUID = calculateNewMessageUUID((player.id() - 65535) // -65536, futureMessage.text, 
         mode, nickname) 
     }
-
     if self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
