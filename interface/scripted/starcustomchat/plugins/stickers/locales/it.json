@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Stickers",
+    "settings.plugins.stickers.alerts.name_error": "Gli stickers necessitano nome e direttive",
+    "settings.plugins.stickers.alerts.image_error": "Impossibile caricare immagine",
+    "settings.plugins.stickers.alerts.size_error": "L'immagine non deve superare %sx%s",
+    "settings.plugins.stickers.alerts.empty_error": "Incolla direttive nella barra di testo",
+    "settings.plugins.stickers.alerts.already_exists": "Esiste già uno sticker con questo nome",
+    "settings.plugins.stickers.name": "Nome",
+    "settings.plugins.stickers.search": "Cerca",
+    "settings.colors.stickerselect": "Stickers",
+    "chat.commands.save_sticker": "Salva sticker",
+    "chat.commands.alerts.saved": "Sticker %s salvato!",
+    "stickers.name_preview": "Sticker: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Rimuovi sticker",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Quest'azione è irreversibile.",
+    "settings.plugins.stickers.dialogs.remove.message": "Sei sicuro di voler cancellare lo sticker ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Rimuovi",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Annulla"
+}

@@ -76,6 +76,10 @@ function starcustomchat.utils.clearNick(nick)
   return string.gsub(nick, "%^#?%w+;", "")
 end
 
+function starcustomchat.utils.clearMetatags(text)
+  return text:gsub("%^.-;", "")
+end
+
 
 function starcustomchat.utils.buildLocale(fullLocalizationTable)
   starcustomchat.currentLocale = starcustomchat.utils.getLocale()

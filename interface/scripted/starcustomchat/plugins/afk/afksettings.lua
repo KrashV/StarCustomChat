@@ -14,6 +14,7 @@ function afk:init()
   self.widget.setData("lblAfkTimer", self.settingsTimer)
 
   self.widget.setChecked("btnDisableAfkButton", root.getConfiguration("scc_afk_button_disabled"))
+  self.widget.setChecked("btnIgnoreMouse", root.getConfiguration("scc_afk_ignore_mouse"))
 
   local effect = root.getConfiguration("scc_afk_effect") or "starchatafk"
 
@@ -47,6 +48,11 @@ end
 
 function afk:disableAFKButton()
   root.setConfiguration("scc_afk_button_disabled", self.widget.getChecked("btnDisableAfkButton"))
+  save()
+end
+
+function afk:toggleIgnoreMouse()
+  root.setConfiguration("scc_afk_ignore_mouse", self.widget.getChecked("btnIgnoreMouse"))
   save()
 end
 

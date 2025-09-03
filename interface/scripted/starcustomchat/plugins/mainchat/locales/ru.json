@@ -24,11 +24,18 @@
     "settings.mainchat.set_custom_directives": "Установить новый портрет",
     "settings.mainchat.utc_offset": "UTC смещение: ",
     "settings.mainchat.select_portrait": "Выбрать портрет",
+    "settings.mainchat.select_frame": "Выбрать рамку",
     "settings.mainchat.portraits.remove": "Удалить портрет",
+    "settings.mainchat.portraits.customFrame": "Кастомная рамка",
+    "settings.mainchat.portraits.customFrameDescription": "Кастомная рамка (до 64х64)",
+    "settings.mainchat.alerts.frame_cleared": "Рамка очищена",
     "settings.mainchat.portraits.default": "Игрок",
-    "settings.stickers.dialogs.remove.title": "Удалить портрет",
-    "settings.stickers.dialogs.remove.subtitle": "^red;Это действие не может быть отменено.",
-    "settings.stickers.dialogs.remove.message": "Вы уверены, что хотите удалить этот портрет?",
-    "settings.stickers.dialogs.remove.ok": "Удалить",
-    "settings.stickers.dialogs.remove.cancel": "Отмена"
+    "settings.mainchat.dialogs.remove.portraits.title": "Удалить портрет",
+    "settings.mainchat.dialogs.remove.frames.title": "Удалить рамку",
+    "settings.mainchat.dialogs.remove.subtitle": "^red;Это действие не может быть отменено.",
+    "settings.mainchat.dialogs.remove.portraits.message": "Вы уверены, что хотите удалить этот портрет?",
+    "settings.mainchat.dialogs.remove.frames.message": "Вы уверены, что хотите удалить эту рамку?",
+    "settings.mainchat.dialogs.remove.ok": "Удалить",
+    "settings.mainchat.dialogs.remove.cancel": "Отмена",
+    "settings.mainchat.portraitpreview": "Превью портретов"
 }

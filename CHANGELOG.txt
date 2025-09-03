@@ -1,7 +1,15 @@
-- Log command result into the Log
-- Add Toggle Afk bind to Mod Binds
-- Fixed stored strickers being deleted on settings opening
-- Sticker deletion now asks for confirmation
-- Fixed drawing stickers in compact mode
-- Time font for compact mode
-- Store several portraits per player
++ Added an ability to move the chat pane around the screen
++ The edited messages are now correctly indicated as such
++ Enlarged the reaction selection menu
++ The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
++ AFK plugin option to ignore the mouse movement
++ Custom frame support
++ Proper multiline text support
++ An option to preview the custom portraits without the compression
+
+## Localisation Support
+Spanish
+French
+German
+Italian
+Dutch

@@ -24,21 +24,88 @@
       "vAnchor": "top",
       "value": ""
     },
-    "btnChangeLocale": {
+
+    "btnLanguage": {
       "type": "button",
-      "base": "/interface/button.png",
-      "hover": "/interface/buttonhover.png",
-      "callback": "changeLocale",
-      "position": [2, 25]
+      "base" : "/interface/scripted/starcustomchatsettings/flags/en.png",
+      "hover" : "/interface/scripted/starcustomchatsettings/flags/en.png?brightness=90",
+      "position": [240, 206],
+      "callback": "toggleLanguageSelection",
+      "data": {
+        "displayText": "settings.change_language"
+      }
     },
-    "close": {
-      "type": "button",
-      "base": "/interface/buttonactive.png",
-      "hover": "/interface/buttonactivehover.png",
-      "callback": "close",
-      "position": [212, 25]
+    "lytSelectLanguage": {
+      "type": "layout",
+      "visible": false,
+      "zlevel": 99,
+      "layoutType": "basic",
+      "size": [32, 85],
+      "position": [234, 120],
+      "children": {
+        "background": {
+          "type": "image",
+          "file": "/interface/scripted/starcustomchatsettings/languageselect/background.png",
+          "position": [0, 0]
+        },
+        "saLanguages": {
+          "type": "scrollArea",
+          "size": [32, 75],
+          "position": [6, 2],
+          
+          "buttons" : {
+            "vertical" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
+              "backward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" }
+            }
+          },
+          "thumbs" : {
+            "vertical" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            },
+            "horizontal" : {
+              "base" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "hover" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" },
+              "pressed" : { "begin" : "/assetmissing.png", "end" : "/assetmissing.png", "inner" : "/assetmissing.png" }
+            }
+          },
+          "children": {
+            "listLanguages": {
+              "type": "list",
+              "callback": "setLanguage",
+              "schema": {
+                "spacing" : [0, 10],
+                "memberSize" : [17, 12],
+                "selectedBG" : "/interface/scripted/starcustomchatsettings/languageselect/listitemselected.png",
+                "unselectedBG" : "/interface/scripted/starcustomchatsettings/languageselect/listitem.png",
+                "listTemplate": {
+                  "background": {
+                    "type": "image",
+                    "position": [0, 0],
+                    "file": "/interface/scripted/starcustomchatsettings/languageselect/listitem.png"
+                  },
+                  "language" : {
+                    "type": "image",
+                    "file": "/interface/scripted/starcustomchatsettings/flags/en.png",
+                    "position": [1, 1],
+                    "data": {
+                      "displayPlainText": "???"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "scripts": ["/interface/scripted/starcustomchat/sewarning/sewarning.lua"],
-  "scriptWidgetCallbacks": ["changeLocale"]
+  "scriptWidgetCallbacks": ["setLanguage", "toggleLanguageSelection"]
 }

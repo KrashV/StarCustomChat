@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Kleuren",
+    "settings.colors.drop_to_default": "Standaard",
+    "settings.colors.chattext": "Chat tekst",
+    "settings.colors.background": "Achtergrond",
+    "settings.colors.time": "Tijd",
+    "settings.colors.servertext": "Server berichten",
+    "settings.colors.commandselect": "Commando"
+}

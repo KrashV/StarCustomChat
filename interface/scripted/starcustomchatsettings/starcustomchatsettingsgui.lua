@@ -148,7 +148,8 @@ function populateLanguagesList()
   widget.clearListItems("lytSelectLanguage.saLanguages.listLanguages")
   local selectedLocale = root.getConfiguration("scclocale") or "en"
 
-  for locale, localeConfig in pairs(self.availableLocales) do 
+  for _, localeConfig in ipairs(self.availableLocales) do 
+    local locale = localeConfig.code
     local flagImage = "/interface/scripted/starcustomchatsettings/flags/" .. locale .. ".png"
     local li = widget.addListItem("lytSelectLanguage.saLanguages.listLanguages")
 

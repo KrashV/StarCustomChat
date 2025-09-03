@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Colores",
+    "settings.colors.drop_to_default": "Por defecto",
+    "settings.colors.chattext": "Color del texto",
+    "settings.colors.background": "Fondo",
+    "settings.colors.time": "Tiempo",
+    "settings.colors.servertext": "Ms. del servidor",
+    "settings.colors.commandselect": "Comando"
+}

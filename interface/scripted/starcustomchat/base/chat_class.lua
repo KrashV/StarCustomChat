@@ -1,8 +1,5 @@
 --[[
   Chat Class instance
-
-  TODO:
-    6. Set avatar: image
 ]]
 
 require "/scripts/vec2.lua"
@@ -209,18 +206,19 @@ function StarCustomChat:closeSubMenu()
   end
 end
 
-function StarCustomChat:requestPortrait(connection, senderId)
+function StarCustomChat:requestPortrait(connection, overwrite, senderId)
   -- FezzedOne: Now always returns the correct value even if the player ID isn't the first in the cID block.
   local entityId = senderId or starcustomchat.utils.getPlayerIdFromConnection(connection)
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
-  if uuid and not self.savedPortraits[uuid] then
+  if uuid and (not self.savedPortraits[uuid] or overwrite) then
     if entityId and world.entityExists(entityId) then
       promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
         self.savedPortraits[data.uuid] = {
           portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait),
           cropArea = data.cropArea,
-          settings = data.settings
+          settings = data.settings,
+          frame = data.frame
         }
         self.connectionToUuid[tostring(connection)] = uuid
         self:processQueue()
@@ -267,23 +265,7 @@ function StarCustomChat:resetChat()
   self.colorTable = sb.jsonMerge(self.colorTable, root.getConfiguration("scc_custom_colors") or {})
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
-  if player.uniqueId() and player.id() and self.savedPortraits[player.uniqueId()] then
-    local portrait = player.getProperty("icc_custom_portrait")
-    local portraitSelected = player.getProperty("icc_custom_portrait_selected")
-    if portrait then
-      if type(portrait) == "table" then
-        portrait = portraitSelected and portraitSelected ~= 0 and portrait[portraitSelected or #portrait] or nil
-      end
-    end
-
-    self.savedPortraits[player.uniqueId()] = {
-      portrait = portrait or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
-      settings = player.getProperty("icc_portrait_settings") or {
-        offset = self.config.defaultPortraitOffset,
-        scale = self.config.defaultPortraitScale
-      }
-    }
-  end
+  self:requestPortrait(player.id() // -65536, true)
 
   self:drawBackground()
   self:processQueue()
@@ -319,6 +301,7 @@ function StarCustomChat:processCommand(text)
         sb.logInfo("CommandResult: %s", line)
       end
     end
+    return commandResult
   end
 end
 
@@ -376,7 +359,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     end
   end
 
-  local function drawPortrait(portrait, messageOffset, cropArea, portraitSettings, color)
+  local function drawPortrait(portrait, messageOffset, cropArea, portraitSettings, color, customFrame)
     local offset = vec2.add(self.config.portraitImageOffset, messageOffset)
     drawImage(self.config.icons.empty, offset)
     local size = portraitSizeFromBaseFont(self.config.fontSize)
@@ -431,7 +414,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
       end
     end
     drawModeIcon(offset)
-    drawImage(self.config.icons.frame, offset)
+    drawImage(customFrame or self.config.icons.frame, offset)
   end
 
 
@@ -442,7 +425,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
     local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[tostring(target)]
 
     if uuid and self.savedPortraits[uuid] then
-      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, self.savedPortraits[uuid].settings, color)
+      drawPortrait(self.savedPortraits[uuid].portrait, messageOffset, self.savedPortraits[uuid].cropArea, self.savedPortraits[uuid].settings, color, self.savedPortraits[uuid].frame)
     else
       local offset = vec2.add(self.config.iconImageOffset, messageOffset)
       drawImage(self.config.icons.empty, offset)
@@ -618,7 +601,7 @@ function StarCustomChat:processQueue()
     
     -- If the message should contain an avatar and name:
     local prevDrawnMessage = self.messages[self.drawnMessageIndexes[i - 1]]
-    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait)
+    message.avatar = i == 1 or (message.connection ~= prevDrawnMessage.connection or message.mode ~= prevDrawnMessage.mode or message.nickname ~= prevDrawnMessage.nickname or message.portrait ~= prevDrawnMessage.portrait or message.edited)
 
 
     local text = self.chatMode == "modern" and message.text 

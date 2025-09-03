@@ -1,0 +1,12 @@
+{
+    "settings.afk_mode": "Afwezig",
+    "chat.buttons.afk_mode": "Zet jezelf afwezig (AFK)",
+    "settings.afk_min": "min",
+    "settings.plugins.afk": "AFK instellingen",
+    "settings.afk_description": "Waarde 0 schakelt de AFK plugin uit",
+    "settings.afk_effects": "AFK effect:",
+    "settings.afk_modes.plain": "Effen kleur",
+    "settings.afk_modes.lines": "Gestreept",
+    "settings.colors.afkcolor": "AFK",
+    "settings.plugins.afk.button_disabled": "Schakel AFK-knop uit"
+  }

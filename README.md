@@ -99,5 +99,14 @@ end
 * @Novaenia - OpenStarbound support
 * @FezzedOne - xStarbound suppport
 
+## Localization
+
+* @degranon - Russian
+* @hansby - Spanish
+* @hydra_idryliah - French
+* @helgo - German
+* @crviii - Dutch
+* @masorad - Italian
+
 # Contact me
 If you have bug reports, suggestions or other ideas, you can contact me on Discord (@Degranon) or join [my Discord server](https://discord.gg/gnu8xRjS9p)

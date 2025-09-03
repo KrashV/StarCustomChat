@@ -14,10 +14,10 @@
   "chat.buttons.settings": "Settings",
   "chat.buttons.hide": "Hide chat",
   "chat.buttons.bigger_chat": "Bigger chat",
+  "chat.buttons.move_chat": "Move chat",
 
   "chat.alerts.dm_not_specified": "Select the recipient",
   "chat.alerts.dm_not_found": "The player has to be on the same planet",
-  "chat.alerts.stagehand_not_found": "^red;The server does not support this chat",
   "chat.alerts.copied_to_clipboard": "Copied to clipboard",
   "chat.alerts.cannot_start_two_slashes": "Command cannot start with two slashes",
   "chat.alerts.cannot_ping_server": "Cannot ping server messages",
@@ -33,7 +33,7 @@
   "greeting.se_osb_xsb_not_found": "Welcome to Advanced Chat by Degranon!\n\nIt requires the StarExtensions version 1.9.24+, OpenStarbound 0.1.8+ or xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.se_version": "Welcome to Advanced Chat by Degranon!\n\nPlease update the StarExtensions to version 1.9.24+",
   "greeting.osb_xsb_version": "Welcome to Advanced Chat by Degranon!\n\nPlease update OpenStarbound to version 0.1.8+ or xStarbound to v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.unbind_controls": "Welcome to Advanced Chat by Degranon!\n\nTo begin with, you need to manually unbound the following controls (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nClick Accept, rejoin the game - and you should be good to go!",
+  "greeting.unbind_controls": "Welcome to Advanced Chat by Degranon!\n\nTo begin with, you need to manually unbound the following controls (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that use /binds - Repeat last command)^reset;\n\nClick Accept, rejoin the game - and you should be good to go!",
   "greeting.unknown": "Welcome to Advanced Chat by Degranon!\n\nSomething went wrong. Oops!",
   "greeting.close": "Gotcha!",
 
@@ -43,6 +43,9 @@
   "settings.cancel": "Cancel",
   "settings.change_language": "Change language",
   "settings.close": "Close",
+  "settings.back": "Back",
+  "settings.add": "Add",
+  "settings.remove": "Remove",
 
 
 
@@ -82,7 +85,7 @@
   "commands.admin.spawnvehicle": "Spawns a vehicle.",
   "commands.admin.timewarp": "Warps time.",
   "commands.admin.unbanip": "Unbans an IP address.",
-  "commands.admin.unbanuuiud": "Unbans a UUID.",
+  "commands.admin.unbanuuid": "Unbans a UUID.",
   "commands.admin.warp": "Warps to a specified location.",
   "commands.admin.whereis": "Displays the coordinates of a specified player.",
 

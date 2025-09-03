@@ -41,8 +41,8 @@ function init()
   local plugins = {}
   local localePluginConfig = {}
   local availableLocales = root.assetJson("/interface/scripted/starcustomchat/locales/locales.json")
-  for locale, localeConfig in pairs(availableLocales) do
-    localePluginConfig[locale] = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", locale))
+  for _, localeConfig in ipairs(availableLocales) do
+    localePluginConfig[localeConfig.code] = root.assetJson(string.format("/interface/scripted/starcustomchat/locales/%s.json", localeConfig.code))
   end
 
 
@@ -65,11 +65,15 @@ function init()
       chatConfig = sb.jsonMerge(chatConfig, pluginConfig.baseConfigValues)
     end
 
-    for locale, localeConfig in pairs(availableLocales) do 
-      pcall(function()
-        local translations = root.assetJson(string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale))
+    for _, localeConfig in ipairs(availableLocales) do 
+      local locale = localeConfig.code
+      local localeFile = string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale)
+      if root.assetOrigin(localeFile) then
+        local translations = root.assetJson(localeFile)
         localePluginConfig[locale] = sb.jsonMerge(localePluginConfig[locale], translations)
-      end)
+      else
+        sb.logWarn("The %s localization file is missing", localeFile)
+      end
     end
   end
 
@@ -163,6 +167,14 @@ function init()
   -- Apparently, we don't know on init if we're admin or not.
   ICChatTimer:add(0.2, disableAdminModes)
 
+
+  if pane.setPosition then
+    widget.setVisible("btnMoveChat", true)
+    ICChatTimer:add(0.1, function()
+      local newPosition = root.getConfiguration("scc_chat_position") or {0, 0}
+      pane.setPosition(newPosition)
+    end)
+  end
   self.settingsInterface = buildSettingsInterface()
 end
 
@@ -226,11 +238,15 @@ function registerCallbacks()
 
   starcustomchat.utils.setMessageHandler( "icc_request_player_portrait", simpleHandler(function()
     if player.id() and player.uniqueId() and world.entityExists(player.id()) then
-      local portrait = player.getProperty("icc_custom_portrait")
+      local portraitTable = player.getProperty("icc_custom_portrait")
       local portraitSelected = player.getProperty("icc_custom_portrait_selected")
-      if portrait then
-        if type(portrait) == "table" then
-          portrait = portraitSelected and portraitSelected ~= 0 and portrait[portraitSelected or #portrait] or nil
+      local portrait = nil
+      local frameTable = root.getConfiguration("scc_custom_frames") or {}
+      local frameSelected = player.getProperty("scc_custom_frame_selected")
+
+      if portraitTable then
+        if type(portraitTable) == "table" then
+          portrait = portraitSelected and portraitSelected ~= 0 and portraitTable[portraitSelected or #portraitTable] or nil
         end
       end
 
@@ -243,7 +259,8 @@ function registerCallbacks()
           offset = self.customChat.config.defaultPortraitOffset,
           scale = self.customChat.config.defaultPortraitScale
         },
-        uuid = player.uniqueId()
+        uuid = player.uniqueId(),
+        frame = frameTable[frameSelected]
       }
     end
   end))
@@ -378,7 +395,7 @@ function localeChat()
 end
 
 function update(dt)
-  
+
   ICChatTimer:update(dt)
   promises:update()
   
@@ -390,6 +407,11 @@ function update(dt)
   checkTyping()
   checkCommandsPreview()
   processButtonEvents(dt)
+
+  if self.toggleMoveChat then
+    local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), widget.getSize("btnMoveChat"))
+    pane.setPosition(vec2.sub(cursorPosition, widget.getPosition("btnMoveChat")))
+  end
 
   self.runCallbackForPlugins("update", dt)
 end
@@ -674,15 +696,34 @@ function sendMessageToBeSent(text, mode)
 
       whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
   
-      local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
-        or "/w " .. whisperName .. " " .. message.text
-  
-      self.customChat:processCommand(whisper)
-      self.customChat.lastWhisper = {
-        recipient = whisperName,
-        text = message.text
-      }
-      starcustomchat.utils.saveMessage(whisper)
+      if string.find(whisperName, "%s") then
+        -- Oops, not gonna work, gonna send SEM
+        message.connection = player.id() // -65536
+        message.nickname = player.name()
+        starcustomchat.utils.saveMessage(message.text)
+        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+
+        promises:add(world.sendEntityMessage(data.id, "scc_add_message", message), function() 
+          if data.id ~= player.id() then
+            message.nickname = message.nickname .. "-> " .. whisperName
+            world.sendEntityMessage(player.id(), "scc_add_message", message)
+          end
+        end, function() 
+          starcustomchat.utils.alert("chat.alerts.dm_not_found")
+        end)
+
+      else
+        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+        local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
+          or "/w " .. whisperName .. " " .. message.text
+
+        self.customChat:processCommand(whisper)
+        self.customChat.lastWhisper = {
+          recipient = whisperName,
+          text = message.text
+        }
+        starcustomchat.utils.saveMessage(whisper)
+      end
     else
       starcustomchat.utils.saveMessage(message.text)
       message = self.runCallbackForPlugins("formatOutcomingMessage", message)
@@ -793,12 +834,18 @@ function openBiggerChat()
   player.interact("ScriptPane", biggerChat)
 end
 
+function toggleChatMovement()
+  self.toggleMoveChat = widget.getChecked("btnMoveChat")
+end
+
+
 function saveEverythingDude()
   -- Save messages and last command
   local messages = self.customChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", self.sentMessages)
+  root.setConfiguration("scc_chat_position", pane.getPosition and pane.getPosition() or nil)
 end
 
 function closeChat()
@@ -862,6 +909,7 @@ function uninit()
   if handlerCutter then
     handlerCutter()
   end
+  
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
 end

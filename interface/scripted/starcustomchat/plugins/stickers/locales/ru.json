@@ -1,7 +1,5 @@
 {
     "settings.plugins.stickers": "Стикеры",
-    "settings.plugins.stickers.add": "Добавить",
-    "settings.plugins.stickers.remove": "Удалить",
     "settings.plugins.stickers.alerts.name_error": "Стикеры должны иметь директивы и имя",
     "settings.plugins.stickers.alerts.image_error": "Изображение не найдено",
     "settings.plugins.stickers.alerts.size_error": "Изображение не должно быть больше %sх%s",

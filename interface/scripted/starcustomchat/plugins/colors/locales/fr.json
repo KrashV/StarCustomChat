@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Couleurs",
+    "settings.colors.drop_to_default": "Par défaut",
+    "settings.colors.chattext": "Police du Chat",
+    "settings.colors.background": "Arrière-plan",
+    "settings.colors.time": "Heurs",
+    "settings.colors.servertext": "Msg Serveur",
+    "settings.colors.commandselect": "Commande"
+}

@@ -1,8 +1,30 @@
-{
-  "en": {
-    "name": "English"
+[
+  {
+    "name": "English",
+    "code": "en"
   },
-  "ru": {
-    "name": "Русский"
+  {
+    "name": "Russian",
+    "code": "ru"
+  },
+  {
+    "name": "Español",
+    "code": "es"
+  },
+  {
+    "name": "Français",
+    "code": "fr"
+  },
+  {
+    "name": "Deutsch",
+    "code": "de"
+  },
+  {
+    "name": "Nederlands",
+    "code": "da"
+  },
+  {
+    "name": "Italiano",
+    "code": "it"
   }
-}
+]

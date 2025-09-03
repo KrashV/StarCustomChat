@@ -31,50 +31,70 @@
         "translationKey": "settings.plugins.afk"
       },
 
-      "lblDisableAfkButton": {
+      // "lblDisableAfkButton": {
+      //   "type": "label",
+      //   "position": [160, 120],
+      //   "hAnchor": "right",
+      //   "color": "lightgray",
+      //   "translationKey": "settings.plugins.afk.button_disabled"
+      // },
+
+      // "btnDisableAfkButton": {
+      //   "type": "button",
+      //   "position": [170, 120],
+      //   "checkable": true,
+      //   "checked": false,
+      //   "base": "/interface/crafting/checkboxnocheck.png",
+      //   "hover": "/interface/crafting/checkboxnocheck.png",
+      //   "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+      //   "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+      //   "callback": "disableAFKButton"
+      // },
+
+      "lblIgnoreMouse": {
         "type": "label",
-        "position": [120, 110],
+        "position": [160, 105],
         "hAnchor": "right",
         "color": "lightgray",
-        "translationKey": "settings.plugins.afk.button_disabled"
+        "translationKey": "settings.plugins.afk.ignore_mouse"
       },
 
-      "btnDisableAfkButton": {
+      "btnIgnoreMouse": {
         "type": "button",
-        "position": [130, 110],
+        "position": [170, 105],
         "checkable": true,
         "checked": false,
         "base": "/interface/crafting/checkboxnocheck.png",
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "disableAFKButton"
+        "callback": "toggleIgnoreMouse"
       },
 
 
       "lblAfk": {
         "type": "label",
-        "position": [103, 90],
+        "position": [103, 85],
         "value": "",
         "hAnchor": "right",
         "translationKey": "settings.afk_mode"
       },
       "afkTimerSpinner" : {
         "type": "spinner",
-        "position" : [105, 90],
+        "position" : [105, 85],
         "upOffset" : 20,
         "callback": "afkTimerSpinner"
       },
       "lblAfkTimer": {
         "type": "label",
-        "position": [120, 90],
+        "position": [120, 85],
         "value": "",
         "hAnchor": "mid"
       },
       
       "lblAfkTimerMin": {
         "type": "label",
-        "position": [137, 90],
+        "position": [137, 85],
         "value": "",
         "hAnchor": "left",
         "translationKey": "settings.afk_min"
@@ -82,7 +102,7 @@
       
       "lblAfk0Warning": {
         "type": "label",
-        "position": [120, 75],
+        "position": [120, 70],
         "hAnchor": "mid",
         "color": "lightgray",
         "value": "",
@@ -136,10 +156,9 @@
     }
   },
 
-  "guiAddons": {
-    "btnStartAfk": {
-      "type": "button",
-      "position": [6, 26],
+  "leftMenuButtons": [
+    {
+      "name": "btnStartAfk",
       "base": "/interface/scripted/starcustomchat/plugins/afk/interface/afk.png",
       "hover": "/interface/scripted/starcustomchat/plugins/afk/interface/afkhover.png",
       "callback": "customButtonCallback",
@@ -147,7 +166,7 @@
         "displayText": "chat.buttons.afk_mode"
       }
     }
-  },
+  ],
 
   "parameters": {
     "mode": "effect",

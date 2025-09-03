@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Sticker",
+    "settings.plugins.stickers.alerts.name_error": "Sticker sollten Directives und einen Namen haben",
+    "settings.plugins.stickers.alerts.image_error": "Konnte dieses Bild nicht laden",
+    "settings.plugins.stickers.alerts.size_error": "Bild sollte %sx%s nicht überschreiten",
+    "settings.plugins.stickers.alerts.empty_error": "Füge Directives in Textfeld ein",
+    "settings.plugins.stickers.alerts.already_exists": "Ein Sticker mit diesem Namen existiert bereits",
+    "settings.plugins.stickers.name": "Name",
+    "settings.plugins.stickers.search": "Suchen",
+    "settings.colors.stickerselect": "Sticker",
+    "chat.commands.save_sticker": "Sticker speichern",
+    "chat.commands.alerts.saved": "Sticker %s gespeichert!",
+    "stickers.name_preview": "Sticker: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Sticker entfernen",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Diese Aktion ist irreversibel.",
+    "settings.plugins.stickers.dialogs.remove.message": "Bist du sicher, dass du den Sticker ^violet;%s^reset; entfernen möchtest?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Entfernen",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Abbrechen"
+}

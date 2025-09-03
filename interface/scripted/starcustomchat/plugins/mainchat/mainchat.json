@@ -35,6 +35,27 @@
     "pingSound": "/sfx/instruments/bones/a4.ogg"
   },
 
+  "leftMenuButtons": [
+    {
+      "name": "btnOpenSettings",
+      "base": "/interface/scripted/starcustomchat/base/leftmenu/settings.png",
+      "hover": "/interface/scripted/starcustomchat/base/leftmenu/settingshover.png",
+      "callback": "openSettings",
+      "data": {
+        "displayText": "chat.buttons.settings"
+      }
+    },
+    {
+      "name": "btnToBottom",
+      "base": "/interface/scripted/starcustomchat/base/leftmenu/tobottom.png",
+      "hover": "/interface/scripted/starcustomchat/base/leftmenu/tobottomhover.png",
+      "callback": "toBottom",
+      "data": {
+        "displayText": "chat.buttons.bottom"
+      }
+    }
+  ],
+
   "contextMenuButtons": [
     {
       "name": "collapse",
@@ -123,7 +144,25 @@
             "callback": "clearHistory",
             "translationKey": "settings.clear_chat_history"
           },
+
+          "lblPortraitsPreview": {
+            "type": "label",
+            "position": [6, 38],
+            "translationKey": "settings.mainchat.portraitpreview",
+            "fontSize": 6
+          },
           
+          "chkPreviewPortraits": {
+            "type": "button",
+            "position": [90, 38],
+            "checkable": true,
+            "checked": false,
+            "base": "/interface/crafting/checkboxnocheck.png",
+            "hover": "/interface/crafting/checkboxnocheck.png",
+            "baseImageChecked": "/interface/crafting/checkboxcheck.png",
+            "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
+            "callback": "setPreviewPortraits"
+          },
 
 
           "sldFontSize" : {
@@ -172,18 +211,6 @@
             "position": [225, 90],
             "hAnchor": "mid",
             "value": ""
-          },
-
-          "tbxCustomPortrait": {
-            "type": "textbox",
-            "position": [8, 40],
-            "callback": "null",
-            "enterKey": "setPortrait",
-            "maxWidth": 70,
-            "hint": "?directives",
-            "data": {
-              "displayText": "settings.mainchat.customavatar"
-            }
           },
 
           "lblUTCHint": {
@@ -263,7 +290,20 @@
             "base" : "/interface/scripted/starcustomchatsettings/down.png",
             "hover" : "/interface/scripted/starcustomchatsettings/downhover.png",
             "data": {
-              "displayText": "settings.mainchat.select_portrait"
+              "displayText": "settings.mainchat.select_portrait",
+              "mode": "portraits"
+            }
+          },
+
+          "btnToggleFrames": {
+            "type": "button",
+            "position": [8, 54],
+            "callback": "togglePortraitSelection",
+            "base" : "/interface/scripted/starcustomchatsettings/up.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/uphover.png",
+            "data": {
+              "displayText": "settings.mainchat.select_frame",
+              "mode": "frames"
             }
           }
         }
@@ -272,13 +312,25 @@
       "lytPortraitSelection": {
         "type": "layout",
         "layoutType": "basic",
-        "rect": [15, 50, 230, 140],
+        "rect": [15, 20, 230, 140],
         "visible": false,
         "zLevel": 40,
         "children": {
+
+          "btnBack": {
+            "type": "button",
+            "position": [185, 110],
+            "base": "/interface/scripted/starcustomchatsettings/common/back.png:base",
+            "hover": "/interface/scripted/starcustomchatsettings/common/back.png:hover",
+            "pressed": "/interface/scripted/starcustomchatsettings/common/back.png:pressed",
+            "callback": "togglePortraitSelection",
+            "data": {
+              "displayText": "settings.back"
+            }
+          },
           "saSavedPortraits": {
             "type": "scrollArea",
-            "rect": [0, 0, 215, 90],
+            "rect": [0, 30, 215, 120],
             "children": {
               "listPortraits": {
                 "type": "list",
@@ -313,17 +365,36 @@
                     "btnRemove": {
                       "type": "button",
                       "position": [28, 30],
-                      "base": "/interface/scripted/starcustomchatsettings/remove/remove.png:base",
-                      "hover": "/interface/scripted/starcustomchatsettings/remove/remove.png:hover",
+                      "base": "/interface/scripted/starcustomchatsettings/common/remove.png:base",
+                      "hover": "/interface/scripted/starcustomchatsettings/common/remove.png:hover",
                       "zLevel": 2,
                       "callback": "removePortrait",
                       "data": {
-                        "displayText": "settings.mainchat.portraits.remove"
+                        "displayText": "settings.remove"
                       }
                     }
                   }
                 }
               }
+            }
+          },
+
+          "lblCustomFrameInput": {
+            "type": "label",
+            "position": [88, 15],
+            "hAnchor": "right",
+            "translationKey": "settings.add"
+          },
+
+          "tbxCustomPortrait": {
+            "type": "textbox",
+            "position": [95, 15],
+            "callback": "null",
+            "enterKey": "addCustomImage",
+            "maxWidth": 70,
+            "hint": "?directives",
+            "data": {
+              "displayText": "settings.mainchat.customavatar"
             }
           }
         }

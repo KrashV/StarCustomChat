@@ -26,25 +26,24 @@ function mainchat:init()
 
   self.customPortraits = player.getProperty("icc_custom_portrait")
 
+  -- Backwards compatibility: convert array of strings to array of objects
   if self.customPortraits then
     if type(self.customPortraits) == "string" then
-      self.customPortraits = {customPortraits}
+      self.customPortraits = { self.customPortraits }
     end
-    
-    local selectedPortrait = player.getProperty("icc_custom_portrait_selected")
-    if selectedPortrait and selectedPortrait == 0 then
-      self.customImage = nil
+
+    self.selectedPortrait = player.getProperty("icc_custom_portrait_selected")
+    if self.selectedPortrait and self.selectedPortrait == 0 then
+      self.selectedPortrait = nil
     else
-      self.customImage = self.customPortraits[selectedPortrait or #self.customPortraits]
-      self.customImageSize = starcustomchat.utils.safeImageSize(self.customImage)
-      if not self.customImageSize then
-        self.customImage = nil
-      end
       self.widget.setVisible("lytBase.btnResetAvatar", false)
     end
   else
     self.customPortraits = {}
   end
+
+  self.customFrames = root.getConfiguration("scc_custom_frames") or {}
+  self.selectedFrame = player.getProperty("scc_custom_frame_selected")
 
   self:drawCharacter()
   
@@ -71,10 +70,12 @@ function mainchat:init()
 
   self.widget.registerMemberCallback("lytPortraitSelection.saSavedPortraits.listPortraits", "removePortrait", function(_, data)
     self:removePortrait(_, data)
-  end)  
+  end)
   self.widget.registerMemberCallback("lytPortraitSelection.saSavedPortraits.listPortraits", "selectPortrait", function(_, data)
     self:selectPortrait(_, data)
   end)
+
+  self.widget.setChecked("lytBase.chkPreviewPortraits", root.getConfiguration("scc_preview_portraits"))
 end
 
 function mainchat:onLocaleChange()
@@ -82,7 +83,7 @@ function mainchat:onLocaleChange()
 end
 
 function mainchat:cursorOverride(screenPosition)
-  if widget.active(self.layoutWidget) and not self.customImage then
+  if widget.active(self.layoutWidget) and not self.customPortraits[self.selectedPortrait] then
     if self.portraitAnchor then
       local currentPos = self.portraitCanvas:mousePosition()
       local diff = vec2.sub(currentPos, self.portraitAnchor)
@@ -151,20 +152,31 @@ function mainchat:drawCharacter()
   local canvasPosition = self.widget.getPosition("lytBase.portraitCanvas")
   local canvasSize =  self.portraitCanvas:size()
   local backImageSize = root.imageSize(self.backImage)
-  self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, 
-    {0, 0, canvasSize[1], canvasSize[2]})
+  self.portraitCanvas:drawImageRect(self.backImage, {0, 0, backImageSize[1], backImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
 
-  if not self.customImage then
+  if not self.customPortraits[self.selectedPortrait] then
     local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
 
     for _, layer in ipairs(portrait) do
       self.portraitCanvas:drawImage(layer.image, self.portraitSettings.offset, self.portraitSettings.scale)
     end
   else
-    self.portraitCanvas:drawImageRect(self.customImage, {0, 0, self.customImageSize[1], self.customImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
+    local customImageSize = starcustomchat.utils.safeImageSize(self.customPortraits[self.selectedPortrait])
+    if customImageSize then
+      self.portraitCanvas:drawImageRect(self.customPortraits[self.selectedPortrait], {0, 0, customImageSize[1], customImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
+    end
   end
-  self.portraitCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, 
-    {0, 0, canvasSize[1], canvasSize[2]})
+
+  if self.selectedFrame and self.customFrames[self.selectedFrame] then
+    local customFrameSize = starcustomchat.utils.safeImageSize(self.customFrames[self.selectedFrame])
+    if customFrameSize then
+      self.portraitCanvas:drawImageRect(self.customFrames[self.selectedFrame], {0, 0, customFrameSize[1], customFrameSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
+    end
+  else
+    self.portraitCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
+  end
+
+
 end
 
 function mainchat:updateFontSize(widgetName)
@@ -215,68 +227,117 @@ function mainchat:clickCanvasCallback(position, button, isDown)
   end
 end
 
-function mainchat:setPortrait(widgetName, data)
-  local text = self.widget.getText("lytBase.tbxCustomPortrait")
-  if text == "" then
-    self.customImage = nil
-  else
+function mainchat:addCustomImage(widgetName, data)
+  local text = self.widget.getText("lytPortraitSelection.tbxCustomPortrait")
+
+  if text ~= "" then
     local imageSize = starcustomchat.utils.safeImageSize("/assetmissing.png" .. text)
     if imageSize then
       if imageSize[1] <= 64 and imageSize[2] <= 64 then
-        self.widget.setText("lytBase.tbxCustomPortrait", "")
-        self.customImage = "/assetmissing.png" .. text
-        self.customImageSize = imageSize
 
-        table.insert(self.customPortraits, self.customImage)
-        player.setProperty("icc_custom_portrait_selected", #self.customPortraits)
+        if self.portraitSelectionMode == "portraits" then
+          table.insert(self.customPortraits, "/assetmissing.png" .. text)
+          self.selectedPortrait = #self.customPortraits
+          player.setProperty("icc_custom_portrait_selected", #self.customPortraits)
+        else -- if self.portraitSelectionMode == "frames" then
+          local portraitUuid = sb.makeUuid()
+          self.customFrames[portraitUuid] = "/assetmissing.png" .. text
+          root.setConfiguration("scc_custom_frames", self.customFrames)
+        end
+        self:populatePortraitList(self.portraitSelectionMode)
         self:drawCharacter()
         save()
       else
-        self.widget.setText("lytBase.tbxCustomPortrait", "")
         starcustomchat.utils.alert("settings.mainchat.alerts.size_error")
       end
     else
-      self.widget.setText("lytBase.tbxCustomPortrait", "")
       starcustomchat.utils.alert("settings.mainchat.alerts.image_error")
     end
   end
+
+  
+  self.widget.setText("lytPortraitSelection.tbxCustomPortrait", "")
+  self.widget.blur("lytPortraitSelection.tbxCustomPortrait")
 end
 
-function mainchat:togglePortraitSelection()
+function mainchat:togglePortraitSelection(_, data)
 
-  self.widget.setVisible("lytBase", false)
-  self.widget.setVisible("lytPortraitSelection", true)
+  self.widget.setVisible("lytBase", not self.widget.active("lytBase"))
+  self.widget.setVisible("lytPortraitSelection", not self.widget.active("lytBase"))
 
-  self:populatePortraitList()
+  self.portraitSelectionMode = data.mode
+  self:populatePortraitList(data.mode)
 end
 
-function mainchat:populatePortraitList()
+function mainchat:populatePortraitList(mode)
   self.widget.clearListItems("lytPortraitSelection.saSavedPortraits.listPortraits")
 
-  -- Set our portrait as the first item
-  local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
-  local playerCanvas = self.widget.bindCanvas("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".portrait")
-  local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
+  if mode then
+    -- Set our portrait as the first item
 
-  local ratio = self.portraitCanvas:size()[1] / playerCanvas:size()[1]
-  for _, layer in ipairs(portrait) do
-    playerCanvas:drawImage(layer.image, vec2.div(self.portraitSettings.offset, ratio), self.portraitSettings.scale / ratio)
-  end
+    if mode == "portraits" then
+      local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
 
-  self.widget.setText("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".name", starcustomchat.utils.getTranslation("settings.mainchat.portraits.default"))
-  self.widget.removeChild("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, "btnRemove")
+      local playerCanvas = self.widget.bindCanvas("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".portrait")
+      local portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full"))
+
+      local ratio = self.portraitCanvas:size()[1] / playerCanvas:size()[1]
+      for _, layer in ipairs(portrait) do
+        playerCanvas:drawImage(layer.image, vec2.div(self.portraitSettings.offset, ratio), self.portraitSettings.scale / ratio)
+      end
+
+      self.widget.removeChild("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, "btnRemove")
 
 
-  for i, portrait in ipairs(self.customPortraits or {}) do
-    local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
-    local playerCanvas = self.widget.bindCanvas("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".portrait")
-    playerCanvas:drawImage(portrait, {0, 0}, playerCanvas:size()[1] / root.imageSize(portrait)[1])
-    
-    self.widget.setData("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, {
-      name = portrait.name,
-      image = portrait,
-      index = i
-    })
+      for i, portrait in ipairs(self.customPortraits or {}) do
+        local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
+        local playerCanvas = self.widget.bindCanvas("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".portrait")
+        playerCanvas:drawImage(portrait, {0, 0}, playerCanvas:size()[1] / root.imageSize(portrait)[1])
+
+
+        self.widget.setData("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, {
+          image = portrait,
+          index = i
+        })
+      end
+
+      local data = self.widget.getData("lytPortraitSelection.tbxCustomPortrait")
+      data.displayText = "settings.mainchat.customavatar"
+      self.widget.setData("lytPortraitSelection.tbxCustomPortrait", data)
+    else --if mode == "frames" then
+      local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
+      local defaultFrameCanvas = self.widget.bindCanvas("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".portrait")
+
+      local canvasSize =  defaultFrameCanvas:size()
+      local backImageSize = root.imageSize(self.backImage)
+
+      defaultFrameCanvas:drawImageRect(self.frameImage, {0, 0, backImageSize[1], backImageSize[2]}, {0, 0, canvasSize[1], canvasSize[2]})
+
+      self.widget.removeChild("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, "btnRemove")
+
+      local i = 1
+      for frameUUID, frame in pairs(self.customFrames) do 
+        local li = self.widget.addListItem("lytPortraitSelection.saSavedPortraits.listPortraits")
+        local frameSize = root.imageSize(frame)
+
+        self.widget.setButtonImages("lytPortraitSelection.saSavedPortraits.listPortraits." .. li .. ".btnSelectPortrait", {
+          base = frame .. "?scale=" .. canvasSize[1] / frameSize[1],
+          hover = frame .. "?scale=" .. canvasSize[1] / frameSize[1] .. "?brightness=50"
+        })
+
+        self.widget.setData("lytPortraitSelection.saSavedPortraits.listPortraits." .. li, {
+          image = frame,
+          frameUUID = frameUUID,
+          index = i
+        })
+
+        i = i + 1
+      end
+
+      local data = self.widget.getData("lytPortraitSelection.tbxCustomPortrait")
+      data.displayText = "settings.mainchat.portraits.customFrameDescription"
+      self.widget.setData("lytPortraitSelection.tbxCustomPortrait", data)
+    end
   end
 end
 
@@ -286,15 +347,27 @@ function mainchat:selectPortrait()
 
   if li then
     local data = self.widget.getData("lytPortraitSelection.saSavedPortraits.listPortraits." .. li)
-    if data then
-      self.customImage = data.image
-      self.customImageSize = root.imageSize(data.image)
-      self.widget.setVisible("lytBase.btnResetAvatar", false)
-      player.setProperty("icc_custom_portrait_selected", data.index)
-    else
-      self.customImage = nil
-      self.widget.setVisible("lytBase.btnResetAvatar", true)
-      player.setProperty("icc_custom_portrait_selected", 0)
+
+    if self.portraitSelectionMode == "portraits" then
+      if data then
+        self.selectedPortrait = data.index
+        self.widget.setVisible("lytBase.btnResetAvatar", false)
+        player.setProperty("icc_custom_portrait_selected", data.index)
+      else
+        self.selectedPortrait = 0
+        self.widget.setVisible("lytBase.btnResetAvatar", true)
+        player.setProperty("icc_custom_portrait_selected", 0)
+      end
+    else --if self.portraitSelectionMode == "frames" then
+
+      if data then
+        self.selectedFrame = data.frameUUID
+      else
+        self.selectedFrame = nil
+      end
+
+      
+      player.setProperty("scc_custom_frame_selected", self.selectedFrame)
     end
 
     self:drawCharacter()
@@ -302,7 +375,7 @@ function mainchat:selectPortrait()
 
     for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
       world.sendEntityMessage(pl, "icc_send_player_portrait", {
-        portrait = self.customImage or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
+        portrait = self.customPortraits[self.selectedPortrait] and self.customPortraits[self.selectedPortrait] or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
         connection = player.id() // -65536,
@@ -310,12 +383,11 @@ function mainchat:selectPortrait()
           offset = self.portraitSettings.offset,
           scale =  self.portraitSettings.scale 
         },
-        uuid = player.uniqueId()
+        uuid = player.uniqueId(),
+        frame = self.selectedFrame and self.customFrames[self.selectedFrame]
       })
     end
     
-
-
     self.widget.setVisible("lytBase", true)
     self.widget.setVisible("lytPortraitSelection", false)
   end
@@ -330,20 +402,30 @@ function mainchat:removePortrait()
 
     local dialogConfig = {
       paneLayout = "/interface/windowconfig/simpleconfirmation.config:paneLayout",
-      title = starcustomchat.utils.getTranslation("settings.stickers.dialogs.remove.title"),
-      subtitle = starcustomchat.utils.getTranslation("settings.stickers.dialogs.remove.subtitle"),
-      message = starcustomchat.utils.getTranslation("settings.stickers.dialogs.remove.message"),
-      okCaption = starcustomchat.utils.getTranslation("settings.stickers.dialogs.remove.ok"),
-      cancelCaption = starcustomchat.utils.getTranslation("settings.stickers.dialogs.remove.cancel")
+      title = starcustomchat.utils.getTranslation("settings.mainchat.dialogs.remove." .. self.portraitSelectionMode  ..  ".title"),
+      subtitle = starcustomchat.utils.getTranslation("settings.mainchat.dialogs.remove.subtitle"),
+      message = starcustomchat.utils.getTranslation("settings.mainchat.dialogs.remove." .. self.portraitSelectionMode  ..  ".message"),
+      okCaption = starcustomchat.utils.getTranslation("settings.mainchat.dialogs.remove.ok"),
+      cancelCaption = starcustomchat.utils.getTranslation("settings.mainchat.dialogs.remove.cancel")
     }
 
     promises:add(player.confirm(dialogConfig), function(confirmed)
       if confirmed then
         self.widget.removeListItem("lytPortraitSelection.saSavedPortraits.listPortraits", data.index)
-        table.remove(self.customPortraits, data.index)
-        player.setProperty("icc_custom_portrait_selected", 0)
+        if self.portraitSelectionMode == "portraits" then
+          table.remove(self.customPortraits, data.index)
+          player.setProperty("icc_custom_portrait_selected", 0)
+        else
+          self.customFrames[data.frameUUID] = nil
+          root.setConfiguration("scc_custom_frames", self.customFrames)
+        end
         save()
       end
     end)
   end
+end
+
+function mainchat:setPreviewPortraits()
+  root.setConfiguration("scc_preview_portraits", self.widget.getChecked("lytBase.chkPreviewPortraits"))
+  save()
 end

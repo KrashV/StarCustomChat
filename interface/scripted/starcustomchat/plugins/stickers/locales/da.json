@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Stickers",
+    "settings.plugins.stickers.alerts.name_error": "Stickers moeten een naam en directives hebben",
+    "settings.plugins.stickers.alerts.image_error": "Kon de afbeelding niet laden",
+    "settings.plugins.stickers.alerts.size_error": "Afbeelding kan niet groter dan %sx%s zijn",
+    "settings.plugins.stickers.alerts.empty_error": "Plak de directives in het tekstveld",
+    "settings.plugins.stickers.alerts.already_exists": "Er bestaat al een sticker met deze naam",
+    "settings.plugins.stickers.name": "Naam",
+    "settings.plugins.stickers.search": "Zoeken",
+    "settings.colors.stickerselect": "Stickers",
+    "chat.commands.save_sticker": "Sla sticker op",
+    "chat.commands.alerts.saved": "Sticker %s opgeslagen!",
+    "stickers.name_preview": "Sticker: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Verwijder sticker",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Dit kan niet ongedaan gemaakt worden.",
+    "settings.plugins.stickers.dialogs.remove.message": "Weet je zeker dat je de sticker ^violet;%s^reset; wilt verwijderen?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Verwijderen",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Annuleren"
+}

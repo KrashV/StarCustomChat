@@ -1,0 +1,13 @@
+{
+    "settings.afk_mode": "AFK",
+    "chat.buttons.afk_mode": "Attiva modalità AFK",
+    "settings.afk_min": "min",
+    "settings.plugins.afk": "Impostazioni AFK",
+    "settings.afk_description": "Il valore 0 disattiva il plugin di AFK",
+    "settings.afk_effects": "Effetto AFK:",
+    "settings.afk_modes.plain": "Plain",
+    "settings.afk_modes.lines": "Lines",
+    "settings.colors.afkcolor": "AFK",
+    "settings.plugins.afk.button_disabled": "Nascondi pulsante AFK",
+    "settings.plugins.afk.ignore_mouse": "Ignora movimenti del mouse durante AFK"
+  }

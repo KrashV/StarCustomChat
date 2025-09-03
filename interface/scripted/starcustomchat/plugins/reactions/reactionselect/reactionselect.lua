@@ -1,21 +1,25 @@
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 
 function init()
+  self.maxLength = 50
+
   self.emojiList = root.assetJson("/interface/scripted/starcustomchat/plugins/reactions/reactionlist.json")
   self.stagehandType = config.getParameter("stagehandType")
   populateReacts()
 
   pane.setTitle(getTitle(config.getParameter("text")), config.getParameter("nickname"))
   pane.setTitleIcon(string.format("/emotes/%s.emote.png", self.emojiList[math.random(#self.emojiList)]))
-end
 
+  if widget.setHint then
+    widget.setHint("tbxSearch", config.getParameter("textboxHint"))
+  end
 
-function cleanColors(text)
-  return string.gsub(text, "%^#?%w+;", "")
+  widget.focus("tbxSearch")
 end
 
 function getTitle(text)
-  return utf8.len(text) > 20 and starcustomchat.utils.utf8Substring(cleanColors(text), 1, 20) .. "..." or text
+  local cleanText = starcustomchat.utils.clearMetatags(text)
+  return utf8.len(cleanText) > self.maxLength and starcustomchat.utils.utf8Substring(cleanText, 1, self.maxLength) .. "..." or text
 end
 
 function populateReacts(search)
