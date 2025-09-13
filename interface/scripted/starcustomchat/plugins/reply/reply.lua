@@ -11,7 +11,8 @@ function reply:init(chat)
   self.replyingToMessage = config.getParameter("replyingToMessage")
 
   if self.replyingToMessage then
-    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", self.replyingToMessage.nickname), self:cropMessage(self.replyingToMessage.text))
+    local targetName = starcustomchat.utils.getTranslation("chat.reply.recipient", self.replyingToMessage.displayName or self.replyingToMessage.nickname)
+    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, self.replyingToMessage.text))
   end
   self.messagesToReply = {}
 
@@ -51,14 +52,17 @@ end
 function reply:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage and selectedMessage.uuid and buttonName == "reply" then
     self.replyingToMessage = selectedMessage
-    self.customChat:openSubMenu("reply", starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname), self:cropMessage(selectedMessage.text))
+    local targetName = starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname)
+    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, selectedMessage.text))
     widget.focus("tbxInput")
   end
 end
 
-function reply:cropMessage(text)
+function reply:cropMessage(targetName, text)
   local cleanText = starcustomchat.utils.clearMetatags(text)
-  return utf8.len(cleanText) < self.trimLength and cleanText or starcustomchat.utils.utf8Substring(cleanText, 1, self.trimLength) .. "..."
+  local cleanTargetName = starcustomchat.utils.clearMetatags(targetName)
+  local finalText = cleanTargetName .. cleanText
+  return utf8.len(finalText) < self.trimLength and cleanText or starcustomchat.utils.utf8Substring(cleanText, 1, self.trimLength - utf8.len(cleanTargetName)) .. "..."
 end
 
 function reply:onCustomButtonClick(buttonName, data)
