@@ -10,6 +10,7 @@ function mainchat:init(chat)
   self.ReplyTime = 0
 
   self.pressedDelete = false
+  self.pressedCopy = false
   local DMIngToUUID = config.getParameter("DMingTo")
 
   if DMIngToUUID then
@@ -198,6 +199,8 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
   if selectedMessage then
     if buttonName == "copy" then
       return not selectedMessage.image
+    elseif buttonName == "copy_noformatting" then
+      return not selectedMessage.image and self.pressedCopy
     elseif buttonName == "confirm_delete" or buttonName == "cancel_delete" then
       return self.pressedDelete
     elseif buttonName == "delete" then
@@ -269,8 +272,17 @@ end
 function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage then
     if buttonName == "copy" then
-      clipboard.setText(selectedMessage.text)
-      starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
+      if not self.pressedCopy then
+        self.pressedCopy = true
+      else
+        self.pressedCopy = false
+        clipboard.setText(selectedMessage.text)
+        starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
+      end
+    elseif buttonName == "copy_noformatting" then
+        self.pressedCopy = false
+        clipboard.setText(starcustomchat.utils.clearMetatags(selectedMessage.text))
+        starcustomchat.utils.alert("chat.alerts.copied_to_clipboard")
     elseif buttonName == "dm" then
       self.DMingTo = selectedMessage
       self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), selectedMessage.displayName or selectedMessage.nickname)
@@ -333,6 +345,7 @@ end
 
 function mainchat:contextMenuReset()
   self.pressedDelete = false
+  self.pressedCopy = false
   widget.setButtonImages("lytContext.delete", {
     base = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
     hover = "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover"

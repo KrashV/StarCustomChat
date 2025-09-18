@@ -1,5 +1,6 @@
 {
     "chat.commands.copy": "Скопировать",
+    "chat.commands.copy_noformatting": "Скопировать (без форматирования)",
     "chat.commands.ping": "Пингануть",
     "chat.commands.delete": "Удалить",
     "chat.commands.confirm_delete": "Подтвердить удаление",

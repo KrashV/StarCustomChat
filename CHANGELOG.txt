@@ -2,3 +2,4 @@
 + Fixed the portrait preview not working when the character rejoins the server.
 + Removed the limit of players drawn on the DM tab.
 + The truncation of reply preview now takes the length of the prefix message into account
++ Added an option to copy the message without the formatting

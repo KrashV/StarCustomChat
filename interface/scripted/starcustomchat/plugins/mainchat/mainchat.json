@@ -79,6 +79,13 @@
       "priority": 20
     },
     {
+      "name": "copy_noformatting",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:hover",
+      "tooltip": "chat.commands.copy_noformatting",
+      "priority": 21
+    },
+    {
       "name": "ping",
       "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
