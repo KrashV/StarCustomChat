@@ -108,6 +108,8 @@ end
 * @crviii - Dutch
 * @masorad - Italian
 * @muro_o - Portuguese (Brazilian)
+* @ifanel - Ukrainian
+* @fragcunt - Polish
 
 # Contact me
 If you have bug reports, suggestions or other ideas, you can contact me on Discord (@Degranon) or join [my Discord server](https://discord.gg/gnu8xRjS9p)

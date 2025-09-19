@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Naklejki",
+    "settings.plugins.stickers.alerts.name_error": "Naklejki powinny zawierać dyrektywy i nazwę",
+    "settings.plugins.stickers.alerts.image_error": "Nie można załadować obrazu",
+    "settings.plugins.stickers.alerts.size_error": "Obraz nie powinien przekraczać %sx%s",
+    "settings.plugins.stickers.alerts.empty_error": "Wklej dyrektywy w polu tekstowym",
+    "settings.plugins.stickers.alerts.already_exists": "Naklejka o tej nazwie już istnieje",
+    "settings.plugins.stickers.name": "Nazwa",
+    "settings.plugins.stickers.search": "Wyszukaj",
+    "settings.colors.stickerselect": "Naklejki",
+    "chat.commands.save_sticker": "Zapisz naklejkę",
+    "chat.commands.alerts.saved": "Naklejka %s zapisana!",
+    "stickers.name_preview": "Naklejka: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Usuń naklejkę",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Tej czynności nie można cofnąć.",
+    "settings.plugins.stickers.dialogs.remove.message": "Czy na pewno chcesz usunąć naklejkę ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Usuń",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Anuluj"
+}

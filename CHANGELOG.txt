@@ -3,3 +3,4 @@
 + Removed the limit of players drawn on the DM tab.
 + The truncation of reply preview now takes the length of the prefix message into account
 + Added an option to copy the message without the formatting
++ New languages: Polish (by fragcunt) and Ukrainian (by ifanel)

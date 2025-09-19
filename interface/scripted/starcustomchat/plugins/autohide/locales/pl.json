@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Autoukrywanie",
+    "settings.autohide.after": "Ukryj po",
+    "settings.autohide.sec": "sek",
+    "settings.autohide.description": "Wartość 0 wyłącza tryb autoukrywania",
+    "settings.autohide.ignore_server_messages": "Ignoruj wiadomości od serwera",
+    "settings.autohide.ignore_inspect_messages": "Ignoruj wiadomości trybu inspekcji przedmiotów"
+}
