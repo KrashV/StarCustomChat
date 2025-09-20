@@ -1,0 +1,13 @@
+{
+    "settings.plugins.charactervoice": "Голос персонажа",
+    "settings.plugins.charactervoice.enable": "Увімкнено",
+    "settings.plugins.charactervoice.enablewhisper": "Балакати при ОП",
+    "settings.plugins.charactervoice.pitch": "Тон",
+    "settings.plugins.charactervoice.test": "Тест",
+    "settings.plugins.charactervoice.description": "При відправці повідомлення грає обраний звук розмови",
+    "settings.plugins.charactervoice.wisperDescription": "При відправці повідомлення в особисті грає обраний звук розмови",
+    "settings.plugins.charactervoice.customItem": "^green;Кастомний",
+    "settings.plugins.charactervoice.customSoundHint": "/inter/path/to/your_sound.ogg",
+    "settings.plugins.charactervoice.save": "Зберегти",
+    "settings.plugins.charactervoice.soundNotFound": "^red;Звук не знайден"
+}

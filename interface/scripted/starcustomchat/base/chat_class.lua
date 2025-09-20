@@ -211,17 +211,12 @@ function StarCustomChat:requestPortrait(connection, overwrite, senderId)
   local entityId = senderId or starcustomchat.utils.getPlayerIdFromConnection(connection)
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
+  self.connectionToUuid[tostring(connection)] = uuid
+
   if uuid and (not self.savedPortraits[uuid] or overwrite) then
     if entityId and world.entityExists(entityId) then
       promises:add(world.sendEntityMessage(entityId, "icc_request_player_portrait"), function(data)
-        self.savedPortraits[data.uuid] = {
-          portrait = starcustomchat.utils.clearPortraitFromInvisibleLayers(data.portrait),
-          cropArea = data.cropArea,
-          settings = data.settings,
-          frame = data.frame
-        }
-        self.connectionToUuid[tostring(connection)] = uuid
-        self:processQueue()
+        self:updatePortrait(data)
       end, function()
         self.connectionToUuid[tostring(connection)] = uuid
         self.savedPortraits[uuid] = {

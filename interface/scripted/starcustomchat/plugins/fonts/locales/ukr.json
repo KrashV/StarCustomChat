@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Шрифти",
+    "settings.fonts.setFont": "Обрати шрифт",
+    "settings.fonts.drop_to_default": "Стандартний",
+    "settings.fonts.chatfont": "Чат",
+    "settings.fonts.timefont": "Час"
+}

@@ -1,5 +1,6 @@
 {
     "chat.commands.copy": "Copiar mensaje",
+    "chat.commands.copy_noformatting": "Copiar mensaje (sin formato)",
     "chat.commands.ping": "Notificar usuario",
     "chat.commands.delete": "Eliminar",
     "chat.commands.confirm_delete": "Confirmar eliminación",

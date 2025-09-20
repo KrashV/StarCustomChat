@@ -1,0 +1,7 @@
+{
+    "settings.plugins.fonts": "Czcionki",
+    "settings.fonts.setFont": "Wybierz Czcionkę",
+    "settings.fonts.drop_to_default": "Fabryczna",
+    "settings.fonts.chatfont": "Czat",
+    "settings.fonts.timefont": "Czas"
+}

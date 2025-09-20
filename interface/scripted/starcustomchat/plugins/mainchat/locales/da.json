@@ -1,5 +1,6 @@
 {
     "chat.commands.copy": "Kopieer bericht",
+    "chat.commands.copy_noformatting": "Kopieer bericht (zonder formattering)",
     "chat.commands.ping": "Ping gebruiker",
     "chat.commands.delete": "Verwijderen",
     "chat.commands.confirm_delete": "Bevestig verwijdering",

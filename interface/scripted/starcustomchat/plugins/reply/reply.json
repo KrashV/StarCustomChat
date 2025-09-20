@@ -27,7 +27,7 @@
     "stagehandType": "",
     "highlightReplyColor": "#1f84c17f",
     "messageRadius": 100,
-    "trimLength": 40,
+    "trimLength": 60,
     "desaturateTimer": 1.8
   },
 

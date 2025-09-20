@@ -1,0 +1,8 @@
+{
+    "settings.plugins.autohide": "Автоматично приховувати",
+    "settings.autohide.after": "Приховувати після",
+    "settings.autohide.sec": "секунд",
+    "settings.autohide.description": "Значення 0 залишає чат відкритим",
+    "settings.autohide.ignore_server_messages": "Ігнорувати серверні повідомлення",
+    "settings.autohide.ignore_inspect_messages": "Ігнорувити повідомлення з оглядом предметів"
+}

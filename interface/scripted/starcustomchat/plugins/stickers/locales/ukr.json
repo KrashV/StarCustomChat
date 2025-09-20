@@ -1,0 +1,19 @@
+{
+    "settings.plugins.stickers": "Стікери",
+    "settings.plugins.stickers.alerts.name_error": "Стікери повинні мати дерективи та назву",
+    "settings.plugins.stickers.alerts.image_error": "Не вдалося завантажити зображення",
+    "settings.plugins.stickers.alerts.size_error": "Розмір зображення не повинно перевищувати %sx%s",
+    "settings.plugins.stickers.alerts.empty_error": "Вставте директиви в текстове поле",
+    "settings.plugins.stickers.alerts.already_exists": "Стікер з цією назвою вже існує",
+    "settings.plugins.stickers.name": "Назва",
+    "settings.plugins.stickers.search": "Пошук",
+    "settings.colors.stickerselect": "Стікери",
+    "chat.commands.save_sticker": "Зберегти стікер",
+    "chat.commands.alerts.saved": "Стікер %s збережено!",
+    "stickers.name_preview": "Стікер: %s",
+    "settings.plugins.stickers.dialogs.remove.title": "Видалити стікер",
+    "settings.plugins.stickers.dialogs.remove.subtitle": "^red;Цю дію не можна скасувати.",
+    "settings.plugins.stickers.dialogs.remove.message": "Ви впевнені що бажаєте видалити стікер ^violet;%s^reset;?",
+    "settings.plugins.stickers.dialogs.remove.ok": "Видалити",
+    "settings.plugins.stickers.dialogs.remove.cancel": "Скасувати"
+}

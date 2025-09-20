@@ -1,5 +1,6 @@
 {
     "chat.commands.copy": "Copia messaggio",
+    "chat.commands.copy_noformatting": "Copia messaggio (senza formattazione)",
     "chat.commands.ping": "Pinga utente",
     "chat.commands.delete": "Cancella",
     "chat.commands.confirm_delete": "Conferma cancellazione",

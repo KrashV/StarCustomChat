@@ -1,15 +1,6 @@
-+ Added an ability to move the chat pane around the screen
-+ The edited messages are now correctly indicated as such
-+ Enlarged the reaction selection menu
-+ The Whisper Mode now tries to send the message to the receiver, even if their name contains a space
-+ AFK plugin option to ignore the mouse movement
-+ Custom frame support
-+ Proper multiline text support
-+ An option to preview the custom portraits without the compression
-
-## Localisation Support
-Spanish
-French
-German
-Italian
-Dutch
++ Fixed the portrait preview not working when the chat is moved from its original corner.
++ Fixed the portrait preview not working when the character rejoins the server.
++ Removed the limit of players drawn on the DM tab.
++ The truncation of reply preview now takes the length of the prefix message into account
++ Added an option to copy the message without the formatting
++ New languages: Polish (by fragcunt) and Ukrainian (by ifanel), Brazilian (by muro_o)

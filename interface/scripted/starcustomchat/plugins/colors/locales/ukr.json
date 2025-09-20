@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Кольори",
+    "settings.colors.drop_to_default": "Стандартний",
+    "settings.colors.chattext": "Текст чату",
+    "settings.colors.background": "Фонові",
+    "settings.colors.time": "Час",
+    "settings.colors.servertext": "Серверні сповіщення",
+    "settings.colors.commandselect": "Команди"
+}

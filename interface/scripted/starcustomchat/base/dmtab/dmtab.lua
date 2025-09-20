@@ -12,7 +12,7 @@ end
 
 function populateList(dmingTo)
   local function drawCharacters(players, toRemovePlayers)
-    local mode = #players > 7 and "letter" or "avatar"
+    local mode =  "avatar" -- #players > 7 and "letter" or "avatar"
 
     local idTable = {}  -- This table will store only the 'id' values
 

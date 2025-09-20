@@ -1,0 +1,9 @@
+{
+    "settings.plugins.colors": "Kolory",
+    "settings.colors.drop_to_default": "Reset",
+    "settings.colors.chattext": "Tekst czatu",
+    "settings.colors.background": "Tło",
+    "settings.colors.time": "Czas",
+    "settings.colors.servertext": "Wiad. serwera",
+    "settings.colors.commandselect": "Komenda"
+}

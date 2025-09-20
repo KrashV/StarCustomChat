@@ -26,5 +26,17 @@
   {
     "name": "Italiano",
     "code": "it"
+  },
+  {
+    "name": "Português (Brasil)",
+    "code": "ptbr"
+  },
+  {
+    "name": "Українська",
+    "code": "ukr"
+  },
+  {
+    "name": "Polski",
+    "code": "pl"
   }
 ]
