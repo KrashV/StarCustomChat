@@ -181,8 +181,9 @@ function mainchat:formatIncomingMessage(message)
 end
 
 function mainchat:onSendMessage(message)
+  local silent = message.silent
   if message.mode == "Broadcast" or message.mode == "Local" or message.mode == "Party" then
-    chat.send(message.text, message.mode, not message.silent, message.data)
+    chat.send(message.text, message.mode, not silent, message.data)
   end
 end
 
@@ -208,8 +209,12 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
     elseif buttonName == "dm" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
+      local playerId = player.id()
+      -- FezzedOne: Checks if the given player ID is within the entity ID space allotted for the client's connection ID.
+      -- If so, the player is controlled by that client.
+      local clientMatchesPlayer = playerId >= selectedMessage.connection * -65536 and playerId < (selectedMessage.connection - 1) * -65536
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
-        and selectedMessage.connection * -65536 ~= player.id()
+        and not clientMatchesPlayer
     elseif buttonName == "collapse" then
       local allowCollapse = self.customChat.maxCharactersAllowed ~= 0 and selectedMessage.isLong
 
@@ -292,11 +297,15 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       if self.ReplyTime > 0 then
         starcustomchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
       else
-        
+        local playerId = player.id()
         local target = selectedMessage.connection * -65536
-        if target == player.id() then
+        local clientMatchesPlayer = playerId >= selectedMessage.connection * -65536 and playerId < (selectedMessage.connection - 1) * -65536
+        if clientMatchesTarget then
           starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
         else
+          -- FezzedOne: Ensures an xStarbound client can always be pinged if any player controlled by it is rendered.
+          target = (selectedMessage.senderId and world.entityExists(selectedMessage.senderId)) and selectedMessage.senderId
+            or starcustomchat.utils.getPlayerIdFromConnection(selectedMessage.connection)
           promises:add(world.sendEntityMessage(target, "icc_ping", player.name()), function()
             starcustomchat.utils.alert("chat.alerts.pinged", selectedMessage.nickname)
           end, function()

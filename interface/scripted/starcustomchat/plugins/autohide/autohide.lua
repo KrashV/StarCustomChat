@@ -32,7 +32,7 @@ function isInspecting(message)
   local handHeldItem = player.primaryHandItem()
   local inspecting = handHeldItem and handHeldItem.name and handHeldItem.name == "inspectionmode"
 
-  return message.connection == player.id() // -65536 and message.mode == "RadioMessage" and inspecting
+  return message.connection == (player.id() - 65535) // -65536 and message.mode == "RadioMessage" and inspecting
 end
 
 function autohide:onReceiveMessage(message)
