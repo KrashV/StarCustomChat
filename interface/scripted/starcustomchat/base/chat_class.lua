@@ -125,7 +125,7 @@ function StarCustomChat:addMessage(msg)
         end
       end
 
-      self:requestPortrait(message.connection, message.senderId)
+      self:requestPortrait(message.connection, false, message.senderId)
       
     end
     return message
@@ -260,7 +260,7 @@ function StarCustomChat:resetChat()
   self.colorTable = sb.jsonMerge(self.colorTable, root.getConfiguration("scc_custom_colors") or {})
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
-  self:requestPortrait(player.id() // -65536, true)
+  self:requestPortrait((player.id() - 65535) // -65536, true)
 
   self:drawBackground()
   self:processQueue()
