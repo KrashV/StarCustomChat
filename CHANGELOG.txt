@@ -1,1 +1,2 @@
 + Optimized the context menu filter - now it only runs once per hover
++ Fixed the last sent messages not loading properly after rejoining the game
