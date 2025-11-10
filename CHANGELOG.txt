@@ -1,6 +1,2 @@
-+ Fixed the portrait preview not working when the chat is moved from its original corner.
-+ Fixed the portrait preview not working when the character rejoins the server.
-+ Removed the limit of players drawn on the DM tab.
-+ The truncation of reply preview now takes the length of the prefix message into account
-+ Added an option to copy the message without the formatting
-+ New languages: Polish (by fragcunt) and Ukrainian (by ifanel), Brazilian (by muro_o)
++ Optimized the context menu filter - now it only runs once per hover
++ Fixed the last sent messages not loading properly after rejoining the game

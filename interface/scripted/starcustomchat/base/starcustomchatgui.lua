@@ -120,7 +120,7 @@ function init()
   self.savedCommandSelection = 0
 
   self.selectedMessage = nil
-  self.sentMessages = root.getConfiguration("icc_my_messages",{}) or {}
+  self.sentMessages = root.getConfiguration("icc_my_messages") or jarray()
   self.sentMessagesLimit = 15
   self.currentSentMessage = nil
 
@@ -844,7 +844,7 @@ function saveEverythingDude()
   local messages = self.customChat:getMessages()
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
-  root.setConfiguration("icc_my_messages", self.sentMessages)
+  root.setConfiguration("icc_my_messages", util.toList(self.sentMessages))
   root.setConfiguration("scc_chat_position", pane.getPosition and pane.getPosition() or nil)
 end
 

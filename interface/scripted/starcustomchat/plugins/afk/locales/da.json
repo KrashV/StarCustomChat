@@ -8,5 +8,6 @@
     "settings.afk_modes.plain": "Effen kleur",
     "settings.afk_modes.lines": "Gestreept",
     "settings.colors.afkcolor": "AFK",
-    "settings.plugins.afk.button_disabled": "Schakel AFK-knop uit"
+    "settings.plugins.afk.button_disabled": "Schakel AFK-knop uit",
+    "settings.plugins.afk.ignore_mouse": "Negeer muisbewegingen tijdens AFK"
   }
