@@ -878,6 +878,7 @@ function convertToChatMessage(oldMessage)
   newMessage.mode = oldMessage.context.mode
   newMessage.nickname = oldMessage.fromNick
   newMessage.portrait = oldMessage.portrait
+  newMessage.data = oldMessage.data
   return newMessage
 end
 
