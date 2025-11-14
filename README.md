@@ -1,3 +1,5 @@
+> **This fork by @FezzedOne is *not* supported or endorsed by @KrashV / Degranon, the original author.**
+
 # Custom chat
 Starbound mod for replacing an old and boring chat with a flashy new and customazible piece of experience.
 Brought to you with love by Degranon
