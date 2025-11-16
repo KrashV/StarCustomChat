@@ -1,2 +1,2 @@
-+ Optimized the context menu filter - now it only runs once per hover
-+ Fixed the last sent messages not loading properly after rejoining the game
++ Pass OpenStarbound data messages further into the game
++ Send Reset Settings on script init. Useful for /swap command result, when the settings were not updated for the selected player

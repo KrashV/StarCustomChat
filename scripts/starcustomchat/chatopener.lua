@@ -48,6 +48,11 @@ function init()
   message.setHandler("scc_chat_opened", localHandler(openChat))
   message.setHandler("scc_uuid", localHandler(function() return self.chatUUID end))
 
+  SCChatTimer:add(0.5, function() 
+    if player.id() then
+      world.sendEntityMessage(player.id(), "scc_reset_settings") 
+    end
+  end)
 end
 
 function checkSEAndControls()
