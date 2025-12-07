@@ -175,6 +175,12 @@ function init()
       pane.setPosition(newPosition)
     end)
   end
+
+  if widget.getScrollOffset then
+    widget.setButtonEnabled("lytLeftMenu.btnUp", true)
+    widget.setButtonEnabled("lytLeftMenu.btnDown", true)
+  end
+
   self.settingsInterface = buildSettingsInterface()
 end
 
@@ -407,6 +413,7 @@ function update(dt)
   checkTyping()
   checkCommandsPreview()
   processButtonEvents(dt)
+  processLeftMenuButtons()
 
   if self.toggleMoveChat then
     local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), widget.getSize("btnMoveChat"))
@@ -635,6 +642,29 @@ function processButtonEvents(dt)
 
   if input.bindDown("starcustomchat", "repeatcommand") and self.lastCommand then
     self.customChat:processCommand(self.lastCommand)
+  end
+end
+
+function processLeftMenuButtons()
+  if widget.getScrollOffset and widget.getMaxScrollPosition then
+    local currentOffset = widget.getScrollOffset("lytLeftMenu.saButtons")
+
+    widget.setButtonEnabled("lytLeftMenu.btnDown", currentOffset[2] > 0)
+    widget.setButtonEnabled("lytLeftMenu.btnUp", currentOffset[2] < widget.getMaxScrollPosition("lytLeftMenu.saButtons")[2])
+  end
+end
+
+function scrollLeftMenuUp()
+  if widget.getScrollOffset and widget.setScrollOffset then
+    local currentOffset = widget.getScrollOffset("lytLeftMenu.saButtons")
+    widget.setScrollOffset("lytLeftMenu.saButtons", vec2.add(currentOffset, {0, self.customChat.config.scrollAreaButtonMove}))
+  end
+end
+
+function scrollLeftMenuDown()
+  if widget.getScrollOffset and widget.setScrollOffset then
+    local currentOffset = widget.getScrollOffset("lytLeftMenu.saButtons")
+    widget.setScrollOffset("lytLeftMenu.saButtons", vec2.add(currentOffset, {0, -self.customChat.config.scrollAreaButtonMove}))
   end
 end
 

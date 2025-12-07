@@ -11,6 +11,7 @@ function init()
   
   self.translations = config.getParameter("translations", jarray())
   self.hintTranslations = config.getParameter("hintTranslations", jarray())
+  self.chatConfig = config.getParameter("chatConfig")
 
   local plugins = {}
 
@@ -117,6 +118,11 @@ function init()
 
   self.runCallbackForPlugins("init", self.localization)
   populateLanguagesList()
+
+  if widget.getScrollOffset then
+    widget.setButtonEnabled("btnUp", true)
+    widget.setButtonEnabled("btnDown", true)
+  end
 end
 
 function localeSettings()
@@ -206,6 +212,7 @@ end
 
 function update(dt)
   promises:update()
+  processPluginsSAButtons()
   self.runCallbackForPlugins("update", dt)
 end
 
@@ -257,6 +264,29 @@ end
 
 function toggleLanguageSelection()
   widget.setVisible("lytSelectLanguage", not widget.active("lytSelectLanguage"))
+end
+
+function processPluginsSAButtons()
+  if widget.getScrollOffset and widget.getMaxScrollPosition then
+    local currentOffset = widget.getScrollOffset("saPlugins")
+
+    widget.setButtonEnabled("btnDown", currentOffset[2] > 0)
+    widget.setButtonEnabled("btnUp", currentOffset[2] < widget.getMaxScrollPosition("saPlugins")[2])
+  end
+end
+
+function scrollPluginsSAUp()
+  if widget.getScrollOffset and widget.setScrollOffset then
+    local currentOffset = widget.getScrollOffset("saPlugins")
+    widget.setScrollOffset("saPlugins", vec2.add(currentOffset, {0, self.chatConfig.scrollAreaButtonMove}))
+  end
+end
+
+function scrollPluginsSADown()
+  if widget.getScrollOffset and widget.setScrollOffset then
+    local currentOffset = widget.getScrollOffset("saPlugins")
+    widget.setScrollOffset("saPlugins", vec2.add(currentOffset, {0, -self.chatConfig.scrollAreaButtonMove}))
+  end
 end
 
 -- Utility function: return the index of a value in the given array

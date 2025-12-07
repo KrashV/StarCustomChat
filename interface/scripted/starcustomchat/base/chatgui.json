@@ -372,14 +372,22 @@
 
     "lytLeftMenu": {
       "type": "layout",
-			"position": [6, 1],
+			"position": [6, 0],
       "size": [27, 300],
       "visible": true,
 			"layoutType": "basic",
 			"children": {
+        "btnUp": {
+          "type": "button",
+          "position": [2, 31],
+          "disabled": true,
+          "base": "/interface/scrollarea/varrow-forwardhover.png",
+          "hover": "/interface/scrollarea/varrow-forwardhover.png",
+          "callback": "scrollLeftMenuUp"
+        },
         "saButtons": {
           "type": "scrollArea",
-          "rect": [0, 0, 28, 26],
+          "rect": [0, 6, 28, 31],
           "buttons" : {
             "vertical" : {
               "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
@@ -405,13 +413,21 @@
           "children": {
 
           }
+        },
+        "btnDown": {
+          "type": "button",
+          "position": [2, 0],
+          "disabled": true,
+          "base": "/interface/scrollarea/varrow-backwardhover.png",
+          "hover": "/interface/scrollarea/varrow-backwardhover.png",
+          "callback": "scrollLeftMenuDown"
         }
       }
     },
 
     "btnHideChat": {
       "type": "button",
-      "position": [0, 1],
+      "position": [0, 3],
       "base": "/interface/scripted/starcustomchat/base/leftmenu/close.png",
       "hover": "/interface/scripted/starcustomchat/base/leftmenu/closehover.png",
       "callback": "closeChat",
@@ -422,7 +438,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement"],
+    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

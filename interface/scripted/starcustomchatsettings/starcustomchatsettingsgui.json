@@ -35,6 +35,15 @@
       "children": {}
     },
 
+    "btnUp": {
+      "type": "button",
+      "position": [239, 146],
+      "disabled": true,
+      "base": "/interface/scrollarea/varrow-forwardhover.png",
+      "hover": "/interface/scrollarea/varrow-forwardhover.png",
+      "callback": "scrollPluginsSAUp"
+    },
+
     "saPlugins": {
       "type": "scrollArea",
       "rect": [237, 35, 270, 145],
@@ -84,6 +93,15 @@
           }
         }
       }
+    },
+
+    "btnDown": {
+      "type": "button",
+      "position": [239, 28],
+      "disabled": true,
+      "base": "/interface/scrollarea/varrow-backwardhover.png",
+      "hover": "/interface/scrollarea/varrow-backwardhover.png",
+      "callback": "scrollPluginsSADown"
     },
 
     "btnLanguage": {
@@ -181,7 +199,8 @@
     }
   },
   "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage", 
-    "comboboxSelect", "comboboxClick", "comboboxFilter", "_generalTextBoxCallback", "_generalTextBoxCallbackEnter", "_generalTextBoxCallbackEscape"
+    "comboboxSelect", "comboboxClick", "comboboxFilter", "_generalTextBoxCallback", "_generalTextBoxCallbackEnter", "_generalTextBoxCallbackEscape",
+    "scrollPluginsSAUp", "scrollPluginsSADown"
   ],
 
   "canvasClickCallbacks" : {
