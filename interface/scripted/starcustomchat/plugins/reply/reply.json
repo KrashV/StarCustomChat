@@ -19,7 +19,7 @@
       "base": "/interface/scripted/starcustomchat/plugins/reply/contextmenu/reply.png:base",
       "hover": "/interface/scripted/starcustomchat/plugins/reply/contextmenu/reply.png:hover",
       "tooltip": "chat.commands.reply",
-      "priority": -70
+      "priority": 70
     }
   ],
 

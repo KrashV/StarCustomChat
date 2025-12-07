@@ -65,18 +65,11 @@
       "priority": 0
     },
     {
-      "name": "dm",
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
-      "tooltip": "chat.commands.dm",
-      "priority": 10
-    },
-    {
       "name": "copy_menu",
       "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
       "tooltip": "chat.commands.copy",
-      "priority": 20,
+      "priority": 10,
       "contains": [
         {
           "name": "copy",
@@ -97,6 +90,13 @@
       "base": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/ping.png:hover",
       "tooltip": "chat.commands.ping",
+      "priority": 20
+    },
+    {
+      "name": "dm",
+      "base": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:base",
+      "hover": "/interface/scripted/starcustomchat/base/contextmenu/dm.png:hover",
+      "tooltip": "chat.commands.dm",
       "priority": 30
     },
     {

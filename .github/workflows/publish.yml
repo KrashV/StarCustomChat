@@ -25,7 +25,7 @@ jobs:
       - name: 'Create GitHub Release'
         uses: softprops/action-gh-release@v1
         with:
-          body_path: CHANGELOG.txt
+          body_path: CHANGELOG.md
           files: StarCustomChat.pak       
           tag_name: v${{ steps.extract_version.outputs.version }}
           name: Release V${{ steps.extract_version.outputs.version }}
@@ -34,7 +34,7 @@ jobs:
         id: read_file
         uses: andstor/file-reader-action@v1
         with:
-          path: "CHANGELOG.txt"
+          path: "CHANGELOG.md"
 
       - name: Discord Webhook For Delivery
         uses: tsickert/discord-webhook@v6.0.0
