@@ -1,2 +1,2 @@
-+ Pass OpenStarbound data messages further into the game
-+ Send Reset Settings on script init. Useful for /swap command result, when the settings were not updated for the selected player
++ Introduced internal forceAvatar parameter
++ New Context menu functionality for in-built children button support

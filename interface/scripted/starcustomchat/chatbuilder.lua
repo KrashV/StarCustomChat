@@ -103,7 +103,7 @@ function buildChatInterface()
   -- Then sort the modes by tab priority
   sortByPriority(chatModes)
 
-  -- Then sort the modes by tab priority
+  -- Sort context menu items
   sortByPriority(baseInterface["contextMenuButtons"])
 
   -- Then add the modes to the radio group

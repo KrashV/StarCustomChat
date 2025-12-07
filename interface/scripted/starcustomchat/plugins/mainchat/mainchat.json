@@ -72,18 +72,25 @@
       "priority": 10
     },
     {
-      "name": "copy",
+      "name": "copy_menu",
       "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
       "tooltip": "chat.commands.copy",
-      "priority": 20
-    },
-    {
-      "name": "copy_noformatting",
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:hover",
-      "tooltip": "chat.commands.copy_noformatting",
-      "priority": 21
+      "priority": 20,
+      "contains": [
+        {
+          "name": "copy",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/copy.png:hover",
+          "tooltip": "chat.commands.copy"
+        },
+        {
+          "name": "copy_noformatting",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/copynoformatting.png:hover",
+          "tooltip": "chat.commands.copy_noformatting"
+        }
+      ]
     },
     {
       "name": "ping",
@@ -97,14 +104,23 @@
       "base": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:base",
       "hover": "/interface/scripted/starcustomchat/base/contextmenu/delete.png:hover",
       "tooltip": "chat.commands.delete",
-      "priority": -20
-    },
-    {
-      "name": "confirm_delete",
-      "base": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:base",
-      "hover": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:hover",
-      "tooltip": "chat.commands.confirm_delete",
-      "priority": -22
+      "priority": -20,
+      "contains": [
+        {
+          "name": "confirm_delete",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/confirm.png:hover",
+          "tooltip": "chat.commands.confirm_delete",
+          "priority": -1
+        },
+        {
+          "name": "cancel_delete",
+          "base": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:base",
+          "hover": "/interface/scripted/starcustomchat/base/contextmenu/cancel.png:hover",
+          "tooltip": "chat.commands.cancel_delete",
+          "priority": -2
+        }
+      ]
     }
   ],
 
