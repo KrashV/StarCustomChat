@@ -4,7 +4,7 @@ function contextMenu_init(buttonsConfig)
   self.contextMenu.dotsSize = root.imageSize(config.getParameter("gui")["lytContext"]["children"]["dots"]["base"])
 
   -- track hover/selection state so heavy layout work runs only when needed
-  self.contextMenu.isHovering = false
+  self.contextMenu.isInContext = false
   self.contextMenu.lastSelectedUUID = nil
   self.contextMenu.pressedParents = {}
 
@@ -57,14 +57,13 @@ function processContextMenu(screenPosition)
   end
 
   -- determine current hover / selection identity
-  local inContext = widget.inMember("lytContext", screenPosition)
-  local prevHover = self.contextMenu.isHovering or false
+  local inContext = widget.inMember("lytContext", screenPosition) or rect.contains(rect.withSize(widget.getPosition("lytContext"), widget.getSize("lytContext")), screenPosition) 
   local prevSelectedUUID = self.contextMenu.lastSelectedUUID
   local selectedUUID = self.selectedMessage and self.selectedMessage.uuid or nil
 
   if inContext then
     -- only rebuild the visible buttons/layout if selection changed or we just started hovering
-    if selectedUUID ~= prevSelectedUUID or not prevHover then
+    if selectedUUID ~= prevSelectedUUID or inContext ~= self.contextMenu.isInContext or self.contextMenu.rebuildMenu then
       local layoutSize = {0, self.contextMenu.dotsSize[2]}
 
       for _, btnConfig in ipairs(self.contextMenu.buttonConfigs) do 
@@ -82,17 +81,15 @@ function processContextMenu(screenPosition)
         end
       end
       widget.setVisible("lytContext.dots", false)
-
       widget.setSize("lytContext", layoutSize)
 
       -- remember state so we don't do this again until it changes
       self.contextMenu.lastSelectedUUID = selectedUUID
+      self.contextMenu.rebuildMenu = nil
     end
-
-    self.contextMenu.isHovering = true
   else
     -- only run reset once when we stop hovering
-    if prevHover then
+    if self.contextMenu.isInContext then
       self.runCallbackForPlugins("contextMenuReset")
       
       widget.setVisible("lytContext.dots", true)
@@ -101,15 +98,17 @@ function processContextMenu(screenPosition)
       end
 
       widget.setSize("lytContext", self.contextMenu.dotsSize)
-
       -- clear remembered selection because we're no longer showing the menu
       self.contextMenu.lastSelectedUUID = nil
       self.contextMenu.pressedParents = {}
     end
-
-    self.contextMenu.isHovering = false
   end
 
+  setLayoutPosition()
+  self.contextMenu.isInContext = inContext
+end
+
+function setLayoutPosition()
   if self.selectedMessage then
   
     local canvasPosition = widget.getPosition(self.highlightCanvasName)
@@ -136,7 +135,7 @@ function contextMenuButtonClick(buttonName)
     self.contextMenu.pressedParents[buttonName] = true
   end
 
+  
+  self.contextMenu.rebuildMenu = true
   self.runCallbackForPlugins("contextMenuButtonClick", buttonName, self.selectedMessage)
-  self.contextMenu.isHovering = false
-  self.contextMenu.lastSelectedUUID = nil
 end
