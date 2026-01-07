@@ -189,9 +189,9 @@ function setLanguage()
   end
 end
 
-function save()
+function save(data)
   self.runCallbackForPlugins("save", starcustomchat.locale)
-  world.sendEntityMessage(player.id(), "scc_reset_settings")
+  world.sendEntityMessage(player.id(), "scc_reset_settings", data)
 end
 
 function changePluginPage()
