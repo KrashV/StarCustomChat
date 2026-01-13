@@ -69,7 +69,7 @@
         "hover": "/interface/crafting/checkboxnocheck.png",
         "baseImageChecked": "/interface/crafting/checkboxcheck.png",
         "hoverImageChecked": "/interface/crafting/checkboxcheck.png",
-        "callback": "enableWhispercharactervoice",
+        "callback": "enableWhisperSounds",
         "data": {
           "displayText": "settings.plugins.charactervoice.wisperDescription"
         }
