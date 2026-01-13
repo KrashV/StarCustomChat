@@ -198,7 +198,7 @@ function mainchat:updateMessageLength(widgetName)
 end
 
 function mainchat:clearHistory()
-  world.sendEntityMessage(player.id(), "icc_clear_history")
+  world.sendEntityMessage(player.id(), "scc_clear_history")
 end
 
 mainchat.utcOffsetSpinner = {}

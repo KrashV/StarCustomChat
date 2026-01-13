@@ -311,7 +311,7 @@ function registerCallbacks()
     self.customChat:resetChat()
   end))
 
-  starcustomchat.utils.setMessageHandler( "icc_clear_history", localHandler(function(data)
+  starcustomchat.utils.setMessageHandler( "scc_clear_history", localHandler(function(data)
     self.customChat:clearHistory()
   end))
 
@@ -319,7 +319,7 @@ function registerCallbacks()
     self.customChat:clearHistory()
   end))
 
-    starcustomchat.utils.setMessageHandler("scc_edit_message", function(_, _, data)
+  starcustomchat.utils.setMessageHandler("scc_edit_message", function(_, _, data)
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     if msgInd then
       data = self.customChat.callbackPlugins("formatIncomingMessage", data)
@@ -327,6 +327,7 @@ function registerCallbacks()
       message.text = data.text
       message.mode = data.mode
       message.textHeight = nil
+
       if not message.edited then
         message.time = "^set;^lightgray;(" .. starcustomchat.utils.getTranslation("chat.message.edited") .. ")^reset; "
           .. (message.time or "")
