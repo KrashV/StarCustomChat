@@ -255,6 +255,18 @@ function mainchat:onTextboxEnter(message)
     self.DMingTo = nil
     return true
   end
+
+  if string.sub(message.text, 1, 1) == "@" then
+    local name = string.sub(message.text, 2, string.len(message.text))
+    if string.len(message.text) > 1 then
+      for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+        if name == world.entityName(pl) then
+          self:ping(pl, name)
+          return true
+        end
+      end
+    end
+  end
 end
 
 function mainchat:onBackgroundChange(chatConfig)
@@ -282,27 +294,31 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       widget.focus("tbxInput")
 
     elseif buttonName == "ping" then
-      if self.ReplyTime > 0 then
-        starcustomchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
-      else
-        
-        local target = selectedMessage.connection * -65536
-        if target == player.id() then
-          starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
-        else
-          promises:add(world.sendEntityMessage(target, "icc_ping", player.name()), function()
-            starcustomchat.utils.alert("chat.alerts.pinged", selectedMessage.nickname)
-          end, function()
-            starcustomchat.utils.alert("chat.alerts.ping_failed", selectedMessage.nickname)
-          end)
+      local target = selectedMessage.connection * -65536
+      self:ping(target, selectedMessage.nickname)
 
-          self.ReplyTime = self.ReplyTimer
-        end
-      end
     elseif buttonName == "collapse" then
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
     elseif buttonName == "confirm_delete" then
       self.customChat:deleteMessage(selectedMessage.uuid)
+    end
+  end
+end
+
+function mainchat:ping(connectionId, name)
+  if self.ReplyTime > 0 then
+    starcustomchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
+  else
+    if connectionId == player.id() then
+      starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
+    else
+      promises:add(world.sendEntityMessage(connectionId, "icc_ping", player.name()), function()
+        starcustomchat.utils.alert("chat.alerts.pinged", name)
+      end, function()
+        starcustomchat.utils.alert("chat.alerts.ping_failed", name)
+      end)
+
+      self.ReplyTime = self.ReplyTimer
     end
   end
 end
