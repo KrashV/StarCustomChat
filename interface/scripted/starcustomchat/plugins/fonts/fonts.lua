@@ -1,5 +1,4 @@
 require "/interface/scripted/starcustomchat/plugin.lua"
-require "/interface/scripted/combobox/combobox.class.lua"
 
 fonts = PluginClass:new(
   { name = "fonts" }

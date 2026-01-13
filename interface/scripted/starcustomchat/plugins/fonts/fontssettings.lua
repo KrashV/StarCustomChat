@@ -11,7 +11,6 @@ function fonts:init(chat)
   self.chat = chat
 
   self.currentFonts = root.getConfiguration("scc_custom_fonts") or {}
-
 end
 
 function fonts:isAvailable()
@@ -19,9 +18,14 @@ function fonts:isAvailable()
 end
 
 function fonts:openTab()
-  self.combobox = Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", function(data)
+  self.combobox = Combobox:bind(self.layoutWidget .. "." .. "btnSelectFont", config.getParameter("allFontsTable"), function(data)
     self:selectedCombobox(data)
-  end, config.getParameter("allFontsTable"), nil, true)
+  end, {
+    filter = true,
+    size = root.imageSize("/interface/scripted/combobox/background.png"),
+    offset = {0, 10},
+    closeOnSelect = true
+  })
   self:populateList()
 end
 
@@ -66,7 +70,7 @@ function fonts:changedFontItem()
 end
 
 function fonts:dropToDefault()
-  self:selectedCombobox(newFont)
+  self:selectedCombobox()
 end
 
 function fonts:selectedCombobox(newFont)
@@ -84,8 +88,6 @@ function fonts:selectedCombobox(newFont)
     root.setConfiguration("scc_custom_fonts", self.currentFonts)
     save()
   end
-
-  self.combobox:close()
 end
 
 function fonts:uninit()

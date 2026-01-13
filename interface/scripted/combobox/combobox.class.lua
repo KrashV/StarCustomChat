@@ -11,12 +11,13 @@ Combobox = {
 
 local comboboxes = {}
 
-function Combobox:_new(widgetName, callback, values, defaultValue)
+function Combobox:_new(widgetName, callback, values, defaultValue, closeOnSelect)
   local obj = {}
   obj.widgetName = widgetName
   obj.callback = callback
   obj.values = values or {}
   obj.defaultValue = defaultValue or nil
+  obj.closeOnSelect = closeOnSelect or false
   obj.listMap = {}
 
   setmetatable(obj, self)
@@ -24,7 +25,8 @@ function Combobox:_new(widgetName, callback, values, defaultValue)
   return obj
 end
 
-function Combobox:bind(widgetName, callback, values, defaultValue, filter, size, offset, listScema)
+function Combobox:bind(widgetName, values, callback, options)
+    options = options or {}
 
     if not widget.getChecked(widgetName) == nil then
         sb.logError("Combobox:bind - Widget '" .. widgetName .. "' does not exist or is not a button.")
@@ -32,15 +34,16 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
     end
 
     -- Reformat values to a table if it's an array
-    for k, v in pairs(values or {}) do
-        values[k or v] = v
+    for k, v in ipairs(values or {}) do
+        values[k] = nil
+        values[v or k] = v
     end
 
     local cbUUID = sb.makeUuid()
 
-    local backgroundSize = root.imageSize("/interface/scripted/combobox/background.png")
+    local backgroundSize = options.size or root.imageSize("/interface/scripted/combobox/background.png")
 
-    local lytPosition = vec2.add(widget.getPosition(widgetName), offset or {0, 10})
+    local lytPosition = vec2.add(widget.getPosition(widgetName), options.offset or {0, widget.getSize(widgetName)[2]})
 
     local layoutTemplate = {
         type = "layout",
@@ -51,17 +54,20 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
         children = {
             ["backgroundCombobox"] = {
                 type = "image",
-                file = "/interface/scripted/combobox/background.png"
+                file = "/interface/scripted/combobox/" .. (options.filter and "backgroundFilter.png" or "background.png"),
+                zlevel = 0
             },
             ["scrollAreaCombobox"] = {
                 type = "scrollArea",
-                position = {0, 15},
-                size = {backgroundSize[1], backgroundSize[2] - 15},
+                position = {0, options.filter and 20 or 0},
+                size = {backgroundSize[1], backgroundSize[2] - (options.filter and 20 or 0)},
+                zlevel = 2,
                 children = {
                     ["listCombobox"] = {
                         type = "list",
+                        zlevel = 3,
                         callback = "comboboxSelect",
-                        schema = listScema or {
+                        schema = options.listScema or {
                             selectedBG = "/interface/scripted/combobox/listselected.png",
                             unselectedBG = "/interface/scripted/combobox/listunselected.png",
                             spacing = {0, 0},
@@ -106,18 +112,19 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
         name = childWidgetName,
         parentWidgetName = parentWidgetName or "",
         values = values,
-        defaultValue = defaultValue,
+        defaultValue = options.defaultValue,
         uuid = cbUUID
     }
 
     -- Add optional filter
-    if filter then
+    if options.filter then
         layoutTemplate.children["textComboboxFilter"] = {
             type = "textbox",
             position = {5, 2},
-            hint = "...",
+            hint = options.filterHint or "...",
             color = "gray",
             callback = "comboboxFilter",
+            zlevel = 4,
             data = {
                 comboboxData = {
                     name = childWidgetName,
@@ -139,7 +146,7 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
     end
 
     -- Create and store combobox
-    comboboxes[cbUUID] = self:_new(parentFullWidgetName .. lytName, callback, values, defaultValue)
+    comboboxes[cbUUID] = self:_new(parentFullWidgetName .. lytName, callback, values, options.defaultValue, options.closeOnSelect)
 
 
     widget.setData(parentFullWidgetName .. "lytCombobox" .. widgetName .. ".scrollAreaCombobox.listCombobox", {
@@ -150,7 +157,7 @@ function Combobox:bind(widgetName, callback, values, defaultValue, filter, size,
         }
     })
 
-    comboboxes[cbUUID]:fillValues(nil, defaultValue)
+    comboboxes[cbUUID]:fillValues(nil, options.defaultValue)
     return comboboxes[cbUUID]
 end
 
@@ -216,7 +223,10 @@ function comboboxSelect(widgetName, widgetData)
         if li then
             local cb = getCombobox(widgetData.comboboxData.uuid)
             if cb and cb.callback then
-                cb.callback(widget.getData(widgetName .. ".scrollAreaCombobox.listCombobox." .. li))
+                cb.callback(widget.getData(widgetName .. ".scrollAreaCombobox.listCombobox." .. li), widget.getText(widgetName .. ".scrollAreaCombobox.listCombobox." .. li))
+                if cb.closeOnSelect then
+                    cb:close()
+                end
             end
         end
     end
@@ -224,10 +234,10 @@ end
 
 function comboboxFilter(widgetName, widgetData)
     if widgetData.comboboxData then
-        if widgetData.comboboxData.parentWidgetName then
+        if widgetData.comboboxData.parentWidgetName and widgetData.comboboxData.parentWidgetName ~= "" then
             widgetName = widgetData.comboboxData.parentWidgetName .. "." .. "lytCombobox" .. widgetData.comboboxData.name .. "." .. widgetName
         else
-            widgetName = "lytCombobox." .. widgetData.comboboxData.name .. "." .. widgetName
+            widgetName = "lytCombobox" .. widgetData.comboboxData.name .. "." .. widgetName
         end
 
         local cb = getCombobox(widgetData.comboboxData.uuid)
