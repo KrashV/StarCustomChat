@@ -75,7 +75,7 @@ function mainchat:init()
     self:selectPortrait(_, data)
   end)
 
-  self.widget.setChecked("lytBase.chkPreviewPortraits", root.getConfiguration("scc_preview_portraits"))
+  self.widget.setChecked("lytBase.chkPreviewPortraits", root.getConfiguration("scc_preview_portraits") or true)
 end
 
 function mainchat:onLocaleChange()

@@ -19,7 +19,7 @@ function mainchat:init(chat)
     end
   end
 
-  self.previewPortraits = root.getConfiguration("scc_preview_portraits")
+  self.previewPortraits = root.getConfiguration("scc_preview_portraits") or true
   self.previewPlayerCanvas = widget.bindCanvas("lblPortraitPreview.playerCanvas")
   self.backImageSize = root.imageSize("/interface/scripted/starcustomchat/base/icons/empty.png")
 end
@@ -319,5 +319,5 @@ end
 
 function mainchat:onSettingsUpdate()
   self.customChat.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
-  self.previewPortraits = root.getConfiguration("scc_preview_portraits")
+  self.previewPortraits = root.getConfiguration("scc_preview_portraits" or true)
 end
