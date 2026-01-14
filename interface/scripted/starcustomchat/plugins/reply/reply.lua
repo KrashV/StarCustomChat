@@ -97,7 +97,7 @@ function reply:onTextboxEnter()
     if self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
-      for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), self.messageRadius)) do 
+      for _, pl in ipairs(starcustomchat.utils.playersInRadius(self.messageRadius)) do 
         world.sendEntityMessage(pl, "scc_add_relpy", dataToSend)
       end
     end

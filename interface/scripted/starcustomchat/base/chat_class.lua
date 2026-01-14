@@ -309,7 +309,11 @@ function StarCustomChat:previewCommands(commands, selected)
 
   for j = 0, n - 1 do
     local i = (selected + j - 1) % n + 1
-    result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i].data .. " "
+    if type(commands[i]) == "table" then
+      result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i].data .. " "
+    else
+      result = result .. "^" .. (j == 0 and self:getColor("commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i] .. " "
+    end
   end
 
   widget.setText("lytCommandPreview.lblCommandPreview", result)

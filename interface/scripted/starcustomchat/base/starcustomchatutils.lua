@@ -280,3 +280,10 @@ function starcustomchat.utils.safeImageSize(image)
 
   return nil
 end
+
+function starcustomchat.utils.playersInRadius(radius, ignoreUs)
+  radius = radius or 100
+  return world.playerQuery(world.entityPosition(player.id()), radius, ignoreUs and {
+    withoutEntityId = player.id()
+  } or nil)
+end

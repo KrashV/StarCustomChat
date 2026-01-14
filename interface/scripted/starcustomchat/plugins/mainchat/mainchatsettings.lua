@@ -373,7 +373,7 @@ function mainchat:selectPortrait()
     self:drawCharacter()
     save()
 
-    for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+    for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
       world.sendEntityMessage(pl, "icc_send_player_portrait", {
         portrait = self.customPortraits[self.selectedPortrait] and self.customPortraits[self.selectedPortrait] or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",

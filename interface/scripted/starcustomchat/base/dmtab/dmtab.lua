@@ -59,7 +59,7 @@ function populateList(dmingTo)
   local playersAround = {}
 
   if player.id() and world.entityPosition(player.id()) then
-    for _, player in ipairs(world.playerQuery(world.entityPosition(player.id()), 40)) do
+    for _, player in ipairs(starcustomchat.utils.playersInRadius(40)) do
       table.insert(playersAround, {
         id = player,
         name = world.entityName(player) or "Unknown",

@@ -257,15 +257,18 @@ function mainchat:onTextboxEnter(message)
   end
 
   if string.sub(message.text, 1, 1) == "@" then
-    local name = string.sub(message.text, 2, string.len(message.text))
+    local name = string.sub(message.text, 2, string.len(message.text)):gsub("%s+$", "")
     if string.len(message.text) > 1 then
-      for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+      for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
         if name == world.entityName(pl) then
           self:ping(pl, name)
           return true
         end
       end
     end
+
+    starcustomchat.utils.alert("chat.alerts.ping_failed", name)
+    return true
   end
 end
 

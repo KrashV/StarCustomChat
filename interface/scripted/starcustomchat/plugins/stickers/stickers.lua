@@ -44,7 +44,7 @@ function stickers:onProcessCommand(text)
       if self.stagehandType and self.stagehandType ~= "" then
         starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message})
       else
-        for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+        for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
           world.sendEntityMessage(pl, "scc_add_message", message)
         end
       end

@@ -96,7 +96,7 @@ function reactions:onCanvasClick(screenPosition, button, isButtonDown)
           if self.stagehandType and self.stagehandType ~= "" then
             starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReaction", data = data})
           else
-            for _, pl in ipairs(world.playerQuery(world.entityPosition(player.id()), 100)) do 
+            for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
               world.sendEntityMessage(pl, "scc_add_reaction", data)
             end
           end

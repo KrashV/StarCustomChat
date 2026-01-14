@@ -459,28 +459,44 @@ function textboxCallback()
 end
 
 function checkCommandsPreview()
-  local text = widget.getText("tbxInput")
-
-  if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
-    local availableCommands = starcustomchat.utils.getCommands(self.availableCommands, text)
-
-    if #availableCommands > 0 then
-      self.savedCommandSelection = math.max(self.savedCommandSelection % (#availableCommands + 1), 1)
+  local function setCommandPreviewData(entries)
+    if #entries > 0 then
+      self.savedCommandSelection = math.max(self.savedCommandSelection % (#entries + 1), 1)
       widget.setVisible("lytCommandPreview", true)
-      widget.setText("lblCommandPreview", availableCommands[self.savedCommandSelection].name)
-      widget.setData("lblCommandPreview", availableCommands[self.savedCommandSelection].name)
-      self.customChat:previewCommands(availableCommands, self.savedCommandSelection)
+      widget.setText("lblCommandPreview", entries[self.savedCommandSelection].name)
+      widget.setData("lblCommandPreview", entries[self.savedCommandSelection].name)
+      self.customChat:previewCommands(entries, self.savedCommandSelection)
     else
       widget.setVisible("lytCommandPreview", false)
       widget.setText("lblCommandPreview", "")
       widget.setData("lblCommandPreview", nil)
       self.savedCommandSelection = 0
     end
+  end
+
+  local text = widget.getText("tbxInput")
+
+  if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
+    local availableCommands = starcustomchat.utils.getCommands(self.availableCommands, text)
+    setCommandPreviewData(availableCommands)
+    
+  elseif utf8.len(text) >= 1 and string.sub(text, 1, 1) == "@" then
+    if not self.pingUsersAround then
+      self.pingUsersAround = {}
+      for _, pl in ipairs(starcustomchat.utils.playersInRadius(nil, true)) do
+        table.insert(self.pingUsersAround, "@" .. world.entityName(pl))
+      end
+    end
+
+    local playersAround = starcustomchat.utils.getCommands({playerNames = self.pingUsersAround}, text)
+    setCommandPreviewData(playersAround)
+
   else
     widget.setVisible("lytCommandPreview", false)
     widget.setText("lblCommandPreview", "")
     widget.setData("lblCommandPreview", nil)
     self.savedCommandSelection = 0
+    self.pingUsersAround = nil
   end
 end
 
@@ -736,6 +752,11 @@ function sendMessageToBeSent(text, mode)
       self.lastCommand = text
       starcustomchat.utils.saveMessage(text)
     end
+  elseif string.sub(text, 1, 1) == "@" and widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
+    widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
+    self.savedCommandSelection = 0
+    return
+  
   elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
     if message.mode == "Whisper" then
       local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
