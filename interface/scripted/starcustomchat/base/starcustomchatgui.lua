@@ -65,6 +65,10 @@ function init()
       chatConfig = sb.jsonMerge(chatConfig, pluginConfig.baseConfigValues)
     end
 
+    if pluginConfig.commands then
+      self.availableCommands = sb.jsonMerge(self.availableCommands, {pluginName = root.assetJson(pluginConfig.commands)})
+    end
+
     for _, localeConfig in ipairs(availableLocales) do 
       local locale = localeConfig.code
       local localeFile = string.format("/interface/scripted/starcustomchat/plugins/%s/locales/%s.json", pluginName, locale)
