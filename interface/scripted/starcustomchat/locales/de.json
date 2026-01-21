@@ -30,12 +30,13 @@
   "chat.alerts.pinged": "%s wurde angepingt",
   "chat.alerts.ping_failed": "Konnte Spieler %s nicht anpingen",
   "chat.alerts.was_pinged": "Du wurdest von %s angepingt",
+  "chat.alerts.ping_user": "@Nutzer erwähnen",
 
-  "greeting.se_osb_xsb_not_found": "Willkommen zu Advanced Chat von Degranon!\n\nFür die Nutzung der Mod benötigst du StarExtensions Version 1.9.24+, OpenStarbound 0.1.8+ oder xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.se_version": "Willkommen zu Advanced Chat by Degranon!\n\nBitte aktualisiere StarExtensions auf Version 1.9.24+",
-  "greeting.osb_xsb_version": "Willkommen zu Advanced Chat by Degranon!\n\nBitte aktualisiere OpenStarbound auf Version 0.1.8+ oder xStarbound to v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.unbind_controls": "Willkommen zu Advanced Chat by Degranon!\n\nZu Beginn musst du manuell die folgenden Tastenbelegungen aufheben (Drücke Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nDrücke Accept, starte das Spiel neu - und du bist startklar!",
-  "greeting.unknown": "Willkommen zu Advanced Chat by Degranon!\n\nEtwas ist schiefgelaufen. Ups!",
+  "greeting.se_osb_xsb_not_found": "Willkommen zu StarCustomChat von Degranon!\n\nFür die Nutzung der Mod benötigst du StarExtensions Version 1.9.24+, OpenStarbound 0.1.8+ oder xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.se_version": "Willkommen zu StarCustomChat by Degranon!\n\nBitte aktualisiere StarExtensions auf Version 1.9.24+",
+  "greeting.osb_xsb_version": "Willkommen zu StarCustomChat by Degranon!\n\nBitte aktualisiere OpenStarbound auf Version 0.1.8+ oder xStarbound to v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.unbind_controls": "Willkommen zu StarCustomChat by Degranon!\n\nZu Beginn musst du manuell die folgenden Tastenbelegungen aufheben (Drücke Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(for that user /binds - Repeat last command)^reset;\n\nDrücke Accept, starte das Spiel neu - und du bist startklar!",
+  "greeting.unknown": "Willkommen zu StarCustomChat by Degranon!\n\nEtwas ist schiefgelaufen. Ups!",
   "greeting.close": "Alles klar!",
 
   "settings.title": "Chat-Einstellungen",

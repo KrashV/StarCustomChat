@@ -29,6 +29,7 @@
   "chat.alerts.pinged": "Spingowano %s",
   "chat.alerts.ping_failed": "Nie można było spingować %s",
   "chat.alerts.was_pinged": "Ping od gracza %s",
+  "chat.alerts.ping_user": "Spinguj @użytkownika",
 
   "greeting.se_osb_xsb_not_found": "Witaj w Zaawansowanym Czacie autorstwa Degranon-a!\n\nWymaga on StarExtensions wersji 1.9.24+, OpenStarbound 0.1.8+ lub xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.se_version": "Witaj w Zaawansowanym Czacie autorstwa Degranon-a!\n\nProszę zaaktualizować StarExtensions do wersji 1.9.24+",

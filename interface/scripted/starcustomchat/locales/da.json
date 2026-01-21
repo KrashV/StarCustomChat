@@ -28,7 +28,8 @@
   "chat.alerts.cannot_dm_command_result": "Kan geen privébericht sturen naar commandoresultaten", 
   "chat.alerts.pinged": "%s gepingt", 
   "chat.alerts.ping_failed": "Kon %s niet pingen", 
-  "chat.alerts.was_pinged": "Je bent gepingt door %s", 
+  "chat.alerts.was_pinged": "Je bent gepingt door %s",
+  "chat.alerts.ping_user": "Ping @gebruiker",
 
   "greeting.se_osb_xsb_not_found": "Welkom bij Geavanceerde Chat van Degranon!\n\nJe hebt één van de volgende nodig: StarExtensions versie 1.9.24+, OpenStarbound 0.1.8+ of xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.se_version": "Welkom bij Geavanceerde Chat van Degranon!\n\nUpdate alstublieft StarExtensions naar versie 1.9.24+",

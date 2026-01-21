@@ -29,12 +29,13 @@
   "chat.alerts.pinged": "%s marcado",
   "chat.alerts.ping_failed": "Não foi possível marcar o jogador %s",
   "chat.alerts.was_pinged": "Você foi marcado por %s",
+  "chat.alerts.ping_user": "Marcar @usuário",
 
-  "greeting.se_osb_xsb_not_found": "Bem-vinda(o) ao Advanced Chat por Degranon!\n\nÉ necessário instalar StarExtensions versão 1.9.24+, OpenStarbound 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.se_version": "Bem-vinda(o) ao Advanced Chat por Degranon!\n\nPor favor, atualize seu StarExtensions para a versão 1.9.24+",
-  "greeting.osb_xsb_version": "Bem-vinda(o) ao Advanced Chat por Degranon!\n\nPor favor, atualize seu OpenStarbound para a versão 0.1.8+ ou xStarbound para v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.unbind_controls": "Bem-vinda(o) ao Advanced Chat por Degranon!\n\nPara começar, você precisa desvincular alguns controles. (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command/Começar Comando de Chat\n* Begin Chat/Começar Chat\n* Repeat Last Command/Repetir Último Comando ^gray;(para este último, use /binds - Repeat last command)^reset;\n\nClique em Accept/Aceitar, saia e reentre no mundo - e você já deve estar prontinha(o) para jogar!",
-  "greeting.unknown": "Bem-vinda(o) ao Advanced Chat por Degranon!\n\nAlgo deu errado. Puts!",
+  "greeting.se_osb_xsb_not_found": "Bem-vinda(o) ao StarCustomChat por Degranon!\n\nÉ necessário instalar StarExtensions versão 1.9.24+, OpenStarbound 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.se_version": "Bem-vinda(o) ao StarCustomChat por Degranon!\n\nPor favor, atualize seu StarExtensions para a versão 1.9.24+",
+  "greeting.osb_xsb_version": "Bem-vinda(o) ao StarCustomChat por Degranon!\n\nPor favor, atualize seu OpenStarbound para a versão 0.1.8+ ou xStarbound para v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.unbind_controls": "Bem-vinda(o) ao StarCustomChat por Degranon!\n\nPara começar, você precisa desvincular alguns controles. (Press Escape - Options - Controls - Game):\n\n* Begin Chat Command/Começar Comando de Chat\n* Begin Chat/Começar Chat\n* Repeat Last Command/Repetir Último Comando ^gray;(para este último, use /binds - Repeat last command)^reset;\n\nClique em Accept/Aceitar, saia e reentre no mundo - e você já deve estar prontinha(o) para jogar!",
+  "greeting.unknown": "Bem-vinda(o) ao StarCustomChat por Degranon!\n\nAlgo deu errado. Puts!",
   "greeting.close": "Entendido!",
 
   "settings.title": "Configurações do Chat",

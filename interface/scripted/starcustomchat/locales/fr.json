@@ -29,12 +29,13 @@
   "chat.alerts.pinged": "Mention de %s",
   "chat.alerts.ping_failed": "Le joueur %s n’a pas pu être mentionné",
   "chat.alerts.was_pinged": "Tu as été mentionné par %s",
+  "chat.alerts.ping_user": "Mentionner l'@utilisateur",
 
-  "greeting.se_osb_xsb_not_found": "Bienvenue sur le chat avancé par Degranon!\n\nL’un de ces logiciels est nécessaire ; StarExtensions version 1.9.24+, OpenStarbound 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.se_version": "Bienvenue sur le chat avancé par Degranon !\n\nMettre à jour StarExtensions vers une version plus récente 1.9.24+",
-  "greeting.osb_xsb_version": "Bienvenue sur le chat avancé par Degranon!\n\nMettre à jour OpenStarbound vers une version plus récente 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.unbind_controls": "Bienvenue sur le chat avancé par Degranon!\n\nPour commencer, tu dois désassigner manuellement les contrôles suivants (Appuye sur échap - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(Pour cet utilisateur /binds - Repeat last command)^reset;\n\nAppuie sur Accept, relance le jeu — et tout devrait être bon !",
-  "greeting.unknown": "Bienvenue sur le chat avancé par Degranon!\n\nQuelque chose ne va pas. Woups!",
+  "greeting.se_osb_xsb_not_found": "Bienvenue sur le StarCustomChat par Degranon!\n\nL’un de ces logiciels est nécessaire ; StarExtensions version 1.9.24+, OpenStarbound 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.se_version": "Bienvenue sur le StarCustomChat par Degranon !\n\nMettre à jour StarExtensions vers une version plus récente 1.9.24+",
+  "greeting.osb_xsb_version": "Bienvenue sur le StarCustomChat par Degranon!\n\nMettre à jour OpenStarbound vers une version plus récente 0.1.8+ ou xStarbound v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.unbind_controls": "Bienvenue sur le StarCustomChat par Degranon!\n\nPour commencer, tu dois désassigner manuellement les contrôles suivants (Appuye sur échap - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(Pour cet utilisateur /binds - Repeat last command)^reset;\n\nAppuie sur Accept, relance le jeu — et tout devrait être bon !",
+  "greeting.unknown": "Bienvenue sur le StarCustomChat par Degranon!\n\nQuelque chose ne va pas. Woups!",
   "greeting.close": "Gotcha!",
 
   "settings.title": "Paramètres du chat",

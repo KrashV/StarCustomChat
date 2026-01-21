@@ -1,8 +1,7 @@
 ## Features
-Added an alternate ability to ping the characters. Just write @CHARNAME and press enter to send the ping.
+Added the description to the pinging command
 
 ## Bugfixes
-CharacterVoice: Fixed the Whisper Sounds check button in settings did not work
+Fixed rare cases when the message lost the linebreaks
 
 ## API
-You can now specify the commands file for your plugin

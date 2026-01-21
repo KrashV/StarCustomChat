@@ -29,6 +29,7 @@
   "chat.alerts.pinged": "Has notificado a %s",
   "chat.alerts.ping_failed": "No se puede notificar a  %s",
   "chat.alerts.was_pinged": "%s te ha notificado",
+  "chat.alerts.ping_user": "Notificarse @usario",
 
   "greeting.se_osb_xsb_not_found": "¡Bienvenido al Chat Avanzado de Degranon!\n\nNecesitas la versión 1.9.24+ de StarExtensions, la 0.1.8+ de OpenStarbound o la v3.4.5.1+ de xStarbound\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
   "greeting.se_version": "¡Bienvenido al Chat Avanzado de Degranon!\n\nPor favor, actualiza StarExtensions a la versión 1.9.24+",

@@ -488,7 +488,10 @@ function checkCommandsPreview()
     if not self.pingUsersAround then
       self.pingUsersAround = {}
       for _, pl in ipairs(starcustomchat.utils.playersInRadius(nil, true)) do
-        table.insert(self.pingUsersAround, "@" .. world.entityName(pl))
+        table.insert(self.pingUsersAround, {
+          command = "@" .. world.entityName(pl),
+          description = "chat.alerts.ping_user"
+        })
       end
     end
 

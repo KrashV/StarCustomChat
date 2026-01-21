@@ -29,12 +29,13 @@
   "chat.alerts.pinged": "Pingato %s",
   "chat.alerts.ping_failed": "Impossibile pingare %s",
   "chat.alerts.was_pinged": "Sei stato pingato da %s",
+  "chat.alerts.ping_user": "Ping @utente",
 
-  "greeting.se_osb_xsb_not_found": "Benvenuto nell'Advanced Chat di Degranon!\n\nE' richiesta la versione 1.9.24+ di StarExtensions, OpenStarbound 0.1.8+ o xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.se_version": "Benvenuto nell'Advanced Chat di Degranon!\n\nAggiorna StarExtensions alla versione 1.9.24+",
-  "greeting.osb_xsb_version": "Benvenuto nell'Advanced Chat di Degranon!\n\nAggiorna OpenStarbound alla versione 0.1.8+ o xStarbound a v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
-  "greeting.unbind_controls": "Benvenuto nell'Advanced Chat di Degranon!\n\nPer iniziare, per iniziare, dovrai prima impostare i seguenti comandi (Premi Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(usando /binds - Repeat last command)^reset;\n\nClicca Accept, riavvia il gioco - e dovresti essere pronto!",
-  "greeting.unknown": "Benvenuto nell'Advanced Chat di Degranon!\n\nQualcosa è andato storto. Oops!",
+  "greeting.se_osb_xsb_not_found": "Benvenuto nell'StarCustomChat di Degranon!\n\nE' richiesta la versione 1.9.24+ di StarExtensions, OpenStarbound 0.1.8+ o xStarbound v3.4.5.1+\nhttps://github.com/StarExtensions/StarExtensions\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.se_version": "Benvenuto nell'StarCustomChat di Degranon!\n\nAggiorna StarExtensions alla versione 1.9.24+",
+  "greeting.osb_xsb_version": "Benvenuto nell'StarCustomChat di Degranon!\n\nAggiorna OpenStarbound alla versione 0.1.8+ o xStarbound a v3.4.5.1+\nhttps://github.com/OpenStarbound/OpenStarbound\nhttps://github.com/xStarbound/xStarbound",
+  "greeting.unbind_controls": "Benvenuto nell'StarCustomChat di Degranon!\n\nPer iniziare, per iniziare, dovrai prima impostare i seguenti comandi (Premi Escape - Options - Controls - Game):\n\n* Begin Chat Command\n* Begin Chat\n* Repeat Last Command ^gray;(usando /binds - Repeat last command)^reset;\n\nClicca Accept, riavvia il gioco - e dovresti essere pronto!",
+  "greeting.unknown": "Benvenuto nell'StarCustomChat di Degranon!\n\nQualcosa è andato storto. Oops!",
   "greeting.close": "Capito!",
 
   "settings.title": "Impostazioni chat",
