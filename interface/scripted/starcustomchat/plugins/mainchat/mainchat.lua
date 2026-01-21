@@ -176,6 +176,7 @@ function mainchat:formatIncomingMessage(message)
   end
 
   message.time = self:getTime(self.customChat.timezoneOffset)
+  message.text = message.text:gsub("\\n", "\n")
   return message
 end
 
