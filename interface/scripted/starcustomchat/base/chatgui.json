@@ -343,15 +343,16 @@
                   "background": {
                     "type": "image",
                     "file": "/interface/scripted/starcustomchat/base/dmtab/characterunselected.png",
-                    "position": [0,
-                    0]
+                    "position": [0, 0],
+                    "mouseTransparent": true
                   },
                   "contactAvatar": {
                     "type": "canvas",
                     "zLevel": 3,
                     "rect": [1, 1, 15, 15],
                     "captureMouseEvents" : false,
-                    "captureKeyboardEvents" : false
+                    "captureKeyboardEvents" : false,
+                    "mouseTransparent": true
                   }
                 }
               }

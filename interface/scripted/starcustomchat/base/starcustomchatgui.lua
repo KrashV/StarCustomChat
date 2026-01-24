@@ -116,10 +116,7 @@ function init()
   self.runCallbackForPlugins("init", self.customChat)
 
   self.lastCommand = root.getConfiguration("icc_last_command")
-  self.contacts = {}
   self.tooltipFields = {}
-
-  self.receivedMessageFromStagehand = false
 
   self.savedCommandSelection = 0
 
@@ -127,8 +124,6 @@ function init()
   self.sentMessages = root.getConfiguration("icc_my_messages") or jarray()
   self.sentMessagesLimit = 15
   self.currentSentMessage = nil
-
-  widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
 
   contextMenu_init(config.getParameter("contextMenuButtons"))
 
@@ -165,7 +160,6 @@ function init()
     widget.focus("tbxInput")
   end
 
-  checkDMs(config.getParameter("DMingPlayerID"))
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
 
   -- Apparently, we don't know on init if we're admin or not.
@@ -186,9 +180,14 @@ function init()
   end
 
   self.settingsInterface = buildSettingsInterface()
+
+  self.DMTab = DMTab:new(self.customChat)
+  self.DMTab:checkDMs(config.getParameter("DMingPlayerID"))
 end
 
-
+function selectPlayer(...)
+  return self.DMTab and self.DMTab:selectPlayer(...)
+end
 
 function disableAdminModes()
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
@@ -587,7 +586,7 @@ function canvasClickEvent(position, button, isButtonDown)
         chatConfig.portraits = self.customChat.savedPortraits
         chatConfig.connectionToUuid =  self.customChat.connectionToUuid
         chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-        chatConfig.DMingPlayerID = self.DMingPlayerID
+        chatConfig.DMingPlayerID = self.DMTab:selectedPlayer() and self.DMTab:selectedPlayer().id or nil
         chatConfig.chatLineOffset = self.customChat.lineOffset
         chatConfig.reopened = true
         chatConfig.selectedModes = {}
@@ -766,42 +765,59 @@ function sendMessageToBeSent(text, mode)
   
   elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
     if message.mode == "Whisper" then
-      local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-      if not li then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
 
-      local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-      if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
+      local data = self.DMTab:selectedPlayer()
+      if not data then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
 
-      whisperName = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")).tooltipMode
-  
-      if string.find(whisperName, "%s") then
-        -- Oops, not gonna work, gonna send SEM
-        message.connection = player.id() // -65536
-        message.nickname = player.name()
-        starcustomchat.utils.saveMessage(message.text)
-        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
 
-        promises:add(world.sendEntityMessage(data.id, "scc_add_message", message), function() 
-          if data.id ~= player.id() then
-            message.nickname = message.nickname .. "-> " .. whisperName
-            world.sendEntityMessage(player.id(), "scc_add_message", message)
-          end
-        end, function() 
-          starcustomchat.utils.alert("chat.alerts.dm_not_found")
-        end)
+      local function sendWhisperToPlayer(targetName, targetId)
+        if string.find(targetName, "%s") then
+          -- Oops, not gonna work, gonna send SEM
+          message.connection = player.id() // -65536
+          message.nickname = player.name()
+          message = self.runCallbackForPlugins("formatOutcomingMessage", message)
 
-      else
-        message = self.runCallbackForPlugins("formatOutcomingMessage", message)
-        local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
-          or "/w " .. whisperName .. " " .. message.text
+          promises:add(world.sendEntityMessage(targetId, "scc_add_message", message), function() 
+            if targetId ~= player.id() then
+              message.nickname = message.nickname .. "-> " .. targetName
+              world.sendEntityMessage(player.id(), "scc_add_message", message)
+            end
+          end, function() 
+            starcustomchat.utils.alert("chat.alerts.dm_not_found")
+          end)
 
-        self.customChat:processCommand(whisper)
-        self.customChat.lastWhisper = {
-          recipient = whisperName,
-          text = message.text
-        }
-        starcustomchat.utils.saveMessage(whisper)
+        else
+          message = self.runCallbackForPlugins("formatOutcomingMessage", message)
+          local whisper = string.find(targetName, "%s") and "/w \"" .. targetName .. "\" " .. message.text 
+            or "/w " .. targetName .. " " .. message.text
+
+          self.customChat:processCommand(whisper)
+          self.customChat.lastWhisper = {
+            recipient = targetName,
+            text = message.text
+          }
+        end
       end
+
+      if data.id then
+        starcustomchat.utils.saveMessage(message.text)
+
+        -- Player ID situation
+        if type(data.id) == "number" then
+          if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
+
+          local whisperName = data.displayPlainText or ""
+          sendWhisperToPlayer(whisperName, data.id)
+        -- Party whisper
+        elseif data.id == "PARTY" then
+          for _, teamMember in ipairs(player.teamMembers()) do 
+            if teamMember.entity ~= player.id() then
+              sendWhisperToPlayer(teamMember.name, teamMember.entity)
+            end
+          end
+        end
+      end
+
     else
       starcustomchat.utils.saveMessage(message.text)
       message = self.runCallbackForPlugins("formatOutcomingMessage", message)
@@ -881,6 +897,7 @@ function createTooltip(screenPosition)
 
   if widget.getChildAt(screenPosition) then
     local w = widget.getChildAt(screenPosition)
+
     local wData = widget.getData(w:sub(2))
     if wData and type(wData) == "table" then
       if wData.tooltipMode then

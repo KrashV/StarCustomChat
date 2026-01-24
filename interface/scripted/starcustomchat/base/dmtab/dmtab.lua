@@ -1,20 +1,54 @@
-function checkDMs(dmingTo)
-  self.DMTimer = 2
+DMTab = {}
+DMTab.__index = DMTab
 
+function DMTab:new(customChat)
+  widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
+  return setmetatable({
+    contacts = {},
+    DMTimer = 2,
+    ignoreSettingList = nil,
+    customChat = customChat or {}
+  }, self)
+end
+
+function DMTab:checkDMs(dmingTo)
   if widget.getSelectedData("rgChatMode").mode == "Whisper" then
-    populateList(dmingTo)
+    self:populateList(dmingTo)
   else
     self.contacts = {}
     widget.clearListItems("lytCharactersToDM.saPlayers.lytPlayers")
   end
-  ICChatTimer:add(self.DMTimer, checkDMs)
+  ICChatTimer:add(self.DMTimer, function() self:checkDMs() end)
 end
 
-function populateList(dmingTo)
+function DMTab:populateList(dmingTo)
   local function drawCharacters(players, toRemovePlayers)
     local mode =  "avatar" -- #players > 7 and "letter" or "avatar"
 
     local idTable = {}  -- This table will store only the 'id' values
+
+    if #player.teamMembers() ~= 0 then
+      table.insert(idTable, "PARTY")
+    end
+
+    -- Add the party button
+    if #player.teamMembers() ~= 0 then
+      if index(self.contacts, "PARTY") == 0 then
+        local li = widget.addListItem("lytCharactersToDM.saPlayers.lytPlayers")
+        self:drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", self.customChat.config.dmListPartyIcon)
+        widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
+          displayText = "chat.modes.Party",
+          id = "PARTY"
+        })
+
+        table.insert(self.contacts, "PARTY")
+
+        if dmingTo == "PARTY" then
+          self.ignoreSettingList = true
+          widget.setListSelected("lytCharactersToDM.saPlayers.lytPlayers", li)
+        end
+      end
+    end
 
     for _, player in ipairs(players) do
       table.insert(idTable, player.id)
@@ -24,18 +58,17 @@ function populateList(dmingTo)
         if mode == "letter" or not player.data.portrait then
           local trimmedName = starcustomchat.utils.utf8Substring(starcustomchat.utils.clearNick(player.name), 1, 2)
           trimmedName = utf8.len(trimmedName) == 1 and trimmedName .. " " or (utf8.len(trimmedName) == 0 and "  ") or trimmedName
-          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", trimmedName)
+          self:drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", trimmedName)
         elseif player.data.portrait then
-          drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
+          self:drawIcon("lytCharactersToDM.saPlayers.lytPlayers." .. li .. ".contactAvatar", player.data.portrait)
         end
 
         widget.setData("lytCharactersToDM.saPlayers.lytPlayers." .. li, {
           id = player.id,
-          tooltipMode = player.name
+          displayPlainText = player.name
         })
-        self.tooltipFields["lytCharactersToDM.saPlayers.lytPlayers." .. li] = player.name
-        table.insert(self.contacts, player.id)
 
+        table.insert(self.contacts, player.id)
 
         if dmingTo and dmingTo == player.id then
           self.ignoreSettingList = true
@@ -70,17 +103,10 @@ function populateList(dmingTo)
     end
   end
 
-  drawCharacters(playersAround, not self.receivedMessageFromStagehand)
+  drawCharacters(playersAround, true)
 end
 
-function selectPlayer()
-  local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
-  if li then 
-    local data = widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
-
-    self.DMingPlayerID = data.id 
-  end
-
+function DMTab:selectPlayer(...)
   if not self.ignoreSettingList then
     widget.focus("tbxInput")
   end
@@ -88,7 +114,7 @@ function selectPlayer()
   self.ignoreSettingList = nil
 end
 
-function drawIcon(canvasName, args)
+function DMTab:drawIcon(canvasName, args)
 	local playerCanvas = widget.bindCanvas(canvasName)
   playerCanvas:clear()
 
@@ -110,5 +136,13 @@ function drawIcon(canvasName, args)
     }, self.customChat.config.fontSize + 1)
   elseif type(args) == "string" then
     playerCanvas:drawImage(args, {-1, 0})
+  end
+end
+
+
+function DMTab:selectedPlayer()
+  local li = widget.getListSelected("lytCharactersToDM.saPlayers.lytPlayers")
+  if li then
+    return widget.getData("lytCharactersToDM.saPlayers.lytPlayers." .. li)
   end
 end
