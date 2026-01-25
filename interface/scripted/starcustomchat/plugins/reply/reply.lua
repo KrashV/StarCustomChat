@@ -184,6 +184,8 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
         if originalMessage then
           self.customChat:scrollToMessage(originalMessage)
           self.highlightMessageInd = originalMessage
+        else
+          return false
         end
         return true
       end
