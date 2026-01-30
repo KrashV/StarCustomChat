@@ -131,6 +131,10 @@ function PluginClass:onSubMenuReopen(type)
 
 end
 
+function PluginClass:cleanMessage(message)
+
+end
+
 function PluginClass:uninit()
 
 end

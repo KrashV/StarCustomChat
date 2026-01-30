@@ -241,20 +241,15 @@ end
 
 function mainchat:onTextboxEnter(message)
   if self.DMingTo then
-    local whisperName = self.DMingTo.nickname
     self.customChat:closeSubMenu()
 
-    local whisper = string.find(whisperName, "%s") and "/w \"" .. whisperName .. "\" " .. message.text 
-      or "/w " .. whisperName .. " " .. message.text
-
-    self.customChat:processCommand(whisper)
-    self.customChat.lastWhisper = {
-      recipient = self.DMingTo.displayName or self.DMingTo.nickname,
-      text = message.text
+    message.mode = "Whisper"
+    message.whisperData = {
+      displayPlainText = self.DMingTo.nickname,
+      id = self.DMingTo.connection * -65536
     }
-    starcustomchat.utils.saveMessage(whisper)
     self.DMingTo = nil
-    return true
+    return false
   end
 
   if string.sub(message.text, 1, 1) == "@" then
@@ -340,4 +335,27 @@ end
 function mainchat:onSettingsUpdate()
   self.customChat.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
   self.previewPortraits = root.getConfiguration("scc_preview_portraits" or true)
+end
+
+function mainchat:onReceiveMessage(message)
+  if message.mode == "CommandResult" then
+    if type(message.text) == "table" then
+      message.text = table.concat(message.text, " ")
+    end
+    sb.logInfo("CommandResult: %s", message.text)
+  else
+    if message.nickname then
+      sb.logInfo("Chat: <%s> %s", message.displayName or message.nickname, message.text)
+    else
+      sb.logInfo("Chat: %s", message.text)
+    end
+  end
+end
+
+function mainchat:cleanMessage(message)
+  message.whisperData = nil
+  message.offset = nil
+  message.textHeight = nil
+  message.collapsed = nil
+  message.height = nil
 end

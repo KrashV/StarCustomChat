@@ -30,8 +30,10 @@ function charactervoice:resetSoundPool()
 
 end
 
-function charactervoice:onSendMessage()
-  self:playSound()
+function charactervoice:onSendMessage(message)
+  if message.mode ~= "Whisper" or self.soundsWhispersEnabled then
+    self:playSound()
+  end
 end
 
 function charactervoice:playSound()
@@ -42,13 +44,13 @@ function charactervoice:playSound()
       volume = 1.3
     }
     world.sendEntityMessage(player.id(), "sccTalkingSound", soundTable)
+    player.emote("blabbering")
   end
 end
 
 function charactervoice:onProcessCommand(text)
   if string.sub(text, 1, 3) == "/w " and self.soundsWhispersEnabled then
     self:playSound()
-    player.emote("blabbering")
   end
 end
 

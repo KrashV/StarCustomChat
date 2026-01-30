@@ -273,7 +273,6 @@ function StarCustomChat:processCommand(text)
           mode = "CommandResult",
           text = line
         })
-        sb.logInfo("CommandResult: %s", line)
       else
         chat.addMessage(line)
         table.insert(self.messages, {
@@ -282,7 +281,6 @@ function StarCustomChat:processCommand(text)
         if #self.messages > self.config.chatHistoryLimit then
           table.remove(self.messages, 1)
         end
-        sb.logInfo("CommandResult: %s", line)
       end
     end
     return commandResult
@@ -608,7 +606,6 @@ function StarCustomChat:processQueue()
       local sizeOfText = message.imageSize and vec2.div(message.imageSize, 10 / self.config.fontSize) or self:getTextSize(text)
 
       if not sizeOfText then return end 
-        message.n_lines = (sizeOfText[2] + self.config.spacings.lines) // (self.config.fontSize + self.config.spacings.lines)
         message.height = sizeOfText[2]
         message.textHeight = message.height
       else

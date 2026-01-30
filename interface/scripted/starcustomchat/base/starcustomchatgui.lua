@@ -766,37 +766,35 @@ function sendMessageToBeSent(text, mode)
   elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
     if message.mode == "Whisper" then
 
-      local data = self.DMTab:selectedPlayer()
+      local data = message.whisperData or self.DMTab:selectedPlayer()
       if not data then starcustomchat.utils.alert("chat.alerts.dm_not_specified") return end
 
 
       local function sendWhisperToPlayer(targetName, targetId)
-        if string.find(targetName, "%s") then
-          -- Oops, not gonna work, gonna send SEM
+        
+        -- Let's start sending SEMs by default
           message.connection = player.id() // -65536
           message.nickname = player.name()
           message = self.runCallbackForPlugins("formatOutcomingMessage", message)
-
+          self.runCallbackForPlugins("onSendMessage", message)
+          
           promises:add(world.sendEntityMessage(targetId, "scc_add_message", message), function() 
             if targetId ~= player.id() then
-              message.nickname = message.nickname .. "-> " .. targetName
+              message.nickname = targetName
+              message.displayName = "-> " .. targetName
               world.sendEntityMessage(player.id(), "scc_add_message", message)
             end
           end, function() 
-            starcustomchat.utils.alert("chat.alerts.dm_not_found")
+            local whisper = string.find(targetName, "%s") and "/w \"" .. targetName .. "\" " .. message.text 
+              or "/w " .. targetName .. " " .. message.text
+
+            self.customChat:processCommand(whisper)
+            self.customChat.lastWhisper = {
+              recipient = targetName,
+              text = message.text
+            }
           end)
 
-        else
-          message = self.runCallbackForPlugins("formatOutcomingMessage", message)
-          local whisper = string.find(targetName, "%s") and "/w \"" .. targetName .. "\" " .. message.text 
-            or "/w " .. targetName .. " " .. message.text
-
-          self.customChat:processCommand(whisper)
-          self.customChat.lastWhisper = {
-            recipient = targetName,
-            text = message.text
-          }
-        end
       end
 
       if data.id then
@@ -804,7 +802,6 @@ function sendMessageToBeSent(text, mode)
 
         -- Player ID situation
         if type(data.id) == "number" then
-          if not world.entityExists(data.id) then starcustomchat.utils.alert("chat.alerts.dm_not_found") return end
 
           local whisperName = data.displayPlainText or ""
           sendWhisperToPlayer(whisperName, data.id)
@@ -933,6 +930,9 @@ end
 function saveEverythingDude()
   -- Save messages and last command
   local messages = self.customChat:getMessages()
+  for _, message in ipairs(messages) do 
+    self.runCallbackForPlugins("cleanMessage", message)
+  end
   root.setConfiguration("icc_last_messages", messages)
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", util.toList(self.sentMessages))
@@ -977,18 +977,8 @@ function addMessages(messages, showPane)
   for _, message in ipairs(messages) do
     local message = convertToChatMessage(message)
     self.customChat:addMessage(message)
-
-    if message.text and message.text ~= "" then
-      if message.nickname then
-        sb.logInfo("Chat: <%s> %s", message.displayName or message.nickname, message.text)
-      else
-        sb.logInfo("Chat: %s", message.text)
-      end
-    end
   end
 end
-
-
 
 function uninit()
   local text = widget.getText("tbxInput")
