@@ -1,3 +1,6 @@
 {
-    "chat.commands.add_reaction": "Voeg reactie toe"
+    "chat.commands.add_reaction": "Voeg reactie toe",
+    "reactions.reactselect.hint": "Zoeken...",
+    "reactions.reactselect.all": "Alles",
+    "reactions.reactselect.recent": "Meest recen"
 }

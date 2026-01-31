@@ -10,21 +10,54 @@
     "title": {
       "type": "title",
       "title": ":)",
-      "subtitle": "Made by Kerrie Lake",
-      "icon" : {
-        "type" : "image",
-        "file" : "/emotes/smile.emote.png",
-        "offset": [1, 5]
-      }
+      "subtitle": "Made by Kerrie Lake"
     },
-    "scrollArea": {
+    "icon" : {
+      "type" : "image",
+      "file" : "/emotes/smile.emote.png",
+      "position": [6, 146]
+    },
+
+    "sa_All": {
       "type": "scrollArea",
-      "rect": [15, 27, 290, 140],
+      "rect": [15, 27, 290, 134],
       "children": {
-        "reactList": {
+        "lbl_Recent": {
+          "type": "label",
+          "position": [0, 80],
+          "value": "Recent",
+          "fontSize": 12
+        },
+        "listRecent": {
+          "type": "list",
+          "columns" : 10,
+          "position": [0, 85],
+          "fillDown": true,
+          "callback": "onEmojiSelect",
+          "schema": {
+            "memberSize": [16, 16],
+            "spacing" : [10, 10],
+            "listTemplate": {
+              "emoji": {
+                "type": "image",
+                "file": "/assetmissing.png",
+                "position": [0, 0]
+              }
+            }
+          }
+        },
+
+        "lbl_All": {
+          "type": "label",
+          "position": [0, 40],
+          "value": "All",
+          "fontSize": 12
+        },
+        "listAll": {
           "type": "list",
           "columns" : 10,
           "fillDown": true,
+          "position": [0, 45],
           "callback": "onEmojiSelect",
           "schema": {
             "memberSize": [16, 16],
@@ -42,7 +75,7 @@
     },
     "tbxSearch": {
       "type": "textbox",
-      "position": [10, 10],
+      "position": [10, 11],
       "callback": "searchEmoji",
       "hint": "Search...",
       "maxWidth": 250
