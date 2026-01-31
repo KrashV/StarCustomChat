@@ -83,14 +83,14 @@ function reply:onTextboxEnter()
 
     local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
       text = widget.getText("tbxInput"),
-      connection = player.id() // -65536,
+      connection = starcustomchat.utils.entityIdToConnection(player.id()),
       mode = mode,
       nickname = nickname
     })
 
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(player.id() // -65536, futureMessage.text, 
+      newMessageUUID = calculateNewMessageUUID(starcustomchat.utils.entityIdToConnection(player.id()), futureMessage.text, 
         mode, nickname) 
     }
 

@@ -209,7 +209,7 @@ function mainchat:contextMenuButtonFilter(buttonName, screenPosition, selectedMe
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
     elseif buttonName == "ping" then
       return selectedMessage and selectedMessage.connection ~= 0 and selectedMessage.mode ~= "CommandResult" and selectedMessage.nickname
-        and selectedMessage.connection * -65536 ~= player.id()
+        and starcustomchat.utils.connectionToEntityId(selectedMessage.connection) ~= player.id()
     elseif buttonName == "collapse" then
       local allowCollapse = self.customChat.maxCharactersAllowed ~= 0 and selectedMessage.isLong
 
@@ -246,7 +246,7 @@ function mainchat:onTextboxEnter(message)
     message.mode = "Whisper"
     message.whisperData = {
       displayPlainText = self.DMingTo.nickname,
-      id = self.DMingTo.connection * -65536
+      id = starcustomchat.utils.connectionToEntityId(self.DMingTo.connection)
     }
     self.DMingTo = nil
     return false
@@ -293,7 +293,7 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
       widget.focus("tbxInput")
 
     elseif buttonName == "ping" then
-      local target = selectedMessage.connection * -65536
+      local target = starcustomchat.utils.connectionToEntityId(selectedMessage.connection)
       self:ping(target, selectedMessage.nickname)
 
     elseif buttonName == "collapse" then

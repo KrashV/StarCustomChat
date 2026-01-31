@@ -197,7 +197,7 @@ function StarCustomChat:closeSubMenu()
 end
 
 function StarCustomChat:requestPortrait(connection, overwrite)
-  local entityId = connection * -65536
+  local entityId = starcustomchat.utils.connectionToEntityId(connection)
   local uuid = world.entityUniqueId(entityId) or self.connectionToUuid[tostring(connection)]
 
   self.connectionToUuid[tostring(connection)] = uuid
@@ -249,7 +249,7 @@ function StarCustomChat:resetChat()
   self.colorTable = sb.jsonMerge(self.colorTable, root.getConfiguration("scc_custom_colors") or {})
   widget.setFontColor("tbxInput", self:getColor("chattext"))
 
-  self:requestPortrait(player.id() // -65536, true)
+  self:requestPortrait(starcustomchat.utils.entityIdToConnection(player.id()), true)
 
   self:drawBackground()
   self:processQueue()
@@ -290,7 +290,7 @@ end
 function StarCustomChat:sendMessage(message)
   if message.text == "" then return end
 
-  message.connection = message.connection or player.id() // -65536
+  message.connection = message.connection or starcustomchat.utils.entityIdToConnection(player.id())
   message.nickname = message.nickname or player.name()
 
   self.callbackPlugins("onSendMessage", message)
@@ -403,7 +403,7 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
 
 
   if type(target) == "number" then
-    local entityId = target * -65536
+    local entityId = starcustomchat.utils.connectionToEntityId(target)
 
     local uuid = (world.entityExists(entityId) and world.entityUniqueId(entityId)) or self.connectionToUuid[tostring(target)]
 

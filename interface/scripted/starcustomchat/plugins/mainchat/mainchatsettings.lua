@@ -378,7 +378,7 @@ function mainchat:selectPortrait()
         portrait = self.customPortraits[self.selectedPortrait] and self.customPortraits[self.selectedPortrait] or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
-        connection = player.id() // -65536,
+        connection = starcustomchat.utils.entityIdToConnection(player.id()),
         settings = {
           offset = self.portraitSettings.offset,
           scale =  self.portraitSettings.scale 

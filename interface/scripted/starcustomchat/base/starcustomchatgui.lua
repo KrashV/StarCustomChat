@@ -263,7 +263,7 @@ function registerCallbacks()
         portrait = portrait or starcustomchat.utils.clearPortraitFromInvisibleLayers(world.entityPortrait(player.id(), "full")),
         type = "UPDATE_PORTRAIT",
         entityId = player.id(),
-        connection = player.id() // -65536,
+        connection = starcustomchat.utils.entityIdToConnection(player.id()),
         settings = player.getProperty("icc_portrait_settings") or {
           offset = self.customChat.config.defaultPortraitOffset,
           scale = self.customChat.config.defaultPortraitScale
@@ -773,7 +773,7 @@ function sendMessageToBeSent(text, mode)
       local function sendWhisperToPlayer(targetName, targetId)
         
         -- Let's start sending SEMs by default
-          message.connection = player.id() // -65536
+          message.connection = starcustomchat.utils.entityIdToConnection(player.id())
           message.nickname = player.name()
           message = self.runCallbackForPlugins("formatOutcomingMessage", message)
           self.runCallbackForPlugins("onSendMessage", message)

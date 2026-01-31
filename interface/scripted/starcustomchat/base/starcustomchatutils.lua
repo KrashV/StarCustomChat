@@ -288,3 +288,11 @@ function starcustomchat.utils.playersInRadius(radius, ignoreUs, nearest)
     order = nearest and "nearest"
   } or nil)
 end
+
+function starcustomchat.utils.entityIdToConnection(entityId)
+  return entityId // -65536
+end
+
+function starcustomchat.utils.connectionToEntityId(connection)
+  return connection * -65536
+end
