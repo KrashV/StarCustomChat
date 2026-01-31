@@ -53,6 +53,7 @@ end
 
 function searchEmoji()
   populateReacts(widget.getText("tbxSearch"), "sa_All.listAll", self.emojiList)
+  populateReacts(widget.getText("tbxSearch"), "sa_All.listRecent", touchRecentReaction(self.recentReactions, nil, 10).items)
 end
 
 function onEmojiSelect(listName)
