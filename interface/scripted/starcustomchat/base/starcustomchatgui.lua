@@ -509,7 +509,9 @@ end
 function checkTyping()
   local text = widget.getText("tbxInput")
 
-  widget.setVisible("lblTextboxHint", text == "")
+  if not widget.setHint then
+    widget.setVisible("lblTextboxHint", text == "")
+  end
 
   if widget.hasFocus("tbxInput") or text ~= "" and not status.getPersistentEffects("starchatdots") then
     status.addPersistentEffect("starchatdots", "starchatdots")
