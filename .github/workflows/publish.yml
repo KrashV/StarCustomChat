@@ -16,6 +16,7 @@ jobs:
       - name: Get version
         id: extract_version
         run: echo "::set-output name=version::$(jq -r '.version' _metadata)"
+        
       - name: Get latest release version
         id: latest_release
         shell: bash
