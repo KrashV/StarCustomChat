@@ -462,7 +462,8 @@ end
 function StarCustomChat:scrollToMessage(ind)
   local message = self.messages[ind]
   if message and not self:isInsideChat(message, message.offset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
-    self:offsetCanvas((self:selectMessage().offset - message.offset) / (self.config.spacings.name + self.config.fontSize + 1))
+    local lineHeight = self.config.fontSize + self.config.spacings.lines
+    self:offsetCanvas((self:selectMessage().offset - message.offset) / lineHeight)
   end
 end
 
@@ -472,7 +473,7 @@ function StarCustomChat:isInsideChat(message, messageOffset, addSpacing, canvasS
     or (messageOffset + message.height >= 0 and messageOffset <= canvasSize[2])
 end
 
-function StarCustomChat:resetOffset()
+function StarCustomChat:resetCanvasOffset()
   self.lineOffset = 0
   self:processQueue()
 end

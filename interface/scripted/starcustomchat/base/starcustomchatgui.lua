@@ -638,7 +638,7 @@ function processEvents(screenPosition)
       elseif event.data.key == "PageDown" then
         self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
       elseif event.data.key == "End" then
-        self.customChat:resetOffset()
+        self.customChat:resetCanvasOffset()
       end
     end
   end
@@ -866,7 +866,7 @@ function modeToggle(button, isChecked)
 end
 
 function toBottom()
-  self.customChat:resetOffset()
+  self.customChat:resetCanvasOffset()
 end
 
 function openSettings()
