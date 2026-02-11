@@ -96,7 +96,6 @@ function init()
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
   
-  setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
 
@@ -113,7 +112,10 @@ function init()
     expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
     sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
 
+
   self.runCallbackForPlugins("init", self.customChat)
+    
+  setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   self.lastCommand = root.getConfiguration("icc_last_command")
   self.tooltipFields = {}
@@ -914,6 +916,12 @@ end
 
 function customButtonCallback(buttonName, data)
   self.runCallbackForPlugins("onCustomButtonClick", buttonName, data)
+end
+
+function closeSubMenu()
+  self.customChat:closeSubMenu()
+  self.runCallbackForPlugins("onSubMenuClose", buttonName, data)
+  self.customChat:processQueue()
 end
 
 function openBiggerChat()

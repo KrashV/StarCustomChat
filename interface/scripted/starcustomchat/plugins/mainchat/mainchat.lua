@@ -322,9 +322,8 @@ function mainchat:ping(connectionId, name)
   end
 end
 
-function mainchat:onCustomButtonClick(buttonName, data)
+function mainchat:onSubMenuClose()
   if self.DMingTo then
-    self.customChat:closeSubMenu()
     self.DMingTo = nil
     if widget.getText("tbxInput") ~= "" then
       widget.focus("tbxInput")

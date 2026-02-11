@@ -153,7 +153,7 @@
       "resetEditLayout": {
         "type": "button",
         "position": [253, 5],
-        "callback": "customButtonCallback",
+        "callback": "closeSubMenu",
         "base": "/interface/scripted/starcustomchat/base/submenu/close.png",
         "hover": "/interface/scripted/starcustomchat/base/submenu/close_hover.png",
         "zlevel": 17
@@ -439,7 +439,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown"],
+    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

@@ -65,9 +65,8 @@ function reply:cropMessage(targetName, text)
   return utf8.len(finalText) < self.trimLength and cleanText or starcustomchat.utils.utf8Substring(cleanText, 1, self.trimLength - utf8.len(cleanTargetName)) .. "..."
 end
 
-function reply:onCustomButtonClick(buttonName, data)
+function reply:onSubMenuClose()
   if self.replyingToMessage then
-    self.customChat:closeSubMenu()
     self.replyingToMessage = nil
   end
 end

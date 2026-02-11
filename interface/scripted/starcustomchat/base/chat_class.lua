@@ -178,6 +178,7 @@ function StarCustomChat:openSubMenu(type, hint, text)
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
     widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), size))
+    widget.setSize(self.canvasName, vec2.sub(widget.getSize(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
   else
     self.callbackPlugins("onSubMenuReopen", type)
@@ -192,6 +193,7 @@ function StarCustomChat:closeSubMenu()
     local size = {0, widget.getSize("lytSubMenu")[2]}
     widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
     widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), size))
+    widget.setSize(self.canvasName, vec2.add(widget.getSize(self.canvasName), size))
     widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
   end
 end
