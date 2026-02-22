@@ -65,7 +65,7 @@ function PluginClass:onModeToggle(mode, isChecked)
 
 end
 
-function PluginClass:onTextboxCallback()
+function PluginClass:onTextboxCallback(chatText)
 
 end
 

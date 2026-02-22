@@ -459,8 +459,8 @@ function cursorOverride(screenPosition)
   self.runCallbackForPlugins("onCursorOverride", screenPosition)
 end
 
-function textboxCallback()
-  self.runCallbackForPlugins("onTextboxCallback")
+function textboxCallback(a, b, c, d)
+  self.runCallbackForPlugins("onTextboxCallback", widget.getText("tbxInput"))
 end
 
 function checkCommandsPreview()
