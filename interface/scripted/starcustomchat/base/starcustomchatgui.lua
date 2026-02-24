@@ -784,7 +784,6 @@ function sendMessageToBeSent(text, mode)
           
           promises:add(world.sendEntityMessage(targetId, "scc_add_message", message), function() 
             if targetId ~= player.id() then
-              message.nickname = targetName
               message.displayName = "-> " .. targetName
               world.sendEntityMessage(player.id(), "scc_add_message", message)
             end
