@@ -257,7 +257,7 @@ function StarCustomChat:resetChat()
   self:processQueue()
 end
 
-function StarCustomChat:getMessages ()
+function StarCustomChat:getMessages()
   return self.messages
 end
 
@@ -273,7 +273,8 @@ function StarCustomChat:processCommand(text)
         self:addMessage({
           connection = 0,
           mode = "CommandResult",
-          text = line
+          text = line,
+          tooltip = text
         })
       else
         chat.addMessage(line)

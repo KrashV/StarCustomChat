@@ -3,6 +3,7 @@ Added the description to the pinging command
 Added the ability to send the whisper message to your party
 The players in @pinging list are now ordered by nearest
 Reactions: Supported saving the most recent/popular reactions.
+The CommandResult now shows the command it created, if available
 
 ## Bugfixes
 Fixed rare cases when the message lost the linebreaks
@@ -16,3 +17,4 @@ Reworked the Direct Messages system. Now, by default, it tries to send an Entity
 Moved all message logging to one place
 Moved all the related SubMenu closure to a separate method
 onTextboxCallback method now passes the chat string
+If message.tooltip exists, it will be show on message hover

@@ -67,6 +67,10 @@ function starcustomchat.utils.buildLocale(fullLocalizationTable)
   starcustomchat.locale = copy(fullLocalizationTable)
 end
 
+function starcustomchat.utils.hasTranslation(key)
+  return not not (starcustomchat.locale[starcustomchat.currentLocale][key] or starcustomchat.locale[starcustomchat.defaultLocale][key])
+end
+
 function starcustomchat.utils.getTranslation(key, ...)
   local translation = starcustomchat.locale[starcustomchat.currentLocale][key] or starcustomchat.locale[starcustomchat.defaultLocale][key]
   if not translation then

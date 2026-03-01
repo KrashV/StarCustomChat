@@ -758,7 +758,7 @@ function sendMessageToBeSent(text, mode)
       self.savedCommandSelection = 0
       return
     else
-      processCommand(text)
+      self.customChat:processCommand(text)
       self.lastCommand = text
       starcustomchat.utils.saveMessage(text)
     end
@@ -838,10 +838,6 @@ function textboxEnterKey(widgetName)
   end
 
   sendMessageToBeSent(text, mode)
-end
-
-function processCommand(command)
-  self.customChat:processCommand(command)
 end
 
 function sendMessage(message)

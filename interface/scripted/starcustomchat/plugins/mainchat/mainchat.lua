@@ -331,6 +331,15 @@ function mainchat:onSubMenuClose()
   end
 end
 
+function mainchat:onCreateTooltip(screenPosition)
+  local selectedMessage = self.customChat:selectMessage()
+  
+  if selectedMessage and selectedMessage and selectedMessage.tooltip then
+    return starcustomchat.utils.hasTranslation(selectedMessage.tooltip) and starcustomchat.utils.getTranslation(selectedMessage.tooltip)
+      or selectedMessage.tooltip
+  end
+end
+
 function mainchat:onSettingsUpdate()
   self.customChat.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
   self.previewPortraits = root.getConfiguration("scc_preview_portraits" or true)
