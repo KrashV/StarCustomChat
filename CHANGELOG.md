@@ -10,6 +10,7 @@ Fixed rare cases when the message lost the linebreaks
 Fixed the rare case of chat not changing the extended/compact mode on clicking
 Fixed the canvas going out of the frame when opening the submenu
 Adjusted the position of messages scrolled down to on pressing the Replied to area
+Fixed the bug when the plugins with enabled stagehand functionality stopped working on servers without such stagehands.
 
 ## API
 Added new Plugin method to clear up the message object before saving it
@@ -18,3 +19,4 @@ Moved all message logging to one place
 Moved all the related SubMenu closure to a separate method
 onTextboxCallback method now passes the chat string
 If message.tooltip exists, it will be show on message hover
+Added the abilty to register the stagehand callbacks, turning on the server-sending functionality (see README.md)

@@ -14,6 +14,7 @@ end
 function PluginClass:init(chat)
   self.customChat = chat
   self:_loadConfig()
+  self:_requestStagehandHandlers()
 end
 
 function PluginClass:_loadConfig()
@@ -22,6 +23,14 @@ function PluginClass:_loadConfig()
     for name, value in pairs(parms) do 
       self[name] = value
     end
+  end
+end
+
+function PluginClass:_requestStagehandHandlers()
+  if self.stagehandType and self.stagehandType ~= "" then
+    starcustomchat.utils.runWhenPlayerReady(function()
+      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "requestHandlers", playerId = player.id()})
+    end)
   end
 end
 
@@ -132,6 +141,10 @@ function PluginClass:onSubMenuReopen(type)
 end
 
 function PluginClass:onSubMenuClose()
+
+end
+
+function PluginClass:registerStagehandHandlers(messageTypes)
 
 end
 

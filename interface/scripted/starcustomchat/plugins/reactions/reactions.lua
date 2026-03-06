@@ -4,6 +4,17 @@ require "/scripts/rect.lua"
 reactions = PluginClass:new(
   { name = "reactions" }
 )
+
+function reactions:init(chat)
+  PluginClass.init(self, chat)
+
+  self.stagehandEnabled = false
+end
+
+function reactions:registerStagehandHandlers(handlers)
+  self.stagehandEnabled = handlers and handlers["addReaction"]
+end
+
 function reactions:contextMenuButtonFilter(buttonName, screenPosition, selectedMessage)
   if selectedMessage and buttonName == "add_reacton" then
     return selectedMessage.mode ~= "CommandResult"
@@ -51,7 +62,7 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
     selectEmojiPane.messageUUID = selectedMessage.uuid
     selectEmojiPane.text = selectedMessage.text
     selectEmojiPane.nickname = selectedMessage.nickname
-    selectEmojiPane.stagehandType = self.stagehandType
+    selectEmojiPane.stagehandType = self.stagehandEnabled and self.stagehandType
     selectEmojiPane.textboxHint = starcustomchat.utils.getTranslation("reactions.reactselect.hint")
     selectEmojiPane.allLabel = starcustomchat.utils.getTranslation("reactions.reactselect.all")
     selectEmojiPane.recentLabel = starcustomchat.utils.getTranslation("reactions.reactselect.recent")
@@ -95,7 +106,7 @@ function reactions:onCanvasClick(screenPosition, button, isButtonDown)
             uuid = selectedMessage.uuid
           }
       
-          if self.stagehandType and self.stagehandType ~= "" then
+          if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then
             starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReaction", data = data})
           else
             for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 

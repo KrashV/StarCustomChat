@@ -7,6 +7,12 @@ stickers = PluginClass:new(
 function stickers:init(chat)
   PluginClass.init(self, chat)
   self.savedStickers = root.getConfiguration("scc_saved_stickers") or {}
+    
+  self.stagehandEnabled = false
+end
+
+function stickers:registerStagehandHandlers(handlers)
+  self.stagehandEnabled = handlers and handlers["sendSticker"]
 end
 
 function stickers:onProcessCommand(text)
@@ -33,7 +39,7 @@ function stickers:onProcessCommand(text)
         world.sendEntityMessage(data.id, "scc_add_message", message)
         world.sendEntityMessage(player.id(), "scc_add_message", message)
     elseif message.mode == "Party" then
-      if self.stagehandType and self.stagehandType ~= "" then
+      if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then
         starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message, players = util.map(player.teamMembers(), function(p) return p.entity end)})
       else
         for _, pl in ipairs(player.teamMembers()) do 
@@ -41,7 +47,7 @@ function stickers:onProcessCommand(text)
         end
       end
     else
-      if self.stagehandType and self.stagehandType ~= "" then
+      if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then
         starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "sendSticker", data = message})
       else
         for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 

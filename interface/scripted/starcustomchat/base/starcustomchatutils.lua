@@ -195,7 +195,15 @@ function starcustomchat.utils.sendMessageToUniqueStagehand(stagehandType, messag
 end
 
 function starcustomchat.utils.createStagehandWithData(stagehandType, overrides)
-  world.spawnStagehand(world.entityPosition(player.id()), stagehandType, overrides)
+  starcustomchat.utils.runWhenPlayerReady(function()
+    world.spawnStagehand(world.entityPosition(player.id()), stagehandType, overrides)
+  end)
+end
+
+function starcustomchat.utils.runWhenPlayerReady(callback)
+  promises:add(PlayerExistsPromise:new(), callback, function()
+    starcustomchat.utils.runWhenPlayerReady(callback)
+  end)
 end
 
 function starcustomchat.utils.cropMessage(text, trimLength)
@@ -299,4 +307,37 @@ end
 
 function starcustomchat.utils.connectionToEntityId(connection)
   return connection * -65536
+end
+
+-- RPC Promise Mock
+RPCPromise = {}
+
+function RPCPromise:new(o)
+  local obj = o or {}
+  obj.hasSucceeded = false
+  obj.processingTime = 0
+
+  setmetatable(obj, self)
+  self.__index = self
+  return obj
+end
+
+function RPCPromise:finished()
+end
+
+function RPCPromise:succeeded()
+  return self.hasSucceeded
+end
+
+function RPCPromise:result()
+  return nil
+end
+
+PlayerExistsPromise = RPCPromise:new()
+
+function PlayerExistsPromise:finished()
+  if player.id() and world.entityPosition(player.id()) then 
+    self.hasSucceeded = true; 
+    return true 
+  end
 end

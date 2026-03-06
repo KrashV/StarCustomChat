@@ -348,6 +348,10 @@ function registerCallbacks()
     end
   end)
 
+  starcustomchat.utils.setMessageHandler("scc_stagehand_allowed_messages", function (_, _, messageTypes)
+    self.runCallbackForPlugins("registerStagehandHandlers", util.values(messageTypes) or {})
+  end)
+
   self.runCallbackForPlugins("registerMessageHandlers")
 
   return true

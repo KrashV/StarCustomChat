@@ -8,6 +8,7 @@ reply = PluginClass:new(
 
 function reply:init(chat)
   PluginClass.init(self, chat)
+
   self.replyingToMessage = config.getParameter("replyingToMessage")
 
   if self.replyingToMessage then
@@ -18,6 +19,12 @@ function reply:init(chat)
 
   self.highlightMessageInd = nil
   self.desaturateTime = 0
+
+  self.stagehandEnabled = false
+end
+
+function reply:registerStagehandHandlers(handlers)
+  self.stagehandEnabled = handlers and handlers["addReply"]
 end
 
 function reply:registerMessageHandlers()
@@ -93,7 +100,7 @@ function reply:onTextboxEnter()
         mode, nickname) 
     }
 
-    if self.stagehandType and self.stagehandType ~= "" then
+    if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReply", data = dataToSend})
     else
       for _, pl in ipairs(starcustomchat.utils.playersInRadius(self.messageRadius)) do 

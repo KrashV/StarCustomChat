@@ -93,6 +93,17 @@ function init()
 end
 ```
 
+In order for the plugins to understand that this stagehand supports their message, the following code must be enabled on the SH:
+```lua
+if config.getParameter("message", "") == "requestHandlers" then
+  local playerId = config.getParameter("playerId")
+  if playerId then
+    world.sendEntityMessage(playerId, {"here", "is", "a", "list", "of", "supported", "messages"})
+  stagehand.die()
+  end
+end
+```
+
 # Contributors
 
 * @Degranon - main author
