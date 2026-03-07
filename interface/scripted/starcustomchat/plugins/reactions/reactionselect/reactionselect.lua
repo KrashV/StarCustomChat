@@ -68,7 +68,7 @@ function onEmojiSelect(listName)
 
     
     if self.stagehandType and self.stagehandType ~= "" then
-      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "addReaction", data = data})
+      world.spawnStagehand(world.entityPosition(player.id()), self.stagehandType, {message = "addReaction", data = data})
     else
       for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
         world.sendEntityMessage(pl, "scc_add_reaction", data)
