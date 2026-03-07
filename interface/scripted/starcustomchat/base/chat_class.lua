@@ -557,12 +557,16 @@ function cutStringFromEnd(toCollapse, inputString, MAX)
   end
 end
 
-function StarCustomChat:getTextSize(text)
+function StarCustomChat:getTextSize(text, fontSize)
   -- Get amount of lines in the message and its length
   local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
+
+  if fontSize then
+    createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, fontSize)
+  end
   widget.setText(labelToCheck, text)
   local sizeOfText = widget.getSize(labelToCheck)
-  widget.setText(labelToCheck, "")
+  createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, self.config.fontSize)
   return sizeOfText
 end
 
@@ -736,11 +740,14 @@ function StarCustomChat:processQueue()
       self.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png", 
         replyStartOffset, 1 / 8 * self.config.fontSize)
         
-      self.canvas:drawText(string.format("%s: %s", self.messages[prevMessage].displayName or self.messages[prevMessage].nickname, starcustomchat.utils.cropMessage(self.messages[prevMessage].text:gsub("%^.-;", ""), self.canvas:size()[1] // 10) ), {
-        position = vec2.add(replyStartOffset, {size / 2, 0}),
-        horizontalAnchor = "left",
-        verticalAnchor = "bottom"
-      }, self.config.fontSize / 1.2, self:getColor("replytext"), nil, self:getFont("chattext"))
+      local croppedText = string.format("%s: %s", self.messages[prevMessage].displayName or self.messages[prevMessage].nickname, 
+        starcustomchat.utils.cropMessage(starcustomchat.utils.clearMetatags(self.messages[prevMessage].text), self.canvas:size()[1] // 10) )
+      
+      self.canvas:drawText(croppedText, {
+          position = vec2.add(replyStartOffset, {size / 2, 0}),
+          horizontalAnchor = "left",
+          verticalAnchor = "bottom"
+        }, self.config.fontSize / 1.2, self:getColor("replytext"), nil, self:getFont("chattext"))
         
       message.height = message.height + replyOffset
     end

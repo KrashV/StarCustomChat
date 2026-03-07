@@ -182,20 +182,47 @@ function reply:onSubMenuReopen(type)
 end
 
 function reply:onCanvasClick(screenPosition, button, isButtonDown)
-  if button == 0 and isButtonDown then
-    local selectedMessage = self.customChat:selectMessage()
-    if selectedMessage and selectedMessage.replyUUID then
-      if selectedMessage.height - (screenPosition[2] - selectedMessage.offset) < self.customChat.config.replyOffsetHeight then
-        local originalMessage = self.customChat:findMessageByUUID(selectedMessage.replyUUID)
-        if originalMessage then
-          self.customChat:scrollToMessage(originalMessage, screenPosition[2])
-          self.desaturateTime = 0
-          self.highlightMessageInd = originalMessage
-        else
-          return false
-        end
-        return true
-      end
-    end
+  if button ~= 0 or not isButtonDown then
+    return false
   end
+
+  local selectedMessage = self.customChat:selectMessage()
+  if not selectedMessage or not selectedMessage.replyUUID then
+    return false
+  end
+
+  local clickY = screenPosition[2] - selectedMessage.offset
+  if selectedMessage.height - clickY >= self.customChat.config.replyOffsetHeight then
+    return false
+  end
+
+  local originalMessageInd = self.customChat:findMessageByUUID(selectedMessage.replyUUID)
+  if not originalMessageInd then
+    return false
+  end
+
+  local originalMessage = self.customChat.messages[originalMessageInd]
+  local displayName = originalMessage.displayName or originalMessage.nickname
+  local cleanText = starcustomchat.utils.clearMetatags(originalMessage.text)
+  local croppedText = string.format("%s: %s", displayName,
+    starcustomchat.utils.cropMessage(cleanText, self.customChat.canvas:size()[1] // 10))
+
+  local textSize = self.customChat:getTextSize(croppedText, self.customChat.config.fontSize * 1.2)
+
+  local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
+  local xOffset = self.customChat.chatMode == "modern"
+    and self.customChat.config.nameOffset[1] + size
+    or self.customChat.config.textOffsetCompactMode[1]
+
+  local replyStartOffset = xOffset + self.customChat.config.replyImageOffset[1]
+  local clickX = screenPosition[1]
+
+  if clickX >= replyStartOffset and clickX <= textSize[1] then
+    self.customChat:scrollToMessage(originalMessageInd, screenPosition[2])
+    self.desaturateTime = 0
+    self.highlightMessageInd = originalMessageInd
+    return true
+  end
+
+  return false
 end
