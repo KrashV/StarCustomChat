@@ -96,9 +96,9 @@ end
 In order for the plugins to understand that this stagehand supports their message, the following code must be enabled on the SH:
 ```lua
 if config.getParameter("message", "") == "requestHandlers" then
-  local playerId = config.getParameter("playerId")
-  if playerId then
-    world.sendEntityMessage(playerId, "scc_stagehand_allowed_messages", {"here", "is", "a", "list", "of", "supported", "messages"})
+  local data = config.getParameter("data", {})
+  if data and data.playerId then
+    world.sendEntityMessage(data.playerId, "scc_stagehand_allowed_messages", {"here", "is", "a", "list", "of", "supported", "messages"})
   stagehand.die()
   end
 end

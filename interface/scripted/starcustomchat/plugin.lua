@@ -29,7 +29,7 @@ end
 function PluginClass:_requestStagehandHandlers()
   if self.stagehandType and self.stagehandType ~= "" then
     starcustomchat.utils.runWhenPlayerReady(function()
-      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "requestHandlers", playerId = player.id()})
+      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "requestHandlers", data = {playerId = player.id()}})
     end)
   end
 end
