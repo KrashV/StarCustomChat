@@ -342,8 +342,8 @@ function registerCallbacks()
     end
   end))
 
-  self.runCallbackForPlugins("_requestStagehandHandlers")
   self.runCallbackForPlugins("registerMessageHandlers")
+  self.runCallbackForPlugins("_requestStagehandHandlers")
 
   return true
 end
