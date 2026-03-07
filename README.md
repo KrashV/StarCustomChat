@@ -51,6 +51,10 @@ First, you need to create a server-specific patch for your own server and distri
 | Stickers                | /interface/scripted/starcustomchat/plugins/stickers/stickers.json.patch           | sendSticker                 | scc_add_message        |
 | Languages               | /interface/scripted/starcustomchat/plugins/languages/languages.json               | retrieveLanguages           | scc_rp_languages       |
 
+*The language file may now include a `transformation` section with a rules
+list, allowing servers to finely control how text degrades as characters
+learn a language.*
+
 The contains of the patch files are identical:
 
 ```diff
