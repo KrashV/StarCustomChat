@@ -188,7 +188,8 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
       if selectedMessage.height - (screenPosition[2] - selectedMessage.offset) < self.customChat.config.replyOffsetHeight then
         local originalMessage = self.customChat:findMessageByUUID(selectedMessage.replyUUID)
         if originalMessage then
-          self.customChat:scrollToMessage(originalMessage)
+          self.customChat:scrollToMessage(originalMessage, screenPosition[2])
+          self.desaturateTime = 0
           self.highlightMessageInd = originalMessage
         else
           return false
