@@ -566,9 +566,11 @@ function StarCustomChat:getTextSize(text, fontSize)
   end
   widget.setText(labelToCheck, text)
   local sizeOfText = widget.getSize(labelToCheck)
+  widget.setText(labelToCheck, "")
   if fontSize then
     createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, self.config.fontSize)
   end
+
   return sizeOfText
 end
 
