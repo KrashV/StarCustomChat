@@ -206,6 +206,14 @@ function starcustomchat.utils.runWhenPlayerReady(callback)
   end)
 end
 
+function starcustomchat.utils.listToSet(list)
+  local set = {}
+  for _,v in ipairs(list) do
+    set[v] = true
+  end
+  return set
+end
+
 function starcustomchat.utils.cropMessage(text, trimLength)
   return utf8.len(text) < trimLength and text or starcustomchat.utils.utf8Substring(text, 1, trimLength) .. "..."
 end

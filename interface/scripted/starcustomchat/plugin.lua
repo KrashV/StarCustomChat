@@ -14,7 +14,6 @@ end
 function PluginClass:init(chat)
   self.customChat = chat
   self:_loadConfig()
-  self:_requestStagehandHandlers()
 end
 
 function PluginClass:_loadConfig()

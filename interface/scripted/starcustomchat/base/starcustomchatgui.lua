@@ -209,7 +209,6 @@ function createPromiseFunction()
             prepareForCallbacks()
             self.chatUUID = uuid
           end
-          ICChatTimer:add(0.2, pullPromise)
       end, function() ICChatTimer:add(0.2, pullPromise) end)
     end)
   end
@@ -224,17 +223,6 @@ function prepareForCallbacks()
     ICChatTimer:add(0.5, prepareForCallbacks)
     starcustomchat.utils.resetShared()
   end
-end
-
-function checkUUID()
-
-  promises:add(world.sendEntityMessage(player.id(), "scc_uuid"), function(uuid)
-    if self.chatUUID and self.chatUUID ~= uuid then
-      pane.dismiss()
-      return
-    end
-    ICChatTimer:add(0.2, checkUUID)
-  end, function() ICChatTimer:add(0.2, checkUUID) end)
 end
 
 function registerCallbacks()
@@ -348,10 +336,13 @@ function registerCallbacks()
     end
   end)
 
-  starcustomchat.utils.setMessageHandler("scc_stagehand_allowed_messages", function (_, _, messageTypes)
-    self.runCallbackForPlugins("registerStagehandHandlers", util.values(messageTypes) or {})
-  end)
+  starcustomchat.utils.setMessageHandler("scc_stagehand_allowed_messages", simpleHandler(function(messageTypes)
+    if messageTypes then
+      self.runCallbackForPlugins("registerStagehandHandlers", starcustomchat.utils.listToSet(messageTypes))
+    end
+  end))
 
+  self.runCallbackForPlugins("_requestStagehandHandlers")
   self.runCallbackForPlugins("registerMessageHandlers")
 
   return true
