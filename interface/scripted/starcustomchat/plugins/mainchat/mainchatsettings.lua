@@ -80,6 +80,14 @@ end
 
 function mainchat:onLocaleChange()
   self.widget.setText("lytBase.btnMode", starcustomchat.utils.getTranslation("settings.modes." .. self.chatMode))
+
+  if not self.portraitSelectionMode then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
+  elseif self.portraitSelectionMode == "frames" then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.mainchat.select_frame"))
+  elseif self.portraitSelectionMode == "portraits" then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.mainchat.select_portrait"))
+  end
 end
 
 function mainchat:cursorOverride(screenPosition)
@@ -264,6 +272,14 @@ function mainchat:togglePortraitSelection(_, data)
 
   self.widget.setVisible("lytBase", not self.widget.active("lytBase"))
   self.widget.setVisible("lytPortraitSelection", not self.widget.active("lytBase"))
+
+  if not data.mode then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.plugins.mainchat"))
+  elseif data.mode == "frames" then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.mainchat.select_frame"))
+  elseif data.mode == "portraits" then
+    self.widget.setText("titleText", starcustomchat.utils.getTranslation("settings.mainchat.select_portrait"))
+  end
 
   self.portraitSelectionMode = data.mode
   self:populatePortraitList(data.mode)
