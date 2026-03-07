@@ -366,6 +366,8 @@ function requestPortraits()
 end
 
 function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontSize)
+  pane.removeWidget("totallyFakeLabelFullMode")
+  pane.removeWidget("totallyFakeLabelCompactMode")
 
   pane.addWidget({
     type = "label",
