@@ -274,8 +274,7 @@ function StarCustomChat:processCommand(text)
           connection = 0,
           mode = "CommandResult",
           text = line,
-          tooltip = string.len(text) < self.config.commandHintCharacterLimit and text 
-            or string.sub(text, 1, self.config.commandHintCharacterLimit) .. "..."
+          tooltip = starcustomchat.utils.cropMessage(text, self.config.commandHintCharacterLimit)
         })
       else
         chat.addMessage(line)
