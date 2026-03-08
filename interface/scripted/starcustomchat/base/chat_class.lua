@@ -320,7 +320,8 @@ function StarCustomChat:previewCommands(commands, selected)
   widget.setText("lytCommandPreview.lblCommandPreview", result)
 
   if commands[selected].description then
-    widget.setText("lytCommandPreview.lblDescription", starcustomchat.utils.getTranslation(commands[selected].description))
+    widget.setText("lytCommandPreview.lblDescription", starcustomchat.utils.hasTranslation(commands[selected].description) and
+    starcustomchat.utils.getTranslation(commands[selected].description) or commands[selected].description)
   else
     widget.setText("lytCommandPreview.lblDescription", "")
   end

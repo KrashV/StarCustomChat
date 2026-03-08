@@ -107,6 +107,26 @@ if purpose == "requestHandlers" then
 end
 ```
 
+# External support
+
+If you don't want to create a whole plugin just to bring some commands to the preview, you can create a custom file with the `.starcustomchat.commands` extention wherever in your mod. The sytax for the commands is the same:
+
+```json
+[
+  { 
+    "command": "/myFirstCustomCommands", 
+    "description": "Some description", 
+    "subcommands": [
+      "option1", "option2", "option3", {
+          "command": "chest",
+          "description": "Subcommand description",
+          "subcommands": ["suboption1", "suboption2", "suboption3"]
+      }
+    ] 
+  }
+]
+```
+
 # Contributors
 
 * @Degranon - main author

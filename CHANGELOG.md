@@ -21,3 +21,4 @@ Moved all the related SubMenu closure to a separate method
 onTextboxCallback method now passes the chat string
 If message.tooltip exists, it will be show on message hover
 Added the abilty to register the stagehand callbacks, turning on the server-sending functionality (see README.md)
+Added the ability to create SCC commands support in other mods, see README.md
