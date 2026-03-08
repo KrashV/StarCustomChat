@@ -8,6 +8,7 @@ function init()
   self.stagehandType = config.getParameter("stagehandType")
 
   self.recentReactions = root.getConfiguration("scc_most_recent_reactions") or {}
+  clearRecentReactions()
 
   if not next(self.recentReactions) then
     widget.removeChild("sa_All", "listRecent")
@@ -82,6 +83,14 @@ function onEmojiSelect(listName)
   end
 end
 
+function hasEmoji(e)
+  for _, emoji in ipairs(self.emojiList) do 
+    if e == emoji then
+      return true
+    end
+  end
+  return false
+end
 
 function touchRecentReaction(recent, reactionId, limit)
   local function findIndexById(items, id)
@@ -131,6 +140,20 @@ function touchRecentReaction(recent, reactionId, limit)
   sortAndTrim(recent, limit)
   return recent
 end
+
+function clearRecentReactions()
+  -- remove any recent entries that are no longer available in the master list
+  if not self.recentReactions or not self.recentReactions.items then return end
+
+  local filtered = {}
+  for _, emoji in ipairs(self.recentReactions.items) do
+    if hasEmoji(emoji.id) then
+      table.insert(filtered, emoji)
+    end
+  end
+  self.recentReactions.items = filtered
+end
+
 
 function createTooltip(screenPosition)
   local wid = widget.getChildAt(screenPosition)

@@ -11,6 +11,7 @@ Fixed the rare case of chat not changing the extended/compact mode on clicking
 Fixed the canvas going out of the frame when opening the submenu
 Adjusted the position of messages scrolled down to on pressing the Replied to area
 Fixed the bug when the plugins with enabled stagehand functionality stopped working on servers without such stagehands.
+Unknown reactions are now replaced with an "Unknown" reaction instead of the invisible one.
 
 ## API
 Added new Plugin method to clear up the message object before saving it
