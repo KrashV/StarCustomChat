@@ -145,7 +145,7 @@ function init()
     widget.setFontColor("rgChatMode.1", chatConfig.modeColors[widget.getData("rgChatMode.1").mode])
   end
 
-  self.entityMapReady = createPromiseFunction()
+  createPromiseFunction()
   
   requestPortraits()
 
@@ -202,18 +202,22 @@ end
 
 function createPromiseFunction()
   -- Since in OSB chat is ready before the other scripts, we should pool ourself before we can actually use it
-  local function pullPromise()
-    return pcall(function()
+  function pullPromise()
+    starcustomchat.utils.runWhenPlayerReady(function()
       promises:add(world.sendEntityMessage(player.id(), "scc_uuid"), function(uuid)
-          if not self.chatUUID or not self.chatUUID ~= uuid then
+          if not self.chatUUID or self.chatUUID ~= uuid then
             prepareForCallbacks()
             self.chatUUID = uuid
           end
-      end, function() ICChatTimer:add(0.2, pullPromise) end)
+          pullPromise()
+      end, function() 
+        self.chatUUID = nil
+        pullPromise()
+      end)
     end)
   end
   
-  return pullPromise()
+  pullPromise()
 end
 
 function prepareForCallbacks()
@@ -427,6 +431,7 @@ function localeChat()
 end
 
 function update(dt)
+
 
   ICChatTimer:update(dt)
   promises:update()
