@@ -432,7 +432,6 @@ end
 
 function update(dt)
 
-
   ICChatTimer:update(dt)
   promises:update()
   
