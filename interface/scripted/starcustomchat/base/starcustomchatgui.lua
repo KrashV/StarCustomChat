@@ -410,16 +410,18 @@ function localeChat()
     widget.setText("rgChatMode." .. i, starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode))
   end
 
+  
+  local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
+
   if not widget.setHint then 
-    widget.setText("lblTextboxHint", starcustomchat.utils.getTranslation("chat.textbox.hint"))
-    local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
+    widget.setText("lblTextboxHint", hint)
   
     if not savedText or savedText == "" then
       widget.setText("lblTextboxHint", hint)
     end
   else
     widget.setText("lblTextboxHint", "")
-    widget.setHint("tbxInput", starcustomchat.utils.getTranslation("chat.textbox.hint"))
+    widget.setHint("tbxInput", hint)
   end
 
   self.runCallbackForPlugins("onLocaleChange")
