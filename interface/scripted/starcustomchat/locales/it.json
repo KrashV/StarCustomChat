@@ -139,6 +139,7 @@
   "commands.openstarbound.render": "Renderizza parti del personaggio e salva negli Appunti.",
 
   "commands.starcustomchat.clearchat": "Cancella la cronologia della chat.",
+  "commands.starcustomchat.filter": "Filtra i messaggi in base a una sottostringa. Invia un messaggio vuoto per disabilitare il filtro.",
 
   "commands.custom.hotreload": "Riavvia la configurazione."
 }

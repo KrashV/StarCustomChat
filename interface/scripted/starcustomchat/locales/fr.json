@@ -139,6 +139,7 @@
   "commands.openstarbound.render": "Effectue le rendu de plusieurs parties du personnage et les enregistre dans le dossier de stockage.",
 
   "commands.starcustomchat.clearchat": "Efface l’historique du chat.",
+  "commands.starcustomchat.filter": "Permet de filtrer les messages selon un texte spécifique. Laissez vide pour ne plus filtrer.",
 
   "commands.custom.hotreload": "Recharge la configuration."
 }

@@ -316,6 +316,10 @@ function registerCallbacks()
     self.customChat:clearHistory()
   end))
 
+  starcustomchat.utils.setMessageHandler( "/filter", localHandler(function(data)
+    self.customChat:setFilter(data)
+  end))
+
   starcustomchat.utils.setMessageHandler("scc_edit_message", function(_, _, data)
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     if msgInd then

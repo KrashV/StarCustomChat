@@ -139,6 +139,7 @@
   "commands.openstarbound.render": "Renderiza diferentes partes do personagem e as envia para a pasta 'storage'.",
 
   "commands.starcustomchat.clearchat": "Limpa o histórico do chat.",
+  "commands.starcustomchat.filter": "Filtrar as mensagens com base no substring inserido. Se o substring for vazio a filtragem será desabilitada.",
 
   "commands.custom.hotreload": "Recarrega a configuração."
 }

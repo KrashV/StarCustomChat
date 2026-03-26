@@ -138,6 +138,7 @@
   "commands.openstarbound.render": "Geeft een afbeelding van verscheidene onderdelen van jouw karakter, en slaat die op in de storage folder.",
 
   "commands.starcustomchat.clearchat": "Wist de chatgeschiedenis.",
+  "commands.starcustomchat.filter": "Filter berichten op substring. Laat leeg om filteren uit te schakelen.",
 
   "commands.custom.hotreload": "Herlaadt configuraties."
 }

@@ -139,6 +139,7 @@
   "commands.openstarbound.render": "Renderuje różne części postaci i kopiuje je do folderu 'storage'.",
 
   "commands.starcustomchat.clearchat": "Czyści historię czatu.",
+  "commands.starcustomchat.filter": "Filtruj wiadomości według podciągu. Wyślij puste pole, aby wyłączyć filtrowanie.",
 
   "commands.custom.hotreload": "Przeładowywuje konfigurację."
 }

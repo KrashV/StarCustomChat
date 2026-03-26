@@ -139,6 +139,7 @@
   "commands.openstarbound.render": "Відібразити різні частини персонажа та скопіювати у буфер обміну.",
 
   "commands.starcustomchat.clearchat": "Очистити історію чату.",
+  "commands.starcustomchat.filter": "Фільтрує повідомлення за підрядком. Відправте порожнє значення, щоб вимкнути фільтрацію.",
 
   "commands.custom.hotreload": "Швидко перезавантажує конфігурацію."
 }

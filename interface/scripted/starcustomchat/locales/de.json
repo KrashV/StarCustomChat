@@ -138,6 +138,7 @@
   "commands.openstarbound.render": "Rendert Teile des Charakters und speichert sie im Storage-Ordner.",
 
   "commands.starcustomchat.clearchat": "Löscht Chatverlauf.",
+  "commands.starcustomchat.filter": "Filtert Nachrichten nach einem Substring. Leer lassen, um Filter zu deaktivieren.",
 
   "commands.custom.hotreload": "Lädt die Konfiguration neu."
 }

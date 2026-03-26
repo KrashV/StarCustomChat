@@ -135,6 +135,15 @@ function StarCustomChat:addMessage(msg)
   end
 end
 
+function StarCustomChat:setFilter(data)
+  if not data or (string.gsub(data, "^%s*(.-)%s*$", "%1")) == "" then
+    self.filter = nil
+  else
+    self.filter = data
+  end
+  self:processQueue()
+end
+
 function StarCustomChat:getColor(type)
   return self.colorTable[type] and "#" .. self.colorTable[type] or self.config.defaultColor
 end
@@ -526,14 +535,15 @@ function StarCustomChat:selectMessage(position)
   end
 end
 
-function filterMessages(messages)
+function filterMessages(messages, filter)
   local drawnMessageIndexes = {}
 
   for i, message in ipairs(messages) do 
     --filter messages by mode availability
     local mode = message.mode
     
-    if mode and (widget.active("btnCk" .. mode) == nil and true or widget.getChecked("btnCk"  .. mode)) then
+    if (mode and (widget.active("btnCk" .. mode) == nil and true or widget.getChecked("btnCk"  .. mode))) 
+    and not filter or (message.text and string.find(message.text, filter, 1, true)) then
       table.insert(drawnMessageIndexes, i)
     end
   end
@@ -586,7 +596,7 @@ end
 function StarCustomChat:processQueue()
   self.canvas:clear()
   self.totalHeight = 0
-  self.drawnMessageIndexes = filterMessages(self.messages)
+  self.drawnMessageIndexes = filterMessages(self.messages, self.filter)
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]

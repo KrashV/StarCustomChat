@@ -136,6 +136,7 @@
   "commands.openstarbound.render": "Сгенерировать выбранное изображение в папке storage.",
 
   "commands.starcustomchat.clearchat": "Очищает историю чата.",
+  "commands.starcustomchat.filter": "Фильтр истории чата по подстроке. Пустая подстрока очищает фильтр.",
 
   "commands.custom.hotreload": "Перезагружает конфигурацию."
 }
