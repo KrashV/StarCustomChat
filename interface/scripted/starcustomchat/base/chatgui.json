@@ -89,32 +89,38 @@
       "type": "layout",
       "layoutType": "basic",
       "rect": [21, 25, 289, 65],
-      "zlevel": 10,
+      "zlevel": 11,
       "visible": false,
       "children": {
         "imgBackground": {
           "type": "image",
-          "file": "/interface/scripted/starcustomchat/base/commandpreview.png",
+          "file": "/interface/scripted/starcustomchat/base/commandpreview/commandpreview.png",
           "zlevel": 11
         },
-        "imgDescription": {
-          "type": "image",
-          "file": "/interface/scripted/starcustomchat/base/commandpreview.png",
-          "zlevel": 11,
-          "position": [0, 12]
+        "imgStretchDescription": {
+          "type": "imageStretch",
+          "direction" : "vertical",
+          "size": [269, 0],
+          "position": [0, 12],
+          "stretchSet": {
+            "end": "/interface/scripted/starcustomchat/base/commandpreview/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/commandpreview/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/commandpreview/begin.png"
+          }
         },
         "lblDescription": {
           "type": "label",
           "zlevel": 11,
           "fontSize": 7,
+          "wrapWidth": 260,
           "color": "#bbbbbbAA",
-          "position": [4, 14]
+          "position": [4, 13]
         },
         "lblCommandPreview": {
           "type": "label",
           "zlevel": 11,
           "fontSize": 8,
-          "position": [2, 1]
+          "position": [4, 1]
         }
       }
     },
