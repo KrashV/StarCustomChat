@@ -88,7 +88,7 @@
     "lytCommandPreview": {
       "type": "layout",
       "layoutType": "basic",
-      "rect": [21, 25, 289, 65],
+      "rect": [21, 25, 289, 310],
       "zlevel": 11,
       "visible": false,
       "children": {
