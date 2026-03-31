@@ -14,7 +14,7 @@
     "background" : {
       "zlevel" : -10,
       "type" : "background",
-      "fileBody" : "/interface/scripted/starcustomchat/base/body.png"
+      "fileBody" : "/interface/scripted/starcustomchat/base/images/body.png"
     },
     "cnvBackgroundCanvas": {
       "type": "canvas",
@@ -30,21 +30,21 @@
       "size": [269, 0],
       "position": [20, 24],
       "stretchSet": {
-        "end": "/interface/scripted/starcustomchat/base/bodyheader.png",
-        "inner": "/interface/scripted/starcustomchat/base/bodyinner.png",
-        "begin": "/interface/scripted/starcustomchat/base/bodyfooter.png"
+        "end": "/interface/scripted/starcustomchat/base/images/bodyheader.png",
+        "inner": "/interface/scripted/starcustomchat/base/images/bodyinner.png",
+        "begin": "/interface/scripted/starcustomchat/base/images/bodyfooter.png"
       }
     },
 
     "btnMoveChat": {
       "type": "button",
-      "base": "/interface/scripted/starcustomchat/base/move.png",
       "position": [290, 0],
       "callback": "toggleChatMovement",
       "checkable": true,
       "checked": false,
       "visible": false,
-      "baseImageChecked": "/interface/scripted/starcustomchat/base/movepressed.png",
+      "base": "/interface/scripted/starcustomchat/base/images/move/move.png:base",
+      "baseImageChecked": "/interface/scripted/starcustomchat/base/images/move/move.png:checked",
       "data": {
         "displayText": "chat.buttons.move_chat"
       }
@@ -94,7 +94,7 @@
       "children": {
         "imgBackground": {
           "type": "image",
-          "file": "/interface/scripted/starcustomchat/base/commandpreview/commandpreview.png",
+          "file": "/interface/scripted/starcustomchat/base/images/commandpreview/commandpreview.png",
           "zlevel": 11
         },
         "imgStretchDescription": {
@@ -103,9 +103,9 @@
           "size": [269, 0],
           "position": [0, 12],
           "stretchSet": {
-            "end": "/interface/scripted/starcustomchat/base/commandpreview/end.png",
-            "inner": "/interface/scripted/starcustomchat/base/commandpreview/inner.png",
-            "begin": "/interface/scripted/starcustomchat/base/commandpreview/begin.png"
+            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/begin.png"
           }
         },
         "lblDescription": {
@@ -137,7 +137,7 @@
     "children": {
       "backgrond": {
         "type": "image",
-        "file": "/interface/scripted/starcustomchat/base/submenu/body.png",
+        "file": "/interface/scripted/starcustomchat/base/images/submenu/body.png",
         "zlevel": 16
       },
       "lblHint": {
@@ -160,8 +160,8 @@
         "type": "button",
         "position": [253, 5],
         "callback": "closeSubMenu",
-        "base": "/interface/scripted/starcustomchat/base/submenu/close.png",
-        "hover": "/interface/scripted/starcustomchat/base/submenu/close_hover.png",
+        "base": "/interface/scripted/starcustomchat/base/images/submenu/close.png",
+        "hover": "/interface/scripted/starcustomchat/base/images/submenu/close_hover.png",
         "zlevel": 17
       }
     }
@@ -198,27 +198,16 @@
 
     "imgTextbox": {
       "type": "image",
-      "file": "/interface/scripted/starcustomchat/base/textbox.png",
+      "file": "/interface/scripted/starcustomchat/base/images/textbox/textbox.png",
       "zlevel": -8,
       "position": [20, 12]
-    },
-
-    "btnOpenBiggerChat": {
-      "type": "button",
-      "base": "/interface/scripted/starcustomchat/base/biggerchat.png",
-      "callback": "openBiggerChat",
-      "position": [275,12],
-      "zlevel": 5,
-      "data": {
-        "displayText": "chat.buttons.bigger_chat"
-      }
     },
 
     "tbxInput": {
       "type": "textbox",
       "position": [23, 14],
       "callback": "textboxCallback",
-      "maxWidth": 247,
+      "maxWidth": 260,
       "zlevel": 4,
       "enterKey": "textboxEnterKey",
       "escapeKey": "escapeTextbox"
@@ -435,8 +424,8 @@
     "btnHideChat": {
       "type": "button",
       "position": [0, 3],
-      "base": "/interface/scripted/starcustomchat/base/leftmenu/close.png",
-      "hover": "/interface/scripted/starcustomchat/base/leftmenu/closehover.png",
+      "base": "/interface/scripted/starcustomchat/base/images/leftmenu/close.png",
+      "hover": "/interface/scripted/starcustomchat/base/images/leftmenu/closehover.png",
       "callback": "closeChat",
       "data": {
         "displayText": "chat.buttons.hide"
@@ -445,7 +434,7 @@
 
   },
   "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "openBiggerChat", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
+    "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

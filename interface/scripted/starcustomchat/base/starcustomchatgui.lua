@@ -590,7 +590,7 @@ function canvasClickEvent(position, button, isButtonDown)
         pane.dismiss()
 
         local chatConfig = buildChatInterface()
-        chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/%s.png", self.customChat.expanded and "body" or "shortbody")
+        chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/images/%s.png", self.customChat.expanded and "body" or "shortbody")
         chatConfig.expanded = self.customChat.expanded
         chatConfig.currentSizes = chatParameters
         chatConfig.lastInputMessage = widget.getText("tbxInput")
@@ -924,14 +924,6 @@ function closeSubMenu()
   self.customChat:closeSubMenu()
   self.runCallbackForPlugins("onSubMenuClose", buttonName, data)
   self.customChat:processQueue()
-end
-
-function openBiggerChat()
-  widget.focus("tbxInput")
-  local biggerChat = root.assetJson("/interface/BiggerChat/biggerchatv2.json")
-  biggerChat.initialText = widget.getText("tbxInput")
-  biggerChat.fontColor = self.customChat:getColor("chattext")
-  player.interact("ScriptPane", biggerChat)
 end
 
 function toggleChatMovement()

@@ -38,8 +38,8 @@
   "leftMenuButtons": [
     {
       "name": "btnOpenSettings",
-      "base": "/interface/scripted/starcustomchat/base/leftmenu/settings.png",
-      "hover": "/interface/scripted/starcustomchat/base/leftmenu/settingshover.png",
+      "base": "/interface/scripted/starcustomchat/base/images/leftmenu/settings.png",
+      "hover": "/interface/scripted/starcustomchat/base/images/leftmenu/settingshover.png",
       "callback": "openSettings",
       "data": {
         "displayText": "chat.buttons.settings"
@@ -47,8 +47,8 @@
     },
     {
       "name": "btnToBottom",
-      "base": "/interface/scripted/starcustomchat/base/leftmenu/tobottom.png",
-      "hover": "/interface/scripted/starcustomchat/base/leftmenu/tobottomhover.png",
+      "base": "/interface/scripted/starcustomchat/base/images/leftmenu/tobottom.png",
+      "hover": "/interface/scripted/starcustomchat/base/images/leftmenu/tobottomhover.png",
       "callback": "toBottom",
       "data": {
         "displayText": "chat.buttons.bottom"
