@@ -91,7 +91,6 @@ function init()
   end
 
   starcustomchat.utils.buildLocale(localePluginConfig)
-  localeChat()
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
@@ -114,7 +113,7 @@ function init()
 
 
   self.runCallbackForPlugins("init", self.customChat)
-    
+  localeChat()
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   self.lastCommand = root.getConfiguration("icc_last_command")
@@ -131,8 +130,8 @@ function init()
 
   local lastText = config.getParameter("lastInputMessage")
   if lastText and lastText ~= "" then
-    widget.setText("tbxInput", lastText)
-    widget.focus("tbxInput")
+    self.customChat:setText(lastText)
+    self.customChat:focusInput()
   end
 
   local currentMessageMode = config.getParameter("currentMessageMode") or root.getConfiguration("scc_message_mode")
@@ -159,7 +158,7 @@ function init()
   end
 
   if config.getParameter("forceFocus") then
-    widget.focus("tbxInput")
+    self.customChat:focusInput()
   end
 
   widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
@@ -265,18 +264,6 @@ function registerCallbacks()
         uuid = player.uniqueId(),
         frame = frameTable[frameSelected]
       }
-    end
-  end))
-
-  starcustomchat.utils.setMessageHandler("scc_set_message_bigchat", localHandler(function(text)
-    widget.focus("tbxInput")
-    if text and utf8.len(text) > 0 then
-      widget.setText("tbxInput", text)
-      textboxCallback()
-    else
-      if widget.getText("tbxInput") == "" then
-        blurTextbox("tbxInput")
-      end
     end
   end))
 
@@ -402,9 +389,7 @@ function findButtonByMode(mode)
 end
 
 function localeChat()
-
-  local savedText = widget.getText("tbxInput")
-  local hasFocus = widget.hasFocus("tbxInput")
+  local hasFocus = self.customChat:hasFocusInput()
 
   self.chatMode = root.getConfiguration("sccMode") or "modern"
   if self.chatMode ~= "compact" then self.chatMode = "modern" end
@@ -416,23 +401,13 @@ function localeChat()
 
   
   local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
-
-  if not widget.setHint then 
-    widget.setText("lblTextboxHint", hint)
-  
-    if not savedText or savedText == "" then
-      widget.setText("lblTextboxHint", hint)
-    end
-  else
-    widget.setText("lblTextboxHint", "")
-    widget.setHint("tbxInput", hint)
-  end
+  self.customChat:setHint(hint)
 
   self.runCallbackForPlugins("onLocaleChange")
 
 
   if hasFocus then
-    widget.focus("tbxInput")
+    self.customChat:focusInput()
   end
 end
 
@@ -467,7 +442,7 @@ function cursorOverride(screenPosition)
 end
 
 function textboxCallback(a, b, c, d)
-  self.runCallbackForPlugins("onTextboxCallback", widget.getText("tbxInput"))
+  self.runCallbackForPlugins("onTextboxCallback", self.customChat:getText())
 end
 
 function checkCommandsPreview()
@@ -486,7 +461,7 @@ function checkCommandsPreview()
     end
   end
 
-  local text = widget.getText("tbxInput")
+  local text = self.customChat:getText()
 
   if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
     local availableCommands = starcustomchat.utils.getCommands(self.availableCommands, text)
@@ -516,13 +491,13 @@ function checkCommandsPreview()
 end
 
 function checkTyping()
-  local text = widget.getText("tbxInput")
+  local text = self.customChat:getText()
 
   if not widget.setHint then
     widget.setVisible("lblTextboxHint", text == "")
   end
 
-  if widget.hasFocus("tbxInput") or text ~= "" and not status.getPersistentEffects("starchatdots") then
+  if self.customChat:hasFocusInput() or text ~= "" and not status.getPersistentEffects("starchatdots") then
     status.addPersistentEffect("starchatdots", "starchatdots")
   else
     status.clearPersistentEffects("starchatdots")
@@ -579,8 +554,8 @@ function canvasClickEvent(position, button, isButtonDown)
       setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
       self.customChat:processQueue()
 
-      if widget.getText("tbxInput") ~= "" then
-        widget.focus("tbxInput")
+      if self.customChat:getText() ~= "" then
+        self.customChat:focusInput()
       end
     else
       if not self.reopening then
@@ -593,7 +568,7 @@ function canvasClickEvent(position, button, isButtonDown)
         chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/images/%s.png", self.customChat.expanded and "body" or "shortbody")
         chatConfig.expanded = self.customChat.expanded
         chatConfig.currentSizes = chatParameters
-        chatConfig.lastInputMessage = widget.getText("tbxInput")
+        chatConfig.lastInputMessage = self.customChat:getText()
         chatConfig.portraits = self.customChat.savedPortraits
         chatConfig.connectionToUuid =  self.customChat.connectionToUuid
         chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
@@ -655,16 +630,16 @@ function processButtonEvents(dt)
 
   -- StarExtensions only
   if not self.isOSBXSB then
-    if input.keyDown("Return") or input.keyDown("/") and not widget.hasFocus("tbxInput") then
+    if input.keyDown("Return") or input.keyDown("/") and not self.customChat:hasFocusInput() then
       if input.keyDown("/") then
-        widget.setText("tbxInput", "/")
+        self.customChat:setText("/")
       end
-      widget.focus("tbxInput")
+      self.customChat:focusInput()
       chat.setInput("")
     end
   end
 
-  if widget.hasFocus("tbxInput") then
+  if self.customChat:hasFocusInput() then
     for _, event in ipairs(input.events()) do
       if event.type == "KeyDown" then
         local lShift = event.data.mods and (event.data.mods.LShift or index(event.data.mods, "LShift") ~= 0)
@@ -679,17 +654,17 @@ function processButtonEvents(dt)
         elseif event.data.key == "Up" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
-            widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
+            self.customChat:setText(self.sentMessages[self.currentSentMessage])
           end
         elseif event.data.key == "Down" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
-            widget.setText("tbxInput", self.sentMessages[self.currentSentMessage])
+            self.customChat:setText(self.sentMessages[self.currentSentMessage])
           end
         elseif event.data.key == "V" and ctrlPressed then
           local textInClipboard = clipboard.getText()
           if textInClipboard and string.find(textInClipboard, '\n') then
-            widget.setText("tbxInput", widget.getText("tbxInput") .. string.gsub(textInClipboard, "[\n\r]", " "))
+            self.customChat:setText(self.customChat:getText() .. string.gsub(textInClipboard, "[\n\r]", " "))
           end
         end
       end
@@ -728,13 +703,9 @@ end
 function escapeTextbox(widgetName)
 
   if not self.runCallbackForPlugins("onTextboxEscape") then
-    blurTextbox(widgetName)
+    self.customChat:setText("")
+    self.customChat:blurInput()
   end
-end
-
-function blurTextbox(widgetName)
-  widget.setText(widgetName, "")
-  widget.blur(widgetName)
 end
 
 function sendMessageToBeSent(text, mode)
@@ -751,7 +722,8 @@ function sendMessageToBeSent(text, mode)
 
   if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
-      blurTextbox("tbxInput")
+      self.customChat:setText("")
+      self.customChat:blurInput()
       return
     end
 
@@ -761,7 +733,7 @@ function sendMessageToBeSent(text, mode)
     end
 
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
-      widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
+      self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
       self.savedCommandSelection = 0
       return
     else
@@ -770,7 +742,7 @@ function sendMessageToBeSent(text, mode)
       starcustomchat.utils.saveMessage(text)
     end
   elseif string.sub(text, 1, 1) == "@" and widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
-    widget.setText("tbxInput", widget.getData("lblCommandPreview") .. " ")
+    self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
     self.savedCommandSelection = 0
     return
   
@@ -831,7 +803,8 @@ function sendMessageToBeSent(text, mode)
       sendMessage(message)
     end
   end
-  blurTextbox("tbxInput")
+  self.customChat:setText("")
+  self.customChat:blurInput()
   self.runCallbackForPlugins("afterTextboxPressed", message)
 end
 
@@ -840,7 +813,8 @@ function textboxEnterKey(widgetName)
   local text = widget.getText(widgetName)
 
   if text == "" then
-    blurTextbox(widgetName)
+    self.customChat:setText("")
+    self.customChat:blurInput()
     return
   end
 
@@ -955,14 +929,14 @@ end
 -- OpenStarbound chat
 function startChat()
   pane.show()
-  widget.focus("tbxInput")
+  self.customChat:focusInput()
   chat.setInput("")
 end
 
 function startCommand()
   pane.show()
-  widget.setText("tbxInput", "/")
-  widget.focus("tbxInput")
+  self.customChat:setText("/")
+  self.customChat:focusInput()
   chat.setInput("")
 end
 
@@ -985,7 +959,7 @@ function addMessages(messages, showPane)
 end
 
 function uninit()
-  local text = widget.getText("tbxInput")
+  local text = self.customChat:getText()
   if not self.reopening and text and text ~= "" then
     clipboard.setText(text)
   end

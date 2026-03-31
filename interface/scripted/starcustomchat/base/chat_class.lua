@@ -266,6 +266,36 @@ function StarCustomChat:resetChat()
   self:processQueue()
 end
 
+-- Textbox callbacks
+function StarCustomChat:setText(text)
+  widget.setText("tbxInput", text)
+end
+
+function StarCustomChat:getText()
+  return widget.getText("tbxInput")
+end
+
+function StarCustomChat:blurInput()
+  widget.blur("tbxInput")
+end
+
+function StarCustomChat:focusInput()
+  widget.focus("tbxInput")
+end
+
+function StarCustomChat:hasFocusInput()
+  return widget.hasFocus("tbxInput")
+end
+
+function StarCustomChat:setHint(hint)
+  if not widget.setHint then 
+    widget.setText("lblTextboxHint", hint)
+  else
+    widget.setText("lblTextboxHint", "")
+    widget.setHint("tbxInput", hint)
+  end
+end
+
 function StarCustomChat:getMessages()
   return self.messages
 end

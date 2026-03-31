@@ -4,8 +4,8 @@ autohide = PluginClass:new(
   { name = "autohide" }
 )
 
-function autohide:init()
-  self:_loadConfig()
+function autohide:init(chat)
+  PluginClass.init(self, chat)
 
   self.timer = (root.getConfiguration("scc_autohide_timer") or 0)
   self.autohideTime = self.timer
@@ -25,7 +25,7 @@ function autohide:update(dt)
     closeChat()
     self.autohideTime = self.timer
   end
-  self.autohideTime = widget.hasFocus("tbxInput") and self.timer or math.max(self.autohideTime - dt, 0)
+  self.autohideTime = self.customChat:hasFocusInput() and self.timer or math.max(self.autohideTime - dt, 0)
 end
 
 function isInspecting(message)

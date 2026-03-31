@@ -108,7 +108,7 @@ end
 
 function DMTab:selectPlayer(...)
   if not self.ignoreSettingList then
-    widget.focus("tbxInput")
+    self.customChat:focusInput()
   end
 
   self.ignoreSettingList = nil

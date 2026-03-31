@@ -231,8 +231,8 @@ end
 function mainchat:onTextboxEscape()
   if self.DMingTo then
     self.customChat:closeSubMenu()
-    if widget.getText("tbxInput") == "" then
-      widget.blur("tbxInput")
+    if self.customChat:getText() == "" then
+      self.customChat:blurInput()
     end
     self.DMingTo = nil
     return true
@@ -290,7 +290,7 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
     elseif buttonName == "dm" then
       self.DMingTo = selectedMessage
       self.customChat:openSubMenu("DMs", starcustomchat.utils.getTranslation("chat.dming.hint"), selectedMessage.displayName or selectedMessage.nickname)
-      widget.focus("tbxInput")
+      self.customChat:focusInput()
 
     elseif buttonName == "ping" then
       local target = starcustomchat.utils.connectionToEntityId(selectedMessage.connection)
@@ -325,8 +325,8 @@ end
 function mainchat:onSubMenuClose()
   if self.DMingTo then
     self.DMingTo = nil
-    if widget.getText("tbxInput") ~= "" then
-      widget.focus("tbxInput")
+    if self.customChat:getText() ~= "" then
+      self.customChat:focusInput()
     end
   end
 end

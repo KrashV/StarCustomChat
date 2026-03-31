@@ -61,7 +61,7 @@ function reply:contextMenuButtonClick(buttonName, selectedMessage)
     self.replyingToMessage = selectedMessage
     local targetName = starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname)
     self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, selectedMessage.text))
-    widget.focus("tbxInput")
+    self.customChat:focusInput()
   end
 end
 
@@ -88,7 +88,7 @@ function reply:onTextboxEnter()
     local nickname = player.name()
 
     local futureMessage = self.customChat.callbackPlugins("formatOutcomingMessage", {
-      text = widget.getText("tbxInput"),
+      text = self.customChat:getText(),
       connection = starcustomchat.utils.entityIdToConnection(player.id()),
       mode = mode,
       nickname = nickname
