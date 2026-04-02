@@ -26,7 +26,8 @@ StarCustomChat = {
   defaultColors = {},
   callbackPlugins = function() end,
   timezoneOffset = 0,
-  fontTable = {}
+  fontTable = {},
+  textBox = nil
 }
 
 StarCustomChat.__index = StarCustomChat
@@ -56,6 +57,19 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.fontTable = root.getConfiguration("scc_custom_fonts") or {}
   o.colorTable = defaultColors
+  o.textBox = Textbox:setup("imgTextbox", {
+    onChanged = textboxCallback,
+    onEnterKey = textboxEnterKey,
+    onEscapeKey = escapeTextbox,
+    tabInsertText = "",
+    caretColor = {255, 255, 255, 255},
+    rect = {0, 0, table.unpack(widget.getSize("imgTextbox"))},
+    maxHeight = 100,
+    onSizeChange = function(newSize)
+      widget.setSize("imgTextbox", newSize)
+    end
+  })
+  
   return o
 end
 
@@ -258,7 +272,7 @@ function StarCustomChat:resetChat()
   self.config.fontSize = newChatSize
   self.maxCharactersAllowed  = maxCharactersAllowed
   self.colorTable = sb.jsonMerge(self.colorTable, root.getConfiguration("scc_custom_colors") or {})
-  widget.setFontColor("tbxInput", self:getColor("chattext"))
+  self:setTextColor(self:getColor("chattext"))
 
   self:requestPortrait(starcustomchat.utils.entityIdToConnection(player.id()), true)
 
@@ -268,32 +282,35 @@ end
 
 -- Textbox callbacks
 function StarCustomChat:setText(text)
-  widget.setText("tbxInput", text)
+  self.textBox:setText(text)
 end
 
 function StarCustomChat:getText()
-  return widget.getText("tbxInput")
+  return self.textBox:getText()
 end
 
 function StarCustomChat:blurInput()
-  widget.blur("tbxInput")
+  self.textBox:blur()
 end
 
 function StarCustomChat:focusInput()
-  widget.focus("tbxInput")
+  self.textBox:focus()
 end
 
 function StarCustomChat:hasFocusInput()
-  return widget.hasFocus("tbxInput")
+  return self.textBox:hasFocus()
 end
 
 function StarCustomChat:setHint(hint)
-  if not widget.setHint then 
-    widget.setText("lblTextboxHint", hint)
-  else
-    widget.setText("lblTextboxHint", "")
-    widget.setHint("tbxInput", hint)
-  end
+   self.textBox:setHint(hint)
+end
+
+function StarCustomChat:setTextColor(color)
+  self.textBox:setTextColor(color)
+end
+
+function StarCustomChat:ignoreInputFrame()
+  self.textBox:setIgnoreInputFrame(true)
 end
 
 function StarCustomChat:getMessages()

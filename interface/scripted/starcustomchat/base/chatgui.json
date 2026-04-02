@@ -197,20 +197,16 @@
     },
 
     "imgTextbox": {
-      "type": "image",
-      "file": "/interface/scripted/starcustomchat/base/images/textbox/textbox.png",
-      "zlevel": -8,
-      "position": [20, 12]
-    },
-
-    "tbxInput": {
-      "type": "textbox",
-      "position": [23, 14],
-      "callback": "textboxCallback",
-      "maxWidth": 260,
-      "zlevel": 4,
-      "enterKey": "textboxEnterKey",
-      "escapeKey": "escapeTextbox"
+      "type": "imageStretch",
+      "direction" : "vertical",
+      "zlevel" : -8,
+      "size": [269, 12],
+      "position": [20, 12],
+      "stretchSet": {
+        "end": "/interface/scripted/starcustomchat/base/images/textbox/end.png",
+        "inner": "/interface/scripted/starcustomchat/base/images/textbox/inner.png",
+        "begin": "/interface/scripted/starcustomchat/base/images/textbox/begin.png"
+      }
     },
 
     "lblCommandPreview": {
@@ -433,7 +429,7 @@
     }
 
   },
-  "scriptWidgetCallbacks": ["textboxEnterKey", "escapeTextbox", "textboxCallback", "setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
+  "scriptWidgetCallbacks": ["setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
     "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"

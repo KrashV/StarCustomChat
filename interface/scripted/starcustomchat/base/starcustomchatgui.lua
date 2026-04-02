@@ -161,7 +161,7 @@ function init()
     self.customChat:focusInput()
   end
 
-  widget.setFontColor("tbxInput", self.customChat:getColor("chattext"))
+  self.customChat:setTextColor(self.customChat:getColor("chattext"))
 
   -- Apparently, we don't know on init if we're admin or not.
   ICChatTimer:add(0.2, disableAdminModes)
@@ -441,7 +441,7 @@ function cursorOverride(screenPosition)
   self.runCallbackForPlugins("onCursorOverride", screenPosition)
 end
 
-function textboxCallback(a, b, c, d)
+function textboxCallback()
   self.runCallbackForPlugins("onTextboxCallback", self.customChat:getText())
 end
 
@@ -656,16 +656,13 @@ function processButtonEvents(dt)
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
             self.customChat:setText(self.sentMessages[self.currentSentMessage])
           end
+          self.customChat:ignoreInputFrame()
         elseif event.data.key == "Down" and shiftPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
             self.customChat:setText(self.sentMessages[self.currentSentMessage])
           end
-        elseif event.data.key == "V" and ctrlPressed then
-          local textInClipboard = clipboard.getText()
-          if textInClipboard and string.find(textInClipboard, '\n') then
-            self.customChat:setText(self.customChat:getText() .. string.gsub(textInClipboard, "[\n\r]", " "))
-          end
+          self.customChat:ignoreInputFrame()
         end
       end
     end
@@ -700,7 +697,7 @@ function scrollLeftMenuDown()
   end
 end
 
-function escapeTextbox(widgetName)
+function escapeTextbox()
 
   if not self.runCallbackForPlugins("onTextboxEscape") then
     self.customChat:setText("")
@@ -808,9 +805,8 @@ function sendMessageToBeSent(text, mode)
   self.runCallbackForPlugins("afterTextboxPressed", message)
 end
 
-function textboxEnterKey(widgetName)
-
-  local text = widget.getText(widgetName)
+function textboxEnterKey()
+  local text = self.customChat:getText()
 
   if text == "" then
     self.customChat:setText("")
@@ -973,3 +969,7 @@ function uninit()
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
 end
+
+
+-- Required to be at the very bottom
+require("/scripts/utils/textbox.lua")
