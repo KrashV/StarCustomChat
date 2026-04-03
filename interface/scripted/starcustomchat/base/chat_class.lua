@@ -567,7 +567,7 @@ function StarCustomChat:collapseMessage(position)
 end
 
 function StarCustomChat:selectMessage(screenPosition)
-  if not widget.inMember("cnvHighlightCanvas", screenPosition) then return end 
+  if not screenPosition or not widget.inMember("cnvHighlightCanvas", screenPosition) then return end 
    
    
   local pos = self.highlightCanvas:mousePosition()
