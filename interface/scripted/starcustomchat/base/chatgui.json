@@ -30,9 +30,22 @@
       "size": [270, 0],
       "position": [20, 24],
       "stretchSet": {
-        "end": "/interface/scripted/starcustomchat/base/images/bodyheader.png",
-        "inner": "/interface/scripted/starcustomchat/base/images/bodyinner.png",
-        "begin": "/interface/scripted/starcustomchat/base/images/bodyfooter.png"
+        "end": "/interface/scripted/starcustomchat/base/images/body/bodyheader.png",
+        "inner": "/interface/scripted/starcustomchat/base/images/body/bodyinner.png",
+        "begin": "/interface/scripted/starcustomchat/base/images/body/bodyfooter.png"
+      }
+    },
+
+    "frameImage": {
+      "type": "imageStretch",
+      "direction" : "vertical",
+      "zlevel" : 12,
+      "size": [270, 0],
+      "position": [20, 24],
+      "stretchSet": {
+        "end": "/interface/scripted/starcustomchat/base/images/body/frameheader.png",
+        "inner": "/interface/scripted/starcustomchat/base/images/body/frameinner.png",
+        "begin": "/interface/scripted/starcustomchat/base/images/body/framefooter.png"
       }
     },
 

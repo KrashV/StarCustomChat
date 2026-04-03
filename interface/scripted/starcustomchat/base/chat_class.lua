@@ -82,9 +82,9 @@ function StarCustomChat:drawBackground()
   else
     local color = self:getColor("background"):sub(2)
     widget.setImageStretchSet("background", {
-      ["end"] = "/interface/scripted/starcustomchat/base/images/bodyheader.png?replace;FFFFFF01=" .. color,
-      ["inner"] = "/interface/scripted/starcustomchat/base/images/bodyinner.png?replace;FFFFFF01=" .. color,
-      ["begin"] = "/interface/scripted/starcustomchat/base/images/bodyfooter.png?replace;FFFFFF01=" .. color
+      ["end"] = "/interface/scripted/starcustomchat/base/images/body/bodyheader.png?replace;FFFFFF01=" .. color,
+      ["inner"] = "/interface/scripted/starcustomchat/base/images/body/bodyinner.png?replace;FFFFFF01=" .. color,
+      ["begin"] = "/interface/scripted/starcustomchat/base/images/body/bodyfooter.png?replace;FFFFFF01=" .. color
     })
   end
 end
