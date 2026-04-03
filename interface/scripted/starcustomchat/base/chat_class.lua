@@ -63,10 +63,12 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
     onEscapeKey = escapeTextbox,
     tabInsertText = "",
     caretColor = {255, 255, 255, 255},
-    rect = {0, 0, table.unpack(widget.getSize("imgTextbox"))},
-    maxHeight = 100,
+    rect = {2, 0, table.unpack(widget.getSize("imgTextbox"))},
+    maxHeight = 60,
     onSizeChange = function(newSize)
-      widget.setSize("imgTextbox", newSize)
+      local old = widget.getSize("imgTextbox")
+      widget.setSize("imgTextbox", {old[1], newSize[2]})
+      if setSizes then setSizes(o.expanded, o.config) end
     end
   })
   
@@ -197,27 +199,18 @@ function StarCustomChat:setSubMenuTexts(hint, text)
 end
 
 function StarCustomChat:openSubMenu(type, hint, text)
-  if not widget.active("lytSubMenu") then
-    local size = {0, widget.getSize("lytSubMenu")[2]}
-    widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition(self.canvasName, vec2.add(widget.getPosition(self.canvasName), size))
-    widget.setSize(self.canvasName, vec2.sub(widget.getSize(self.canvasName), size))
-    widget.setPosition("cnvHighlightCanvas", vec2.add(widget.getPosition("cnvHighlightCanvas"), size))
-  else
+  if widget.active("lytSubMenu") then
     self.callbackPlugins("onSubMenuReopen", type)
   end
   self:setSubMenuTexts(hint, text)
   widget.setVisible("lytSubMenu", true)
+  if setSizes then setSizes(self.expanded, self.config) end
 end
 
 function StarCustomChat:closeSubMenu()
   if widget.active("lytSubMenu") then
     widget.setVisible("lytSubMenu", false)
-    local size = {0, widget.getSize("lytSubMenu")[2]}
-    widget.setPosition("lytCommandPreview", vec2.sub(widget.getPosition("lytCommandPreview"), size))
-    widget.setPosition(self.canvasName, vec2.sub(widget.getPosition(self.canvasName), size))
-    widget.setSize(self.canvasName, vec2.add(widget.getSize(self.canvasName), size))
-    widget.setPosition("cnvHighlightCanvas", vec2.sub(widget.getPosition("cnvHighlightCanvas"), size))
+    if setSizes then setSizes(self.expanded, self.config) end
   end
 end
 
@@ -509,8 +502,6 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
   end
 end
 
-
---TODO: instead of all messages we need to look at the messages that are drawn
 function StarCustomChat:offsetCanvas(offset)
   if not offset then return end
   
@@ -575,13 +566,15 @@ function StarCustomChat:collapseMessage(position)
   end
 end
 
-function StarCustomChat:selectMessage(position)
-  local pos = position or self.highlightCanvas:mousePosition()
+function StarCustomChat:selectMessage(screenPosition)
+  if not widget.inMember("cnvHighlightCanvas", screenPosition) then return end 
+   
+   
+  local pos = self.highlightCanvas:mousePosition()
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]
     if message.offset and pos[2] > (message.offset or 0) and pos[2] <= message.offset + message.height + self.config.spacings.messages  then
-      self:highlightMessage(message)
       return message
     end
   end
@@ -594,10 +587,15 @@ function filterMessages(messages, filter)
     --filter messages by mode availability
     local mode = message.mode
     
-    if (mode and (widget.active("btnCk" .. mode) == nil and true or widget.getChecked("btnCk"  .. mode))) 
-    and not filter or (message.text and string.find(message.text, filter, 1, true)) then
-      table.insert(drawnMessageIndexes, i)
-    end
+  if mode
+    and (widget.active("lytModeFilter.btnCk" .. mode) == nil or widget.getChecked("lytModeFilter.btnCk" .. mode))
+    and (
+      not filter
+      or (message.text and string.find(message.text, filter, 1, true))
+    )
+  then
+    table.insert(drawnMessageIndexes, i)
+  end
   end
   return drawnMessageIndexes
 end

@@ -186,7 +186,7 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
     return false
   end
 
-  local selectedMessage = self.customChat:selectMessage()
+  local selectedMessage = self.customChat:selectMessage(screenPosition)
   if not selectedMessage or not selectedMessage.replyUUID then
     return false
   end

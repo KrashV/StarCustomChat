@@ -68,7 +68,7 @@ end
 
 
 function mainchat:onCursorOverride(screenPosition)
-  local selectedMessage = self.customChat:selectMessage()
+  local selectedMessage = self.customChat:selectMessage(screenPosition)
   if self.previewPortraits and selectedMessage and selectedMessage.connection and 
     (self.customChat.connectionToUuid[tostring(selectedMessage.connection)] or selectedMessage.mode == "RadioMessage" and selectedMessage.portrait) then
     
@@ -332,7 +332,7 @@ function mainchat:onSubMenuClose()
 end
 
 function mainchat:onCreateTooltip(screenPosition)
-  local selectedMessage = self.customChat:selectMessage()
+  local selectedMessage = self.customChat:selectMessage(screenPosition)
   
   if selectedMessage and selectedMessage and selectedMessage.tooltip then
     return starcustomchat.utils.hasTranslation(selectedMessage.tooltip) and starcustomchat.utils.getTranslation(selectedMessage.tooltip)

@@ -117,7 +117,6 @@ function init()
   setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
 
   self.lastCommand = root.getConfiguration("icc_last_command")
-  self.tooltipFields = {}
 
   self.savedCommandSelection = 0
 
@@ -145,8 +144,6 @@ function init()
   end
 
   createPromiseFunction()
-  
-  requestPortraits()
 
   self.customChat:drawBackground()
   self.customChat:processQueue()
@@ -170,7 +167,7 @@ function init()
   if pane.setPosition then
     widget.setVisible("btnMoveChat", true)
     ICChatTimer:add(0.1, function()
-      local newPosition = root.getConfiguration("scc_chat_position") or {0, 0}
+      local newPosition = root.getConfiguration("scc_chat_position") or {3, 5}
       pane.setPosition(newPosition)
     end)
   end
@@ -340,6 +337,8 @@ function registerCallbacks()
   self.runCallbackForPlugins("registerMessageHandlers")
   self.runCallbackForPlugins("_requestStagehandHandlers")
 
+  -- We should request the portraits (ours too) only after we are ready to accept them
+  requestPortraits()
   return true
 end
 
@@ -347,7 +346,7 @@ function requestPortraits()
   local messages = self.customChat:getMessages()
   local authors = {}
 
-  -- First, gather the unique connetcions
+  -- First, gather the unique connections
   for _, msg in ipairs(messages) do
     local conn = msg.connection
     if conn and conn ~= 0 and not authors[conn] then
@@ -427,7 +426,7 @@ function update(dt)
   processLeftMenuButtons()
 
   if self.toggleMoveChat then
-    local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), widget.getSize("btnMoveChat"))
+    local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), vec2.div(widget.getSize("btnMoveChat"), 2))
     pane.setPosition(vec2.sub(cursorPosition, widget.getPosition("btnMoveChat")))
   end
 
@@ -507,38 +506,51 @@ end
 
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
-
   local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
-
   local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
 
+  local fullHeight = chatParameters.expandedBodyHeight
+  local collapsedDiff = chatParameters.expandedBodyHeight - chatParameters.bodyHeight
+  local modeHeight = expanded and fullHeight or (fullHeight - collapsedDiff)
+
+  local submenuHeight = (widget.active("lytSubMenu") and widget.getSize("lytSubMenu")[2]) or 0
+  local textboxHeight = widget.getSize("imgTextbox")[2]
+
+  local bodyHeight = math.max(modeHeight - submenuHeight - textboxHeight)
+
+  local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
+
   return {
-    canvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages - 4} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages - 4},
-    highligtCanvasSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages - 4} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages - 4},
-    bgStretchImageSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight - chatParameters.spacings.messages} or {canvasSize[1], chatParameters.bodyHeight - chatParameters.spacings.messages},
-    scrollAreaSize = expanded and {canvasSize[1], chatParameters.expandedBodyHeight} or {canvasSize[1], chatParameters.bodyHeight },
-    playersSaSize = expanded and {saPlayersSize[1], chatParameters.expandedBodyHeight - 15} or {saPlayersSize[1], chatParameters.bodyHeight - 15},
-    playersDMBackground = expanded and {charactersListWidth, chatParameters.expandedBodyHeight - 15} or {charactersListWidth, chatParameters.bodyHeight- 15}
+    canvasSize = {canvasSize[1], bodyHeight + 2},
+    playersSaSize = {saPlayersSize[1], math.max(bodyHeight - 15, 1)},
+    submenuHeight = submenuHeight,
+    textboxHeight = textboxHeight,
+    fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 1
   }
 end
 
 function setSizes(expanded, chatParameters, currentSizes)
-  local defaultSizes = getSizes(expanded, chatParameters)
-  widget.setSize(self.canvasName, currentSizes and currentSizes.canvasSize or defaultSizes.canvasSize)
-  widget.setSize("saScrollArea", currentSizes and currentSizes.canvasSize or defaultSizes.canvasSize)
-  widget.setSize(self.highlightCanvasName, currentSizes and currentSizes.highligtCanvasSize or defaultSizes.highligtCanvasSize)
-  widget.setSize("lytCharactersToDM.background", currentSizes and currentSizes.playersDMBackground or defaultSizes.playersDMBackground)
-  widget.setSize("backgroundImage", currentSizes and currentSizes.bgStretchImageSize or defaultSizes.bgStretchImageSize)
-  widget.setSize("saFakeScrollArea", currentSizes and currentSizes.scrollAreaSize or defaultSizes.scrollAreaSize)
-  widget.setSize("lytCharactersToDM.saPlayers", currentSizes and currentSizes.playersSaSize or defaultSizes.playersSaSize)
+  local sizes = getSizes(expanded, chatParameters)
 
   if self.isOSBXSB then
-    pane.setSize(expanded and {pane.getSize()[1], chatParameters.expandedBodyHeight + 25} or {pane.getSize()[1], chatParameters.bodyHeight + 25})
-    widget.setSize("background", expanded and {self.chatWindowWidth, chatParameters.expandedBodyHeight} or {self.chatWindowWidth, chatParameters.bodyHeight})
-    widget.setSize(self.canvasName, currentSizes and vec2.add(currentSizes.canvasSize, {0,2}) or vec2.add(defaultSizes.canvasSize, {0,2}))
-    widget.setSize("saScrollArea", currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
-    widget.setSize(self.highlightCanvasName, currentSizes and vec2.add(currentSizes.highligtCanvasSize, {0,2}) or vec2.add(defaultSizes.highligtCanvasSize, {0,2}))
+    pane.setSize({pane.getSize()[1], sizes.fullSize})
   end
+
+  widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
+  widget.setPosition(self.canvasName, vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+  widget.setPosition("saScrollArea", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+  widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+  widget.setPosition("backgroundImage", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+  widget.setPosition("background", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+
+  widget.setSize(self.canvasName, sizes.canvasSize)
+  widget.setSize("saScrollArea", sizes.canvasSize)
+  widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+  widget.setSize("background", sizes.canvasSize)
+  widget.setSize("backgroundImage", sizes.canvasSize)
+  widget.setSize("lytCharactersToDM.background", sizes.playersSaSize)
+  widget.setSize("lytCharactersToDM.saPlayers", sizes.playersSaSize)
+
 end
 
 function canvasClickEvent(position, button, isButtonDown)
@@ -577,8 +589,8 @@ function canvasClickEvent(position, button, isButtonDown)
         chatConfig.reopened = true
         chatConfig.selectedModes = {}
         for _, mode in ipairs(chatConfig["chatModes"]) do 
-          if widget.active("btnCk" .. mode) then
-            chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("btnCk" .. mode)
+          if widget.active("lytModeFilter.btnCk" .. mode) then
+            chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("lytModeFilter.btnCk" .. mode)
           end
         end
 
@@ -860,14 +872,6 @@ function index(tab, value)
 end
 
 function createTooltip(screenPosition)
-  if self.tooltipFields then
-    for widgetName, tooltip in pairs(self.tooltipFields) do
-      if widget.inMember(widgetName, screenPosition) and widget.active(widgetName) then
-        return tooltip
-      end
-    end
-  end
-
   if widget.getChildAt(screenPosition) then
     local w = widget.getChildAt(screenPosition)
 
@@ -961,6 +965,7 @@ function uninit()
   end
 
   saveEverythingDude()
+  widget.setSize("imgTextbox", self.customChat.config.textBoxDefaultSize)
 
   if handlerCutter then
     handlerCutter()

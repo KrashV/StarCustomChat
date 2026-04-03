@@ -8,7 +8,7 @@
       "type" : "panefeature",
       "anchor" : "bottomLeft",
       "positionLocked" : true,
-      "offset": [3, 5]
+      "offset": [0, 0]
     },
     
     "background" : {
@@ -19,7 +19,7 @@
     "cnvBackgroundCanvas": {
       "type": "canvas",
       "zlevel": -8,
-      "rect": [20, 26, 289, 310],
+      "rect": [20, 26, 290, 310],
       "mouseTransparent": false,
       "captureMouseEvents": true
     },
@@ -27,7 +27,7 @@
       "type": "imageStretch",
       "direction" : "vertical",
       "zlevel" : -9,
-      "size": [269, 0],
+      "size": [270, 0],
       "position": [20, 24],
       "stretchSet": {
         "end": "/interface/scripted/starcustomchat/base/images/bodyheader.png",
@@ -73,14 +73,14 @@
     "chatLog": {
       "type": "canvas",
       "zlevel": 10,
-      "rect": [20, 26, 289, 310],
+      "rect": [20, 25, 290, 309],
       "mouseTransparent": true,
       "captureMouseEvents": true
     },
     "cnvHighlightCanvas": {
       "type": "canvas",
       "zlevel": 9,
-      "rect": [20, 26, 289, 310],
+      "rect": [20, 25, 290, 309],
       "mouseTransparent": false,
       "captureMouseEvents": true
     },
@@ -88,7 +88,7 @@
     "lytCommandPreview": {
       "type": "layout",
       "layoutType": "basic",
-      "rect": [21, 25, 289, 310],
+      "rect": [21, 25, 290, 310],
       "zlevel": 11,
       "visible": false,
       "children": {
@@ -100,7 +100,7 @@
         "imgStretchDescription": {
           "type": "imageStretch",
           "direction" : "vertical",
-          "size": [269, 0],
+          "size": [270, 0],
           "position": [0, 12],
           "stretchSet": {
             "end": "/interface/scripted/starcustomchat/base/images/commandpreview/end.png",
@@ -114,63 +114,75 @@
           "fontSize": 7,
           "wrapWidth": 260,
           "color": "#bbbbbbAA",
-          "position": [4, 13]
+          "position": [3, 13]
         },
         "lblCommandPreview": {
           "type": "label",
           "zlevel": 11,
           "fontSize": 8,
-          "position": [4, 1]
+          "position": [3, 1]
+        }
+      }
+    },
+
+    "imgTextbox": {
+      "type": "imageStretch",
+      "direction" : "vertical",
+      "zlevel" : 12,
+      "size": [270, 13],
+      "position": [20, 12],
+      "stretchSet": {
+        "end": "/interface/scripted/starcustomchat/base/images/textbox/end.png",
+        "inner": "/interface/scripted/starcustomchat/base/images/textbox/inner.png",
+        "begin": "/interface/scripted/starcustomchat/base/images/textbox/begin.png"
+      }
+    },
+    
+    "lytSubMenu": {
+      "type": "layout",
+      "position": [20, 25],
+      "size": [270, 16],
+      "layoutType": "basic",
+      "zlevel": 15,
+      "visible": false,
+      "scissoring": false,
+      "children": {
+        "backgrond": {
+          "type": "image",
+          "file": "/interface/scripted/starcustomchat/base/images/submenu/body.png",
+          "zlevel": 16
+        },
+        "lblHint": {
+          "type": "label",
+          "position": [5, 8],
+          "value": "",
+          "zlevel": 17,
+          "fontSize": 7,
+          "vAnchor": "mid"
+        },
+        "lblText": {
+          "type": "label",
+          "value": "",
+          "position": [5, 8],
+          "zlevel": 17,
+          "fontSize": 7,
+          "vAnchor": "mid"
+        },
+        "resetEditLayout": {
+          "type": "button",
+          "position": [255, 5],
+          "callback": "closeSubMenu",
+          "base": "/interface/scripted/starcustomchat/base/images/submenu/close.png",
+          "hover": "/interface/scripted/starcustomchat/base/images/submenu/close_hover.png",
+          "zlevel": 17
         }
       }
     },
 
     
-  "lytSubMenu": {
-    "type": "layout",
-    "position": [22, 24],
-    "size": [265, 16],
-    "layoutType": "basic",
-    "zlevel": 15,
-    "visible": false,
-    "scissoring": false,
-    "children": {
-      "backgrond": {
-        "type": "image",
-        "file": "/interface/scripted/starcustomchat/base/images/submenu/body.png",
-        "zlevel": 16
-      },
-      "lblHint": {
-        "type": "label",
-        "position": [4, 8],
-        "value": "",
-        "zlevel": 17,
-        "fontSize": 7,
-        "vAnchor": "mid"
-      },
-      "lblText": {
-        "type": "label",
-        "value": "",
-        "position": [4, 8],
-        "zlevel": 17,
-        "fontSize": 7,
-        "vAnchor": "mid"
-      },
-      "resetEditLayout": {
-        "type": "button",
-        "position": [253, 5],
-        "callback": "closeSubMenu",
-        "base": "/interface/scripted/starcustomchat/base/images/submenu/close.png",
-        "hover": "/interface/scripted/starcustomchat/base/images/submenu/close_hover.png",
-        "zlevel": 17
-      }
-    }
-  },
-
-    
     "saScrollArea": {
       "type": "scrollArea",
-      "rect": [20, 26, 289, 312],
+      "rect": [20, 24, 290, 312],
       "buttons" : {
         "horizontal" : {
           "forward" : { "base" : "/assetmissing.png", "hover" : "/assetmissing.png", "pressed" : "/assetmissing.png" },
@@ -196,22 +208,9 @@
       "children": {}
     },
 
-    "imgTextbox": {
-      "type": "imageStretch",
-      "direction" : "vertical",
-      "zlevel" : -8,
-      "size": [269, 12],
-      "position": [20, 12],
-      "stretchSet": {
-        "end": "/interface/scripted/starcustomchat/base/images/textbox/end.png",
-        "inner": "/interface/scripted/starcustomchat/base/images/textbox/inner.png",
-        "begin": "/interface/scripted/starcustomchat/base/images/textbox/begin.png"
-      }
-    },
-
     "lblCommandPreview": {
       "type": "label",
-      "position": [23,14],
+      "position": [24, 15],
       "value": "",
       "mouseTransparent": true,
       "zLevel": 3,
@@ -220,7 +219,7 @@
 
     "lblTextboxHint": {
       "type": "label",
-      "position": [23,14],
+      "position": [24, 15],
       "value": "",
       "mouseTransparent": true,
       "zLevel": 3,
@@ -233,6 +232,14 @@
       "callback": "setMode",
       "buttons": [
       ]
+    },
+
+    "lytModeFilter": {
+      "type": "layout",
+      "layoutType": "basic",
+      "position": [290, 12],
+      "size": [16, 290],
+      "children": {}
     },
 
     "lblPortraitPreview": {
@@ -427,7 +434,6 @@
         "displayText": "chat.buttons.hide"
       }
     }
-
   },
   "scriptWidgetCallbacks": ["setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
     "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],

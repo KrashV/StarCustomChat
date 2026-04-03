@@ -147,11 +147,11 @@ function buildChatInterface()
       end
 
     
-      baseInterface["gui"]["btnCk" .. mode.name] = {
+      baseInterface["gui"]["lytModeFilter"]["children"]["btnCk" .. mode.name] = {
         type = "button",
         checkable = true,
         checked = checked,
-        position = {289, 11 + 15 * (toggle_id - 1)},
+        position = {0, 15 * (toggle_id - 1)},
         pressedOffset = {0, 0},
         base = "/interface/scripted/starcustomchat/base/images/chatmode/chatmode.png:disabled",
         hover = "/interface/scripted/starcustomchat/base/images/chatmode/chatmode.png:disabled",
@@ -165,6 +165,8 @@ function buildChatInterface()
       }
       toggle_id = toggle_id + 1
     end
+
+    baseInterface["gui"]["lytModeFilter"].size = {16, 16 * toggle_id}
   end
 
   baseInterface.expanded = getConfiguration("icc_is_expanded")

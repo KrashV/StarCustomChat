@@ -10,7 +10,7 @@ function voicechat:init()
   
   self:_loadConfig()
   local isEnabled = root.getConfiguration("scc_voice_enabled") or false
-  widget.setChecked("btnCkVoice", isEnabled)
+  widget.setChecked("lytModeFilter.btnCkVoice", isEnabled)
 
   self:setEnabled(isEnabled)
 end

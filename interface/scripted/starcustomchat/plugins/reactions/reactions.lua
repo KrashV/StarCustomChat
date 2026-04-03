@@ -72,7 +72,7 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
 end
 
 function reactions:onCreateTooltip(screenPosition)
-  local selectedMessage = self.customChat:selectMessage()
+  local selectedMessage = self.customChat:selectMessage(screenPosition)
   if selectedMessage and selectedMessage.reactions then
 
     local currentPos = vec2.sub(vec2.sub(screenPosition, widget.getPosition("cnvHighlightCanvas") ), config.getParameter("gui")["panefeature"]["offset"])
@@ -95,7 +95,7 @@ end
 
 function reactions:onCanvasClick(screenPosition, button, isButtonDown)
   if button == 0 and isButtonDown then
-    local selectedMessage = self.customChat:selectMessage()
+    local selectedMessage = self.customChat:selectMessage(screenPosition)
     if selectedMessage and selectedMessage.reactions then
       
       for _, reactObj in ipairs (selectedMessage.reactions) do 

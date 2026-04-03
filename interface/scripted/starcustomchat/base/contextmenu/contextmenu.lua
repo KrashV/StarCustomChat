@@ -50,10 +50,12 @@ end
 function processContextMenu(screenPosition)
   widget.setVisible("lytContext", not not self.selectedMessage)
 
-  if widget.inMember(self.highlightCanvasName, screenPosition) then
-    self.selectedMessage = self.customChat:selectMessage(widget.inMember("lytContext", screenPosition) and self.selectedMessage and {0, self.selectedMessage.offset + 1})
-  else
-    self.selectedMessage = nil
+  if not widget.inMember("lytContext", screenPosition) or not self.selectedMessage then
+    self.selectedMessage = self.customChat:selectMessage(screenPosition)
+  end
+
+  if self.selectedMessage then
+    self.customChat:highlightMessage(self.selectedMessage)
   end
 
   -- determine current hover / selection identity
