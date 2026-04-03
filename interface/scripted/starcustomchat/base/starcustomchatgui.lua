@@ -506,8 +506,7 @@ end
 
 function getSizes(expanded, chatParameters)
   local canvasSize = widget.getSize(self.canvasName)
-  local saPlayersSize = widget.getSize("lytCharactersToDM.saPlayers")
-  local charactersListWidth = widget.getSize("lytCharactersToDM.background")[1]
+  local dmPlayersSize = widget.getSize("lytCharactersToDM.background")
 
   local fullHeight = chatParameters.expandedBodyHeight
   local collapsedDiff = chatParameters.expandedBodyHeight - chatParameters.bodyHeight
@@ -522,7 +521,8 @@ function getSizes(expanded, chatParameters)
 
   return {
     canvasSize = {canvasSize[1], bodyHeight + 2},
-    playersSaSize = {saPlayersSize[1], math.max(bodyHeight - 15, 1)},
+    dmPlayersSize = {dmPlayersSize[1], math.max(bodyHeight - 15, 1)},
+    dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(bodyHeight - 15, 1)},
     submenuHeight = submenuHeight,
     textboxHeight = textboxHeight,
     fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 1
@@ -548,8 +548,10 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize(self.highlightCanvasName, sizes.canvasSize)
   widget.setSize("background", sizes.canvasSize)
   widget.setSize("backgroundImage", sizes.canvasSize)
-  widget.setSize("lytCharactersToDM.background", sizes.playersSaSize)
-  widget.setSize("lytCharactersToDM.saPlayers", sizes.playersSaSize)
+  
+  widget.setSize("lytCharactersToDM", sizes.dmPlayersSASize)
+  widget.setSize("lytCharactersToDM.background", sizes.dmPlayersSize)
+  widget.setSize("lytCharactersToDM.saPlayers", sizes.dmPlayersSASize)
 
 end
 

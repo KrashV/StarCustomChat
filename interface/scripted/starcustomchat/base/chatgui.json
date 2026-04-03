@@ -286,14 +286,15 @@
 
     "lytCharactersToDM": {
       "type": "layout",
-			"rect": [1, 28, 27, 313],
+      "position": [-1, 40],
+      "size": [20, 300],
       "visible": false,
 			"layoutType": "basic",
 			"children": {
         "background": {
           "type": "imageStretch",
           "direction" : "vertical",
-          "size": [18, 0],
+          "size": [20, 0],
           "position": [0, -1],
           "stretchSet": {
             "end": "/interface/scripted/starcustomchat/base/dmtab/charactersheader.png",
@@ -303,7 +304,8 @@
         },
         "saPlayers": {
           "type": "scrollArea",
-          "rect": [1, 1, 28, 270],
+          "position": [2, 0],
+          "size": [25, 300],
           "buttons" : {
             "vertical" : {
               "forward" : { "base" : "/assetmissing.png", "hover": "/assetmissing.png", "pressed" : "/assetmissing.png" },
@@ -333,10 +335,8 @@
               "schema": {
                 "selectedBG": "/interface/scripted/starcustomchat/base/dmtab/characterselected.png",
                 "unselectedBG": "/interface/scripted/starcustomchat/base/dmtab/characterunselected.png",
-                "spacing": [0,
-                2],
-                "memberSize": [18,
-                18],
+                "spacing": [0, 2],
+                "memberSize": [18, 18],
                 "listTemplate": {
                   "background": {
                     "type": "image",
