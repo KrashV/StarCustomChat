@@ -824,6 +824,9 @@ end
 function textboxEnterKey()
   local text = self.customChat:getText()
 
+  -- Add trim
+  text = starcustomchat.utils.trim(text) 
+
   if text == "" then
     self.customChat:setText("")
     self.customChat:blurInput()

@@ -214,6 +214,10 @@ function starcustomchat.utils.listToSet(list)
   return set
 end
 
+function starcustomchat.utils.trim(s)
+  return s:gsub("^%s*(.-)%s*$", "%1") 
+end
+
 function starcustomchat.utils.cropMessage(text, trimLength)
   return utf8.len(text) < trimLength and text or starcustomchat.utils.utf8Substring(text, 1, trimLength) .. "..."
 end
