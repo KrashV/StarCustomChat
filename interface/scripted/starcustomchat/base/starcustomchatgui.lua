@@ -525,7 +525,7 @@ function getSizes(expanded, chatParameters)
     dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(bodyHeight - 15, 1)},
     submenuHeight = submenuHeight,
     textboxHeight = textboxHeight,
-    fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 1
+    fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2
   }
 end
 
