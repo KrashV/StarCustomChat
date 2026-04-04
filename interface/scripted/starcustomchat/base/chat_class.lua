@@ -813,7 +813,7 @@ function StarCustomChat:processQueue()
       local croppedText = string.format("%s: %s", self.messages[prevMessage].displayName or self.messages[prevMessage].nickname, 
         starcustomchat.utils.cropMessage(starcustomchat.utils.clearMetatags(self.messages[prevMessage].text), self.canvas:size()[1] // 10) )
       
-      self.canvas:drawText(croppedText, {
+      self.canvas:drawText(string.gsub(croppedText, "\n", "    "), {
           position = vec2.add(replyStartOffset, {size / 2, 0}),
           horizontalAnchor = "left",
           verticalAnchor = "bottom"

@@ -13,7 +13,7 @@ function reply:init(chat)
 
   if self.replyingToMessage then
     local targetName = starcustomchat.utils.getTranslation("chat.reply.recipient", self.replyingToMessage.displayName or self.replyingToMessage.nickname)
-    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, self.replyingToMessage.text))
+    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, string.gsub(self.replyingToMessage.text, "\n", "    ")))
   end
   self.messagesToReply = {}
 
@@ -60,7 +60,7 @@ function reply:contextMenuButtonClick(buttonName, selectedMessage)
   if selectedMessage and selectedMessage.uuid and buttonName == "reply" then
     self.replyingToMessage = selectedMessage
     local targetName = starcustomchat.utils.getTranslation("chat.reply.recipient", selectedMessage.displayName or selectedMessage.nickname)
-    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, selectedMessage.text))
+    self.customChat:openSubMenu("reply", targetName, self:cropMessage(targetName, string.gsub(selectedMessage.text, "\n", "    ")))
     self.customChat:focusInput()
   end
 end
