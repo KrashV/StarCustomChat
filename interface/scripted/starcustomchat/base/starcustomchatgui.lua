@@ -521,8 +521,8 @@ function getSizes(expanded, chatParameters)
 
   return {
     canvasSize = {canvasSize[1], bodyHeight + 2},
-    dmPlayersSize = {dmPlayersSize[1], math.max(bodyHeight - 15, 1)},
-    dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(bodyHeight - 15, 1)},
+    dmPlayersSize = {dmPlayersSize[1], math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
+    dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
     submenuHeight = submenuHeight,
     textboxHeight = textboxHeight,
     fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2
