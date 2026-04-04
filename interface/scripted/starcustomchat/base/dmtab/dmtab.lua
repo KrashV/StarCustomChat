@@ -121,11 +121,12 @@ function DMTab:drawIcon(canvasName, args)
   if type(args) == "number" then
     local playerPortrait = world.entityPortrait(args, "full")
     for _, layer in ipairs(playerPortrait) do
-      playerCanvas:drawImage(layer.image, {-14, -18})
+      playerCanvas:drawImage(layer.image, {7, 2}, 1, nil, true)
     end
   elseif type(args) == "table" then
     for _, layer in ipairs(args) do
-      playerCanvas:drawImage(layer.image, {-14, -18})
+      local size = starcustomchat.utils.safeImageSize(layer.image)
+      playerCanvas:drawImage(layer.image, {7, 2}, 1, nil, true)
     end
   elseif type(args) == "string" and utf8.len(args) == 2 then
     playerCanvas:drawText(args, {
