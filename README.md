@@ -25,7 +25,7 @@ This mod requires [StarExtensions](https://github.com/StarExtensions/StarExtensi
  - **Mousewheel**: scroll chat up / down
  - **Ctrl** + **Mousewheel**: change font size
  - **Shift** + **Mousewheel**: scroll up / down twice as fast
- - **Shift** + **Up**/**Down**: scroll through last sent messages
+ - **Alt** + **Up**/**Down**: scroll through last sent messages
  - **P** (default, change in /binds): repeat last command
 
 # Plugins

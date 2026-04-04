@@ -9,6 +9,7 @@ Moved the images around internally.
 Deleted BiggerChat.
 MULTILINE TEXTBOX!! Thanks D.
 The sent messages are now trimmed from the beginning and the end. Does not remove spaces in between.
+Last message scroll is now triggered by Alt + Up/Down.
 
 ## API
 New functions to set, get text and focus of the input textbox.

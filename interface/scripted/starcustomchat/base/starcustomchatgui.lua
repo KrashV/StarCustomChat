@@ -550,7 +550,7 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setSize("background", sizes.canvasSize)
   widget.setSize("backgroundImage", sizes.canvasSize)
   widget.setSize("frameImage", sizes.canvasSize)
-  
+
   widget.setSize("lytCharactersToDM", sizes.dmPlayersSASize)
   widget.setSize("lytCharactersToDM.background", sizes.dmPlayersSize)
   widget.setSize("lytCharactersToDM.saPlayers", sizes.dmPlayersSASize)
@@ -662,18 +662,21 @@ function processButtonEvents(dt)
         local rShift = event.data.mods and (event.data.mods.RShift or index(event.data.mods, "RShift") ~= 0)
         local lCtrl = event.data.mods and (event.data.mods.LCtrl or index(event.data.mods, "LCtrl") ~= 0)
         local rCtrl = event.data.mods and (event.data.mods.RCtrl or index(event.data.mods, "RCtrl") ~= 0)
+        local lAlt = event.data.mods and (event.data.mods.LAlt or index(event.data.mods, "LAlt") ~= 0)
+        local rAlt = event.data.mods and (event.data.mods.RAlt or index(event.data.mods, "RAlt") ~= 0)
         local shiftPressed = lShift or rShift
         local ctrlPressed = lCtrl or rCtrl
+        local altPressed = lAlt or rAlt
 
         if event.data.key == "Tab" then
           self.savedCommandSelection = self.savedCommandSelection + 1
-        elseif event.data.key == "Up" and shiftPressed then
+        elseif event.data.key == "Up" and altPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
             self.customChat:setText(self.sentMessages[self.currentSentMessage])
           end
           self.customChat:ignoreInputFrame()
-        elseif event.data.key == "Down" and shiftPressed then
+        elseif event.data.key == "Down" and altPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
             self.customChat:setText(self.sentMessages[self.currentSentMessage])
