@@ -62,6 +62,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
     onEnterKey = textboxEnterKey,
     onEscapeKey = escapeTextbox,
     tabInsertText = "",
+    lineSpacing = 1,
     caretColor = {255, 255, 255, 255},
     rect = {2, 0, table.unpack(widget.getSize("imgTextbox"))},
     maxHeight = 60,
