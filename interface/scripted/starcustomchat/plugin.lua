@@ -103,6 +103,10 @@ function PluginClass:formatOutcomingMessage(message)
   return message
 end
 
+function PluginClass:editMessage(message)
+  return self:formatIncomingMessage(message)
+end
+
 function PluginClass:onDrawMessage(message)
 
 end

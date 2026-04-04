@@ -307,7 +307,8 @@ function registerCallbacks()
   starcustomchat.utils.setMessageHandler("scc_edit_message", function(_, _, data)
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     if msgInd then
-      data = self.customChat.callbackPlugins("formatIncomingMessage", data)
+      data.edited = true
+      data = self.customChat.callbackPlugins("editMessage", data)
       local message = self.customChat.messages[msgInd]
       message.text = data.text
       message.mode = data.mode

@@ -14,3 +14,4 @@ Last message scroll is now triggered by Alt + Up/Down.
 
 ## API
 New functions to set, get text and focus of the input textbox.
+New plugin method for editting the messages.
