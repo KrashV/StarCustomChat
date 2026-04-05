@@ -70,6 +70,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
       local old = widget.getSize("imgTextbox")
       widget.setSize("imgTextbox", {old[1], newSize[2]})
       if setSizes then setSizes(o.expanded, o.config) end
+      o:processQueue()
     end
   })
   
@@ -305,6 +306,10 @@ end
 
 function StarCustomChat:ignoreInputFrame()
   self.textBox:setIgnoreInputFrame(true)
+end
+
+function StarCustomChat:setMaxHeight(height)
+  self.textBox:setMaxHeight(height)
 end
 
 function StarCustomChat:getMessages()
