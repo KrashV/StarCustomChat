@@ -2,6 +2,7 @@ require "/scripts/messageutil.lua"
 require "/scripts/scctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
+require "/interface/scripted/starcustomchat/animatedWidgets.lua"
 require "/interface/scripted/starcustomchat/base/chat_class.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
@@ -114,7 +115,7 @@ function init()
 
   self.runCallbackForPlugins("init", self.customChat)
   localeChat()
-  setSizes(expanded, chatConfig, config.getParameter("currentSizes"))
+  setSizes(expanded, chatConfig)
 
   self.lastCommand = root.getConfiguration("icc_last_command")
 
@@ -415,6 +416,7 @@ function update(dt)
 
   ICChatTimer:update(dt)
   promises:update()
+  animatedWidgets:update(dt)
   
   if self.drawingCanvas then self.drawingCanvas:clear() end
 
@@ -521,20 +523,26 @@ function getSizes(expanded, chatParameters)
   local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
 
   return {
+    fullHeight = {canvasSize[1], fullHeight + 2},
     canvasSize = {canvasSize[1], bodyHeight + 2},
     dmPlayersSize = {dmPlayersSize[1], math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
     dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
     submenuHeight = submenuHeight,
     textboxHeight = textboxHeight,
-    fullSize = bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2
+    fullSize = {pane.getSize()[1], bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2}
   }
 end
 
-function setSizes(expanded, chatParameters, currentSizes)
+function setSizes(expanded, chatParameters, smooth)
   local sizes = getSizes(expanded, chatParameters)
+  local speed = self.customChat.config.chatSizeChangeSpeed
 
   if self.isOSBXSB then
-    pane.setSize({pane.getSize()[1], sizes.fullSize})
+    if smooth then
+      animatedWidgets:add(AnimatedWidget:setPaneSize(sizes.fullSize, speed))
+    else
+      pane.setSize(sizes.fullSize)
+    end
   end
 
   widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
@@ -545,16 +553,28 @@ function setSizes(expanded, chatParameters, currentSizes)
   widget.setPosition("background", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
   widget.setPosition("frameImage", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
 
-  widget.setSize(self.canvasName, sizes.canvasSize)
-  widget.setSize("saScrollArea", sizes.canvasSize)
-  widget.setSize(self.highlightCanvasName, sizes.canvasSize)
-  widget.setSize("background", sizes.canvasSize)
-  widget.setSize("backgroundImage", sizes.canvasSize)
-  widget.setSize("frameImage", sizes.canvasSize)
+  widget.setSize(self.canvasName, sizes.fullHeight)
+  widget.setSize(self.highlightCanvasName, sizes.fullHeight)
+  widget.setSize("saScrollArea", sizes.fullHeight)
 
-  widget.setSize("lytCharactersToDM", sizes.dmPlayersSASize)
-  widget.setSize("lytCharactersToDM.background", sizes.dmPlayersSize)
-  widget.setSize("lytCharactersToDM.saPlayers", sizes.dmPlayersSASize)
+  if smooth then
+    animatedWidgets:add(AnimatedWidget:bind("background"):setSize(sizes.canvasSize, speed))
+    animatedWidgets:add(AnimatedWidget:bind("frameImage"):setSize(sizes.canvasSize, speed), function()
+        widget.setSize(self.canvasName, sizes.canvasSize)
+        widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+    end)
+    
+    animatedWidgets:add(AnimatedWidget:bind("lytCharactersToDM"):setSize(sizes.dmPlayersSASize, speed))
+    animatedWidgets:add(AnimatedWidget:bind("lytCharactersToDM.saPlayers"):setSize(sizes.dmPlayersSASize, speed))
+    animatedWidgets:add(AnimatedWidget:bind("lytCharactersToDM.background"):setSize(sizes.dmPlayersSize, speed))
+  else
+    widget.setSize("background", sizes.canvasSize)
+    widget.setSize("backgroundImage", sizes.canvasSize)
+    widget.setSize("frameImage", sizes.canvasSize)
+    widget.setSize("lytCharactersToDM", sizes.dmPlayersSASize)
+    widget.setSize("lytCharactersToDM.background", sizes.dmPlayersSize)
+    widget.setSize("lytCharactersToDM.saPlayers", sizes.dmPlayersSASize)
+  end
 
 end
 
@@ -568,7 +588,7 @@ function canvasClickEvent(position, button, isButtonDown)
     root.setConfiguration("icc_is_expanded", self.customChat.expanded)
 
     if self.isOSBXSB then
-      setSizes(self.customChat.expanded, self.customChat.config, config.getParameter("currentSizes"))
+      setSizes(self.customChat.expanded, self.customChat.config, true)
       self.customChat:processQueue()
 
       if self.customChat:getText() ~= "" then
