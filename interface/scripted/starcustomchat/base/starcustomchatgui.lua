@@ -1008,4 +1008,4 @@ end
 
 
 -- Required to be at the very bottom
-require("/scripts/utils/textbox.lua")
+require("/interface/textarea/scripts/textbox.lua")
