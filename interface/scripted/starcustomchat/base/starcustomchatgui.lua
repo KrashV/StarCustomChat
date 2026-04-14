@@ -2,7 +2,7 @@ require "/scripts/messageutil.lua"
 require "/scripts/scctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
-require "/interface/animatedWidgets.lua"
+require "/interface/StarboundTextboxInterface/animatedWidgets.lua"
 require "/interface/scripted/starcustomchat/base/chat_class.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
@@ -1009,4 +1009,4 @@ end
 
 
 -- Required to be at the very bottom
-require("/interface/textarea/scripts/textbox.lua")
+require("/interface/StarboundTextboxInterface/textarea/scripts/textbox.lua")
