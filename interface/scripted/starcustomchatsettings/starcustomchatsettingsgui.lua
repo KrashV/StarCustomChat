@@ -2,7 +2,7 @@ require "/scripts/vec2.lua"
 require "/scripts/util.lua"
 require "/scripts/messageutil.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
-require "/interface/scripted/combobox/combobox.class.lua"
+require "/interface/combobox/scripts/combobox.lua"
 
 function init()
 
@@ -62,7 +62,6 @@ function init()
     end
 
     sb.logError("Plugin %s does not exist", pluginName)
-
     return
   end
 

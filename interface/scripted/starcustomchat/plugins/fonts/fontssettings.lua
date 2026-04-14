@@ -22,7 +22,11 @@ function fonts:openTab()
     self:selectedCombobox(data)
   end, {
     filter = true,
-    size = root.imageSize("/interface/scripted/combobox/background.png"),
+    background = "/interface/scripted/starcustomchatsettings/combobox/backgroundFilter.png",
+    listSchema = {
+      listSelected = "/interface/scripted/starcustomchatsettings/combobox/listselected.png",
+      listUnselected = "/interface/scripted/starcustomchatsettings/combobox/listunselected.png"
+    },
     offset = {0, 10},
     closeOnSelect = true
   })
@@ -66,7 +70,10 @@ function fonts:changedFontItem()
     self.widget.setVisible("btnDropToDefault", true)
     self.widget.setVisible("btnSelectFont", true)
   end
+end
 
+function fonts:openCombobox()
+  self.combobox:toggle()
 end
 
 function fonts:dropToDefault()

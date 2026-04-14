@@ -2,7 +2,7 @@ require "/scripts/messageutil.lua"
 require "/scripts/scctimer.lua"
 require "/scripts/util.lua"
 require "/scripts/rect.lua"
-require "/interface/scripted/starcustomchat/animatedWidgets.lua"
+require "/interface/animatedWidgets.lua"
 require "/interface/scripted/starcustomchat/base/chat_class.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
@@ -397,7 +397,8 @@ function localeChat()
 
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do
-    widget.setText("rgChatMode." .. i, starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode))
+    local name = starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode)
+    widget.setText("rgChatMode." .. i, name)
   end
 
   

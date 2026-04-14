@@ -1,7 +1,6 @@
 {
   "gui" : {
     "background" : {
-      "zlevel" : -10,
       "type" : "background",
       "fileBody" : "/interface/scripted/starcustomchatsettings/body.png",
       "fileHeader" : "/interface/scripted/starcustomchatsettings/header.png",
@@ -23,8 +22,7 @@
       "icon" : {
         "type" : "image",
         "file" : "",
-        "position" : [0, 0],
-        "zlevel" : -1
+        "position" : [0, 0]
       }
     },
 
@@ -118,7 +116,6 @@
     "lytSelectLanguage": {
       "type": "layout",
       "visible": false,
-      "zlevel": 99,
       "layoutType": "basic",
       "size": [32, 85],
       "position": [194, 66],
@@ -199,7 +196,7 @@
     }
   },
   "scriptWidgetCallbacks": ["_generalCallback", "_generalSpinnerCallback.up", "toggleLanguageSelection", "changePluginPage", "_generalSpinnerCallback.down", "setLanguage", 
-    "comboboxSelect", "comboboxClick", "comboboxFilter", "_generalTextBoxCallback", "_generalTextBoxCallbackEnter", "_generalTextBoxCallbackEscape",
+    "_generalTextBoxCallback", "_generalTextBoxCallbackEnter", "_generalTextBoxCallbackEscape",
     "scrollPluginsSAUp", "scrollPluginsSADown"
   ],
 
