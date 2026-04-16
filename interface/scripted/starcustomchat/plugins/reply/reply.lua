@@ -79,10 +79,6 @@ function reply:onSubMenuClose()
 end
 
 function reply:onTextboxEnter()
-  local function calculateNewMessageUUID(connection, text, mode, nickname)
-    return util.hashString(connection .. text)
-  end
-
   if self.replyingToMessage then
     local mode = widget.getSelectedData("rgChatMode").mode
     local nickname = player.name()
@@ -96,8 +92,10 @@ function reply:onTextboxEnter()
 
     local dataToSend = {
       originalMessageUUID = self.replyingToMessage.uuid,
-      newMessageUUID = calculateNewMessageUUID(starcustomchat.utils.entityIdToConnection(player.id()), futureMessage.text, 
-        mode, nickname) 
+      newMessageUUID = self.customChat:calculateUUID({
+        connection = starcustomchat.utils.entityIdToConnection(player.id()), text = futureMessage.text, 
+        mode = mode, nickname = nickname
+      }) 
     }
 
     if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then

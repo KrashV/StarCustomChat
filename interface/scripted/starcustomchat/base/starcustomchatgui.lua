@@ -322,7 +322,7 @@ function registerCallbacks()
         message.forceAvatar = true
       end
 
-      local newUUID = util.hashString(data.connection .. data.text)
+      local newUUID = self.customChat:calculateUUID(data)
       local oldUUID = message.uuid
       self.customChat:replaceUUID(oldUUID, newUUID)
 

@@ -140,7 +140,7 @@ function StarCustomChat:addMessage(msg)
   end
 
   if msg.connection then
-    msg.uuid = util.hashString(msg.connection .. (msg.text or ""))
+    msg.uuid = self:calculateUUID(msg)
     msg = formatMessage(msg)
     if msg then
       table.insert(self.messages, msg)
@@ -164,6 +164,10 @@ end
 
 function StarCustomChat:getColor(type)
   return self.colorTable[type] and "#" .. self.colorTable[type] or self.config.defaultColor
+end
+
+function StarCustomChat:calculateUUID(message)
+  return util.hashString(message.connection .. (message.text or ""))
 end
 
 function StarCustomChat:findMessageByUUID(uuid)
