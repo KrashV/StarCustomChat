@@ -28,7 +28,8 @@ function fonts:openTab()
       listUnselected = "/interface/scripted/starcustomchatsettings/combobox/listunselected.png"
     },
     offset = {0, 10},
-    closeOnSelect = true
+    closeOnSelect = true,
+    sortKeys = true
   })
   self:populateList()
 end
