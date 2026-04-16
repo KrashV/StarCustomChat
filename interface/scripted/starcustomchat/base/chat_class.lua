@@ -57,6 +57,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.fontTable = root.getConfiguration("scc_custom_fonts") or {}
   o.colorTable = defaultColors
+  local textboxSize = widget.getSize("imgTextbox")
   o.textBox = Textbox:setup("imgTextbox", {
     onChanged = textboxCallback,
     onEnterKey = textboxEnterKey,
@@ -64,7 +65,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
     tabInsertText = "",
     lineSpacing = 1,
     caretColor = {255, 255, 255, 255},
-    rect = {2, 0, table.unpack(widget.getSize("imgTextbox"))},
+    rect = {2, 0, textboxSize[1] - 1, textboxSize[2]},
     maxHeight = 60,
     onSizeChange = function(newSize)
       local old = widget.getSize("imgTextbox")
