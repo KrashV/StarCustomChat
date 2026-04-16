@@ -801,8 +801,16 @@ function sendMessageToBeSent(text, mode)
           
           promises:add(world.sendEntityMessage(targetId, "scc_add_message", message), function() 
             if targetId ~= player.id() then
-              message.displayName = "-> " .. targetName
-              world.sendEntityMessage(player.id(), "scc_add_message", message)
+              local oldUUID = self.customChat:calculateUUID(message)
+              local msgInd = self.customChat:findMessageByUUID(oldUUID)
+              if msgInd and self.customChat.messages[msgInd].mode == "Whisper" then
+                local oldDisplayName = self.customChat.messages[msgInd].displayName or self.customChat.messages[msgInd].nickname
+                self.customChat.messages[msgInd].displayName = oldDisplayName .. ", " .. targetName
+                self.customChat:processQueue()
+              else
+                message.displayName = "-> " .. targetName
+                world.sendEntityMessage(player.id(), "scc_add_message", message)
+              end
             end
           end, function() 
             local whisper = string.find(targetName, "%s") and "/w \"" .. targetName .. "\" " .. message.text 
