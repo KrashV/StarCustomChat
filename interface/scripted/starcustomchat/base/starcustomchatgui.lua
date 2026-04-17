@@ -748,6 +748,8 @@ end
 
 function sendMessageToBeSent(text, mode)
   mode = mode or widget.getSelectedData("rgChatMode").mode
+  -- Add trim
+  text = starcustomchat.utils.trim(text)
 
   local message = {
     text = text,
@@ -856,9 +858,6 @@ end
 
 function textboxEnterKey()
   local text = self.customChat:getText()
-
-  -- Add trim
-  text = starcustomchat.utils.trim(text) 
 
   if text == "" then
     self.customChat:setText("")
