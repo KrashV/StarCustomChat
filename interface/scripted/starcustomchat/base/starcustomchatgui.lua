@@ -554,9 +554,9 @@ function setSizes(expanded, chatParameters, smooth)
   widget.setPosition("background", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
   widget.setPosition("frameImage", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
 
-  widget.setSize(self.canvasName, sizes.fullHeight)
-  widget.setSize(self.highlightCanvasName, sizes.fullHeight)
-  widget.setSize("saScrollArea", sizes.fullHeight)
+  widget.setSize(self.canvasName, sizes.canvasSize)
+  widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+  widget.setSize("saScrollArea", sizes.canvasSize)
 
   if smooth then
     animatedWidgets:add(AnimatedWidget:bind("background"):setSize(sizes.canvasSize, speed))
