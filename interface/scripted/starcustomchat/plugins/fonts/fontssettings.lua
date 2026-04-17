@@ -27,7 +27,7 @@ function fonts:openTab()
       listSelected = "/interface/scripted/starcustomchatsettings/combobox/listselected.png",
       listUnselected = "/interface/scripted/starcustomchatsettings/combobox/listunselected.png"
     },
-    offset = {0, 10},
+    offset = {0, 15},
     closeOnSelect = true,
     sortKeys = true
   })
