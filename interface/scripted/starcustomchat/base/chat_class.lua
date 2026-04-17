@@ -206,6 +206,7 @@ function StarCustomChat:setSubMenuTexts(hint, text)
 end
 
 function StarCustomChat:openSubMenu(type, hint, text)
+  self.submenuType = type
   if widget.active("lytSubMenu") then
     self.callbackPlugins("onSubMenuReopen", type)
   end
@@ -214,7 +215,12 @@ function StarCustomChat:openSubMenu(type, hint, text)
   if setSizes then setSizes(self.expanded, self.config) end
 end
 
+function StarCustomChat:getSubMenuType()
+  return self.submenuType
+end
+
 function StarCustomChat:closeSubMenu()
+  self.submenuType = nil
   if widget.active("lytSubMenu") then
     widget.setVisible("lytSubMenu", false)
     if setSizes then setSizes(self.expanded, self.config) end

@@ -107,6 +107,7 @@
       "base" : "/interface/scripted/starcustomchatsettings/flags/en.png",
       "hover" : "/interface/scripted/starcustomchatsettings/flags/en.png?brightness=90",
       "position": [200, 152],
+      "zlevel": -1,
       "callback": "toggleLanguageSelection",
       "data": {
         "displayText": "settings.change_language"
