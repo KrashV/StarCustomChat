@@ -22,10 +22,10 @@ function fonts:openTab()
     self:selectedCombobox(data)
   end, {
     filter = true,
-    background = "/interface/scripted/starcustomchatsettings/combobox/backgroundFilter.png",
+    background = "/interface/scripted/starcustomchatsettings/images/combobox/backgroundFilter.png",
     listSchema = {
-      listSelected = "/interface/scripted/starcustomchatsettings/combobox/listselected.png",
-      listUnselected = "/interface/scripted/starcustomchatsettings/combobox/listunselected.png"
+      listSelected = "/interface/scripted/starcustomchatsettings/images/combobox/listselected.png",
+      listUnselected = "/interface/scripted/starcustomchatsettings/images/combobox/listunselected.png"
     },
     offset = {0, 15},
     closeOnSelect = true,

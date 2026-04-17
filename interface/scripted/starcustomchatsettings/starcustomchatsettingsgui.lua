@@ -128,8 +128,8 @@ function localeSettings()
   starcustomchat.utils.buildLocale(self.localization)
   local selectedLocale = root.getConfiguration("scclocale") or "en"
   widget.setButtonImages("btnLanguage", {
-    base = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?border=1;000F",
-    hover = "/interface/scripted/starcustomchatsettings/flags/" .. selectedLocale .. ".png?brightness=90?border=1;000F"
+    base = "/interface/scripted/starcustomchatsettings/images/flags/" .. selectedLocale .. ".png?border=1;000F",
+    hover = "/interface/scripted/starcustomchatsettings/images/flags/" .. selectedLocale .. ".png?brightness=90?border=1;000F"
   })
   
   local version = starcustomchat.utils.getVersion()
@@ -155,7 +155,7 @@ function populateLanguagesList()
 
   for _, localeConfig in ipairs(self.availableLocales) do 
     local locale = localeConfig.code
-    local flagImage = "/interface/scripted/starcustomchatsettings/flags/" .. locale .. ".png"
+    local flagImage = "/interface/scripted/starcustomchatsettings/images/flags/" .. locale .. ".png"
     local li = widget.addListItem("lytSelectLanguage.saLanguages.listLanguages")
 
     if li then

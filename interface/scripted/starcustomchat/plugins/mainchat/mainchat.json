@@ -153,15 +153,15 @@
             "callback": "resetAvatar",
             "zlevel": 20,
             "caption": "",
-            "base" : "/interface/scripted/starcustomchatsettings/button.png?flipx;",
-            "hover" : "/interface/scripted/starcustomchatsettings/button.png?flipx;?brightness=90",
+            "base" : "/interface/scripted/starcustomchatsettings/images/buttons/redbuttoncorner.png?flipx;",
+            "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/redbuttoncorner.png?flipx;?brightness=90",
             "translationKey": "settings.reset_avatar"
           },
       
           "btnDeleteChat" : {
             "type" : "button",
-            "base" : "/interface/scripted/starcustomchatsettings/button.png",
-            "hover" : "/interface/scripted/starcustomchatsettings/button.png?brightness=90",
+            "base" : "/interface/scripted/starcustomchatsettings/images/buttons/redbuttoncorner.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/redbuttoncorner.png?brightness=90",
             "position" : [162, 21],
             "caption" : "Clear",
             "callback": "clearHistory",
@@ -273,8 +273,8 @@
 
           "btnMode": {
             "type": "button",
-            "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-            "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+            "base" : "/interface/scripted/starcustomchatsettings/images/buttons/bt.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/bt.png?brightness=90",
             "position": [185, 126],
             "callback": "changeMode"
           },
@@ -310,8 +310,8 @@
             "type": "button",
             "position": [71, 117],
             "callback": "togglePortraitSelection",
-            "base" : "/interface/scripted/starcustomchatsettings/down.png",
-            "hover" : "/interface/scripted/starcustomchatsettings/downhover.png",
+            "base" : "/interface/scripted/starcustomchatsettings/images/buttons/down.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/downhover.png",
             "data": {
               "displayText": "settings.mainchat.select_portrait",
               "mode": "portraits"
@@ -322,8 +322,8 @@
             "type": "button",
             "position": [8, 54],
             "callback": "togglePortraitSelection",
-            "base" : "/interface/scripted/starcustomchatsettings/up.png",
-            "hover" : "/interface/scripted/starcustomchatsettings/uphover.png",
+            "base" : "/interface/scripted/starcustomchatsettings/images/buttons/up.png",
+            "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/uphover.png",
             "data": {
               "displayText": "settings.mainchat.select_frame",
               "mode": "frames"
@@ -343,9 +343,9 @@
           "btnBack": {
             "type": "button",
             "position": [185, 110],
-            "base": "/interface/scripted/starcustomchatsettings/common/back.png:base",
-            "hover": "/interface/scripted/starcustomchatsettings/common/back.png:hover",
-            "pressed": "/interface/scripted/starcustomchatsettings/common/back.png:pressed",
+            "base": "/interface/scripted/starcustomchatsettings/images/common/back.png:base",
+            "hover": "/interface/scripted/starcustomchatsettings/images/common/back.png:hover",
+            "pressed": "/interface/scripted/starcustomchatsettings/images/common/back.png:pressed",
             "callback": "togglePortraitSelection",
             "data": {
               "displayText": "settings.back"
@@ -388,8 +388,8 @@
                     "btnRemove": {
                       "type": "button",
                       "position": [28, 30],
-                      "base": "/interface/scripted/starcustomchatsettings/common/remove.png:base",
-                      "hover": "/interface/scripted/starcustomchatsettings/common/remove.png:hover",
+                      "base": "/interface/scripted/starcustomchatsettings/images/common/remove.png:base",
+                      "hover": "/interface/scripted/starcustomchatsettings/images/common/remove.png:hover",
                       "zLevel": 2,
                       "callback": "removePortrait",
                       "data": {

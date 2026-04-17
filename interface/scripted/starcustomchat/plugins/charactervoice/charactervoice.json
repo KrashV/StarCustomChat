@@ -116,8 +116,8 @@
 
       "btnPlay" : {
         "type": "button",
-        "base" : "/interface/scripted/starcustomchatsettings/bt.png",
-        "hover" : "/interface/scripted/starcustomchatsettings/bt.png?brightness=90",
+        "base" : "/interface/scripted/starcustomchatsettings/images/buttons/bt.png",
+        "hover" : "/interface/scripted/starcustomchatsettings/images/buttons/bt.png?brightness=90",
         "callback": "playSound",
         "position": [180, 120],
         "translationKey": "settings.plugins.charactervoice.test"

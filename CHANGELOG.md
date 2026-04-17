@@ -19,3 +19,4 @@ Font names are now sorted by name.
 ## API
 New functions to set, get text and focus of the input textbox.
 New plugin method for editting the messages.
+Moved the settings images to a separate folder.
