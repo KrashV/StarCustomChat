@@ -311,6 +311,10 @@ function StarCustomChat:setHint(hint)
    self.textBox:setHint(hint)
 end
 
+function StarCustomChat:resetHint()
+   self.textBox:setHint(starcustomchat.utils.getTranslation("chat.textbox.hint"))
+end
+
 function StarCustomChat:setTextColor(color)
   self.textBox:setTextColor(color)
 end

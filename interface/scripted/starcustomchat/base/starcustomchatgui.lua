@@ -401,9 +401,7 @@ function localeChat()
     widget.setText("rgChatMode." .. i, name)
   end
 
-  
-  local hint = starcustomchat.utils.getTranslation("chat.textbox.hint")
-  self.customChat:setHint(hint)
+  self.customChat:resetHint()
 
   self.runCallbackForPlugins("onLocaleChange")
 
