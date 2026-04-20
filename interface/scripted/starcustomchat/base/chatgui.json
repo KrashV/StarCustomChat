@@ -299,7 +299,7 @@
 
     "lytCharactersToDM": {
       "type": "layout",
-      "position": [-1, 40],
+      "position": [0, 40],
       "size": [20, 300],
       "visible": false,
 			"layoutType": "basic",
