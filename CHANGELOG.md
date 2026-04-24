@@ -4,6 +4,7 @@ Fixed the portraits not being requested on join.
 Fixed the DM character icon being misplaced if sprites are not 43x43.
 Moved the language button in settings lower in z level.
 Cleaned up the Fonts layouts.
+Fixed the command preview layout overlapping with the submenu.
 
 ## Features
 Added the /filter command to filter the messages in the chat by text.
