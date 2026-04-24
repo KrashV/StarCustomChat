@@ -15,6 +15,7 @@ The sent messages are now trimmed from the beginning and the end. Does not remov
 Last message scroll is now triggered by Alt + Up/Down.
 Smoothed out the change of the chat size.
 Font names are now sorted by name.
+The server can now pass a list of its supported commands dynamically.
 
 ## API
 New functions to set, get text and focus of the input textbox.

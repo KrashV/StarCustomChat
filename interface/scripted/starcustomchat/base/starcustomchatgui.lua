@@ -336,8 +336,13 @@ function registerCallbacks()
     end
   end))
 
+  starcustomchat.utils.setMessageHandler("scc_stagehand_commandlist", simpleHandler(function(commandList)
+    self.availableCommands = sb.jsonMerge(self.availableCommands, { serverside = commandList })
+  end))
+
   self.runCallbackForPlugins("registerMessageHandlers")
   self.runCallbackForPlugins("_requestStagehandHandlers")
+  self.runCallbackForPlugins("_requestCommands")
 
   -- We should request the portraits (ours too) only after we are ready to accept them
   requestPortraits()

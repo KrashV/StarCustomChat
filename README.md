@@ -107,6 +107,22 @@ if purpose == "requestHandlers" then
 end
 ```
 
+Since SCC 2.0.0, the servers can also pass the command list in the format of `commands.config` to the client. For that, the stagehand parameter should be described in the plugin (see above).
+
+```lua
+if purpose == "requestCommands" then
+  if data and data.playerId and world.entityExists(data.playerId) then
+    world.sendEntityMessage(data.playerId, "scc_stagehand_commandlist", {
+      { command = "/myNewCommand", description = "New server command" },
+      { command = "/compoundCommand", description = "Main command", subcommands = {
+        option1, option2
+      } }
+    })
+    stagehand.die()
+  end
+end
+```
+
 # External support
 
 If you don't want to create a whole plugin just to bring some commands to the preview, you can create a custom file with the `.starcustomchat.commands` extention wherever in your mod. The sytax for the commands is the same:

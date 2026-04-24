@@ -33,6 +33,14 @@ function PluginClass:_requestStagehandHandlers()
   end
 end
 
+function PluginClass:_requestCommands()
+  if self.stagehandType and self.stagehandType ~= "" then
+    starcustomchat.utils.runWhenPlayerReady(function()
+      starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "requestCommands", data = {playerId = player.id()}})
+    end)
+  end
+end
+
 function PluginClass:update(dt)
 
 end
