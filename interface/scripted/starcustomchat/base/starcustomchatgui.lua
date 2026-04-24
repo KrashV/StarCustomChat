@@ -336,8 +336,8 @@ function registerCallbacks()
     end
   end))
 
-  starcustomchat.utils.setMessageHandler("scc_stagehand_commandlist", simpleHandler(function(commandList)
-    self.availableCommands = sb.jsonMerge(self.availableCommands, { serverside = commandList })
+  starcustomchat.utils.setMessageHandler("scc_stagehand_commandlist", simpleHandler(function(commandList, pluginName)
+    self.availableCommands = sb.jsonMerge(self.availableCommands, { [pluginName or "serverside"] = commandList })
   end))
 
   self.runCallbackForPlugins("registerMessageHandlers")

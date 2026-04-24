@@ -117,7 +117,7 @@ if purpose == "requestCommands" then
       { command = "/compoundCommand", description = "Main command", subcommands = {
         option1, option2
       } }
-    })
+    }, "MyNewPlugin") -- The name of the plugin is optional.
     stagehand.die()
   end
 end
