@@ -102,7 +102,7 @@ In order for the plugins to understand that this stagehand supports their messag
 if purpose == "requestHandlers" then
   if data and data.playerId then
     world.sendEntityMessage(data.playerId, "scc_stagehand_allowed_messages", {"here", "is", "a", "list", "of", "supported", "messages"})
-  stagehand.die()
+    stagehand.die()
   end
 end
 ```

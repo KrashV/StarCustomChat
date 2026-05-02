@@ -67,7 +67,7 @@ function init()
     end
 
     if pluginConfig.commands then
-      self.availableCommands = sb.jsonMerge(self.availableCommands, {pluginName = root.assetJson(pluginConfig.commands)})
+      self.availableCommands = sb.jsonMerge(self.availableCommands, {[pluginName] = root.assetJson(pluginConfig.commands)})
     end
 
     for _, localeConfig in ipairs(availableLocales) do 
