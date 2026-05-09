@@ -95,9 +95,6 @@ function init()
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
   local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
-  
-
-  createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize)
 
   local storedMessages = root.getConfiguration("icc_last_messages", jarray())
 
@@ -113,6 +110,7 @@ function init()
     sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
 
 
+  createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize, self.customChat:getFont("chattext"))
   self.runCallbackForPlugins("init", self.customChat)
   localeChat()
   setSizes(expanded, chatConfig)
@@ -286,7 +284,11 @@ function registerCallbacks()
 
   starcustomchat.utils.setMessageHandler( "scc_reset_settings", localHandler(function(data)
     starcustomchat.utils.getLocale()
-    createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, root.getConfiguration("icc_font_size") or self.customChat.config.fontSize)
+    createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, 
+      self.customChat.config.wrapWidthCompactMode, 
+      root.getConfiguration("icc_font_size") or self.customChat.config.fontSize, 
+      self.customChat:getFont("chattext")
+    )
     self.runCallbackForPlugins("onSettingsUpdate", data)
     
     localeChat()
@@ -366,7 +368,7 @@ function requestPortraits()
   end
 end
 
-function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontSize)
+function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontSize, font)
   pane.removeWidget("totallyFakeLabelFullMode")
   pane.removeWidget("totallyFakeLabelCompactMode")
 
@@ -374,13 +376,15 @@ function createTotallyFakeWidgets(wrapWidthFullMode, wrapWidthCompactMode, fontS
     type = "label",
     wrapWidth = wrapWidthFullMode,
     fontSize = fontSize,
-    position = {-100, -100}
+    position = {-100, -100},
+    font = font or nil
   }, "totallyFakeLabelFullMode")
   pane.addWidget({
     type = "label",
     wrapWidth = wrapWidthCompactMode,
     fontSize = fontSize,
-    position = {-100, -100}
+    position = {-100, -100},
+    font = font or nil
   }, "totallyFakeLabelCompactMode")
 end
 
@@ -650,7 +654,7 @@ function processEvents(screenPosition)
           self.customChat.config.fontSize = newChatSize
 
           root.setConfiguration("icc_font_size", self.customChat.config.fontSize)
-          createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize)
+          createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize, self.customChat:getFont("chattext"))
           self.customChat:processQueue()
         else
           self.customChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))

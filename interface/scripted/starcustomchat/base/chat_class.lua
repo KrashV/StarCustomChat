@@ -72,7 +72,8 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
       widget.setSize("imgTextbox", {old[1], newSize[2]})
       if setSizes then setSizes(o.expanded, o.config) end
       o:processQueue()
-    end
+    end,
+    textFont = self:getFont("chattext")
   })
   
   return o
@@ -643,13 +644,13 @@ function StarCustomChat:getTextSize(text, fontSize)
   local labelToCheck = self.chatMode == "modern" and "totallyFakeLabelFullMode" or "totallyFakeLabelCompactMode"
 
   if fontSize then
-    createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, fontSize)
+    createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, fontSize, self:getFont("chattext"))
   end
   widget.setText(labelToCheck, text)
   local sizeOfText = widget.getSize(labelToCheck)
   widget.setText(labelToCheck, "")
-  if fontSize then
-    createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, self.config.fontSize)
+  if fontSize then -- Return back to default
+    createTotallyFakeWidgets(self.config.wrapWidthFullMode, self.config.wrapWidthCompactMode, self.config.fontSize, self:getFont("chattext"))
   end
 
   return sizeOfText
@@ -660,9 +661,22 @@ function StarCustomChat:getFont(name)
 end
 
 function StarCustomChat:setFonts(fontTable)
-  self.fontTable = fontTable
-  self:processQueue()
+  if fontTable then
+    self.fontTable = fontTable
+
+    createTotallyFakeWidgets(
+      self.config.wrapWidthFullMode,
+      self.config.wrapWidthCompactMode,
+      self.config.fontSize,
+      self:getFont("chattext")
+    )
+
+    self.recalculateHeight = true
+    self.textBox:setFont(self:getFont("chattext"))
+    self:processQueue()
+  end
 end
+
 
 function StarCustomChat:processQueue()
   self.canvas:clear()
@@ -705,11 +719,12 @@ function StarCustomChat:processQueue()
       local sizeOfText = message.imageSize and vec2.div(message.imageSize, 10 / self.config.fontSize) or self:getTextSize(text)
 
       if not sizeOfText then return end 
-        message.height = sizeOfText[2]
-        message.textHeight = message.height
-      else
-        message.height = message.textHeight
-      end
+
+      message.height = sizeOfText[2]
+      message.textHeight = message.height
+    else
+      message.height = message.textHeight
+    end
 
     -- Calculate message offset
     local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
