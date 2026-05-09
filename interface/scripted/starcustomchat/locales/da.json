@@ -7,6 +7,7 @@
   "chat.modes.Whisper": "Privé",
   "chat.modes.RadioMessage": "Radiobericht",
   "chat.modes.CommandResult": "Commandoresultaat",
+  "chat.message.edited": "bewerkt",
 
   "chat.textbox.hint": "Typ hier",
 

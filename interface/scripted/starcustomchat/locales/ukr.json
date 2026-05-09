@@ -7,6 +7,7 @@
   "chat.modes.Whisper": "Особисті",
   "chat.modes.RadioMessage": "Радіоповідомлення",
   "chat.modes.CommandResult": "Рузультати команд",
+  "chat.message.edited": "відредаговано",
 
   "chat.textbox.hint": "Писати тут",
 

@@ -7,6 +7,7 @@
   "chat.modes.Whisper": "Flüstern",
   "chat.modes.RadioMessage": "Radioübertragung",
   "chat.modes.CommandResult": "Befehlsausgabe",
+  "chat.message.edited": "Bearbeitet",
 
   "chat.textbox.hint": "Hier schreiben",
 

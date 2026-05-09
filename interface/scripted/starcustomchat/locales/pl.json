@@ -7,6 +7,7 @@
   "chat.modes.Whisper": "Szept",
   "chat.modes.RadioMessage": "WiadomośćRadio",
   "chat.modes.CommandResult": "RezultatKomendy",
+  "chat.message.edited": "edytowano",
 
   "chat.textbox.hint": "Pisz tutaj",
 

@@ -5,7 +5,8 @@ Fixed the DM character icon being misplaced if sprites are not 43x43.
 Moved the language button in settings lower in z level.
 Cleaned up the Fonts layouts.
 Fixed the command preview layout overlapping with the submenu.
-Fixed the commands from one mod overriding the other one. 
+Fixed the commands from one mod overriding the other one.
+Fixed the 'edited' label always showing up as '???' if SCCRP is not installed.
 
 ## Features
 Added the /filter command to filter the messages in the chat by text.

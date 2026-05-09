@@ -7,6 +7,7 @@
   "chat.modes.Whisper": "Личные",
   "chat.modes.RadioMessage": "Броски",
   "chat.modes.CommandResult": "Команды",
+  "chat.message.edited": "изменено",
 
   "chat.textbox.hint": "Введите сообщение",
 
