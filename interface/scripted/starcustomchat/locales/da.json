@@ -10,6 +10,7 @@
   "chat.message.edited": "bewerkt",
 
   "chat.textbox.hint": "Typ hier",
+  "chat.textbox.hint.filter": "Filtrering af beskeder (\"%s\")",
 
   "chat.buttons.bottom": "Naar beneden",
   "chat.buttons.settings": "Instellingen",

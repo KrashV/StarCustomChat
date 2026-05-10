@@ -10,6 +10,7 @@
   "chat.message.edited": "Bearbeitet",
 
   "chat.textbox.hint": "Hier schreiben",
+  "chat.textbox.hint.filter": "Nachrichten filtern (\"%s\")",
 
   "chat.buttons.bottom": "Nach unten",
   "chat.buttons.settings": "Einstellungen",

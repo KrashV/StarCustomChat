@@ -10,6 +10,7 @@
   "chat.message.edited": "відредаговано",
 
   "chat.textbox.hint": "Писати тут",
+  "chat.textbox.hint.filter": "Фільтрування повідомлень (\"%s\")",
 
   "chat.buttons.bottom": "До низу",
   "chat.buttons.settings": "Налаштування",

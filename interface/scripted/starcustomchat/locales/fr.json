@@ -10,6 +10,7 @@
   "chat.message.edited": "Modifié",
 
   "chat.textbox.hint": "Ecrivez ici",
+  "chat.textbox.hint.filter": "Filtrage des messages (\"%s\")",
 
   "chat.buttons.bottom": "Retour au début",
   "chat.buttons.settings": "Paramètres",

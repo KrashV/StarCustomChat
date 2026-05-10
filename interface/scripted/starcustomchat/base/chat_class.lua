@@ -158,8 +158,10 @@ end
 function StarCustomChat:setFilter(data)
   if not data or (string.gsub(data, "^%s*(.-)%s*$", "%1")) == "" then
     self.filter = nil
+    self:resetHint()
   else
     self.filter = data
+    self:setHint(starcustomchat.utils.getTranslation("chat.textbox.hint.filter", self.filter))
   end
   self:processQueue()
 end

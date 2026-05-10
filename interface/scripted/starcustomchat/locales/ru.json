@@ -10,6 +10,7 @@
   "chat.message.edited": "изменено",
 
   "chat.textbox.hint": "Введите сообщение",
+  "chat.textbox.hint.filter": "Фильтрация сообщений (\"%s\")",
 
   "chat.buttons.bottom": "Отмотать вниз",
   "chat.buttons.settings": "Настройки",
