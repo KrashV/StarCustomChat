@@ -613,7 +613,7 @@ function filterMessages(messages, filter)
     and (widget.active("lytModeFilter.btnCk" .. mode) == nil or widget.getChecked("lytModeFilter.btnCk" .. mode))
     and (
       not filter
-      or (message.text and string.find(message.text, filter, 1, true))
+      or (message.text and string.find(utf8.lower(message.text), utf8.lower(filter), 1, true))
     )
   then
     table.insert(drawnMessageIndexes, i)
