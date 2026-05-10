@@ -674,7 +674,7 @@ function StarCustomChat:setFonts(fontTable)
     )
 
     self.recalculateHeight = true
-    self.textBox:setFont(self:getFont("chattext"))
+    --self.textBox:setFont(self:getFont("chattext"))
     self:processQueue()
   end
 end
