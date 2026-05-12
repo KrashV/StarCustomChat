@@ -120,8 +120,13 @@
       "visible": false,
       "children": {
         "imgBackground": {
-          "type": "image",
-          "file": "/interface/scripted/starcustomchat/base/images/commandpreview/commandpreview.png",
+          "type": "imageStretch",
+          "direction" : "horizontal",
+          "stretchSet": {
+            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/begin.png"
+          },
           "zlevel": 11
         },
         "imgStretchDescription": {
@@ -130,9 +135,9 @@
           "size": [270, 0],
           "position": [0, 12],
           "stretchSet": {
-            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/end.png",
-            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/inner.png",
-            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/begin.png"
+            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/description/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/description/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/description/begin.png"
           }
         },
         "lblDescription": {
@@ -141,7 +146,7 @@
           "fontSize": 7,
           "wrapWidth": 260,
           "color": "#bbbbbbAA",
-          "position": [3, 13]
+          "position": [3, 14]
         },
         "lblCommandPreview": {
           "type": "label",
@@ -175,8 +180,13 @@
       "scissoring": false,
       "children": {
         "background": {
-          "type": "image",
-          "file": "/interface/scripted/starcustomchat/base/images/submenu/body.png",
+          "type": "imageStretch",
+          "direction": "horizontal",
+          "stretchSet": {
+            "end": "/interface/scripted/starcustomchat/base/images/submenu/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/images/submenu/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/images/submenu/begin.png"
+          },
           "zlevel": 16
         },
         "lblHint": {
@@ -197,7 +207,7 @@
         },
         "resetEditLayout": {
           "type": "button",
-          "position": [255, 5],
+          "position": [255, 4],
           "callback": "closeSubMenu",
           "base": "/interface/scripted/starcustomchat/base/images/submenu/close.png",
           "hover": "/interface/scripted/starcustomchat/base/images/submenu/close_hover.png",

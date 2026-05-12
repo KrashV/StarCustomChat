@@ -701,7 +701,9 @@ function setSizes(chatParameters, smooth)
   widget.setSize("cnvBackgroundCanvas", sizes.canvasSize)
   widget.setSize("saScrollArea", sizes.canvasSize)
   widget.setSize("lytCommandPreview", sizes.canvasSize)
+  widget.setSize("lytCommandPreview.imgBackground", {sizes.canvasSize[1], widget.getSize("lytSubMenu")[2]})
   widget.setSize("lytSubMenu", {sizes.canvasSize[1], widget.getSize("lytSubMenu")[2]})
+  widget.setSize("lytSubMenu.background", {sizes.canvasSize[1], widget.getSize("lytSubMenu")[2]})
 
   if smooth then
     animatedWidgets:add(AnimatedWidget:bind("background"):setSize(sizes.canvasSize, speed))
@@ -843,7 +845,7 @@ function canvasClickEvent(position, button, isButtonDown)
     self.chatSizeSettings.currentHeight = newHeight
     
     applyChatSizeSettings(self.customChat.config, self.chatSizeSettings)
-    setSizes(self.customChat.config)
+    setSizes(self.customChat.config, true)
     saveChatSizeSettings()
   end
 
