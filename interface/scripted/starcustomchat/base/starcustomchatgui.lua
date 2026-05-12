@@ -847,6 +847,7 @@ function canvasClickEvent(position, button, isButtonDown)
     applyChatSizeSettings(self.customChat.config, self.chatSizeSettings)
     setSizes(self.customChat.config, true)
     saveChatSizeSettings()
+    self.customChat:processQueue()
   end
 
   -- Defocus from the canvases or we can never leave lol :D
