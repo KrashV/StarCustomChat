@@ -94,7 +94,12 @@ function init()
   starcustomchat.utils.buildLocale(localePluginConfig)
 
   chatConfig.fontSize = root.getConfiguration("icc_font_size") or chatConfig.fontSize
-  local expanded = root.getConfiguration("icc_is_expanded", false) or config.getParameter("expanded") or false
+
+  self.chatSizeSettings = loadChatSizeSettings(chatConfig)
+  if pane.setSize then
+    applyChatSizeSettings(chatConfig, self.chatSizeSettings)
+    applyWidgetSizeSettings(chatConfig)
+  end
 
   local storedMessages = root.getConfiguration("icc_last_messages", jarray())
 
@@ -106,14 +111,14 @@ function init()
 
   self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName,
     chatConfig, storedMessages, self.chatMode,
-    expanded, config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
+    config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
     sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
 
 
   createTotallyFakeWidgets(chatConfig.wrapWidthFullMode, chatConfig.wrapWidthCompactMode, chatConfig.fontSize, self.customChat:getFont("chattext"))
   self.runCallbackForPlugins("init", self.customChat)
   localeChat()
-  setSizes(expanded, chatConfig)
+  setSizes(chatConfig)
 
   self.lastCommand = root.getConfiguration("icc_last_command")
 
@@ -162,6 +167,9 @@ function init()
   -- Apparently, we don't know on init if we're admin or not.
   ICChatTimer:add(0.2, disableAdminModes)
 
+  if (pane.setPosition or pane.setSize) and not self.drawingCanvas and interface.bindCanvas then
+    bindChatInterfaceCanvas()
+  end
 
   if pane.setPosition then
     widget.setVisible("btnMoveChat", true)
@@ -169,6 +177,10 @@ function init()
       local newPosition = root.getConfiguration("scc_chat_position") or {3, 5}
       pane.setPosition(newPosition)
     end)
+  end
+
+  if pane.setSize and pane.getSize and pane.getPosition then
+    widget.setVisible("btnResizeChat", true)
   end
 
   if widget.getScrollOffset then
@@ -436,15 +448,24 @@ function update(dt)
   processButtonEvents(dt)
   processLeftMenuButtons()
 
-  if self.toggleMoveChat then
-    local cursorPosition = vec2.sub(self.drawingCanvas:mousePosition(), vec2.div(widget.getSize("btnMoveChat"), 2))
-    pane.setPosition(vec2.sub(cursorPosition, widget.getPosition("btnMoveChat")))
+  if self.toggleMoveChat and pane.setPosition then
+    local mousePosition = currentMousePosition()
+    if mousePosition then
+      local cursorPosition = vec2.sub(mousePosition, vec2.div(widget.getSize("btnMoveChat"), 2))
+      pane.setPosition(vec2.sub(cursorPosition, widget.getPosition("btnMoveChat")))
+    end
   end
+
+  processChatResize()
 
   self.runCallbackForPlugins("update", dt)
 end
 
 function cursorOverride(screenPosition)
+  if self.toggleResizeChat then
+    return
+  end
+
   processEvents(screenPosition)
   processContextMenu(screenPosition)
 
@@ -515,43 +536,156 @@ function checkTyping()
   end
 end
 
-function getSizes(expanded, chatParameters)
-  local canvasSize = widget.getSize(self.canvasName)
+function clampNumber(value, minValue, maxValue)
+  return math.max(minValue, math.min(maxValue, value))
+end
+
+function defaultChatSizeSettings(chatParameters)
+  local bodyWidth = chatParameters.chatBodyWidth or 270
+  local paneWidthPadding = chatParameters.paneWidthPadding or 37
+  local maxBodyHeight = chatParameters.maxChatBodyHeight or 400
+
+  return {
+    paneWidth = bodyWidth + paneWidthPadding,
+    currentHeight = maxBodyHeight
+  }
+end
+
+function normalizeChatSizeSettings(chatParameters, sizeSettings)
+  local defaults = defaultChatSizeSettings(chatParameters)
+  local paneWidthPadding = chatParameters.paneWidthPadding or 37
+  local minPaneWidth = (chatParameters.minChatBodyWidth or 270) + paneWidthPadding
+  local maxPaneWidth = (chatParameters.maxChatBodyWidth or 600) + paneWidthPadding
+  local minBodyHeight = chatParameters.minChatBodyHeight or 90
+  local maxBodyHeight = chatParameters.maxChatBodyHeight or 400
+
+  local normalized = {
+    paneWidth = math.floor(clampNumber(tonumber(sizeSettings.paneWidth) or defaults.paneWidth, minPaneWidth, maxPaneWidth) + 0.5),
+    currentHeight = math.floor(clampNumber(tonumber(sizeSettings.currentHeight) or defaults.currentHeight, minBodyHeight, maxBodyHeight) + 0.5)
+  }
+
+  return normalized
+end
+
+function loadChatSizeSettings(chatParameters)
+  local stored = root.getConfiguration("scc_chat_size") or {}
+  if type(stored) ~= "table" then
+    stored = {}
+  end
+
+  local defaults = defaultChatSizeSettings(chatParameters)
+  return normalizeChatSizeSettings(chatParameters, {
+    paneWidth = stored.paneWidth or stored[1] or defaults.paneWidth,
+    currentHeight = stored.currentHeight or defaults.currentHeight
+  })
+end
+
+function applyChatSizeSettings(chatParameters, sizeSettings)
+  local paneWidthPadding = chatParameters.paneWidthPadding or 37
+  local bodyWidth = math.max(1, sizeSettings.paneWidth - paneWidthPadding)
+
+  chatParameters.chatBodyWidth = bodyWidth
+  chatParameters.currentChatHeight = sizeSettings.currentHeight
+  chatParameters.wrapWidthFullMode = math.max(30, bodyWidth - (chatParameters.wrapWidthFullModePadding or 45))
+  chatParameters.wrapWidthCompactMode = math.max(30, bodyWidth - (chatParameters.wrapWidthCompactModePadding or 10))
+  chatParameters.textBoxDefaultSize = {bodyWidth, chatParameters.textBoxDefaultSize and chatParameters.textBoxDefaultSize[2] or 13}
+end
+
+function setWidgetWidth(widgetName, width)
+  local size = nil
+  local success = pcall(function()
+    size = widget.getSize(widgetName)
+  end)
+
+  if success and size then
+    widget.setSize(widgetName, {width, size[2]})
+  end
+end
+
+function setResizableWidgetWidths(chatParameters, sizes)
+  local bodyWidth = chatParameters.chatBodyWidth or widget.getSize(self.canvasName)[1]
+  local bodyLeft = widget.getPosition("imgTextbox")[1]
+  local bodyRight = bodyLeft + bodyWidth
+
+  setWidgetWidth("imgTextbox", bodyWidth)
+  setWidgetWidth("lytSubMenu", bodyWidth)
+  setWidgetWidth("lytSubMenu.background", bodyWidth)
+  setWidgetWidth("lytCommandPreview", bodyWidth)
+  setWidgetWidth("lytCommandPreview.imgBackground", math.max(1, bodyWidth - 1))
+  setWidgetWidth("lytCommandPreview.imgStretchDescription", bodyWidth)
+  setWidgetWidth("background", bodyWidth)
+  setWidgetWidth("backgroundImage", bodyWidth)
+  setWidgetWidth("frameImage", bodyWidth)
+  setWidgetWidth(self.canvasName, bodyWidth)
+  setWidgetWidth(self.highlightCanvasName, bodyWidth)
+  setWidgetWidth("cnvBackgroundCanvas", bodyWidth)
+  setWidgetWidth("saScrollArea", bodyWidth)
+
+  if self.customChat and self.customChat.textBox then
+    self.customChat.textBox:setSize(widget.getSize("imgTextbox"))
+  end
+
+  widget.setPosition("lytModeFilter", {bodyRight, widget.getPosition("lytModeFilter")[2]})
+  widget.setPosition("btnMoveChat", {bodyRight, widget.getPosition("btnMoveChat")[2]})
+
+  if sizes then
+    local resizeButtonSize = widget.getSize("btnResizeChat")
+    widget.setPosition("btnResizeChat", {bodyRight, math.max(0, sizes.fullSize[2] - resizeButtonSize[2])})
+  else
+    widget.setPosition("btnResizeChat", {bodyRight, widget.getPosition("btnResizeChat")[2]})
+  end
+
+  widget.setPosition("lytSubMenu.resetEditLayout", {math.max(0, bodyWidth - 15), widget.getPosition("lytSubMenu.resetEditLayout")[2]})
+end
+
+function applyWidgetSizeSettings(chatParameters)
+  setResizableWidgetWidths(chatParameters)
+  local sizes = getSizes(chatParameters)
+  setResizableWidgetWidths(chatParameters, sizes)
+
+  if pane.setSize then
+    pane.setSize(sizes.fullSize)
+  end
+end
+
+function getSizes(chatParameters)
+  local canvasSize = {chatParameters.chatBodyWidth or widget.getSize(self.canvasName)[1], widget.getSize(self.canvasName)[2]}
   local dmPlayersSize = widget.getSize("lytCharactersToDM.background")
 
-  local fullHeight = chatParameters.expandedBodyHeight
-  local collapsedDiff = chatParameters.expandedBodyHeight - chatParameters.bodyHeight
-  local modeHeight = expanded and fullHeight or (fullHeight - collapsedDiff)
+  local modeHeight = chatParameters.currentChatHeight or (chatParameters.maxChatBodyHeight or 400)
 
   local submenuHeight = (widget.active("lytSubMenu") and widget.getSize("lytSubMenu")[2]) or 0
   local textboxHeight = widget.getSize("imgTextbox")[2]
 
-  local bodyHeight = math.max(modeHeight - submenuHeight - textboxHeight)
+  local bodyHeight = math.max(modeHeight - submenuHeight - textboxHeight, 1)
 
   local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
+  local paneWidthPadding = chatParameters.paneWidthPadding or math.max(0, pane.getSize()[1] - canvasSize[1])
 
   return {
-    fullHeight = {canvasSize[1], fullHeight + 2},
+    fullHeight = {canvasSize[1], modeHeight + 2},
     canvasSize = {canvasSize[1], bodyHeight + 2},
     dmPlayersSize = {dmPlayersSize[1], math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
     dmPlayersSASize = {dmPlayersSize[1] + 10, math.max(modeHeight - widget.getPosition("lytCharactersToDM")[2], 1)},
     submenuHeight = submenuHeight,
     textboxHeight = textboxHeight,
-    fullSize = {pane.getSize()[1], bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2}
+    fullSize = {canvasSize[1] + paneWidthPadding, bodyHeight + submenuHeight + textboxHeight + buttonsSize + 2}
   }
 end
 
-function setSizes(expanded, chatParameters, smooth)
-  local sizes = getSizes(expanded, chatParameters)
-  local speed = self.customChat.config.chatSizeChangeSpeed
+function setSizes(chatParameters, smooth)
+  local sizes = getSizes(chatParameters)
+  local speed = chatParameters.chatSizeChangeSpeed
 
-  if self.isOSBXSB then
+  if pane.setSize then
     if smooth then
       animatedWidgets:add(AnimatedWidget:setPaneSize(sizes.fullSize, speed))
     else
       pane.setSize(sizes.fullSize)
     end
   end
+
+  setResizableWidgetWidths(chatParameters, sizes)
 
   widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
   widget.setPosition(self.canvasName, vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
@@ -564,13 +698,18 @@ function setSizes(expanded, chatParameters, smooth)
 
   widget.setSize(self.canvasName, sizes.canvasSize)
   widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+  widget.setSize("cnvBackgroundCanvas", sizes.canvasSize)
   widget.setSize("saScrollArea", sizes.canvasSize)
+  widget.setSize("lytCommandPreview", sizes.canvasSize)
+  widget.setSize("lytSubMenu", {sizes.canvasSize[1], widget.getSize("lytSubMenu")[2]})
 
   if smooth then
     animatedWidgets:add(AnimatedWidget:bind("background"):setSize(sizes.canvasSize, speed))
+    animatedWidgets:add(AnimatedWidget:bind("backgroundImage"):setSize(sizes.canvasSize, speed))
     animatedWidgets:add(AnimatedWidget:bind("frameImage"):setSize(sizes.canvasSize, speed), function()
         widget.setSize(self.canvasName, sizes.canvasSize)
         widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+        widget.setSize("cnvBackgroundCanvas", sizes.canvasSize)
     end)
     
     animatedWidgets:add(AnimatedWidget:bind("lytCharactersToDM"):setSize(sizes.dmPlayersSASize, speed))
@@ -585,55 +724,127 @@ function setSizes(expanded, chatParameters, smooth)
     widget.setSize("lytCharactersToDM.saPlayers", sizes.dmPlayersSASize)
   end
 
+  if self.customChat then
+    self.customChat:drawBackground()
+  end
+end
+
+function modeHeightFromPaneSize(paneSize, chatParameters)
+  local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
+  return paneSize[2] - buttonsSize - 2
+end
+
+function chatSizeSettingsFromPaneSize(paneSize)
+  local settings = copy(self.chatSizeSettings or defaultChatSizeSettings(self.customChat.config))
+  settings.paneWidth = paneSize[1]
+  settings.currentHeight = modeHeightFromPaneSize(paneSize, self.customChat.config)
+
+  return normalizeChatSizeSettings(self.customChat.config, settings)
+end
+
+function saveChatSizeSettings()
+  if self.chatSizeSettings and pane.setSize then
+    root.setConfiguration("scc_chat_size", self.chatSizeSettings)
+  end
+end
+
+function resizeChatToPaneSize(paneSize)
+  if not pane.setSize or not paneSize then
+    return
+  end
+
+  local oldWidth = self.customChat.config.chatBodyWidth
+  self.chatSizeSettings = chatSizeSettingsFromPaneSize(paneSize)
+  applyChatSizeSettings(self.customChat.config, self.chatSizeSettings)
+  setSizes(self.customChat.config)
+
+  if oldWidth ~= self.customChat.config.chatBodyWidth then
+    createTotallyFakeWidgets(
+      self.customChat.config.wrapWidthFullMode,
+      self.customChat.config.wrapWidthCompactMode,
+      self.customChat.config.fontSize,
+      self.customChat:getFont("chattext")
+    )
+    self.customChat.recalculateHeight = true
+  end
+
+  self.customChat:processQueue()
+end
+
+function bindChatInterfaceCanvas()
+  if not self.drawingCanvas and interface.bindCanvas then
+    pcall(function()
+      self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
+    end)
+  end
+
+  return self.drawingCanvas
+end
+
+function currentMousePosition()
+  if not self.drawingCanvas then
+    bindChatInterfaceCanvas()
+  end
+
+  if self.drawingCanvas and self.drawingCanvas.mousePosition then
+    return self.drawingCanvas:mousePosition()
+  end
+
+  if input.mousePosition then
+    return input.mousePosition()
+  end
+end
+
+function processChatResize()
+  if not self.toggleResizeChat or not pane.setSize or not pane.getPosition then
+    return
+  end
+
+  local mousePosition = currentMousePosition()
+  if not mousePosition then
+    return
+  end
+
+  local resizeCursorOffset = self.resizeCursorOffset or {0, 0}
+  local desiredPaneSize = vec2.add(vec2.sub(mousePosition, pane.getPosition()), resizeCursorOffset)
+  desiredPaneSize = {math.floor(desiredPaneSize[1] + 0.5), math.floor(desiredPaneSize[2] + 0.5)}
+
+  if not self.lastRequestedChatSize or desiredPaneSize[1] ~= self.lastRequestedChatSize[1] or desiredPaneSize[2] ~= self.lastRequestedChatSize[2] then
+    self.lastRequestedChatSize = desiredPaneSize
+    resizeChatToPaneSize(desiredPaneSize)
+  end
 end
 
 function canvasClickEvent(position, button, isButtonDown)
   if self.runCallbackForPlugins("onCanvasClick", position, button, isButtonDown) then
     return
   end
+
+  if self.toggleMoveChat or self.toggleResizeChat then
+    widget.blur(self.canvasName)
+    widget.blur(self.highlightCanvasName)
+    return
+  end
   
   if button == 0 and isButtonDown then
     self.customChat.expanded = not self.customChat.expanded
     root.setConfiguration("icc_is_expanded", self.customChat.expanded)
-
-    if self.isOSBXSB then
-      setSizes(self.customChat.expanded, self.customChat.config, true)
-      self.customChat:processQueue()
-
-      if self.customChat:getText() ~= "" then
-        self.customChat:focusInput()
-      end
-    else
-      if not self.reopening then
-        
-        local chatParameters = getSizes(self.customChat.expanded, self.customChat.config)
-        saveEverythingDude()
-        pane.dismiss()
-
-        local chatConfig = buildChatInterface()
-        chatConfig["gui"]["background"]["fileBody"] = string.format("/interface/scripted/starcustomchat/base/images/%s.png", self.customChat.expanded and "body" or "shortbody")
-        chatConfig.expanded = self.customChat.expanded
-        chatConfig.currentSizes = chatParameters
-        chatConfig.lastInputMessage = self.customChat:getText()
-        chatConfig.portraits = self.customChat.savedPortraits
-        chatConfig.connectionToUuid =  self.customChat.connectionToUuid
-        chatConfig.currentMessageMode =  widget.getSelectedOption("rgChatMode")
-        chatConfig.DMingPlayerID = self.DMTab:selectedPlayer() and self.DMTab:selectedPlayer().id or nil
-        chatConfig.chatLineOffset = self.customChat.lineOffset
-        chatConfig.reopened = true
-        chatConfig.selectedModes = {}
-        for _, mode in ipairs(chatConfig["chatModes"]) do 
-          if widget.active("lytModeFilter.btnCk" .. mode) then
-            chatConfig.selectedModes["btnCk" .. mode] = widget.getChecked("lytModeFilter.btnCk" .. mode)
-          end
-        end
-
-        chatConfig = self.runCallbackForPlugins("onBackgroundChange", chatConfig)
-
-        player.interact("ScriptPane", chatConfig)
-        self.reopening = true
-      end
-    end
+    
+    local minBodyHeight = self.customChat.config.minChatBodyHeight or 90
+    local maxBodyHeight = self.customChat.config.maxChatBodyHeight or 400
+    local heightLeeway = 10
+    
+    -- Get current height
+    local currentHeight = self.chatSizeSettings.currentHeight
+    
+    -- If at max height (with leeway), set to min, otherwise set to max
+    local newHeight = (currentHeight >= maxBodyHeight - heightLeeway) and minBodyHeight or maxBodyHeight
+    
+    self.chatSizeSettings.currentHeight = newHeight
+    
+    applyChatSizeSettings(self.customChat.config, self.chatSizeSettings)
+    setSizes(self.customChat.config)
+    saveChatSizeSettings()
   end
 
   -- Defocus from the canvases or we can never leave lol :D
@@ -949,8 +1160,36 @@ end
 
 function toggleChatMovement()
   self.toggleMoveChat = widget.getChecked("btnMoveChat")
+
+  if self.toggleMoveChat then
+    self.toggleResizeChat = false
+    widget.setChecked("btnResizeChat", false)
+  end
 end
 
+function toggleChatResize()
+  self.toggleResizeChat = widget.getChecked("btnResizeChat")
+  widget.setVisible("saScrollArea", not self.toggleResizeChat)
+
+  if self.toggleResizeChat then
+    self.toggleMoveChat = false
+    widget.setChecked("btnMoveChat", false)
+    self.selectedMessage = nil
+    widget.setVisible("lytContext", false)
+
+    local mousePosition = currentMousePosition()
+    if mousePosition and pane.getPosition and pane.getSize then
+      self.resizeCursorOffset = vec2.sub(pane.getSize(), vec2.sub(mousePosition, pane.getPosition()))
+    else
+      self.resizeCursorOffset = {0, 0}
+    end
+  else
+    self.resizeCursorOffset = nil
+    self.lastRequestedChatSize = nil
+    saveChatSizeSettings()
+    self.customChat:processQueue()
+  end
+end
 
 function saveEverythingDude()
   -- Save messages and last command
@@ -962,6 +1201,7 @@ function saveEverythingDude()
   root.setConfiguration("icc_last_command", self.lastCommand)
   root.setConfiguration("icc_my_messages", util.toList(self.sentMessages))
   root.setConfiguration("scc_chat_position", pane.getPosition and pane.getPosition() or nil)
+  saveChatSizeSettings()
 end
 
 function closeChat()

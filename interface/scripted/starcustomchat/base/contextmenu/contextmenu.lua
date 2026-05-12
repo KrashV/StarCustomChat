@@ -119,7 +119,10 @@ function setLayoutPosition()
     local newOffset = vec2.add({xOffset, yOffset}, self.customChat.config.contextMenuOffset)
 
     -- And now we don't want the context menu to fly away somewhere else: we always want to draw it within the canvas. Add padding
-    newOffset[2] = math.min(newOffset[2], self.customChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2] - widget.getSize("lytContext")[2]) - 2
+    local canvasTop = self.customChat.canvas:size()[2] + widget.getPosition(self.canvasName)[2]
+    local menuSize = widget.getSize("lytContext")
+    newOffset[1] = math.max(canvasPosition[1], math.min(newOffset[1], canvasPosition[1] + widget.getSize(self.highlightCanvasName)[1] - menuSize[1]))
+    newOffset[2] = math.max(canvasPosition[2], math.min(newOffset[2], canvasTop - menuSize[2]) - 2)
     widget.setPosition("lytContext", newOffset)
   end
 end

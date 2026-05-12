@@ -17,6 +17,7 @@
   "chat.buttons.hide": "Сховати чат",
   "chat.buttons.bigger_chat": "Великий чат",
   "chat.buttons.move_chat": "Рухати чат",
+  "chat.buttons.resize_chat": "Змінити розмір чату",
 
   "chat.alerts.dm_not_specified": "Оберіть одержувача",
   "chat.alerts.dm_not_found": "Гравець повинен бути на планеті",

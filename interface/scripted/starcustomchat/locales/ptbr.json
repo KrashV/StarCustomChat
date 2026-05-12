@@ -17,6 +17,7 @@
   "chat.buttons.hide": "Esconder chat",
   "chat.buttons.bigger_chat": "Chat maior",
   "chat.buttons.move_chat": "Mover chat",
+  "chat.buttons.resize_chat": "Redimensionar chat",
 
   "chat.alerts.dm_not_specified": "Escolha o receptor da mensagem",
   "chat.alerts.dm_not_found": "O jogador precisa estar no mesmo planeta",

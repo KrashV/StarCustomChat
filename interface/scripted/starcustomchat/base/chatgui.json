@@ -63,6 +63,20 @@
       }
     },
 
+    "btnResizeChat": {
+      "type": "button",
+      "position": [290, 292],
+      "callback": "toggleChatResize",
+      "checkable": true,
+      "checked": false,
+      "visible": false,
+      "base": "/interface/scripted/starcustomchat/base/images/resize/resize.png:base",
+      "baseImageChecked": "/interface/scripted/starcustomchat/base/images/resize/resize.png:checked",
+      "data": {
+        "displayText": "chat.buttons.resize_chat"
+      }
+    },
+
     "lytContext": {     
       "type": "layout",
       "position": [0, 0],
@@ -160,7 +174,7 @@
       "visible": false,
       "scissoring": false,
       "children": {
-        "backgrond": {
+        "background": {
           "type": "image",
           "file": "/interface/scripted/starcustomchat/base/images/submenu/body.png",
           "zlevel": 16
@@ -449,7 +463,7 @@
     }
   },
   "scriptWidgetCallbacks": ["setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
+    "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "toggleChatResize", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },

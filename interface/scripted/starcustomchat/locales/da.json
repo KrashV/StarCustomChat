@@ -17,6 +17,7 @@
   "chat.buttons.hide": "Verberg chat",
   "chat.buttons.bigger_chat": "Grotere chat",
   "chat.buttons.move_chat": "Verplaats chat",
+  "chat.buttons.resize_chat": "Chatgrootte aanpassen",
 
   "chat.alerts.dm_not_specified": "Selecteer de ontvanger",
   "chat.alerts.dm_not_found": "De speler moet op dezelfde planeet zijn.", 

@@ -15,7 +15,6 @@ StarCustomChat = {
   highlightCanvas = nil,
   totalHeight = 0,
   config = {},
-  expanded = false,
   chatMode = "modern",
   savedPortraits = {},
   connectionToUuid = {},
@@ -33,7 +32,7 @@ StarCustomChat = {
 StarCustomChat.__index = StarCustomChat
 
 function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, config, messages, 
-  chatMode, expanded, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, defaultColors, callbackPlugins)
+  chatMode, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, defaultColors, callbackPlugins)
 
   local o = {}
   setmetatable(o, self)
@@ -46,7 +45,6 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
   o.config = config
   o.chatMode = chatMode
-  o.expanded = expanded
   o.savedPortraits = savedPortraits or {}
   o.connectionToUuid = connectionToUuid or {}
   o.lineOffset = lineOffset or 0
@@ -70,7 +68,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
     onSizeChange = function(newSize)
       local old = widget.getSize("imgTextbox")
       widget.setSize("imgTextbox", {old[1], newSize[2]})
-      if setSizes then setSizes(o.expanded, o.config) end
+      if setSizes then setSizes(o.config) end
       o:processQueue()
     end,
     textFont = self:getFont("chattext")
@@ -215,7 +213,7 @@ function StarCustomChat:openSubMenu(type, hint, text)
   end
   self:setSubMenuTexts(hint, text)
   widget.setVisible("lytSubMenu", true)
-  if setSizes then setSizes(self.expanded, self.config) end
+  if setSizes then setSizes(self.config) end
 end
 
 function StarCustomChat:getSubMenuType()
@@ -226,7 +224,7 @@ function StarCustomChat:closeSubMenu()
   self.submenuType = nil
   if widget.active("lytSubMenu") then
     widget.setVisible("lytSubMenu", false)
-    if setSizes then setSizes(self.expanded, self.config) end
+    if setSizes then setSizes(self.config) end
   end
 end
 
