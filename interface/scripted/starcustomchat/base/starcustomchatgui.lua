@@ -1162,6 +1162,7 @@ end
 
 function toggleChatMovement()
   self.toggleMoveChat = widget.getChecked("btnMoveChat")
+  widget.setVisible("saScrollArea", not self.toggleMoveChat)
 
   if self.toggleMoveChat then
     self.toggleResizeChat = false
