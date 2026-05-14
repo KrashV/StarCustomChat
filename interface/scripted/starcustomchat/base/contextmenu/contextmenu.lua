@@ -48,6 +48,11 @@ function contextMenu_init(buttonsConfig)
 end
 
 function processContextMenu(screenPosition)
+  -- Clear selection if the selected message was deleted
+  if self.selectedMessage and not self.customChat:findMessageByUUID(self.selectedMessage.uuid) then
+    self.selectedMessage = nil
+  end
+
   widget.setVisible("lytContext", not not self.selectedMessage)
 
   if not widget.inMember("lytContext", screenPosition) or not self.selectedMessage then
