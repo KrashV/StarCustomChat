@@ -688,7 +688,7 @@ function getSizes(chatParameters)
 
   local bodyHeight = math.max(modeHeight - submenuHeight - textboxHeight, 1)
 
-  local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
+  local buttonsSize = self.modeImageSize[2]
   local paneWidthPadding = chatParameters.paneWidthPadding or math.max(0, pane.getSize()[1] - canvasSize[1])
 
   return {
@@ -761,8 +761,7 @@ function setSizes(chatParameters, smooth)
 end
 
 function modeHeightFromPaneSize(paneSize, chatParameters)
-  local buttonsSize = root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode1.png")[2]
-  return paneSize[2] - buttonsSize - 2
+  return paneSize[2] - self.modeImageSize[2] - 2
 end
 
 function chatSizeSettingsFromPaneSize(paneSize)
