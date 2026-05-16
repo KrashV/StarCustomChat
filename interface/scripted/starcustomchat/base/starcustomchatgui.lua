@@ -625,6 +625,35 @@ function setResizableWidgetWidths(chatParameters, sizes)
     self.customChat.textBox:setSize(widget.getSize("imgTextbox"))
   end
 
+  -- Resize and reposition mode buttons
+  local modeButtons = config.getParameter("gui")["rgChatMode"]["buttons"]
+  
+  self.modeImageSize = self.modeImageSize or root.imageSize("/interface/scripted/starcustomchat/base/images/tabmodes/chatmode.png")
+
+  if modeButtons and #modeButtons > 0 then
+    local rgChatModePos = widget.getPosition("rgChatMode")
+    local modeFilterWidth = widget.getSize("lytModeFilter")[1]
+    local availableWidthForModes = math.max(1, bodyRight - rgChatModePos[1])
+    local buttonWidth = availableWidthForModes / #modeButtons
+    local diffDirectives = string.format("?scalenearest=%s;1", buttonWidth / self.modeImageSize[2] )
+    
+    for i, btn in ipairs(modeButtons) do
+      local newPosition = {(i - 1) * buttonWidth, 0}
+      widget.setPosition("rgChatMode." .. i, newPosition)
+      widget.setButtonImages("rgChatMode." .. i, {
+        base = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmode.png" .. diffDirectives,
+        hover = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmode.png?brightness=30" .. diffDirectives,
+        pressed = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmodeselected.png" .. diffDirectives
+      })
+      widget.setButtonCheckedImages("rgChatMode." .. i, {
+        base = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmode.png" .. diffDirectives,
+        hover = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmode.png?brightness=30" .. diffDirectives,
+        pressed = "/interface/scripted/starcustomchat/base/images/tabmodes/chatmodeselected.png" .. diffDirectives
+      })
+      widget.setSize("rgChatMode." .. i, {buttonWidth, widget.getSize("rgChatMode." .. i)[2]})
+    end
+  end
+
   widget.setPosition("lytModeFilter", {bodyRight, widget.getPosition("lytModeFilter")[2]})
   widget.setPosition("btnMoveChat", {bodyRight, widget.getPosition("btnMoveChat")[2]})
 
