@@ -536,10 +536,6 @@ function checkTyping()
   end
 end
 
-function clampNumber(value, minValue, maxValue)
-  return math.max(minValue, math.min(maxValue, value))
-end
-
 function defaultChatSizeSettings(chatParameters)
   local bodyWidth = chatParameters.chatBodyWidth or 270
   local paneWidthPadding = chatParameters.paneWidthPadding or 37
@@ -560,8 +556,8 @@ function normalizeChatSizeSettings(chatParameters, sizeSettings)
   local maxBodyHeight = chatParameters.maxChatBodyHeight or 400
 
   local normalized = {
-    paneWidth = math.floor(clampNumber(tonumber(sizeSettings.paneWidth) or defaults.paneWidth, minPaneWidth, maxPaneWidth) + 0.5),
-    currentHeight = math.floor(clampNumber(tonumber(sizeSettings.currentHeight) or defaults.currentHeight, minBodyHeight, maxBodyHeight) + 0.5)
+    paneWidth = math.floor(util.clamp(tonumber(sizeSettings.paneWidth) or defaults.paneWidth, minPaneWidth, maxPaneWidth) + 0.5),
+    currentHeight = math.floor(util.clamp(tonumber(sizeSettings.currentHeight) or defaults.currentHeight, minBodyHeight, maxBodyHeight) + 0.5)
   }
 
   return normalized
