@@ -70,8 +70,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
       widget.setSize("imgTextbox", {old[1], newSize[2]})
       if setSizes then setSizes(o.config) end
       o:processQueue()
-    end,
-    textFont = self:getFont("chattext")
+    end
   })
   
   return o
