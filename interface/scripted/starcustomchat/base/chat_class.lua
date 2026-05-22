@@ -395,7 +395,7 @@ function StarCustomChat:previewCommands(commands, selected)
       starcustomchat.utils.getTranslation(commands[selected].description) or commands[selected].description)
 
     
-    widget.setSize("lytCommandPreview.imgStretchDescription", {backgroundSize[1], widget.getSize("lytCommandPreview.lblDescription")[2] + 3})
+    widget.setSize("lytCommandPreview.imgStretchDescription", {backgroundSize[1], widget.getSize("lytCommandPreview.lblDescription")[2] + 7})
   else
     widget.setText("lytCommandPreview.lblDescription", "")
     widget.setSize("lytCommandPreview.imgStretchDescription", {backgroundSize[1], 0})

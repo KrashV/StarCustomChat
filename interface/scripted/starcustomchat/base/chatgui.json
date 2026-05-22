@@ -146,13 +146,13 @@
           "fontSize": 7,
           "wrapWidth": 260,
           "color": "#bbbbbbAA",
-          "position": [3, 14]
+          "position": [3, 16]
         },
         "lblCommandPreview": {
           "type": "label",
           "zlevel": 11,
           "fontSize": 8,
-          "position": [3, 1]
+          "position": [3, 2]
         }
       }
     },
