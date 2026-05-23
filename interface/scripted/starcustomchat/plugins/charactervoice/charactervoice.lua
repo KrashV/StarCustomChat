@@ -4,14 +4,15 @@ charactervoice = PluginClass:new(
   { name = "charactervoice" }
 )
 
-function charactervoice:init()
-  self:_loadConfig()
+function charactervoice:init(chat)
+  PluginClass.init(self, chat)
 
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
   self:resetSoundPool()
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
+  self.soundVolume = player.getProperty("scc_sound_volume") or 1
   status.addPersistentEffect("scctalking", "scctalking")
 end
 
@@ -40,7 +41,8 @@ function charactervoice:playSound()
     local soundTable = {
       pool = self.soundsPool,
       pitch = self.soundPitch,
-      volume = 1.3
+      volume = self.soundVolume,
+      cutoffTime = self.cutoffTime
     }
     world.sendEntityMessage(player.id(), "sccTalkingSound", soundTable)
     player.emote("blabbering")
@@ -57,6 +59,7 @@ function charactervoice:onSettingsUpdate()
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.soundsWhispersEnabled = player.getProperty("scc_sounds_whisper_enabled") or false
   self.soundPitch = player.getProperty("scc_sound_pitch") or 1
+  self.soundVolume = player.getProperty("scc_sound_volume") or 1
   self:resetSoundPool()
 end
 

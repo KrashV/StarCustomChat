@@ -31,11 +31,37 @@ function charactervoice:init()
   self.soundPitch = (player.getProperty("scc_sound_pitch") or 1)
   self.widget.setSliderRange("sldSoundPitch", 0, 20, 2)
   self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
-  self.widget.setText("tbxCustomSound", player.getProperty("scc_charactervoice_custom") or "")
+  
+  self.soundVolume = (player.getProperty("scc_sound_volume") or 1)
+  self.widget.setSliderRange("sldVolumePitch", 0, 14, 2)
+  self.widget.setSliderValue("sldVolumePitch", self.soundVolume * 10)
 end
 
 function charactervoice:openTab()
+  local soundList = root.assetsByExtension(".ogg")
+  self.combobox = self:createCombobox(soundList)
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
+  self.widget.setText("btnCustomSound", player.getProperty("scc_charactervoice_custom") or "")
+end
+
+function charactervoice:createCombobox(soundList)
+  return Combobox:bind(self.layoutWidget .. "." .. "btnCustomSound", soundList, function(data)
+    self:saveCustomSound(data)
+  end, {
+    filter = true,
+    background = "/interface/scripted/starcustomchatsettings/images/combobox/large/backgroundFilter.png",
+    listSchema = {
+      listSelected = "/interface/scripted/starcustomchatsettings/images/combobox/large/listselected.png",
+      listUnselected = "/interface/scripted/starcustomchatsettings/images/combobox/large/listunselected.png"
+    },
+    offset = {-50, 15},
+    closeOnSelect = true,
+    sortKeys = true
+  })
+end
+
+function charactervoice:openCombobox()
+  self.combobox:toggle()
 end
 
 function charactervoice:populateScrollArea(allRaceSounds, selectedSpecies)
@@ -65,9 +91,9 @@ function charactervoice:changeSpecies()
     local newSpecies = self.widget.getData("saSpecies.listItems." .. li)
     player.setProperty("scc_sound_species", newSpecies)
     if newSpecies == "custom" then
-      self.widget.setVisible("tbxCustomSound", true)
+      self.widget.setVisible("btnCustomSound", true)
     else
-      self.widget.setVisible("tbxCustomSound", false)
+      self.widget.setVisible("btnCustomSound", false)
       self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
     end
     
@@ -75,13 +101,14 @@ function charactervoice:changeSpecies()
   end
 end
 
-function charactervoice:saveCustomSound()
-  local customSound = self.widget.getText("tbxCustomSound")
+function charactervoice:saveCustomSound(data)
+  local customSound = data
   if customSound and customSound ~= "" then
+    self.widget.setText("btnCustomSound", data)
     if root.assetOrigin(customSound) then
-      pane.playSound(customSound)
       player.setProperty("scc_charactervoice_custom", customSound)
       self.soundsPool = {customSound}
+      self:playSound()
       save()
     else
       starcustomchat.utils.alert("settings.plugins.charactervoice.soundNotFound")
@@ -105,7 +132,8 @@ function charactervoice:playSound()
   local soundTable = {
     pool = self.soundsPool,
     pitch = self.soundPitch,
-    volume = 1.3
+    volume = self.soundVolume,
+    cutoffTime = self.cutoffTime
   }
 
   world.sendEntityMessage(player.id(), "sccTalkingSound", soundTable)
@@ -116,4 +144,21 @@ function charactervoice:setTalkingPitch()
   self.widget.setSliderValue("sldSoundPitch", self.soundPitch * 10)
   player.setProperty("scc_sound_pitch", self.soundPitch)
   save()
+end
+
+function charactervoice:setTalkingVolume()
+  self.soundVolume = math.max(self.widget.getSliderValue("sldVolumePitch") / 10, 0.1)
+  self.widget.setSliderValue("sldVolumePitch", self.soundVolume * 10)
+  player.setProperty("scc_sound_volume", self.soundVolume)
+  save()
+end
+
+function charactervoice:uninit()
+  if self.combobox then
+    self.combobox:destroy()
+    self.combobox = nil
+  end
+  if self.soundsPool[1] then
+    pane.stopAllSounds(self.soundsPool[1])
+  end
 end

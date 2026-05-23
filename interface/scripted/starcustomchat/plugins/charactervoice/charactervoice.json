@@ -114,6 +114,21 @@
         "callback": "setTalkingPitch"
       },
 
+      "lblVolumePitch": {
+        "type": "label",
+        "position": [120, 80],
+        "hAnchor": "right",
+        "color": "lightgray",
+        "translationKey": "settings.plugins.charactervoice.volume"
+      },
+
+      "sldVolumePitch" : {
+        "type": "slider",
+        "gridImage" : "/interface/optionsmenu/smallselection.png",
+        "position": [130, 80],
+        "callback": "setTalkingVolume"
+      },
+
       "btnPlay" : {
         "type": "button",
         "base" : "/interface/scripted/starcustomchatsettings/images/buttons/bt.png",
@@ -123,16 +138,20 @@
         "translationKey": "settings.plugins.charactervoice.test"
       },
 
-      "tbxCustomSound": {
-        "type": "textbox",
-        "position": [65, 60],
+      "btnCustomSound": {
+        "type": "button",
+        "position": [90, 50],
+        "caption": "...",
         "visible": false,
-        "hintTranslationKey": "settings.plugins.charactervoice.customSoundHint",
-        "callback": "null",
-        "enterKey": "saveCustomSound",
-        "color": "lightgray"
+        "callback": "openCombobox",
+        "base": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:hover"
       }
     }
+  },
+
+  "parameters": {
+    "cutoffTime": 2
   },
 
   "script": "/interface/scripted/starcustomchat/plugins/charactervoice/charactervoice.lua",

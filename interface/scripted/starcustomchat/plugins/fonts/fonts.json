@@ -80,8 +80,8 @@
         "caption": "...",
         "visible": false,
         "callback": "openCombobox",
-        "base": "/interface/scripted/starcustomchat/plugins/fonts/buttonlarge.png",
-        "hover": "/interface/scripted/starcustomchat/plugins/fonts/buttonlargehover.png"
+        "base": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:hover"
       },
 
       "btnDropToDefault": {

@@ -19,6 +19,8 @@ Last message scroll is now triggered by Alt + Up/Down.
 Smoothed out the change of the chat size.
 Font names are now sorted by name.
 Added the /afk command. Does the same as the corresponding button.
+CharacterVoice: Added volume slider
+CharacterVoice: The sounds are now picked from the list of all the sounds
 
 ## API
 New functions to set, get text and focus of the input textbox.
