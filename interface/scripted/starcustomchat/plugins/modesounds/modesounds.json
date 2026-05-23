@@ -71,7 +71,8 @@
 
       "saSounds": {
         "type": "scrollArea",
-        "rect": [100, 35, 230, 110],
+        "visible": false,
+        "rect": [90, 35, 230, 110],
         "children": {
           "listItems": {
             "type": "list",
@@ -80,7 +81,7 @@
               "selectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listselected.png",
               "unselectedBG" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
               "spacing" : [0, 1],
-              "memberSize" : [130, 15],
+              "memberSize" : [140, 15],
               "listTemplate" : {
                 "background" : {
                   "type" : "image",
@@ -100,6 +101,15 @@
         }
       },
 
+      "tbxFilter": {
+        "type": "textbox",
+        "callback": "searchSound",
+        "position": [90, 24],
+        "visible": false,
+        "maxWidth": 140,
+        "hintTranslationKey": "settings.search"
+      },
+
       "btnClear": {
         "type": "button",
         "position": [220, 114],
@@ -116,7 +126,7 @@
   },
 
   "parameters": {
-    "sounds": ["/sfx/instruments/bones/a4.ogg", "/sfx/interface/aichatter1.ogg", "/sfx/interface/aichatter2.ogg"]
+    "cutoffTime": 2
   },
 
   "script": "/interface/scripted/starcustomchat/plugins/modesounds/modesounds.lua",

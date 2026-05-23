@@ -63,7 +63,7 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
     selectEmojiPane.text = selectedMessage.text
     selectEmojiPane.nickname = selectedMessage.nickname
     selectEmojiPane.stagehandType = self.stagehandEnabled and self.stagehandType
-    selectEmojiPane.textboxHint = starcustomchat.utils.getTranslation("reactions.reactselect.hint")
+    selectEmojiPane.textboxHint = starcustomchat.utils.getTranslation("settings.search")
     selectEmojiPane.allLabel = starcustomchat.utils.getTranslation("reactions.reactselect.all")
     selectEmojiPane.recentLabel = starcustomchat.utils.getTranslation("reactions.reactselect.recent")
 

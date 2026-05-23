@@ -51,6 +51,7 @@
   "settings.back": "Zurück",
   "settings.add": "Hinzufügen",
   "settings.remove": "Entfernen",
+  "settings.search": "Suchen...",
 
 
   "commands.general.admin": "Aktiviert oder deaktiviert den Admin-Modus, welcher alle Crafting-Rezepte erlaubt, Schaden und Energieverlust verhindert und Zugriff auf Admin-Commands verleiht.",
