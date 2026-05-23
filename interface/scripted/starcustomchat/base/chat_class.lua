@@ -608,15 +608,15 @@ function filterMessages(messages, filter)
     --filter messages by mode availability
     local mode = message.mode
     
-  if mode
-    and (widget.active("lytModeFilter.btnCk" .. mode) == nil or widget.getChecked("lytModeFilter.btnCk" .. mode))
-    and (
-      not filter
-      or (message.text and string.find(utf8.lower(message.text), utf8.lower(filter), 1, true))
-    )
-  then
-    table.insert(drawnMessageIndexes, i)
-  end
+    if mode
+      and (widget.active("lytModeFilter.btnCk" .. mode) == nil or widget.getChecked("lytModeFilter.btnCk" .. mode))
+      and (
+        not filter
+        or (message.text and string.find(utf8.lower(message.text), utf8.lower(filter), 1, true))
+      )
+    then
+      table.insert(drawnMessageIndexes, i)
+    end
   end
   return drawnMessageIndexes
 end
