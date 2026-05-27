@@ -870,30 +870,33 @@ end
 
 function processEvents(screenPosition)
   for _, event in ipairs(input.events()) do
-    if event.type == "MouseWheel" and widget.inMember("saScrollArea", screenPosition) then
+    if widget.inMember("saScrollArea", screenPosition) then
+      if event.type == "MouseWheel"  then
 
-      if not self.runCallbackForPlugins("onChatScroll", screenPosition) then
-        if input.key("LCtrl") then
-          local newChatSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
-          if newChatSize ~= self.customChat.config.fontSize then
-            self.customChat.recalculateHeight = true
+        if not self.runCallbackForPlugins("onChatScroll", screenPosition) then
+          if input.key("LCtrl") then
+            local newChatSize = math.min(math.max(self.customChat.config.fontSize + event.data.mouseWheel, 6), 10)
+            if newChatSize ~= self.customChat.config.fontSize then
+              self.customChat.recalculateHeight = true
+            end
+            self.customChat.config.fontSize = newChatSize
+
+            root.setConfiguration("icc_font_size", self.customChat.config.fontSize)
+            createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize, self.customChat:getFont("chattext"))
+            self.customChat:processQueue()
+          else
+            self.customChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
           end
-          self.customChat.config.fontSize = newChatSize
-
-          root.setConfiguration("icc_font_size", self.customChat.config.fontSize)
-          createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize, self.customChat:getFont("chattext"))
-          self.customChat:processQueue()
-        else
-          self.customChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
         end
-      end
-    elseif event.type == "KeyDown" then
-      if event.data.key == "PageUp" then
-        self.customChat:offsetCanvas(self.customChat.expanded and - self.customChat.config.pageSkipExpanded or - self.customChat.config.pageSkip)
-      elseif event.data.key == "PageDown" then
-        self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
-      elseif event.data.key == "End" then
-        self.customChat:resetCanvasOffset()
+      elseif event.type == "KeyDown" then
+        self.customChat:ignoreInputFrame()
+        if event.data.key == "PageUp" then
+          self.customChat:offsetCanvas(self.customChat.expanded and - self.customChat.config.pageSkipExpanded or - self.customChat.config.pageSkip)
+        elseif event.data.key == "PageDown" then
+          self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
+        elseif event.data.key == "End" then
+          self.customChat:resetCanvasOffset()
+        end
       end
     end
   end
