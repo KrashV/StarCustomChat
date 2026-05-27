@@ -52,7 +52,6 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.callbackPlugins = callbackPlugins
   
   o.timezoneOffset = root.getConfiguration("scc_timezone_offset") or 0
-  o.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
   o.fontTable = root.getConfiguration("scc_custom_fonts") or {}
   o.colorTable = defaultColors
   local textboxSize = widget.getSize("imgTextbox")
@@ -337,24 +336,12 @@ function StarCustomChat:processCommand(text)
     local commandResult = chat.command(text) or {}
 
     for _, line in ipairs(commandResult) do 
-      if xsb then
-        -- Do nothing
-      elseif self.isOpenSB then
-        self:addMessage({
-          connection = 0,
-          mode = "CommandResult",
-          text = line,
-          tooltip = starcustomchat.utils.cropMessage(text, self.config.commandHintCharacterLimit)
-        })
-      else
-        chat.addMessage(line)
-        table.insert(self.messages, {
-          text = line
-        })
-        if #self.messages > self.config.chatHistoryLimit then
-          table.remove(self.messages, 1)
-        end
-      end
+      self:addMessage({
+        connection = 0,
+        mode = "CommandResult",
+        text = line,
+        tooltip = starcustomchat.utils.cropMessage(text, self.config.commandHintCharacterLimit)
+      })
     end
     return commandResult
   end

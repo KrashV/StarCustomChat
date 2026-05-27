@@ -9,25 +9,14 @@ require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
 
-local handlerCutter = nil
-
 ICChatTimer = TimerKeeper.new()
 function init()
-
-  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-  self.isOSBXSB = self.isOpenSB or xsb
   
   self.chatFunctionCallback = function(message)
     self.customChat:addMessage(message)
   end
   
-  if not self.isOSBXSB then
-    require("/scripts/starextensions/lib/chat_callback.lua")
-    handlerCutter = setChatMessageHandler(self.chatFunctionCallback)
-    starcustomchat.utils.setSharedValue("dismissPane", pane.dismiss)
-  else
-    self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
-  end
+  self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
 
   self.canvasName = "chatLog"
   self.highlightCanvasName = "cnvHighlightCanvas"
@@ -912,17 +901,6 @@ end
 
 function processButtonEvents(dt)
 
-  -- StarExtensions only
-  if not self.isOSBXSB then
-    if input.keyDown("Return") or input.keyDown("/") and not self.customChat:hasFocusInput() then
-      if input.keyDown("/") then
-        self.customChat:setText("/")
-      end
-      self.customChat:focusInput()
-      chat.setInput("")
-    end
-  end
-
   if self.customChat:hasFocusInput() then
     for _, event in ipairs(input.events()) do
       if event.type == "KeyDown" then
@@ -1010,11 +988,6 @@ function sendMessageToBeSent(text, mode)
     if string.len(text) == 1 then
       self.customChat:setText("")
       self.customChat:blurInput()
-      return
-    end
-
-    if string.sub(text, 1, 2) == "//" and not self.isOSBXSB then
-      starcustomchat.utils.alert("chat.alerts.cannot_start_two_slashes")
       return
     end
 
@@ -1233,12 +1206,7 @@ function saveEverythingDude()
 end
 
 function closeChat()
-  if not self.isOSBXSB then
-    pane.dismiss()
-    world.sendEntityMessage(player.id(), "scc_chat_hidden", widget.getSelectedOption("rgChatMode"))
-  else
-    pane.hide()
-  end
+  pane.hide()
 end
 
 -- OpenStarbound chat
@@ -1281,10 +1249,6 @@ function uninit()
 
   saveEverythingDude()
   widget.setSize("imgTextbox", self.customChat.config.textBoxDefaultSize)
-
-  if handlerCutter then
-    handlerCutter()
-  end
   
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")

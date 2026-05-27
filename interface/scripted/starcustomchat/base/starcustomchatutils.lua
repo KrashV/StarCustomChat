@@ -126,9 +126,7 @@ function starcustomchat.utils.getCommands(allCommands, substr)
   end
 
   for commType, commlist in pairs(allCommands) do
-    if (not string.find(commType, "admin") or player.isAdmin()) 
-      and (commType ~= "openstarbound" or self.isOpenSB)
-      and (commType ~= "starextentions" or not self.isOpenSB) then
+    if (not string.find(commType, "admin") or player.isAdmin()) then
         runThroughCommands(commType, commlist, "", 0)
     end
   end
@@ -273,19 +271,12 @@ function starcustomchat.utils.drawCircle(center, radius, color, sections)
     local startLine = vec2.add(center, {radius * math.cos(startAngle), radius * math.sin(startAngle)})
     local endLine = vec2.add(center, {radius * math.cos(endAngle), radius * math.sin(endAngle)})
 
-    if self.isOSBXSB then
-      if not self.drawingCanvas then
-        self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
-      end
-
-      self.drawingCanvas:drawLine(vec2.div(camera.worldToScreen(startLine), interface.scale()), vec2.div(camera.worldToScreen(endLine), interface.scale()), color)
-    else
-      interface.drawDrawable({
-        line = {camera.worldToScreen(startLine), camera.worldToScreen(endLine)},
-        width = 1,
-        color = color
-      }, {0, 0}, 1, color)
+    if not self.drawingCanvas then
+      self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
     end
+
+    self.drawingCanvas:drawLine(vec2.div(camera.worldToScreen(startLine), interface.scale()), vec2.div(camera.worldToScreen(endLine), interface.scale()), color)
+
   end
 end
 

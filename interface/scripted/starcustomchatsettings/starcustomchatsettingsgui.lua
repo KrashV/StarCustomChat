@@ -7,9 +7,6 @@ require "/interface/StarboundTextboxInterface/combobox/scripts/combobox.lua"
 require "/interface/StarboundTextboxInterface/scipts/utf8/utf8.lua"
 
 function init()
-
-  self.isOpenSB = root.assetOrigin and root.assetOrigin("/opensb/coconut.png")
-  self.isOSBXSB = self.isOpenSB or xsb
   
   self.translations = config.getParameter("translations", jarray())
   self.hintTranslations = config.getParameter("hintTranslations", jarray())
