@@ -45,14 +45,14 @@
                   "file": "/assetmissing.png",
                   "position": [16, 18],
                   "centered": true,
-                  "zLevel": 2
+                  "zlevel": 2
                 },
                 "name": {
                   "type": "label",
                   "hAnchor": "mid",
                   "vAnchor": "mid",
                   "position": [16, 0],
-                  "zLevel": 3
+                  "zlevel": 3
                 },
                 "btnRemove": {
                   "type": "button",
