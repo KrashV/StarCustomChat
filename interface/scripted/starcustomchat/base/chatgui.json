@@ -250,7 +250,7 @@
       "position": [24, 15],
       "value": "",
       "mouseTransparent": true,
-      "zLevel": 3,
+      "zlevel": 3,
       "color": "#bbbbbbAA"
     },
 
@@ -259,7 +259,7 @@
       "position": [24, 15],
       "value": "",
       "mouseTransparent": true,
-      "zLevel": 3,
+      "zlevel": 3,
       "color": "#bbbbbbAA"
     },
 
@@ -383,7 +383,7 @@
                   },
                   "contactAvatar": {
                     "type": "canvas",
-                    "zLevel": 3,
+                    "zlevel": 3,
                     "rect": [1, 1, 15, 15],
                     "captureMouseEvents" : false,
                     "captureKeyboardEvents" : false,
@@ -473,7 +473,9 @@
     }
   },
   "scriptWidgetCallbacks": ["setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
-    "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "toggleChatResize", "scrollLeftMenuUp", "scrollLeftMenuDown", "closeSubMenu"],
+    "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "toggleChatResize", "scrollLeftMenuUp", "scrollLeftMenuDown", 
+    "closeSubMenu"
+  ],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"
   },
