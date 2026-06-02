@@ -169,3 +169,10 @@ end
 function emojis:onChatScroll(screenPosition)
   return widget.active("lytEmojiList") and widget.inMember("lytEmojiList", screenPosition)
 end
+
+function emojis:onCanvasClick(position, button, isButtonDown)
+    if widget.active("lytEmojiList") then
+      widget.setVisible("lytEmojiList", false)
+      return true
+    end
+end
