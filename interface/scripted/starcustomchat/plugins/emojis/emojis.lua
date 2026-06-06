@@ -172,7 +172,9 @@ end
 
 function emojis:onCanvasClick(position, button, isButtonDown)
     if widget.active("lytEmojiList") then
-      widget.setVisible("lytEmojiList", false)
+      if not widget.hasFocus("lytEmojiList.tbxSearch") then
+        widget.setVisible("lytEmojiList", false)
+      end
       return true
     end
 end
