@@ -23,6 +23,7 @@ Added the /afk command. Does the same as the corresponding button.
 CharacterVoice: Added volume slider
 CharacterVoice: The sounds are now picked from the list of all the sounds
 ModeSounds: The sounds are now picked from the list of all the sounds
+Reacts added: gem
 
 ## API
 New functions to set, get text and focus of the input textbox.
