@@ -56,6 +56,7 @@ local function isMouseOverPortrait(screenPosition, message)
   offset = vec2.add(offset, pane.getPosition())
 
   local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
+  offset[2] = offset[2] + messageHeight - size
 
   local portraitRect = {offset[1], offset[2] + messageOffset, offset[1] + size, offset[2] + messageOffset + size}
   return rect.contains(portraitRect, screenPosition)
