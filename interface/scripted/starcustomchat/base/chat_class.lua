@@ -326,6 +326,19 @@ function StarCustomChat:setMaxHeight(height)
   self.textBox:setMaxHeight(height)
 end
 
+---@public
+function StarCustomChat:updateTextboxMaxHeight()
+  if not pane.getSize then
+    return
+  end
+  local maxHeight = math.floor(pane.getSize()[2] * self.config.textboxMaxHeighSize)
+  
+  -- Ensure a reasonable minimum
+  maxHeight = math.max(maxHeight, self.config.minChatBodyHeight * self.config.textboxMaxHeighSize)
+  
+  self:setMaxHeight(maxHeight)
+end
+
 function StarCustomChat:getMessages()
   return self.messages
 end

@@ -742,6 +742,7 @@ function setSizes(chatParameters, smooth)
 
   if self.customChat then
     self.customChat:drawBackground()
+    self.customChat:updateTextboxMaxHeight()
   end
 end
 
@@ -841,13 +842,10 @@ function canvasClickEvent(position, button, isButtonDown)
     return
   end
   
-  if button == 0 and isButtonDown then
-    self.customChat.expanded = not self.customChat.expanded
-    root.setConfiguration("icc_is_expanded", self.customChat.expanded)
-    
-    local minBodyHeight = self.customChat.config.minChatBodyHeight or 90
-    local maxBodyHeight = self.customChat.config.maxChatBodyHeight or 400
-    local heightLeeway = 10
+  if button == 0 and isButtonDown then    
+    local minBodyHeight = self.customChat.config.minChatBodyHeight
+    local maxBodyHeight = self.customChat.config.maxChatBodyHeight
+    local heightLeeway = 15
     
     -- Get current height
     local currentHeight = self.chatSizeSettings.currentHeight
@@ -857,9 +855,8 @@ function canvasClickEvent(position, button, isButtonDown)
     
     self.chatSizeSettings.currentHeight = newHeight
     
-    applyChatSizeSettings(self.customChat.config, self.chatSizeSettings)
-    setSizes(self.customChat.config, true)
-    saveChatSizeSettings()
+    self.lastRequestedChatSize = {self.chatSizeSettings.paneWidth, self.chatSizeSettings.currentHeight}
+    resizeChatToPaneSize(self.lastRequestedChatSize)
     self.customChat:processQueue()
   end
 
@@ -891,9 +888,9 @@ function processEvents(screenPosition)
       elseif event.type == "KeyDown" then
         self.customChat:ignoreInputFrame()
         if event.data.key == "PageUp" then
-          self.customChat:offsetCanvas(self.customChat.expanded and - self.customChat.config.pageSkipExpanded or - self.customChat.config.pageSkip)
+          self.customChat:offsetCanvas(- self.chatSizeSettings.currentHeight / self.customChat.config.fontSize)
         elseif event.data.key == "PageDown" then
-          self.customChat:offsetCanvas(self.customChat.expanded and self.customChat.config.pageSkipExpanded or self.customChat.config.pageSkip)
+          self.customChat:offsetCanvas(self.chatSizeSettings.currentHeight / self.customChat.config.fontSize)
         elseif event.data.key == "End" then
           self.customChat:resetCanvasOffset()
         end

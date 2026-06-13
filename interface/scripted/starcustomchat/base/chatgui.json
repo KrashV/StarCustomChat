@@ -1,7 +1,6 @@
 {
   "paneLayer" : "window",
   "dismissable" : false,
-  "expanded": true,
 
   "gui" : {
     "panefeature" : {
