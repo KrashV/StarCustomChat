@@ -882,15 +882,16 @@ function processEvents(screenPosition)
             createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, self.customChat.config.wrapWidthCompactMode, self.customChat.config.fontSize, self.customChat:getFont("chattext"))
             self.customChat:processQueue()
           else
-            self.customChat:offsetCanvas(event.data.mouseWheel * -1 * (input.key("LShift") and 2 or 1))
+            local lineHeight = self.customChat.config.fontSize + self.customChat.config.spacings.lines
+            self.customChat:offsetCanvas(event.data.mouseWheel * -lineHeight * (input.key("LShift") and 2 or 1))
           end
         end
       elseif event.type == "KeyDown" then
         self.customChat:ignoreInputFrame()
         if event.data.key == "PageUp" then
-          self.customChat:offsetCanvas(- self.chatSizeSettings.currentHeight / self.customChat.config.fontSize)
+          self.customChat:offsetCanvas(-self.chatSizeSettings.currentHeight)
         elseif event.data.key == "PageDown" then
-          self.customChat:offsetCanvas(self.chatSizeSettings.currentHeight / self.customChat.config.fontSize)
+          self.customChat:offsetCanvas(self.chatSizeSettings.currentHeight)
         elseif event.data.key == "End" then
           self.customChat:resetCanvasOffset()
         end

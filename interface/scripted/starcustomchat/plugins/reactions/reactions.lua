@@ -95,7 +95,7 @@ end
 
 function reactions:onCanvasClick(screenPosition, button, isButtonDown)
   if button == 0 and isButtonDown then
-    local selectedMessage = self.customChat:selectMessage(screenPosition)
+    local selectedMessage = self.customChat:selectMessage(screenPosition, true)
     if selectedMessage and selectedMessage.reactions then
       
       for _, reactObj in ipairs (selectedMessage.reactions) do 

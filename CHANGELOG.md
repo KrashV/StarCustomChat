@@ -8,6 +8,7 @@ Fixed the avatar preview not encapsulating the whole avatar
 Fixed the command preview layout overlapping with the submenu.
 Fixed the commands from one mod overriding the other one.
 Fixed the 'edited' label always showing up as '???' if SCCRP is not installed.
+Fixed the pgUp/pgDown and react chatArea scrolling not being consistent.
 
 ## Features
 MULTILINE TEXTBOX!! Thanks D.

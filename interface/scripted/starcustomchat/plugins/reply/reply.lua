@@ -184,13 +184,15 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
     return false
   end
 
-  local selectedMessage = self.customChat:selectMessage(screenPosition)
+  local selectedMessage = self.customChat:selectMessage(screenPosition, true)
   if not selectedMessage or not selectedMessage.replyUUID then
     return false
   end
 
-  local clickY = screenPosition[2] - selectedMessage.offset
-  if selectedMessage.height - clickY >= self.customChat.config.replyOffsetHeight then
+  local clickPosition = screenPosition
+  local clickY = clickPosition[2] - selectedMessage.offset
+  local replyOffsetHeight = self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10
+  if selectedMessage.height - clickY >= replyOffsetHeight then
     return false
   end
 
@@ -205,7 +207,10 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
   local croppedText = string.format("%s: %s", displayName,
     starcustomchat.utils.cropMessage(cleanText, self.customChat.canvas:size()[1] // 10))
 
-  local textSize = self.customChat:getTextSize(croppedText, self.customChat.config.fontSize * 1.2)
+  local textSize = self.customChat:getTextSize(croppedText, self.customChat.config.fontSize / 1.2)
+  if not textSize then
+    return false
+  end
 
   local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
   local xOffset = self.customChat.chatMode == "modern"
@@ -213,10 +218,21 @@ function reply:onCanvasClick(screenPosition, button, isButtonDown)
     or self.customChat.config.textOffsetCompactMode[1]
 
   local replyStartOffset = xOffset + self.customChat.config.replyImageOffset[1]
-  local clickX = screenPosition[1]
+  local clickX = clickPosition[1]
 
-  if clickX >= replyStartOffset and clickX <= textSize[1] then
-    self.customChat:scrollToMessage(originalMessageInd, screenPosition[2])
+  if clickX >= replyStartOffset and clickX <= replyStartOffset + size / 2 + textSize[1] then
+    local targetIsInsideChat = originalMessage.offset and originalMessage.height
+      and self.customChat:isInsideChat(
+        originalMessage,
+        originalMessage.offset,
+        self.customChat.config.spacings.name + self.customChat.config.fontSize + 1,
+        self.customChat.canvas:size()
+      )
+
+    if not targetIsInsideChat then
+      self.customChat:scrollToMessage(originalMessageInd, clickPosition[2])
+    end
+
     self.desaturateTime = 0
     self.highlightMessageInd = originalMessageInd
     return true

@@ -10,6 +10,7 @@ require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 StarCustomChat = {
   messages = jarray(),
   drawnMessageIndexes = jarray(),
+  -- Pixel offset applied to the newest drawn message. 0 means pinned to the bottom.
   lineOffset = 0,
   canvas = nil,
   highlightCanvas = nil,
@@ -526,25 +527,32 @@ end
 function StarCustomChat:offsetCanvas(offset)
   if not offset then return end
   
-  if #self.drawnMessageIndexes > 0 and self.messages[self.drawnMessageIndexes[1]].offset + self.messages[self.drawnMessageIndexes[1]].height - 20 < 0 and offset < 0 then
-    return
-  else
-    self.lineOffset = math.min(self.lineOffset + offset, 0)
-    self:processQueue()    
+  if #self.drawnMessageIndexes > 0 and offset < 0 then
+    local firstMessage = self.messages[self.drawnMessageIndexes[1]]
+    local remainingOffset = firstMessage.offset
+
+    if remainingOffset <= 0 then
+      return
+    end
+
+    offset = math.max(offset, -remainingOffset)
+  end
+
+  local lineOffset = math.min(self.lineOffset + offset, 0)
+  if lineOffset ~= self.lineOffset then
+    self.lineOffset = lineOffset
+    self:processQueue()
   end
 end
 
 function StarCustomChat:scrollToMessage(ind, targetY)
   local message = self.messages[ind]
-  if not message 
-    or self:isInsideChat(message, message.offset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+  if not message or not message.offset or not message.height then
     return
   end
 
-  local lineHeight = self.config.fontSize + self.config.spacings.lines
-
   targetY = targetY or 0
-  self:offsetCanvas((targetY - message.offset - message.height) / lineHeight)
+  self:offsetCanvas(targetY - message.offset - message.height)
 end
 
   
@@ -587,11 +595,16 @@ function StarCustomChat:collapseMessage(position)
   end
 end
 
-function StarCustomChat:selectMessage(screenPosition)
-  if not screenPosition or not widget.inMember("cnvHighlightCanvas", screenPosition) then return end 
-   
-   
-  local pos = self.highlightCanvas:mousePosition()
+function StarCustomChat:selectMessage(position, isCanvasPosition)
+  if not position then return end
+
+  local pos = position
+  if not isCanvasPosition then
+    if not widget.inMember("cnvHighlightCanvas", position) then return end
+    pos = self.highlightCanvas:mousePosition()
+  end
+
+  if not pos then return end
 
   for i = #self.drawnMessageIndexes, 1, -1 do 
     local message = self.messages[self.drawnMessageIndexes[i]]
@@ -726,7 +739,7 @@ function StarCustomChat:processQueue()
     end
 
     -- Calculate message offset
-    local messageOffset = self.lineOffset * (self.config.fontSize + self.config.spacings.lines)
+    local messageOffset = self.lineOffset
 
     if i ~= #self.drawnMessageIndexes then
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
@@ -768,6 +781,11 @@ function StarCustomChat:processQueue()
       message.height = message.height + reactionOffset
     end
 
+    local avatarOffset = self.chatMode == "modern" and message.avatar
+      and self.config.spacings.name + self.config.fontSize + 1
+      or 0
+    local messageBodyHeight = message.height
+
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "modern" then
       if self:isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
@@ -789,10 +807,9 @@ function StarCustomChat:processQueue()
 
 
         if message.avatar then
-          local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + message.height - self.config.fontSize}
+          local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + messageBodyHeight - self.config.fontSize}
           self:drawIcon(message.portrait, message.displayName or message.nickname, offset, self.config.modeColors[messageMode], 
             message.time, message.recipient)
-          message.height = message.height + self.config.spacings.name + self.config.fontSize + 1
         end
       end
     
@@ -831,6 +848,8 @@ function StarCustomChat:processQueue()
         end
       end
     end
+
+    message.height = message.height + avatarOffset
 
     local replyOffset = 0
     local prevMessage = message.replyUUID and self:findMessageByUUID(message.replyUUID)
