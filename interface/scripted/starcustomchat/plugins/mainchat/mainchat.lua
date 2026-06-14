@@ -55,6 +55,10 @@ local function isMouseOverPortrait(screenPosition, message)
   local offset = vec2.add(widget.getPosition("chatLog"), self.customChat.config.portraitImageOffset)
   offset = vec2.add(offset, pane.getPosition())
 
+  if message.replyUUID then
+    offset = vec2.sub(offset, {0, self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10})
+  end
+
   local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
   offset[2] = offset[2] + messageHeight - size
 
