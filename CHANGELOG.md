@@ -14,11 +14,11 @@ Fixed the context menu popping up when the cursor is not actually within.
 ## Features
 MULTILINE TEXTBOX!! Thanks D.
 CHAT RESIZING
-Added the /filter command to filter the messages in the chat by text.
-CommandPreview now enlarges to fit the longer descriptions.
-Deleted BiggerChat.
-Added the emojies window (left menu button).
-The sent messages are now trimmed from the beginning and the end. Does not remove spaces in between.
+Added the /filter command to filter the messages in the chat by text
+CommandPreview now enlarges to fit the longer descriptions
+Deleted BiggerChat
+Added the emojies window (left menu button)
+The sent messages are now trimmed from the beginning and the end. Does not remove spaces in between
 Last message scroll is now triggered by Alt + Up/Down.
 Smoothed out the change of the chat size.
 Font names are now sorted by name.
@@ -27,6 +27,7 @@ CharacterVoice: Added volume slider
 CharacterVoice: The sounds are now picked from the list of all the sounds
 ModeSounds: The sounds are now picked from the list of all the sounds
 Reacts added: gem
+Added Belarus language support - thank you, Ender!
 
 ## API
 New functions to set, get text and focus of the input textbox.

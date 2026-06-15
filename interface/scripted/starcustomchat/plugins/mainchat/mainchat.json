@@ -225,6 +225,7 @@
             "hAnchor": "mid",
             "vAnchor": "top",
             "color": "lightgray",
+            "wrapWidth": 120,
             "value": "",
             "translationKey": "settings.chat_collapse"
           },

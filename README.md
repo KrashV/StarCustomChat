@@ -160,6 +160,7 @@ If you don't want to create a whole plugin just to bring some commands to the pr
 * @muro_o - Portuguese (Brazilian)
 * @ifanel - Ukrainian
 * @fragcunt - Polish
+* @storyshifty - Belarus
 
 # Contact me
 If you have bug reports, suggestions or other ideas, you can contact me on Discord (@Degranon) or join [my Discord server](https://discord.gg/gnu8xRjS9p)
