@@ -1,11 +1,5 @@
 {
     "name": "Emojis",
-  
-    "parameters": {
-      // Stagehand is required to retreive the languages the specific server supports
-      "stagehandType": "",
-      "timeoutBeforePolling": 5
-    },
 
     "leftMenuButtons": [
       {
@@ -95,7 +89,8 @@
               "zlevel": 6,
               "maxWidth": 195,
               "position": [3, 1],
-              "callback": "customButtonCallback"
+              "callback": "customButtonCallback",
+              "escapeKey": "customButtonCallback2"
           }
         }
       }

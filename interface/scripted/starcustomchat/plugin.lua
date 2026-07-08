@@ -147,6 +147,14 @@ function PluginClass:onCustomButtonClick(buttonName, data)
 
 end
 
+function PluginClass:onCustomButtonClick2(buttonName, data)
+
+end
+
+function PluginClass:onCustomButtonClick3(buttonName, data)
+
+end
+
 function PluginClass:onSubMenuReopen(type)
 
 end

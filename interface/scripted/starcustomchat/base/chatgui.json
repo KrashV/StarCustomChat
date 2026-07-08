@@ -473,7 +473,7 @@
   },
   "scriptWidgetCallbacks": ["setMode", "modeToggle", "toBottom", "openSettings", "selectPlayer", 
     "customButtonCallback", "contextMenuButtonClick", "closeChat", "toggleChatMovement", "toggleChatResize", "scrollLeftMenuUp", "scrollLeftMenuDown", 
-    "closeSubMenu"
+    "closeSubMenu", "customButtonCallback2", "customButtonCallback3"
   ],
   "canvasClickCallbacks" : {
     "cnvHighlightCanvas" : "canvasClickEvent"

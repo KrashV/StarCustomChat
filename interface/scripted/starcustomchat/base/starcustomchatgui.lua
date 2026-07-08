@@ -1149,8 +1149,18 @@ function createTooltip(screenPosition)
   return self.runCallbackForPlugins("onCreateTooltip", screenPosition)
 end
 
+-- Custom callbacks, in case we need several under one button (i.e. textbox)
+
 function customButtonCallback(buttonName, data)
   self.runCallbackForPlugins("onCustomButtonClick", buttonName, data)
+end
+
+function customButtonCallback2(buttonName, data)
+  self.runCallbackForPlugins("onCustomButtonClick2", buttonName, data)
+end
+
+function customButtonCallback3(buttonName, data)
+  self.runCallbackForPlugins("onCustomButtonClick3", buttonName, data)
 end
 
 function closeSubMenu()

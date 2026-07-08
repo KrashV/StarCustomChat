@@ -10,11 +10,16 @@ function emojis:init(chat)
   if widget.active("lytEmojiList") then
     self:populateEmojiList(widget.getText("lytEmojiList.tbxSearch"))
   end
+
+  self.searchText = widget.getText("lytEmojiList.tbxSearch")
 end
 
 function emojis:onCustomButtonClick(btnName, data)
   if btnName == "btnEmojiList" then
     widget.setVisible("lytEmojiList", not widget.active("lytEmojiList"))
+    if widget.active("lytEmojiList") then
+      widget.focus("lytEmojiList.tbxSearch")
+    end
     self:populateEmojiList(widget.getText("lytEmojiList.tbxSearch"))
   elseif btnName == "tbxSearch" then 
     self:searchEmoji()
@@ -23,6 +28,21 @@ function emojis:onCustomButtonClick(btnName, data)
   elseif self.emojiNullItems and self.emojiNullItems[btnName] then
     self:addEmoji(btnName)
   end
+end
+
+function emojis:onCustomButtonClick2(btnName, data)
+  if btnName == "tbxSearch" then
+    widget.setVisible("lytEmojiList", false)
+    widget.setText("lytEmojiList.tbxSearch", "")
+    self.searchText = ""
+  end
+end
+
+function emojis:onTextboxEscape()
+    if widget.active("lytEmojiList") then
+      widget.setVisible("lytEmojiList", false)
+      return true
+    end
 end
 
 function emojis:populateEmojiList(search)
@@ -157,8 +177,11 @@ end
 
 function emojis:searchEmoji()
     local search = widget.getText("lytEmojiList.tbxSearch")
-    self.emojiNullItems = nil
-    self:populateEmojiList(search)
+    if search ~= self.searchText then
+        self.searchText = search
+        self.emojiNullItems = nil
+        self:populateEmojiList(search)
+    end
 end
 
 function emojis:onSendMessage(message)
