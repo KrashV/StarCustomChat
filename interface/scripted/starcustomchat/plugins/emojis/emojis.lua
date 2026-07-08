@@ -142,7 +142,7 @@ function emojis:addEmoji(listName)
     if li then
         local data = widget.getData("lytEmojiList.saAll." .. listName .. "." .. li)
         if data and data.emoji then
-            self.customChat:setText(self.customChat:getText() .. data.emoji)
+            self.customChat:setText(self.customChat:getText() .. data.emoji .. (self.addSpaceAfterEmoji and " " or ""))
             if widget.clearListSelected then
                 widget.clearListSelected("lytEmojiList.saAll." .. listName)
             else

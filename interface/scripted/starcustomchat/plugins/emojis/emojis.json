@@ -1,6 +1,9 @@
 {
     "name": "Emojis",
 
+    "parameters": {
+      "addSpaceAfterEmoji": true
+    },
     "leftMenuButtons": [
       {
         "name": "btnEmojiList",
