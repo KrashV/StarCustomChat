@@ -32,6 +32,7 @@ Added Belarus language support - thank you, Ender!
 ## API
 New functions to set, get text and focus of the input textbox.
 New plugin method for editting the messages.
+New method to parse the input events.
 Moved the settings images to a separate folder.
 The server can now pass a list of its supported commands dynamically.
 Moved the images around internally.

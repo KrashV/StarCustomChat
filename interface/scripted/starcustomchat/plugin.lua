@@ -45,6 +45,10 @@ function PluginClass:update(dt)
 
 end
 
+function PluginClass:processEvents(events)
+
+end
+
 function PluginClass:openSettings(settingsConfig)
   return settingsConfig
 end

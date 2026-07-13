@@ -938,6 +938,8 @@ function processButtonEvents(dt)
   if input.bindDown("starcustomchat", "repeatcommand") and self.lastCommand then
     self.customChat:processCommand(self.lastCommand)
   end
+
+  self.runCallbackForPlugins("processEvents", input.events())
 end
 
 function processLeftMenuButtons()
