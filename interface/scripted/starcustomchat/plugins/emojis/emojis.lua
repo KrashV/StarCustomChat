@@ -34,6 +34,7 @@ function emojis:onCustomButtonClick2(btnName, data)
   if btnName == "tbxSearch" then
     widget.setVisible("lytEmojiList", false)
     widget.setText("lytEmojiList.tbxSearch", "")
+    widget.blur("lytEmojiList.tbxSearch")
     self.searchText = ""
   end
 end
@@ -42,6 +43,12 @@ function emojis:onTextboxEscape()
     if widget.active("lytEmojiList") then
       widget.setVisible("lytEmojiList", false)
       return true
+    end
+end
+
+function emojis:processEvents(events)
+    if input.bindDown("starcustomchat", "openEmojiPane") then
+        self:onCustomButtonClick("btnEmojiList")
     end
 end
 
