@@ -45,14 +45,16 @@
                   "type" : "image",
                   "file" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
                   "position" : [2, 0],
-                  "zlevel" : -1
+                  "zlevel" : -1,
+                  "mouseTransparent": true
                 },
                 "name" : {
                   "type" : "label",
                   "hAnchor": "mid",
                   "vAnchor": "mid",
                   "position": [37, 7],
-                  "wrapWidth": 70
+                  "wrapWidth": 70,
+                  "mouseTransparent": true
                 }
               }
             }
@@ -87,13 +89,15 @@
                   "type" : "image",
                   "file" : "/interface/scripted/starcustomchat/plugins/modesounds/listunselected.png",
                   "position" : [0, 0],
-                  "zlevel" : -1
+                  "zlevel" : -1,
+                  "mouseTransparent": true
                 },
                 "name" : {
                   "type" : "label",
                   "vAnchor": "mid",
                   "position": [5, 7],
-                  "wrapWidth": 125
+                  "wrapWidth": 125,
+                  "mouseTransparent": true
                 }
               }
             }

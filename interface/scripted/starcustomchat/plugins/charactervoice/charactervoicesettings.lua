@@ -38,7 +38,18 @@ function charactervoice:init()
 end
 
 function charactervoice:openTab()
-  local soundList = root.assetsByExtension(".ogg")
+  local rawSoundList = root.assetsByExtension(".ogg")
+  local soundList = {}
+  
+  -- Transform sound list to use combobox object format
+  for _, soundPath in ipairs(rawSoundList) do
+    local fileName = soundPath:match("([^/]+)$")
+    soundList[soundPath] = {
+      name = fileName,
+      data = {displayPlainText = soundPath}
+    }
+  end
+  
   self.combobox = self:createCombobox(soundList)
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 
@@ -47,8 +58,8 @@ function charactervoice:openTab()
 end
 
 function charactervoice:createCombobox(soundList)
-  return Combobox:bind(self.layoutWidget .. "." .. "btnCustomSound", soundList, function(data)
-    self:saveCustomSound(data)
+  return Combobox:bind(self.layoutWidget .. "." .. "btnCustomSound", soundList, function(sound, data)
+    self:saveCustomSound(sound, data)
   end, {
     filter = true,
     background = "/interface/scripted/starcustomchatsettings/images/combobox/large/backgroundFilter.png",
@@ -103,10 +114,11 @@ function charactervoice:changeSpecies()
   end
 end
 
-function charactervoice:saveCustomSound(data)
-  local customSound = data
+function charactervoice:saveCustomSound(sound, data)
+  local customSound = data.displayPlainText or sound
+
   if customSound and customSound ~= "" then
-    self.widget.setText("btnCustomSound", data:match("([^/]+)$"))
+    self.widget.setText("btnCustomSound", customSound:match("([^/]+)$"))
     if root.assetOrigin(customSound) then
       player.setProperty("scc_charactervoice_custom", customSound)
       self.soundsPool = {customSound}

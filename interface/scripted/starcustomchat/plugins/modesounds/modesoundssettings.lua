@@ -23,8 +23,11 @@ function modesounds:openTab()
   for _, sound in ipairs(sounds) do
     local name = sound:match("(/[^/]+/[^/]+)$") or sound
     table.insert(self.soundList, {
-      name = name,
-      data = sound
+      name = name:match("([^/]+)$"),
+      data = {
+        sound = sound,
+        displayPlainText = name 
+      }
     })
   end
 
@@ -121,7 +124,7 @@ function modesounds:setModeSound()
   self:stopSounds()
   local li = self.widget.getListSelected("saSounds.listItems")
   if li then
-    local sound = self.widget.getData("saSounds.listItems." .. li)
+    local sound = self.widget.getData("saSounds.listItems." .. li).sound
     if sound then
       pane.playSound(sound)
       self.modeSoundTable[self.selectedMode] = sound
