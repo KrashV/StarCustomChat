@@ -5,13 +5,14 @@ require "/scripts/rect.lua"
 require "/interface/StarboundTextboxInterface/animatedWidgets.lua"
 require "/interface/scripted/starcustomchat/base/chat_class.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
+require "/interface/scripted/starcustomchat/plugin.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
 
 ICChatTimer = TimerKeeper.new()
 function init()
-  
+
   self.chatFunctionCallback = function(message)
     self.customChat:addMessage(message)
   end
@@ -74,12 +75,7 @@ function init()
   end
 
   self.runCallbackForPlugins = function(method, ...)
-    -- The logic here is actually strange and might need some more customisation
-    local result = nil
-    for _, plugin in ipairs(plugins) do 
-      result = plugin[method](plugin, ...) or result
-    end
-    return result
+    return PluginClass:runCallbacks(plugins, method, ...)
   end
 
   starcustomchat.utils.buildLocale(localePluginConfig)

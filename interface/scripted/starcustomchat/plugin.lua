@@ -1,7 +1,12 @@
 -- base.lua
 
 PluginClass = {
-  name = ""
+  name = "",
+  styleResolvingCallbacks = {
+    formatIncomingMessage = true,
+    formatOutcomingMessage = true,
+    editMessage = true
+  }
 }
 
 function PluginClass:new(obj)
@@ -39,6 +44,17 @@ function PluginClass:_requestCommands()
       starcustomchat.utils.createStagehandWithData(self.stagehandType, {message = "requestCommands", data = {playerId = player.id()}})
     end)
   end
+end
+
+function PluginClass:runCallbacks(plugins, method, ...)
+  local result = nil
+  for _, plugin in ipairs(plugins) do
+    result = plugin[method](plugin, ...) or result
+  end
+  if self.styleResolvingCallbacks[method] then
+    result = starcustomchat.utils.resolveStyleStack(result)
+  end
+  return result
 end
 
 function PluginClass:update(dt)
