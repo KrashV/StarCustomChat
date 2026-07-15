@@ -41,7 +41,9 @@ function charactervoice:openTab()
   local soundList = root.assetsByExtension(".ogg")
   self.combobox = self:createCombobox(soundList)
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
-  self.widget.setText("btnCustomSound", player.getProperty("scc_charactervoice_custom") or "")
+
+  local sound = player.getProperty("scc_charactervoice_custom") or ""
+  self.widget.setText("btnCustomSound", sound:match("([^/]+)$"))
 end
 
 function charactervoice:createCombobox(soundList)
@@ -104,7 +106,7 @@ end
 function charactervoice:saveCustomSound(data)
   local customSound = data
   if customSound and customSound ~= "" then
-    self.widget.setText("btnCustomSound", data)
+    self.widget.setText("btnCustomSound", data:match("([^/]+)$"))
     if root.assetOrigin(customSound) then
       player.setProperty("scc_charactervoice_custom", customSound)
       self.soundsPool = {customSound}
