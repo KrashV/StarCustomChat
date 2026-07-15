@@ -83,6 +83,13 @@ function starcustomchat.utils.alert(key, ...)
 end
 
 function starcustomchat.utils.saveMessage(message)
+  if self.recalledSentMessage == message then
+    self.recalledSentMessage = nil
+    self.currentSentMessage = nil
+    return
+  end
+
+  self.recalledSentMessage = nil
   table.insert(self.sentMessages, message)
 
   if #self.sentMessages > self.sentMessagesLimit then

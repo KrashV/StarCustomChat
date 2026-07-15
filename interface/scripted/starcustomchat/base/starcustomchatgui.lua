@@ -118,6 +118,7 @@ function init()
   self.sentMessages = root.getConfiguration("icc_my_messages") or jarray()
   self.sentMessagesLimit = 15
   self.currentSentMessage = nil
+  self.recalledSentMessage = nil
 
   contextMenu_init(config.getParameter("contextMenuButtons"))
 
@@ -520,6 +521,7 @@ function checkTyping()
   else
     status.clearPersistentEffects("starchatdots")
     self.currentSentMessage = nil
+    self.recalledSentMessage = nil
   end
 end
 
@@ -931,13 +933,15 @@ function processButtonEvents(dt)
         elseif event.data.key == "Up" and altPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
-            self.customChat:setText(self.sentMessages[self.currentSentMessage])
+            self.recalledSentMessage = self.sentMessages[self.currentSentMessage]
+            self.customChat:setText(self.recalledSentMessage)
           end
           self.customChat:ignoreInputFrame()
         elseif event.data.key == "Down" and altPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.min(self.currentSentMessage + 1, #self.sentMessages) or #self.sentMessages
-            self.customChat:setText(self.sentMessages[self.currentSentMessage])
+            self.recalledSentMessage = self.sentMessages[self.currentSentMessage]
+            self.customChat:setText(self.recalledSentMessage)
           end
           self.customChat:ignoreInputFrame()
         end
@@ -979,6 +983,7 @@ end
 function escapeTextbox()
 
   if not self.runCallbackForPlugins("onTextboxEscape") then
+    self.recalledSentMessage = nil
     self.customChat:setText("")
     self.customChat:blurInput()
   end
@@ -1000,12 +1005,14 @@ function sendMessageToBeSent(text, mode)
 
   if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
+      self.recalledSentMessage = nil
       self.customChat:setText("")
       self.customChat:blurInput()
       return
     end
 
     if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
+      self.recalledSentMessage = nil
       self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
       self.savedCommandSelection = 0
       return
@@ -1015,6 +1022,7 @@ function sendMessageToBeSent(text, mode)
       starcustomchat.utils.saveMessage(text)
     end
   elseif string.sub(text, 1, 1) == "@" and widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
+    self.recalledSentMessage = nil
     self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
     self.savedCommandSelection = 0
     return
@@ -1084,6 +1092,7 @@ function sendMessageToBeSent(text, mode)
       sendMessage(message)
     end
   end
+  self.recalledSentMessage = nil
   self.customChat:setText("")
   self.customChat:blurInput()
   self.runCallbackForPlugins("afterTextboxPressed", message)
