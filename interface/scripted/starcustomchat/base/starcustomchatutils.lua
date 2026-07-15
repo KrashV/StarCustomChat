@@ -299,7 +299,7 @@ end
 function starcustomchat.utils.playersInRadius(radius, ignoreUs, nearest)
   radius = radius or 100
   return world.playerQuery(world.entityPosition(player.id()), radius, {
-    withoutEntityId = ignoreUs and player.id(),
+    withoutEntityId = ignoreUs and player.id() or nil,
     order = nearest and "nearest"
   } or nil)
 end

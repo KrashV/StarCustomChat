@@ -1,0 +1,5 @@
+{
+    "chat.typing.typing_one": "%s набірае паведамленне",
+    "chat.typing.typing_few": "%s і %s набіраюць паведамленні",
+    "chat.typing.typing_multiple": "Некалькі чалавек набіраюць паведамленні"
+}

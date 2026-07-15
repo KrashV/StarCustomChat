@@ -28,6 +28,7 @@ CharacterVoice: The sounds are now picked from the list of all the sounds
 ModeSounds: The sounds are now picked from the list of all the sounds
 Reacts added: gem
 Added Belarus language support - thank you, Ender!
+Added the typing indicator.
 
 ## API
 New functions to set, get text and focus of the input textbox.

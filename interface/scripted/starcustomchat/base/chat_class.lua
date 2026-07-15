@@ -14,6 +14,7 @@ StarCustomChat = {
   lineOffset = 0,
   canvas = nil,
   highlightCanvas = nil,
+  topCanvasWid = nil,
   totalHeight = 0,
   config = {},
   chatMode = "modern",
@@ -32,7 +33,7 @@ StarCustomChat = {
 
 StarCustomChat.__index = StarCustomChat
 
-function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, config, messages, 
+function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasWid, topCanvasWid, config, messages, 
   chatMode, savedPortraits, connectionToUuid, lineOffset, maxCharactersAllowed, defaultColors, callbackPlugins)
 
   local o = {}
@@ -44,6 +45,7 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
   o.canvas = widget.bindCanvas(canvasWid)
   o.backgroundCanvas = widget.bindCanvas(backgroundCanvasWid)
   o.highlightCanvas = widget.bindCanvas(highlightCanvasWid)
+  o.topCanvas = widget.bindCanvas(topCanvasWid)
   o.config = config
   o.chatMode = chatMode
   o.savedPortraits = savedPortraits or {}
@@ -179,6 +181,18 @@ function StarCustomChat:findMessageByUUID(uuid)
   end
 end
 
+function StarCustomChat:findMessagesByConnection(connection)
+  local messagesByConnection = {}
+
+  for i = #self.messages, 1, -1 do 
+    if self.messages[i].connection and self.messages[i].connection == connection then 
+      table.insert(messagesByConnection, self.messages[i])
+    end
+  end
+  
+  return messagesByConnection
+end
+
 function StarCustomChat:replaceUUID(oldUUID, newUUID)
   if oldUUID and newUUID then
     local oldMessageInd = self:findMessageByUUID(oldUUID)
@@ -284,6 +298,24 @@ function StarCustomChat:resetChat()
 
   self:drawBackground()
   self:processQueue()
+end
+
+
+function StarCustomChat:setInformationalText(text)
+  local shouldShow = text and text ~= ""
+  if widget.active("imgStretchNotification") ~= shouldShow then
+    widget.setVisible("imgStretchNotification", shouldShow)
+    self:processQueue()
+  end
+  widget.setText("lblNotification", text and "^font=hobo_i;" .. text or "")
+end
+
+function StarCustomChat:resetInformationalText()
+  if widget.active("imgStretchNotification") then
+    widget.setVisible("imgStretchNotification", false)
+    self:processQueue()
+  end
+  widget.setText("lblNotification", "")
 end
 
 -- Textbox callbacks
@@ -508,11 +540,14 @@ function StarCustomChat:drawIcon(target, nickname, messageOffset, color, time, r
   local nameOffset = vec2.add(self.config.nameOffset, {size, size})
   nameOffset = vec2.add(nameOffset, messageOffset)
 
-  self.canvas:drawText(recipient and "-> " .. recipient or nickname, {
-    position = nameOffset,
-    horizontalAnchor = "left", -- left, mid, right
-    verticalAnchor = "top" -- top, mid, bottom
-  }, self.config.fontSize + 1, (color or self:getColor("chattext")), nil, self:getFont("chattext"))
+  if recipient or nickname then
+
+    self.canvas:drawText(recipient and "-> " .. recipient or nickname, {
+      position = nameOffset,
+      horizontalAnchor = "left", -- left, mid, right
+      verticalAnchor = "top" -- top, mid, bottom
+    }, self.config.fontSize + 1, (color or self:getColor("chattext")), nil, self:getFont("chattext"))
+  end
 
   if time then
     local timePosition = {self.canvas:size()[1] - self.config.timeOffset[1], nameOffset[2] + self.config.timeOffset[2]}
@@ -566,6 +601,10 @@ function StarCustomChat:resetCanvasOffset()
   self:processQueue()
 end
 
+function StarCustomChat:getCanvasOffset()
+  return widget.active("imgStretchNotification") and self.config.notificationHeight or 0
+end
+
 function StarCustomChat:highlightMessage(message, color)
   for i = #self.drawnMessageIndexes, 1, -1 do 
     if message.uuid == self.messages[self.drawnMessageIndexes[i]].uuid then
@@ -580,6 +619,7 @@ end
 
 function StarCustomChat:clearHighlights()
   self.highlightCanvas:clear()
+  self.topCanvas:clear()
 end
 
 function StarCustomChat:collapseMessage(position)
@@ -739,7 +779,7 @@ function StarCustomChat:processQueue()
     end
 
     -- Calculate message offset
-    local messageOffset = self.lineOffset
+    local messageOffset = self.lineOffset + self:getCanvasOffset()
 
     if i ~= #self.drawnMessageIndexes then
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages

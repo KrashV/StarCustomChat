@@ -1,0 +1,12 @@
+{
+  "name": "Typing",
+
+  "parameters": {
+      "dotsSpeed": 0.5,
+      "typingResendInterval": 2,
+      "playerRadius": 50,
+      "overlayImage": "/interface/scripted/starcustomchat/plugins/typing/images/overlay.png"
+  },
+
+  "script": "/interface/scripted/starcustomchat/plugins/typing/typing.lua"
+}

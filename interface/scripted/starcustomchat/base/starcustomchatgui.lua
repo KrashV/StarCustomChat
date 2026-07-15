@@ -20,6 +20,8 @@ function init()
 
   self.canvasName = "chatLog"
   self.highlightCanvasName = "cnvHighlightCanvas"
+  self.topCanvasName = "cnvTopCanvas"
+
   self.chatWindowWidth = widget.getSize("saScrollArea")[1]
 
   self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
@@ -98,8 +100,11 @@ function init()
 
   local maxCharactersAllowed = root.getConfiguration("icc_max_allowed_characters") or 0
 
-  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName,
-    chatConfig, storedMessages, self.chatMode,
+  local chatMode = root.getConfiguration("sccMode") or "modern"
+  if chatMode ~= "compact" then chatMode = "modern" end
+
+  self.customChat = StarCustomChat:create(self.canvasName, "cnvBackgroundCanvas", self.highlightCanvasName, self.topCanvasName,
+    chatConfig, storedMessages, chatMode,
     config.getParameter("portraits"), config.getParameter("connectionToUuid"), config.getParameter("chatLineOffset"), maxCharactersAllowed, 
     sb.jsonMerge(config.getParameter("defaultColors"), root.getConfiguration("scc_custom_colors") or {}), self.runCallbackForPlugins)
 
@@ -402,9 +407,6 @@ end
 function localeChat()
   local hasFocus = self.customChat:hasFocusInput()
 
-  self.chatMode = root.getConfiguration("sccMode") or "modern"
-  if self.chatMode ~= "compact" then self.chatMode = "modern" end
-
   local buttons = config.getParameter("gui")["rgChatMode"]["buttons"]
   for i, button in ipairs(buttons) do
     local name = starcustomchat.utils.getTranslation("chat.modes." .. button.data.mode)
@@ -595,6 +597,8 @@ function setResizableWidgetWidths(chatParameters, sizes)
   setWidgetWidth("imgTextbox", bodyWidth)
   setWidgetWidth("lytSubMenu", bodyWidth)
   setWidgetWidth("lytSubMenu.background", bodyWidth)
+  setWidgetWidth("lblNotification", bodyWidth)
+  setWidgetWidth("imgStretchNotification", bodyWidth)
   setWidgetWidth("lytCommandPreview", bodyWidth)
   setWidgetWidth("lytCommandPreview.imgBackground", math.max(1, bodyWidth - 1))
   setWidgetWidth("lytCommandPreview.imgStretchDescription", bodyWidth)
@@ -669,9 +673,9 @@ function getSizes(chatParameters)
   local modeHeight = chatParameters.currentChatHeight or (chatParameters.maxChatBodyHeight or 400)
 
   local submenuHeight = (widget.active("lytSubMenu") and widget.getSize("lytSubMenu")[2]) or 0
-  local textboxHeight = widget.getSize("imgTextbox")[2]
+  local textboxHeight = widget.getSize("imgTextbox")[2] 
 
-  local bodyHeight = math.max(modeHeight - submenuHeight - textboxHeight, 1)
+  local bodyHeight = math.max(modeHeight - submenuHeight -  textboxHeight, 1)
 
   local buttonsSize = self.modeImageSize[2]
   local paneWidthPadding = chatParameters.paneWidthPadding or math.max(0, pane.getSize()[1] - canvasSize[1])
@@ -702,16 +706,24 @@ function setSizes(chatParameters, smooth)
   setResizableWidgetWidths(chatParameters, sizes)
 
   widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
-  widget.setPosition(self.canvasName, vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition("saScrollArea", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition(self.highlightCanvasName, vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition("lytCommandPreview", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition("backgroundImage", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition("background", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
-  widget.setPosition("frameImage", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
+  widget.setPosition("lblNotification", {widget.getPosition("lblNotification")[1], 
+    (vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight})[2])} )
+  widget.setPosition("imgStretchNotification", widget.getPosition("lblNotification"))
+
+  local canvasTopOffset = sizes.submenuHeight
+  local canvasBasePosition = vec2.add(widget.getPosition("lytSubMenu"), {0, canvasTopOffset})
+  widget.setPosition(self.canvasName, canvasBasePosition)
+  widget.setPosition("saScrollArea", canvasBasePosition)
+  widget.setPosition(self.highlightCanvasName, canvasBasePosition)
+  widget.setPosition(self.topCanvasName, canvasBasePosition)
+  widget.setPosition("lytCommandPreview", canvasBasePosition)
+  widget.setPosition("backgroundImage", canvasBasePosition)
+  widget.setPosition("background", canvasBasePosition)
+  widget.setPosition("frameImage", canvasBasePosition)
 
   widget.setSize(self.canvasName, sizes.canvasSize)
   widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+  widget.setSize(self.topCanvasName, sizes.canvasSize)
   widget.setSize("cnvBackgroundCanvas", sizes.canvasSize)
   widget.setSize("saScrollArea", sizes.canvasSize)
   widget.setSize("lytCommandPreview", sizes.canvasSize)
@@ -725,6 +737,7 @@ function setSizes(chatParameters, smooth)
     animatedWidgets:add(AnimatedWidget:bind("frameImage"):setSize(sizes.canvasSize, speed), function()
         widget.setSize(self.canvasName, sizes.canvasSize)
         widget.setSize(self.highlightCanvasName, sizes.canvasSize)
+        widget.setSize(self.topCanvasName, sizes.canvasSize)
         widget.setSize("cnvBackgroundCanvas", sizes.canvasSize)
     end)
     
@@ -839,6 +852,7 @@ function canvasClickEvent(position, button, isButtonDown)
   if self.toggleMoveChat or self.toggleResizeChat then
     widget.blur(self.canvasName)
     widget.blur(self.highlightCanvasName)
+    widget.blur(self.topCanvasName)
     return
   end
   
@@ -863,6 +877,7 @@ function canvasClickEvent(position, button, isButtonDown)
   -- Defocus from the canvases or we can never leave lol :D
   widget.blur(self.canvasName)
   widget.blur(self.highlightCanvasName)
+  widget.blur(self.topCanvasName)
 end
 
 function processEvents(screenPosition)

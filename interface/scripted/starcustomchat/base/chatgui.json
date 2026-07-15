@@ -76,6 +76,30 @@
       }
     },
 
+    "imgStretchNotification": {
+      "type": "imageStretch",
+      "visible": false,
+      "zlevel": 12,
+      "position": [20, 25],
+      "size": [16, 8],
+      "direction" : "horizontal",
+      "stretchSet": {
+        "end": "/interface/scripted/starcustomchat/plugins/typing/images/end.png",
+        "inner": "/interface/scripted/starcustomchat/plugins/typing/images/inner.png",
+        "begin": "/interface/scripted/starcustomchat/plugins/typing/images/begin.png"
+      }
+    },
+    
+    "lblNotification": {
+      "type": "label",
+      "zlevel": 13,
+      "color": "gray",
+      "fontSize": 7,
+      "hAnchor": "left",
+      "position": [24, 25],
+      "value": ""
+    },
+
     "lytContext": {     
       "type": "layout",
       "position": [0, 0],
@@ -109,6 +133,14 @@
       "rect": [20, 25, 290, 309],
       "mouseTransparent": false,
       "captureMouseEvents": true
+    },
+
+    "cnvTopCanvas": {
+      "type": "canvas",
+      "zlevel": 11,
+      "rect": [20, 25, 290, 309],
+      "mouseTransparent": false,
+      "captureMouseEvents": false
     },
 
     "lytCommandPreview": {
