@@ -61,6 +61,20 @@ local function _popStyle(stack, id)
   end
 end
 
+local function _appendText(output, text, stack)
+  if text == "" then
+    return
+  end
+
+  if #stack > 0 then
+    text = text:gsub("%^reset;", function()
+      return "^reset;" .. _composeStyleStack(stack)
+    end)
+  end
+
+  table.insert(output, text)
+end
+
 function starcustomchat.utils.resolveStyleText(text, styleDirectives)
   if not text or not styleDirectives or #styleDirectives == 0 then
     return text
@@ -80,12 +94,12 @@ function starcustomchat.utils.resolveStyleText(text, styleDirectives)
     elseif closeStart then
       markerStart, markerEnd, markerId, opening = closeStart, closeEnd, closeId, false
     else
-      table.insert(output, text:sub(index))
+      _appendText(output, text:sub(index), stack)
       break
     end
 
     if markerStart > index then
-      table.insert(output, text:sub(index, markerStart - 1))
+      _appendText(output, text:sub(index, markerStart - 1), stack)
     end
 
     local id = #markerId
