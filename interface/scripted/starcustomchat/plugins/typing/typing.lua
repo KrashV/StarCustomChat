@@ -16,8 +16,6 @@ function typing:init(chat)
   self.indicatorImageSize = root.imageSize(self.overlayImage .. ":1")
   self.typingPlayers = {}
   self.typingFrameTime = 0
-  
-  self.typingMessageUUID = nil
 
 end
 
@@ -151,19 +149,5 @@ function typing:update(dt)
   else
     self.typingFrameTime = 0
     self.customChat:resetInformationalText()
-  end
-end
-
-function typing:onReceiveMessage(message)
-  if self.typingMessageUUID and self.customChat:findMessageByUUID(self.typingMessageUUID) then
-    self.customChat:deleteMessage(self.typingMessageUUID)
-    self.typingMessageUUID = nil
-  end
-end
-
-function typing:uninit()
-  if self.typingMessageUUID and self.customChat:findMessageByUUID(self.typingMessageUUID) then
-    self.customChat:deleteMessage(self.typingMessageUUID)
-    self.typingMessageUUID = nil
   end
 end
