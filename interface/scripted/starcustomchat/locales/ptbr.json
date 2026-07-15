@@ -52,6 +52,8 @@
   "settings.search": "Pesquisar...",
 
 
+  "chat.commands.unknown_argument": "Argumento desconhecido: %s",
+  "chat.commands.unknown_argument_expected": "Argumento desconhecido: %s, valores válidos: %s",
 
 
   "commands.general.admin": "Ativa ou desativa o Modo Administrador, que previne a perca de saúde e energia, garante acesso a todas as receitas de crafting e a comandos exclusivos de administrador.",

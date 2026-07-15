@@ -300,7 +300,6 @@ function StarCustomChat:resetChat()
   self:processQueue()
 end
 
-
 function StarCustomChat:setInformationalText(text)
   local shouldShow = text and text ~= ""
   if widget.active("imgStretchNotification") ~= shouldShow then

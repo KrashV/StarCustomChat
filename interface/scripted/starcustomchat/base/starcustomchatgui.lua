@@ -706,7 +706,7 @@ function setSizes(chatParameters, smooth)
   widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
   widget.setPosition("lblNotification", {widget.getPosition("lblNotification")[1], 
     (vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight})[2])} )
-  widget.setPosition("imgStretchNotification", widget.getPosition("lblNotification"))
+  widget.setPosition("imgStretchNotification", {widget.getPosition("imgStretchNotification")[1], widget.getPosition("lblNotification")[2]})
 
   local canvasTopOffset = sizes.submenuHeight
   local canvasBasePosition = vec2.add(widget.getPosition("lytSubMenu"), {0, canvasTopOffset})

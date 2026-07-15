@@ -52,6 +52,8 @@
   "settings.search": "Recherche...",
 
 
+  "chat.commands.unknown_argument": "Argument inconnu : %s",
+  "chat.commands.unknown_argument_expected": "Argument inconnu : %s, les valeurs autorisées sont %s",
 
 
   "commands.general.admin": "Active ou désactive le mode admin, qui débloque toutes les recettes d’artisanat, empêche les dégâts et la perte d’énergie, et donne accès aux commandes réservées aux administrateurs.",

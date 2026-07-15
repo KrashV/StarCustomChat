@@ -1,5 +1,9 @@
 {
     "chat.typing.typing_one": "%s schreibt",
     "chat.typing.typing_few": "%s und %s schreiben",
-    "chat.typing.typing_multiple": "Mehrere Personen schreiben"
+    "chat.typing.typing_multiple": "Mehrere Personen schreiben",
+
+    "chat.commands.typing.description": "Anzeige der Tippanzeigen ändern",
+    "chat.commands.typing.enabled": "Tippanzeigen sind aktiviert",
+    "chat.commands.typing.disabled": "Tippanzeigen sind deaktiviert"
 }

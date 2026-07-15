@@ -52,6 +52,8 @@
   "settings.search": "Wyszukaj...",
 
 
+  "chat.commands.unknown_argument": "Nieznany argument: %s",
+  "chat.commands.unknown_argument_expected": "Nieznany argument: %s, dopuszczalne wartości to %s",
 
 
   "commands.general.admin": "Włącza lub wyłącza tryb administratora, który pokazuje wszystkie przepisy tworzenia, daje graczowi nieśmiertelność i nieskończoną energię, oraz pozwala na używanie komend administratora.",

@@ -52,6 +52,9 @@
   "settings.search": "Zoeken...",
 
 
+  "chat.commands.unknown_argument": "Onbekend argument: %s",
+  "chat.commands.unknown_argument_expected": "Onbekend argument: %s, toegestaan zijn %s",
+
 
   "commands.general.admin": "Schakelt adminmodus in of uit, dit geeft toegang tot alle craftingrecepten, voorkomt schade of energieverlies, en laat je admin-exclusieve commandos gebruiken.",
   "commands.general.help": "Gebruik /help commandoNaam om gedetailleerde documentatie te krijgen.",

@@ -53,6 +53,10 @@
   "settings.search": "Suchen...",
 
 
+  "chat.commands.unknown_argument": "Unbekanntes Argument: %s",
+  "chat.commands.unknown_argument_expected": "Unbekanntes Argument: %s, zulässig sind %s",
+
+
   "commands.general.admin": "Aktiviert oder deaktiviert den Admin-Modus, welcher alle Crafting-Rezepte erlaubt, Schaden und Energieverlust verhindert und Zugriff auf Admin-Commands verleiht.",
   "commands.general.help": "Nutze /help Befehl, um eine detaillierte Erklärung zu erhalten.",
   "commands.general.naked": "Entfernt alle Ausrüstung. Nützlich in Makros, um dem Charakter neue Ausrüstung als Ersatz zu geben, oder, du weißt - aus Spaß.",

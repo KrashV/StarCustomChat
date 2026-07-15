@@ -1,5 +1,9 @@
 {
     "chat.typing.typing_one": "%s está escribiendo",
     "chat.typing.typing_few": "%s y %s están escribiendo",
-    "chat.typing.typing_multiple": "Varias personas están escribiendo"
+    "chat.typing.typing_multiple": "Varias personas están escribiendo",
+
+    "chat.commands.typing.description": "Cambiar la visualización de los indicadores de escritura",
+    "chat.commands.typing.enabled": "Indicadores de escritura activados",
+    "chat.commands.typing.disabled": "Indicadores de escritura desactivados"
 }

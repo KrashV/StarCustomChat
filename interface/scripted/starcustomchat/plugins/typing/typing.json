@@ -8,5 +8,6 @@
       "overlayImage": "/interface/scripted/starcustomchat/plugins/typing/images/overlay.png"
   },
 
-  "script": "/interface/scripted/starcustomchat/plugins/typing/typing.lua"
+  "script": "/interface/scripted/starcustomchat/plugins/typing/typing.lua",
+  "commands": "/interface/scripted/starcustomchat/plugins/typing/commands.config"
 }

@@ -1,5 +1,9 @@
 {
     "chat.typing.typing_one": "%s набирає текст",
     "chat.typing.typing_few": "%s і %s набирають текст",
-    "chat.typing.typing_multiple": "Кілька людей набирають текст"
+    "chat.typing.typing_multiple": "Кілька людей набирають текст",
+
+    "chat.commands.typing.description": "Змінити відображення індикаторів набору тексту",
+    "chat.commands.typing.enabled": "Індикатори набору тексту увімкнені",
+    "chat.commands.typing.disabled": "Індикатори набору тексту вимкнені"
 }

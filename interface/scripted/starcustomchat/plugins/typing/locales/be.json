@@ -1,5 +1,9 @@
 {
     "chat.typing.typing_one": "%s друкуе",
     "chat.typing.typing_few": "%s і %s друкуюць",
-    "chat.typing.typing_multiple": "Некалькі чалавек друкуюць"
+    "chat.typing.typing_multiple": "Некалькі чалавек друкуюць",
+
+    "chat.commands.typing.description": "Уключыць/выключыць паказчыкі набору",
+    "chat.commands.typing.enabled": "Паказчыкі набору ўключаны",
+    "chat.commands.typing.disabled": "Паказчыкі набору выключаны"
 }

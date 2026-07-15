@@ -52,6 +52,8 @@
   "settings.search": "Search...",
 
 
+  "chat.commands.unknown_argument": "Unknown argument: %s",
+  "chat.commands.unknown_argument_expected": "Unknown argument: %s, expected %s",
 
 
   "commands.general.admin": "Enables or disables admin mode, which enables all crafting recipes, prevents damage or energy loss, and allows access to admin-only commands.",

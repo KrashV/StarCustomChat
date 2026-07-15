@@ -52,6 +52,8 @@
   "settings.search": "Cerca...",
 
 
+  "chat.commands.unknown_argument": "Argomento sconosciuto: %s",
+  "chat.commands.unknown_argument_expected": "Argomento sconosciuto: %s, sono ammessi %s",
 
 
   "commands.general.admin": "Abilita o disabilita la modalità admin, che sblocca tutti i crafting, nega danni e consumo di energia, e permette l'accesso ai comandi admin.",

@@ -17,6 +17,7 @@ function typing:init(chat)
   self.typingPlayers = {}
   self.typingFrameTime = 0
 
+  self.typingIndicatorsEnabled = root.getConfiguration("scc_typing_indicators_enabled") or true
 end
 
 function typing:registerMessageHandlers()
@@ -32,6 +33,33 @@ function typing:registerMessageHandlers()
   starcustomchat.utils.setMessageHandler( self.removeTypingEntityMessageName, function(_, _, data)
     if self.typingPlayers[data.connection] then
       self.typingPlayers[data.connection] = nil
+    end
+  end)
+
+  starcustomchat.utils.setMessageHandler("/toggleTypingIndicators", function(_, isLocal, data)
+    if isLocal then
+      local args = chat.parseArguments(data)
+      
+      if not args then
+        self.typingIndicatorsEnabled = not self.typingIndicatorsEnabled
+        root.setConfiguration("scc_typing_indicators_enabled", self.typingIndicatorsEnabled)
+
+        return starcustomchat.utils.getTranslation("chat.commands.typing." .. (self.typingIndicatorsEnabled and "enabled" or "disabled"))
+      else
+        if args == "enable" then
+          self.typingIndicatorsEnabled = true
+          root.setConfiguration("scc_typing_indicators_enabled", true)
+
+          return starcustomchat.utils.getTranslation("chat.commands.typing.enabled")
+        elseif args == "disable" then
+          self.typingIndicatorsEnabled = false
+          root.setConfiguration("scc_typing_indicators_enabled", false)
+
+          return starcustomchat.utils.getTranslation("chat.commands.typing.disabled")
+        else
+          return starcustomchat.utils.getTranslation("chat.commands.unknown_argument_expected", args, "enable, disable")
+        end
+      end
     end
   end)
 end
@@ -122,7 +150,7 @@ function typing:update(dt)
     end
   end
 
-  if next(self.typingPlayers) ~= nil then
+  if self.typingIndicatorsEnabled and next(self.typingPlayers) ~= nil then
     self.typingFrameTime = self.typingFrameTime + dt
     local typingFrame = (math.floor(self.typingFrameTime / self.dotsSpeed) % 3) + 1
 

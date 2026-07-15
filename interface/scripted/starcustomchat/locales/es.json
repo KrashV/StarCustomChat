@@ -51,6 +51,11 @@
   "settings.remove": "Eliminar",
   "settings.search": "Buscar...",
 
+
+  "chat.commands.unknown_argument": "Argumento desconocido: %s",
+  "chat.commands.unknown_argument_expected": "Argumento desconocido: %s, se admiten %s",
+
+
   "commands.general.admin": "Activa o desactiva el modo administrador, que habilita todas las recetas de creación, evita el daño o la pérdida de energía y permite el acceso a comandos solo para administradores.",
   "commands.general.help": "Usa /help nombreComando para obtener documentación detallada.",
   "commands.general.naked": "Quita todo el equipo. Útil en macros para ponerle nuevo equipo a un personaje sustituyendo el que lleva, o bueno, por diversión.",
