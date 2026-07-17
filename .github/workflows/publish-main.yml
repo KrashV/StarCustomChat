@@ -1,0 +1,15 @@
+name: Publish Main Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    with:
+      create_release: true
+      send_discord: true
+      upload_to_google_drive: true
