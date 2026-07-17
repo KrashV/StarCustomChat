@@ -152,7 +152,7 @@ function typing:update(dt)
 
   if self.typingIndicatorsEnabled and next(self.typingPlayers) ~= nil then
     self.typingFrameTime = self.typingFrameTime + dt
-    local typingFrame = (math.floor(self.typingFrameTime / self.dotsSpeed) % 3) + 1
+    local typingFrame = (math.floor(self.typingFrameTime / self.dotsSpeed) % self.overlayImageFrames) + 1
 
     -- Drawing part: we need to draw the message if the typing is here. It should ALWAYS be the last one, and only in modern mode
     if self.customChat.chatMode == "modern" then

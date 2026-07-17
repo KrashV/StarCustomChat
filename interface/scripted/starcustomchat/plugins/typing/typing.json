@@ -5,7 +5,8 @@
       "dotsSpeed": 0.5,
       "typingResendInterval": 3,
       "playerRadius": 50,
-      "overlayImage": "/interface/scripted/starcustomchat/plugins/typing/images/overlay.png"
+      "overlayImage": "/interface/scripted/starcustomchat/plugins/typing/images/overlay.png",
+      "overlayImageFrames": 3
   },
 
   "script": "/interface/scripted/starcustomchat/plugins/typing/typing.lua",
