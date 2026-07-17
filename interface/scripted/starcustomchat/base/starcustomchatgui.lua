@@ -183,6 +183,8 @@ function init()
 
   self.DMTab = DMTab:new(self.customChat)
   self.DMTab:checkDMs(config.getParameter("DMingPlayerID"))
+
+  self.commandsLayoutPosition = widget.getPosition("lytCommandPreview")
 end
 
 function selectPlayer(...)
@@ -506,6 +508,12 @@ function checkCommandsPreview()
     widget.setData("lblCommandPreview", nil)
     self.savedCommandSelection = 0
     self.pingUsersAround = nil
+  end
+
+  if widget.active("imgStretchNotification") then
+    widget.setPosition("lytCommandPreview", vec2.add(self.commandsLayoutPosition, {0, widget.getSize("imgStretchNotification")[2]}))
+  else
+    widget.setPosition("lytCommandPreview", self.commandsLayoutPosition)
   end
 end
 
