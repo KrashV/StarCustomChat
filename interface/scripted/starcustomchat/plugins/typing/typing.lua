@@ -75,7 +75,7 @@ function typing:buildTypingText(typingPlayers)
     if entityId and world.entityExists(entityId) then
       local entityPosition = world.entityPosition(entityId)
       if entityPosition then
-        local distance = world.distance(entityPosition, localPosition)
+        local distance = world.magnitude(entityPosition, localPosition)
         table.insert(typingPlayerEntries, {
           name = playerData.name or "Unknown",
           distance = distance,
