@@ -164,7 +164,16 @@ function typing:update(dt)
           
           -- Copied from self.customChat:drawImage
           local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
-          local offset = vec2.add(self.customChat.config.iconImageOffset, {0, message.offset})
+          local offset
+          if message.avatarOffset then
+            offset = vec2.add(message.avatarOffset, self.customChat.config.iconImageOffset)
+          else
+            offset = vec2.add(self.customChat.config.iconImageOffset, {0, message.offset})
+            offset[2] = offset[2] + message.height - self.customChat.config.spacings.name - (self.customChat.config.fontSize * 2) - 1
+            if message.replyUUID then
+              offset[2] = offset[2] - self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10
+            end
+          end
           self.customChat.topCanvas:drawImageRect(self.overlayImage .. ":" .. typingFrame, {0, 0, self.indicatorImageSize[1], self.indicatorImageSize[2]}, {offset[1], offset[2], offset[1] + size, offset[2] + size})
         end
       end

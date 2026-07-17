@@ -847,6 +847,7 @@ function StarCustomChat:processQueue()
 
         if message.avatar then
           local offset = {0, messageOffset + self.config.textOffsetFullMode[2] + messageBodyHeight - self.config.fontSize}
+          message.avatarOffset = offset
           self:drawIcon(message.portrait, message.displayName or message.nickname, offset, self.config.modeColors[messageMode], 
             message.time, message.recipient)
         end
