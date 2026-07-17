@@ -77,7 +77,7 @@ function typing:buildTypingText(typingPlayers)
       if entityPosition then
         local distance = world.magnitude(entityPosition, localPosition)
         table.insert(typingPlayerEntries, {
-          name = playerData.name or "Unknown",
+          name = self.customChat.callbackPlugins("resolvePlayerData", playerData).name or "Unknown",
           distance = distance,
           id = entityId
         })
@@ -116,7 +116,8 @@ function typing:onTextboxCallback()
       world.sendEntityMessage(pl, self.addTypingEntityMessageName, {
         id = player.id(),
         connection = starcustomchat.utils.entityIdToConnection(player.id()),
-        name = player.name()
+        name = player.name(),
+        uuid = player.uniqueId()
       })
     end
 
@@ -131,7 +132,8 @@ function typing:onSendMessage(message)
     world.sendEntityMessage(pl, self.removeTypingEntityMessageName, {
       id = player.id(),
       connection = starcustomchat.utils.entityIdToConnection(player.id()),
-      name = player.name()
+      name = player.name(),
+      uuid = player.uniqueId()
     })
   end
 end
