@@ -39,3 +39,4 @@ Moved the settings images to a separate folder.
 The server can now pass a list of its supported commands dynamically.
 Moved the images around internally.
 New callback hooks for widgets. Useful when one widget can contain multiple callbacks (i.e. textbox)
+New method to resolve the player names and data. Useful when you want to change their names in DM tab etc

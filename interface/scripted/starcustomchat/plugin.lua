@@ -85,6 +85,10 @@ function PluginClass:addCustomCommandPreview(availableCommands, substr)
 
 end
 
+function PluginClass:resolvePlayerData(playerData)
+  return playerData
+end
+
 function PluginClass:onSendMessage(message)
 
 end

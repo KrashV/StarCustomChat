@@ -95,7 +95,11 @@ function DMTab:populateList(dmingTo)
     for _, player in ipairs(starcustomchat.utils.playersInRadius(40)) do
       table.insert(playersAround, {
         id = player,
-        name = world.entityName(player) or "Unknown",
+        name = self.customChat.callbackPlugins("resolvePlayerData", {
+          name = world.entityName(player),
+          entityId = player,
+          uuid = world.entityUniqueId(player)
+        }).name or "Unknown",
         data = {
           portrait = world.entityPortrait(player, "full")
         }
