@@ -162,7 +162,7 @@ function typing:update(dt)
       for i = #self.customChat.drawnMessageIndexes, 1, -1 do 
         local message = self.customChat.messages[self.customChat.drawnMessageIndexes[i]]
 
-        if message.connection and self.typingPlayers[message.connection] and message.avatar then
+        if message.connection and self.typingPlayers[message.connection] and message.avatar and self.customChat:isInsideChat(message, message.offset, 0, self.customChat.canvas:size()) then
           
           -- Copied from self.customChat:drawImage
           local size = portraitSizeFromBaseFont(self.customChat.config.fontSize)
