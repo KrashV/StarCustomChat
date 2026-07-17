@@ -1,0 +1,16 @@
+name: Publish Release Candidate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release-candidate
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish.yml
+    secrets: inherit
+    with:
+      create_release: false
+      send_discord: false
+      upload_to_google_drive: true

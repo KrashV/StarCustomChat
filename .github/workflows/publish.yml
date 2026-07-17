@@ -1,9 +1,23 @@
-name: Generate Archive and Create Release
+name: Publish Package
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      create_release:
+        description: Create a GitHub release
+        required: false
+        type: boolean
+        default: false
+      send_discord:
+        description: Send a Discord notification
+        required: false
+        type: boolean
+        default: false
+      upload_to_google_drive:
+        description: Upload the artifact to Google Drive
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -11,31 +25,44 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Get version
         id: extract_version
-        run: echo "::set-output name=version::$(jq -r '.version' _metadata)"
-        
+        shell: bash
+        run: echo "version=$(jq -r '.version' _metadata)" >> "$GITHUB_OUTPUT"
+
+      - name: Get artifact name
+        id: extract_artifact_name
+        shell: bash
+        run: echo "artifact_name=$(jq -r '.name' _metadata).pak" >> "$GITHUB_OUTPUT"
+
+      - name: Get artifact friendly name
+        id: extract_artifact_friendly_name
+        shell: bash
+        run: echo "artifact_friendly_name=$(jq -r '.friendlyName' _metadata)" >> "$GITHUB_OUTPUT"
+
+
       - name: Get latest release version
+        if: ${{ inputs.create_release }}
         id: latest_release
         shell: bash
         env:
           REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Fetch latest release from GitHub API
           LATEST_TAG=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
             https://api.github.com/repos/$REPO/releases/latest \
             | jq -r '.tag_name')
 
           echo "Latest release tag: $LATEST_TAG"
-
-          # Strip leading 'v' if present so we can compare plain versions
           CLEAN_TAG=${LATEST_TAG#v}
-          echo "clean_tag=$CLEAN_TAG" >> $GITHUB_OUTPUT
+          echo "clean_tag=$CLEAN_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Fail if version is same as latest release
+        if: ${{ inputs.create_release }}
         shell: bash
         run: |
           META_VERSION="${{ steps.extract_version.outputs.version }}"
@@ -52,35 +79,38 @@ jobs:
       - name: Run Asset Packer
         uses: KrashV/starbound-asset-packer-action@v1
         with:
-          output: StarCustomChat.pak
+          output: ${{ steps.extract_artifact_name.outputs.artifact_name }}
 
+      - name: Upload mod to Google Drive
+        if: ${{ inputs.upload_to_google_drive }}
+        uses: logickoder/google-drive-upload@main
+        with:
+          credentials: ${{ secrets.GCP_CREDENTIAL }}
+          filename: ${{ steps.extract_artifact_name.outputs.artifact_name }}
+          folderId: ${{ secrets.DRIVE_FOLDER_ID }}
+          overwrite: "true"
 
-      - name: 'Create GitHub Release'
+      - name: Create GitHub Release
+        if: ${{ inputs.create_release }}
         uses: softprops/action-gh-release@v1
         with:
           body_path: CHANGELOG.md
-          files: StarCustomChat.pak       
+          files: ${{ steps.extract_artifact_name.outputs.artifact_name }}
           tag_name: v${{ steps.extract_version.outputs.version }}
           name: Release V${{ steps.extract_version.outputs.version }}
 
       - name: Get changelog content
+        if: ${{ inputs.create_release }}
         id: read_file
         uses: andstor/file-reader-action@v1
         with:
           path: "CHANGELOG.md"
 
       - name: Discord Webhook For Delivery
+        if: ${{ inputs.send_discord }}
         uses: tsickert/discord-webhook@v6.0.0
         with:
           webhook-url: ${{ secrets.DELIVERY_DISCORD_URL }}
-          filename: StarCustomChat.pak  
-          content: "# StarCustomChat V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
-
-      - name: Upload mod to Google Drive
-        uses: logickoder/google-drive-upload@main
-        with:
-          credentials: ${{ secrets.GCP_CREDENTIAL }}
-          filename: StarCustomChat.pak
-          folderId: ${{ secrets.DRIVE_FOLDER_ID }}
-          overwrite: "true"
+          filename: ${{ steps.extract_artifact_name.outputs.artifact_name }}
+          content: "# ${{ steps.extract_artifact_friendly_name.outputs.artifact_friendly_name }} V${{ steps.extract_version.outputs.version }}\n${{ steps.read_file.outputs.contents }}"
         
