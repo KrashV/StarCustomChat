@@ -183,8 +183,6 @@ function init()
 
   self.DMTab = DMTab:new(self.customChat)
   self.DMTab:checkDMs(config.getParameter("DMingPlayerID"))
-
-  self.commandsLayoutPosition = widget.getPosition("lytCommandPreview")
 end
 
 function selectPlayer(...)
@@ -509,12 +507,6 @@ function checkCommandsPreview()
     self.savedCommandSelection = 0
     self.pingUsersAround = nil
   end
-
-  if widget.active("imgStretchNotification") then
-    widget.setPosition("lytCommandPreview", vec2.add(self.commandsLayoutPosition, {0, widget.getSize("imgStretchNotification")[2]}))
-  else
-    widget.setPosition("lytCommandPreview", self.commandsLayoutPosition)
-  end
 end
 
 function checkTyping()
@@ -603,8 +595,9 @@ function setResizableWidgetWidths(chatParameters, sizes)
   setWidgetWidth("imgTextbox", bodyWidth)
   setWidgetWidth("lytSubMenu", bodyWidth)
   setWidgetWidth("lytSubMenu.background", bodyWidth)
-  setWidgetWidth("lblNotification", bodyWidth)
-  setWidgetWidth("imgStretchNotification", bodyWidth)
+  setWidgetWidth("lytNotification", bodyWidth)
+  setWidgetWidth("lytNotification.background", bodyWidth)
+  setWidgetWidth("lytNotification.lblNotification", bodyWidth)
   setWidgetWidth("lytCommandPreview", bodyWidth)
   setWidgetWidth("lytCommandPreview.imgBackground", math.max(1, bodyWidth - 1))
   setWidgetWidth("lytCommandPreview.imgStretchDescription", bodyWidth)
@@ -712,9 +705,7 @@ function setSizes(chatParameters, smooth)
   setResizableWidgetWidths(chatParameters, sizes)
 
   widget.setPosition("lytSubMenu", vec2.add(widget.getPosition("imgTextbox"), {0, widget.getSize("imgTextbox")[2]}))
-  widget.setPosition("lblNotification", {widget.getPosition("lblNotification")[1], 
-    (vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight})[2])} )
-  widget.setPosition("imgStretchNotification", {widget.getPosition("imgStretchNotification")[1], widget.getPosition("lblNotification")[2]})
+  widget.setPosition("lytNotification", vec2.add(widget.getPosition("lytSubMenu"), {0, sizes.submenuHeight}))
 
   local canvasTopOffset = sizes.submenuHeight
   local canvasBasePosition = vec2.add(widget.getPosition("lytSubMenu"), {0, canvasTopOffset})

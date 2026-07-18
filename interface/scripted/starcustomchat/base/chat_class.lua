@@ -302,19 +302,19 @@ end
 
 function StarCustomChat:setInformationalText(text)
   local shouldShow = text and text ~= ""
-  if widget.active("imgStretchNotification") ~= shouldShow then
-    widget.setVisible("imgStretchNotification", shouldShow)
+  if widget.active("lytNotification") ~= shouldShow then
+    widget.setVisible("lytNotification", shouldShow)
     self:processQueue()
   end
-  widget.setText("lblNotification", text and "^font=hobo_i;" .. text or "")
+  widget.setText("lytNotification.lblNotification", text and "^font=hobo_i;" .. text or "")
 end
 
 function StarCustomChat:resetInformationalText()
-  if widget.active("imgStretchNotification") then
-    widget.setVisible("imgStretchNotification", false)
+  if widget.active("lytNotification") then
+    widget.setVisible("lytNotification", false)
     self:processQueue()
   end
-  widget.setText("lblNotification", "")
+  widget.setText("lytNotification.lblNotification", "")
 end
 
 -- Textbox callbacks
@@ -600,9 +600,6 @@ function StarCustomChat:resetCanvasOffset()
   self:processQueue()
 end
 
-function StarCustomChat:getCanvasOffset()
-  return widget.active("imgStretchNotification") and self.config.notificationHeight or 0
-end
 
 function StarCustomChat:highlightMessage(message, color)
   for i = #self.drawnMessageIndexes, 1, -1 do 
@@ -778,7 +775,7 @@ function StarCustomChat:processQueue()
     end
 
     -- Calculate message offset
-    local messageOffset = self.lineOffset + self:getCanvasOffset()
+    local messageOffset = self.lineOffset + self.config.notificationHeight
 
     if i ~= #self.drawnMessageIndexes then
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
