@@ -168,6 +168,7 @@ function mainchat:formatIncomingMessage(message)
     if message.connection == 0 then
       message.portrait = message.portrait or self.modeIcons.server
       message.nickname = message.nickname or "Server"
+      message.mode = "CommandResult"
       message.color = self.customChat:getColor("servertext")
     else
       message.portrait = message.portrait and message.portrait ~= "" and message.portrait or message.connection

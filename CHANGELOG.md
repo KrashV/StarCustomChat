@@ -30,6 +30,7 @@ ModeSounds: The sounds are now picked from the list of all the sounds
 Reacts added: gem
 Added Belarus language support - thank you, Ender!
 Added the typing indicator.
+Moved the server messages to "CommandResult" mode.
 
 ## API
 New functions to set, get text and focus of the input textbox.
