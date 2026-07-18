@@ -4,7 +4,7 @@
   "parameters": {
       "dotsSpeed": 0.5,
       "typingResendInterval": 3,
-      "playerRadius": 50,
+      "playerRadius": 35,
       "overlayImage": "/interface/scripted/starcustomchat/plugins/typing/images/overlay.png",
       "overlayImageFrames": 3
   },
