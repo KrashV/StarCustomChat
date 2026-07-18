@@ -54,7 +54,7 @@ function charactervoice:openTab()
   self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 
   local sound = player.getProperty("scc_charactervoice_custom") or ""
-  self.widget.setText("btnCustomSound", sound:match("([^/]+)$"))
+  self.widget.setText("btnCustomSound", sound:match("([^/]+)$") or "")
 end
 
 function charactervoice:createCombobox(soundList)
