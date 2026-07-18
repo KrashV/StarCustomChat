@@ -4,7 +4,7 @@ require "/scripts/messageutil.lua"
 require "/scripts/scctimer.lua"
 require "/interface/scripted/starcustomchat/base/starcustomchatutils.lua"
 require "/interface/StarboundTextboxInterface/combobox/scripts/combobox.lua"
-require "/interface/StarboundTextboxInterface/scipts/utf8/utf8.lua"
+require "/interface/StarboundTextboxInterface/scripts/utf8/utf8.lua"
 
 function init()
   
