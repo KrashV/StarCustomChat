@@ -11,6 +11,7 @@ Fixed the 'edited' label always showing up as '???' if SCCRP is not installed.
 Fixed the pgUp/pgDown and react chatArea scrolling not being consistent.
 Fixed the context menu popping up when the cursor is not actually within.
 Fixed the duplicating of entries for messages that are sent from chat history.
+Changed the notification of the ping to show the displayName instead of the actual nickname.
 
 ## Features
 MULTILINE TEXTBOX!! Thanks D.

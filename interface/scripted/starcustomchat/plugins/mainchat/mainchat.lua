@@ -295,7 +295,7 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
 
     elseif buttonName == "ping" then
       local target = starcustomchat.utils.connectionToEntityId(selectedMessage.connection)
-      self:ping(target, selectedMessage.nickname)
+      self:ping(target, selectedMessage.displayName or selectedMessage.nickname)
 
     elseif buttonName == "collapse" then
       self.customChat:collapseMessage({0, selectedMessage.offset + 1})
