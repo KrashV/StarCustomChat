@@ -125,16 +125,19 @@ function typing:onTextboxCallback()
   end
 end
 
-function typing:onSendMessage(message)
+function typing:preventTextboxCallback(message)
   local players = starcustomchat.utils.playersInRadius(self.playerRadius, true, true)
   
   for _, pl in ipairs(players) do 
-    world.sendEntityMessage(pl, self.removeTypingEntityMessageName, {
-      id = player.id(),
-      connection = starcustomchat.utils.entityIdToConnection(player.id()),
-      name = player.name(),
-      uuid = player.uniqueId()
-    })
+    world.sendEntityMessage(pl, self.removeTypingEntityMessageName, starcustomchat.utils.playerData())
+  end
+end
+
+function typing:onTextboxEscape(message)
+  local players = starcustomchat.utils.playersInRadius(self.playerRadius, true, true)
+  
+  for _, pl in ipairs(players) do 
+    world.sendEntityMessage(pl, self.removeTypingEntityMessageName, starcustomchat.utils.playerData())
   end
 end
 

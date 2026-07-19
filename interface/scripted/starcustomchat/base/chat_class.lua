@@ -413,7 +413,8 @@ function StarCustomChat:previewCommands(commands, selected)
   for j = 0, n - 1 do
     local i = (selected + j - 1) % n + 1
     if type(commands[i]) == "table" then
-      result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i].data .. " "
+      local previewText = commands[i].name or commands[i].displayName or commands[i].data or commands[i].command or ""
+      result = result .. "^" .. (j == 0 and self:getColor(commands[i].color or "commandselecttext") or self:getColor("chattext")) .. ";" .. previewText .. " "
     else
       result = result .. "^" .. (j == 0 and self:getColor("commandselecttext") or self:getColor("chattext")) .. ";" .. commands[i] .. " "
     end

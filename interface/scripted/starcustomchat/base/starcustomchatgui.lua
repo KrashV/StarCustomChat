@@ -465,12 +465,32 @@ function textboxCallback()
 end
 
 function checkCommandsPreview()
+  local function getEntryDisplayText(entry)
+    if type(entry) == "table" then
+      return entry.name or entry.displayName or entry.data or entry.command or ""
+    end
+
+    return entry or ""
+  end
+
+  local function getEntryData(entry)
+    if type(entry) == "table" then
+      return entry.command or entry.name or entry.data or entry.displayName or ""
+    end
+
+    return entry or ""
+  end
+
   local function setCommandPreviewData(entries)
     if #entries > 0 then
       self.savedCommandSelection = math.max(self.savedCommandSelection % (#entries + 1), 1)
+      local selectedEntry = entries[self.savedCommandSelection]
+      local displayText = getEntryDisplayText(selectedEntry)
+      local dataValue = getEntryData(selectedEntry)
+
       widget.setVisible("lytCommandPreview", true)
-      widget.setText("lblCommandPreview", entries[self.savedCommandSelection].name)
-      widget.setData("lblCommandPreview", entries[self.savedCommandSelection].name)
+      widget.setText("lblCommandPreview", displayText)
+      widget.setData("lblCommandPreview", dataValue)
       self.customChat:previewCommands(entries, self.savedCommandSelection)
     else
       widget.setVisible("lytCommandPreview", false)
@@ -490,8 +510,18 @@ function checkCommandsPreview()
     if not self.pingUsersAround then
       self.pingUsersAround = {}
       for _, pl in ipairs(starcustomchat.utils.playersInRadius(nil, true, true)) do
+        local playerData = {
+          name = world.entityName(pl),
+          entityId = pl,
+          uuid = world.entityUniqueId(pl)
+        }
+
+        local resolvedPlayerData = self.customChat.callbackPlugins("resolvePlayerData", playerData)
+        local resolvedName = resolvedPlayerData and resolvedPlayerData.name or playerData.name or "Unknown"
+
         table.insert(self.pingUsersAround, {
           command = "@" .. world.entityName(pl),
+          displayName = "@" .. resolvedName,
           description = "chat.alerts.ping_user"
         })
       end

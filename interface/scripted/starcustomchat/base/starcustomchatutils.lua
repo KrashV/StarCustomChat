@@ -101,10 +101,10 @@ end
 function starcustomchat.utils.getCommands(allCommands, substr)
   local availableCommands = {}
 
-  local function addCommandToList(command, data, description)
+  local function addCommandToList(command, data, description, displayName)
     if string.find(command, substr, nil, true) then
       table.insert(availableCommands, {
-        name = command,
+        name = displayName or command,
         description = description,
         data = data,
         color = nil
@@ -115,11 +115,11 @@ function starcustomchat.utils.getCommands(allCommands, substr)
   local function runThroughCommands(commType, commandList, prefix, level)
     for _, comm in ipairs(commandList) do
       if type(comm) == "string" then
-          addCommandToList(prefix .. comm, comm, nil)
+          addCommandToList(prefix .. comm, comm, nil, prefix .. comm)
       elseif type(comm) == "table" then
         if not comm.admin or player.isAdmin() then
           local fullCommand = prefix .. comm.command
-          addCommandToList(fullCommand, comm.command, comm.description)
+          addCommandToList(fullCommand, comm.command, comm.description, comm.displayName or comm.name or fullCommand)
           if string.find(substr, fullCommand .. " ", 1, true) then
             runThroughCommands(commType, comm.subcommands or {}, fullCommand .. " ", level + 1)
           end
@@ -220,6 +220,15 @@ function starcustomchat.utils.playersInRadius(radius, ignoreUs, nearest)
     withoutEntityId = ignoreUs and player.id() or nil,
     order = nearest and "nearest"
   } or nil)
+end
+
+function starcustomchat.utils.playerData()
+  return {
+    entityId = player.id(),
+    uuid = player.uniqueId(),
+    name = player.name(),
+    connection = starcustomchat.utils.entityIdToConnection(player.id())
+  }
 end
 
 function starcustomchat.utils.entityIdToConnection(entityId)

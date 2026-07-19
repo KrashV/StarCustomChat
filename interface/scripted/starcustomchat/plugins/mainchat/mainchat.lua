@@ -26,15 +26,15 @@ end
 
 function mainchat:registerMessageHandlers()
 
-  starcustomchat.utils.setMessageHandler( "icc_ping", function(_, _, source)
-    starcustomchat.utils.alert("chat.alerts.was_pinged", source)
+  starcustomchat.utils.setMessageHandler( "scc_ping", function(_, _, playerData)
+    local resolvedPlayerData = self.customChat.callbackPlugins("resolvePlayerData", playerData)
+    starcustomchat.utils.alert("chat.alerts.was_pinged", resolvedPlayerData.name)
     if type(self.pingSound) == "table" then
       pane.playSound(self.pingSound[math.random(1, #self.pingSound)])
     else
       pane.playSound(self.pingSound)
     end
   end)
-
 end
 
 function mainchat:onLocaleChange()
@@ -305,14 +305,14 @@ function mainchat:contextMenuButtonClick(buttonName, selectedMessage)
   end
 end
 
-function mainchat:ping(connectionId, name)
+function mainchat:ping(entityId, name)
   if self.ReplyTime > 0 then
     starcustomchat.utils.alert("chat.alerts.cannot_ping_time", math.ceil(self.ReplyTime))
   else
-    if connectionId == player.id() then
+    if entityId == player.id() then
       starcustomchat.utils.alert("chat.alerts.cannot_ping_yourself")
     else
-      promises:add(world.sendEntityMessage(connectionId, "icc_ping", player.name()), function()
+      promises:add(world.sendEntityMessage(entityId, "scc_ping", starcustomchat.utils.playerData()), function()
         starcustomchat.utils.alert("chat.alerts.pinged", name)
       end, function()
         starcustomchat.utils.alert("chat.alerts.ping_failed", name)
