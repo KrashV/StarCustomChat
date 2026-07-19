@@ -516,7 +516,7 @@ function checkCommandsPreview()
           uuid = world.entityUniqueId(pl)
         }
 
-        local resolvedPlayerData = self.customChat.callbackPlugins("resolvePlayerData", playerData)
+        local resolvedPlayerData = playerData -- TODO: self.customChat.callbackPlugins("resolvePlayerData", playerData)
         local resolvedName = resolvedPlayerData and resolvedPlayerData.name or playerData.name or "Unknown"
 
         table.insert(self.pingUsersAround, {
