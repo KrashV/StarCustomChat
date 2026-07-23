@@ -75,10 +75,8 @@ function reactions:onCreateTooltip(screenPosition)
   local selectedMessage = self.customChat:selectMessage(screenPosition)
   if selectedMessage and selectedMessage.reactions then
 
-    local currentPos = vec2.sub(vec2.sub(screenPosition, widget.getPosition("cnvHighlightCanvas") ), config.getParameter("gui")["panefeature"]["offset"])
-
     for _, reactObj in ipairs (selectedMessage.reactions) do 
-      if rect.contains(rect.withSize(reactObj.position, {16, 16}), currentPos) then
+      if rect.contains(rect.withSize(reactObj.position, {16, 16}), self.customChat.topCanvas:mousePosition()) then
         local text = ":^yellow;" .. reactObj.reaction .. "^reset;: " 
         for i, nick in ipairs(reactObj.nicknames) do
             text = text .. nick
