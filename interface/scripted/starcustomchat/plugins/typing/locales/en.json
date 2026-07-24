@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s and %s are typing",
     "chat.typing.typing_multiple": "Several people are typing",
 
-    "chat.commands.typing.description": "Toggle typing indicators",
-    "chat.commands.typing.enabled": "Typing indicators are enabled",
-    "chat.commands.typing.disabled": "Typing indicators are disabled"
+    "settings.plugins.typing": "Typing indication",
+    "settings.plugins.typing.player_portraits": "Portrait Typing Indicators\n^gray;(Modern Mode only)",
+    "settings.plugins.typing.status_message": "Typing Status Message"
 }

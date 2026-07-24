@@ -1,9 +1,9 @@
 {
     "chat.typing.typing_one": "%s pisze",
     "chat.typing.typing_few": "%s i %s piszą",
-    "chat.typing.typing_multiple": "Kilka osób pisze",
+    "chat.typing.typing_multiple": "Kilka postaci pisze",
 
-    "chat.commands.typing.description": "Zmień wyświetlanie wskaźników pisania",
-    "chat.commands.typing.enabled": "Wskaźniki pisania są włączone",
-    "chat.commands.typing.disabled": "Wskaźniki pisania są wyłączone"
+    "settings.plugins.typing": "Wskaźnik stanu pisania",
+    "settings.plugins.typing.player_portraits": "Portretowe Wskaźniki Pisania\n^gray;(tylko Tryb Nowoczesny)",
+    "settings.plugins.typing.status_message": "Komunikat o Stanie Pisania"
 }

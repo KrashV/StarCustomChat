@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s en %s zijn aan het typen",
     "chat.typing.typing_multiple": "Meerdere personen zijn aan het typen",
 
-    "chat.commands.typing.description": "De weergave van de typindicatoren wijzigen",
-    "chat.commands.typing.enabled": "Typindicatoren ingeschakeld",
-    "chat.commands.typing.disabled": "Typindicatoren uitgeschakeld"
+    "settings.plugins.typing": "Typindicatie",
+    "settings.plugins.typing.player_portraits": "Typindicators op Portretten\n^gray;(enkel in Moderne modus)",
+    "settings.plugins.typing.status_message": "Typstatusbericht"
 }

@@ -17,7 +17,8 @@ function typing:init(chat)
   self.typingPlayers = {}
   self.typingFrameTime = 0
 
-  self.typingIndicatorsEnabled = root.getConfiguration("scc_typing_indicators_enabled") or true
+  self:onSettingsUpdate()
+
 end
 
 function typing:registerMessageHandlers()
@@ -33,33 +34,6 @@ function typing:registerMessageHandlers()
   starcustomchat.utils.setMessageHandler( self.removeTypingEntityMessageName, function(_, _, data)
     if self.typingPlayers[data.connection] then
       self.typingPlayers[data.connection] = nil
-    end
-  end)
-
-  starcustomchat.utils.setMessageHandler("/toggleTypingIndicators", function(_, isLocal, data)
-    if isLocal then
-      local args = chat.parseArguments(data)
-      
-      if not args then
-        self.typingIndicatorsEnabled = not self.typingIndicatorsEnabled
-        root.setConfiguration("scc_typing_indicators_enabled", self.typingIndicatorsEnabled)
-
-        return starcustomchat.utils.getTranslation("chat.commands.typing." .. (self.typingIndicatorsEnabled and "enabled" or "disabled"))
-      else
-        if args == "enable" then
-          self.typingIndicatorsEnabled = true
-          root.setConfiguration("scc_typing_indicators_enabled", true)
-
-          return starcustomchat.utils.getTranslation("chat.commands.typing.enabled")
-        elseif args == "disable" then
-          self.typingIndicatorsEnabled = false
-          root.setConfiguration("scc_typing_indicators_enabled", false)
-
-          return starcustomchat.utils.getTranslation("chat.commands.typing.disabled")
-        else
-          return starcustomchat.utils.getTranslation("chat.commands.unknown_argument_expected", args, "enable, disable")
-        end
-      end
     end
   end)
 end
@@ -155,12 +129,12 @@ function typing:update(dt)
     end
   end
 
-  if self.typingIndicatorsEnabled and next(self.typingPlayers) ~= nil then
+  if next(self.typingPlayers) ~= nil then
     self.typingFrameTime = self.typingFrameTime + dt
     local typingFrame = (math.floor(self.typingFrameTime / self.dotsSpeed) % self.overlayImageFrames) + 1
 
     -- Drawing part: we need to draw the message if the typing is here. It should ALWAYS be the last one, and only in modern mode
-    if self.customChat.chatMode == "modern" then
+    if self.portraitDots and self.customChat.chatMode == "modern" then
 
       for i = #self.customChat.drawnMessageIndexes, 1, -1 do 
         local message = self.customChat.messages[self.customChat.drawnMessageIndexes[i]]
@@ -187,11 +161,26 @@ function typing:update(dt)
     end
     
     -- Text part
-    local typingText = self:buildTypingText(self.typingPlayers)
-    self.customChat:setInformationalText(typingText .. string.rep(".", typingFrame))
+    if self.statusField then
+      local typingText = self:buildTypingText(self.typingPlayers)
+      self.customChat:setInformationalText(typingText .. string.rep(".", typingFrame))
+    end
 
   else
     self.typingFrameTime = 0
     self.customChat:resetInformationalText()
   end
+end
+
+function typing:onSettingsUpdate()
+  self.portraitDots = root.getConfiguration("scc_typing_portrait")
+  if self.portraitDots == nil then
+    self.portraitDots = true
+  end
+
+  self.statusField = root.getConfiguration("scc_typing_status")
+  if self.statusField == nil then
+    self.statusField = true
+  end
+  self.customChat:resetInformationalText()
 end

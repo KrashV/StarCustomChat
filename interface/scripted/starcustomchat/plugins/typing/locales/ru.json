@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s и %s печатают",
     "chat.typing.typing_multiple": "Несколько людей печатают",
 
-    "chat.commands.typing.description": "Сменить отображение индикаторов печати",
-    "chat.commands.typing.enabled": "Индикаторы печати включены",
-    "chat.commands.typing.disabled": "Индикаторы печати отключены"
+    "settings.plugins.typing": "Статус печатания",
+    "settings.plugins.typing.player_portraits": "Индикаторы на портретах\n^gray;(Только в Полном режиме)",
+    "settings.plugins.typing.status_message": "Статус-сообщение"
 }

@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s et %s sont en train d'écrire",
     "chat.typing.typing_multiple": "Plusieurs personnes sont en train d'écrire",
 
-    "chat.commands.typing.description": "Modifier l'affichage des indicateurs de frappe",
-    "chat.commands.typing.enabled": "Les indicateurs de frappe sont activés",
-    "chat.commands.typing.disabled": "Les indicateurs de frappe sont désactivés"
+    "settings.plugins.typing": "Indicateur de saisie",
+    "settings.plugins.typing.player_portraits": "Indicateurs de saisie sur les portraits\n^gray;(Mode moderne uniquement)",
+    "settings.plugins.typing.status_message": "Message d'état de saisie"
 }

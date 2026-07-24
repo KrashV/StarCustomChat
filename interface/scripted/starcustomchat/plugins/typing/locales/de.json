@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s und %s schreiben",
     "chat.typing.typing_multiple": "Mehrere Personen schreiben",
 
-    "chat.commands.typing.description": "Anzeige der Tippanzeigen ändern",
-    "chat.commands.typing.enabled": "Tippanzeigen sind aktiviert",
-    "chat.commands.typing.disabled": "Tippanzeigen sind deaktiviert"
+    "settings.plugins.typing": "Tippanzeigen",
+    "settings.plugins.typing.player_portraits": "Portrait-Tippanzeigen\n^gray;(nur im modernen Modus)",
+    "settings.plugins.typing.status_message": "Tippstatus-Nachricht"
 }

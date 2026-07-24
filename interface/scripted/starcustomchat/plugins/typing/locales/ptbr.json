@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s e %s estão digitando",
     "chat.typing.typing_multiple": "Várias pessoas estão digitando",
 
-    "chat.commands.typing.description": "Alterar a exibição dos indicadores de digitação",
-    "chat.commands.typing.enabled": "Indicadores de digitação ativados",
-    "chat.commands.typing.disabled": "Indicadores de digitação desativados"
+    "settings.plugins.typing": "Indicar digitação",
+    "settings.plugins.typing.player_portraits": "Indicar de Digitação nos Retratos\n^gray;(Somente no Modo Moderno)",
+    "settings.plugins.typing.status_message": "Mensagem de Status de Digitação"
 }

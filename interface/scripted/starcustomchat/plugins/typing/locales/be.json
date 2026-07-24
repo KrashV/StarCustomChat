@@ -3,7 +3,7 @@
     "chat.typing.typing_few": "%s і %s друкуюць",
     "chat.typing.typing_multiple": "Некалькі чалавек друкуюць",
 
-    "chat.commands.typing.description": "Уключыць/выключыць паказчыкі набору",
-    "chat.commands.typing.enabled": "Паказчыкі набору ўключаны",
-    "chat.commands.typing.disabled": "Паказчыкі набору выключаны"
+    "settings.plugins.typing": "Індыкатар друку",
+    "settings.plugins.typing.player_portraits": "Індыкатары друку на партрэтах\n^gray;(Толькі Сучасны рэжым)",
+    "settings.plugins.typing.status_message": "Паведамленне пра друк"
 }
