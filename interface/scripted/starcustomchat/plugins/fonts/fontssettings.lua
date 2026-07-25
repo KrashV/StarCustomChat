@@ -7,7 +7,6 @@ fonts = SettingsPluginClass:new(
 
 -- Settings
 function fonts:init(chat)
-  self:_loadConfig()
   self.chat = chat
 
   self.currentFonts = root.getConfiguration("scc_custom_fonts") or {}

@@ -13,6 +13,24 @@ function PluginClass:new(obj)
     local obj = obj or {}
     setmetatable(obj, self)
     self.__index = self
+
+    if not obj.name or obj.name == "" then
+      error("SCC: Plugin with the empty name is being registered")
+      return
+    end
+
+    obj.getRootValue = function(...)
+      return Configuration:getRootValue(obj.name, ...)
+    end
+    obj.getPlayerValue = function(...)
+      return Configuration:getPlayerValue(obj.name, ...)
+    end
+    obj.setRootValue = function(...)
+      return Configuration:setRootValue(obj.name, ...)
+    end
+    obj.setPlayerValue = function(...)
+      return Configuration:setPlayerValue(obj.name, ...)
+    end
     return obj
 end
 

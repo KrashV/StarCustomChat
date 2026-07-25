@@ -44,7 +44,10 @@ function __Config:setRootValue(scope, parameter, value)
             root.setConfiguration(parameter, nil)
         end
 
-        self.rootParameters[scope][parameter] = value
+        if not self.rootParameters[scope][parameter] or self.rootParameters[scope][parameter] ~= value then
+            self.rootParameters[scope][parameter] = value
+            self.pendingChanges = true
+        end
     end
 end
 
@@ -75,16 +78,25 @@ function __Config:setPlayerValue(scope, parameter, value)
             player.setProperty(parameter, nil)
         end
 
-        self.playerParameters[scope][parameter] = value
+        if not self.playerParameters[scope][parameter] or self.playerParameters[scope][parameter] ~= value then
+            self.playerParameters[scope][parameter] = value
+            self.pendingChanges = true
+        end
     end
+end
+
+function __Config:hasPendingChanges()
+    return self.pendingChanges
 end
 
 function __Config:save()
     root.setConfiguration("SCC", self.rootParameters)
     player.setProperty("SCC", self.playerParameters)
+    self.pendingChanges = false
 end
 
 function __Config:reset()
+    self.pendingChanges = false
     self.rootParameters = root.getConfiguration("SCC") or {}
     self.playerParameters = player.getProperty("SCC") or {}
 end

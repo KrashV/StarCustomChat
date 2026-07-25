@@ -7,8 +7,6 @@ typing = SettingsPluginClass:new(
 
 -- Settings
 function typing:init()
-  self:_loadConfig()
-
   self.portraitDots = root.getConfiguration("scc_typing_portrait")
   if self.portraitDots == nil then
     self.portraitDots = true

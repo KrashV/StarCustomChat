@@ -7,8 +7,6 @@ charactervoice = SettingsPluginClass:new(
 
 -- Settings
 function charactervoice:init()
-  self:_loadConfig()
-
   self.selectedSpecies = player.getProperty("scc_sound_species") or player.species()
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
 

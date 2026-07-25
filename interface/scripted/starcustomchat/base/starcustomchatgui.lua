@@ -9,13 +9,12 @@ require "/interface/scripted/starcustomchat/plugin.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
+require "/interface/scripted/starcustomchat/base/utils/config.lua"
 
 ICChatTimer = TimerKeeper.new()
-function init()
 
-  self.chatFunctionCallback = function(message)
-    self.customChat:addMessage(message)
-  end
+function init()
+  Configuration = __Config:init()
   
   self.drawingCanvas = interface.bindCanvas("chatInterfaceCanvas")
 
@@ -156,7 +155,7 @@ function init()
   self.customChat:setTextColor(self.customChat:getColor("chattext"))
 
   -- Apparently, we don't know on init if we're admin or not.
-  ICChatTimer:add(0.2, disableAdminModes)
+  starcustomchat.utils.runWhenPlayerReady(disableAdminModes)
 
   if (pane.setPosition or pane.setSize) and not self.drawingCanvas and interface.bindCanvas then
     bindChatInterfaceCanvas()
@@ -183,7 +182,23 @@ function init()
 
   self.DMTab = DMTab:new(self.customChat)
   self.DMTab:checkDMs(config.getParameter("DMingPlayerID"))
+
+  startConfigurationTracking()
 end
+
+function startConfigurationTracking()
+    --Saving mechanism
+  local function saveConfiguration()
+    ICChatTimer:add(self.customChat.config.savingPeriod, function()
+      if Configuration:hasPendingChanges() then
+        Configuration:save()
+      end
+      saveConfiguration()
+    end)
+  end
+  saveConfiguration()
+end
+
 
 function selectPlayer(...)
   return self.DMTab and self.DMTab:selectPlayer(...)
@@ -285,6 +300,19 @@ function registerCallbacks()
     end
   end))
 
+  starcustomchat.utils.setMessageHandler( "scc_set_settings", localHandler(function(data)
+    if data.scope == "root" then
+      Configuration:setRootValue(data.parameter, data.value)
+    elseif data.scope == "player" then
+      Configuration:setPlayerValue(data.parameter, data.value)
+    else 
+      sb.logError("Unknown scope: %s", data.scope)
+      return
+    end
+
+    self.runCallbackForPlugins("onSettingsUpdate", data)
+  end))
+
   starcustomchat.utils.setMessageHandler( "scc_reset_settings", localHandler(function(data)
     starcustomchat.utils.getLocale()
     createTotallyFakeWidgets(self.customChat.config.wrapWidthFullMode, 
@@ -351,6 +379,7 @@ function registerCallbacks()
 
   -- We should request the portraits (ours too) only after we are ready to accept them
   requestPortraits()
+  Configuration:reset()
   return true
 end
 
@@ -1164,6 +1193,7 @@ function toBottom()
 end
 
 function openSettings()
+  Configuration:save()
   local chatConfigInterface = self.settingsInterface
   chatConfigInterface.enabledPlugins = config.getParameter("enabledPlugins", {})
   chatConfigInterface.chatConfig = self.customChat.config
@@ -1314,6 +1344,7 @@ function uninit()
   
   status.clearPersistentEffects("starchatdots")
   self.runCallbackForPlugins("uninit")
+  Configuration:save()
 end
 
 

@@ -6,9 +6,7 @@ voicechat = SettingsPluginClass:new(
 
 
 -- Settings
-function voicechat:init()
-  self:_loadConfig()
-  
+function voicechat:init()  
   self.enabled = root.getConfiguration("scc_voice_enabled") or false
   self.widget.setChecked("chkEnableDefault", self.enabled)
 end

@@ -7,7 +7,6 @@ autohide = SettingsPluginClass:new(
 
 -- Settings
 function autohide:init()
-  self:_loadConfig()
 
   self.autohideTimer = root.getConfiguration("scc_autohide_timer") or 0
   self.widget.setText("lblAutohideTimer", self.autohideTimer)

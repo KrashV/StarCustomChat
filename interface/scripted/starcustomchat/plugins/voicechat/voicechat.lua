@@ -5,7 +5,6 @@ voicechat = PluginClass:new(
 )
 
 function voicechat:init()
-  self:_loadConfig()
   local isEnabled = root.getConfiguration("scc_voice_enabled") or false
   widget.setChecked("lytModeFilter.btnCkVoice", isEnabled)
 

@@ -7,8 +7,6 @@ modesounds = SettingsPluginClass:new(
 
 -- Settings
 function modesounds:init()
-  self:_loadConfig()
-
   self.modeSoundTable = root.getConfiguration("scc_mode_sounds") or {}
 end
 
