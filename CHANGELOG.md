@@ -28,7 +28,7 @@ Added the /afk command. Does the same as the corresponding button.
 CharacterVoice: Added volume slider
 CharacterVoice: The sounds are now picked from the list of all the sounds
 ModeSounds: The sounds are now picked from the list of all the sounds
-Reacts added: gem
+Reacts added: gem, 100
 Added Belarus language support - thank you, Ender!
 Added the typing indicator.
 Moved the server messages to "CommandResult" mode.
