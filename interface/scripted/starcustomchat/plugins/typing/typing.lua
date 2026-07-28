@@ -69,7 +69,9 @@ function typing:buildTypingText(typingPlayers)
     table.insert(typingPlayerNames, entry.name)
   end
 
-  if typingPlayerCount == 1 then
+  if typingPlayerCount == 0 then
+    return nil
+  elseif typingPlayerCount == 1 then
     return starcustomchat.utils.getTranslation("chat.typing.typing_one", typingPlayerNames[1])
   elseif typingPlayerCount < 4 then
     local firstNames = {}
@@ -163,9 +165,13 @@ function typing:update(dt)
     -- Text part
     if self.statusField then
       local typingText = self:buildTypingText(self.typingPlayers)
-      self.customChat:setInformationalText(typingText .. string.rep(".", typingFrame))
+      if typingText then
+        self.customChat:setInformationalText(typingText .. string.rep(".", typingFrame))
+      else
+        self.typingFrameTime = 0
+        self.customChat:resetInformationalText()
+      end
     end
-
   else
     self.typingFrameTime = 0
     self.customChat:resetInformationalText()
