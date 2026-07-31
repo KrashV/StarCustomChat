@@ -788,10 +788,18 @@ function StarCustomChat:processQueue()
     if message.reactions and next(message.reactions) then
       local size = portraitSizeFromBaseFont(self.config.fontSize)
       local xOffset = self.chatMode == "modern" and self.config.nameOffset[1] + size or self.config.textOffsetCompactMode[1]
+      local hasReactions = false
 
       local emojiStartOffset = vec2.add({xOffset, messageOffset}, self.config.emotesOffset)
       for ind, reactObj in ipairs(message.reactions) do 
         local reaction = reactObj.reaction
+
+        -- Do not draw old reactions
+        if not reactObj.sources then
+          break
+        end
+
+        hasReactions = true
 
         if not root.assetOrigin(string.format("/emotes/%s.emote.png", reaction)) then
           reaction = "unknown"
@@ -801,21 +809,31 @@ function StarCustomChat:processQueue()
         self.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction),
           emojiStartOffset, 1 / 16 * self.config.fontSize)
 
-        local myNameInd = index(reactObj.nicknames, player.name()) ~= 0 -- if we have emoted
+        local haveIReacted = false
+        for _, source in ipairs(reactObj.sources or {}) do 
+          if source.uuid == player.uniqueId() then 
+            haveIReacted = true
+            break
+          end
+        end
 
-        self.canvas:drawText(#reactObj.nicknames, {
+        self.canvas:drawText(#reactObj.sources, {
           position = vec2.add(emojiStartOffset, {self.config.emoteNumberSpace * self.config.fontSize / 10, 0}),
           horizontalAnchor = "left", -- left, mid, right
           verticalAnchor = "bottom", -- top, mid, bottom
           wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize - 1, myNameInd and "cornflowerblue" or self:getColor("chattext"))
+        }, self.config.fontSize - 1, haveIReacted and "cornflowerblue" or self:getColor("chattext"))
 
         message.reactions[ind].position = copy(emojiStartOffset)
         emojiStartOffset[1] = emojiStartOffset[1] + self.config.emoteSpacing * self.config.fontSize / 10
       end
 
-      reactionOffset = self.config.emotePanelHeight * self.config.fontSize / 10
-      message.height = message.height + reactionOffset
+      if hasReactions then
+        reactionOffset = self.config.emotePanelHeight * self.config.fontSize / 10
+        message.height = message.height + reactionOffset
+      else
+        message.reactions = nil
+      end
     end
 
     local avatarOffset = self.chatMode == "modern" and message.avatar

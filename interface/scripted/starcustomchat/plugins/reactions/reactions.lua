@@ -26,20 +26,35 @@ function reactions:registerMessageHandlers()
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     local reaction = data.reaction
 
-    if msgInd then
+    if msgInd and data.source then
+      -- Obfuscate the name if needed
+      data.source.name = self.customChat.callbackPlugins("resolvePlayerData", data.source).name
+
       local message = self.customChat.messages[msgInd]
       message.reactions = message.reactions or {}
 
       for rInd, reactObj in ipairs(message.reactions) do
         if reactObj.reaction == reaction then
-          local ind = index(reactObj.nicknames, data.nickname)
-          if ind and ind ~= 0 then
-            table.remove(message.reactions[rInd].nicknames, ind)
-            if #message.reactions[rInd].nicknames == 0 then
+          reactObj.sources = reactObj.sources or {}
+
+          local ind = 0
+          -- Find if this react already has this source
+          for sId, source in ipairs(reactObj.sources) do 
+            if source.uuid == data.source.uuid then
+              ind = sId
+              break
+            end
+          end
+
+
+          if ind ~= 0 then
+            table.remove(message.reactions[rInd].sources, ind)
+            if #message.reactions[rInd].sources == 0 then
               table.remove(message.reactions, rInd)
             end
           else
-            table.insert(message.reactions[rInd].nicknames, data.nickname)
+            data.source.name = self.customChat.callbackPlugins("resolvePlayerData", data.source).name
+            table.insert(message.reactions[rInd].sources, data.source)
           end
 
           self.customChat:processQueue()
@@ -47,9 +62,10 @@ function reactions:registerMessageHandlers()
         end
       end
 
+      -- If it's a first reaction
       table.insert(message.reactions, {
         reaction = reaction,
-        nicknames = {data.nickname}
+        sources = {data.source}
       })
       self.customChat:processQueue()
     end
@@ -78,9 +94,9 @@ function reactions:onCreateTooltip(screenPosition)
     for _, reactObj in ipairs (selectedMessage.reactions) do 
       if rect.contains(rect.withSize(reactObj.position, {16, 16}), self.customChat.topCanvas:mousePosition()) then
         local text = ":^yellow;" .. reactObj.reaction .. "^reset;: " 
-        for i, nick in ipairs(reactObj.nicknames) do
-            text = text .. nick
-            if i < #reactObj.nicknames then
+        for i, source in ipairs(reactObj.sources) do
+            text = text .. source.name
+            if i < #reactObj.sources then
                 text = text .. ", "
             end
         end
@@ -99,9 +115,12 @@ function reactions:onCanvasClick(screenPosition, button, isButtonDown)
       for _, reactObj in ipairs (selectedMessage.reactions) do 
         if rect.contains(rect.withSize(reactObj.position, {16, 16}), screenPosition) then
           local data = {
-            nickname = player.name(),
             reaction = reactObj.reaction,
-            uuid = selectedMessage.uuid
+            uuid = selectedMessage.uuid,
+            source = {
+              name = player.name(),
+              uuid = player.uniqueId()
+            }
           }
       
           if self.stagehandEnabled and self.stagehandType and self.stagehandType ~= "" then
