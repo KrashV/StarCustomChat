@@ -26,6 +26,14 @@ function reactions:registerMessageHandlers()
     local msgInd = self.customChat:findMessageByUUID(data.uuid)
     local reaction = data.reaction
 
+    if not data.source and data.nickname then
+      -- Old message, too bad
+      data.source = {
+        name = data.nickname,
+        uuid = data.nickname
+      }
+    end
+
     if msgInd and data.source then
       -- Obfuscate the name if needed
       data.source.name = self.customChat.callbackPlugins("resolvePlayerData", data.source).name
