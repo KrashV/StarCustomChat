@@ -33,7 +33,7 @@ end
 
 local function _composeStyleStack(stack)
   if #stack == 0 then
-    return "^reset;"
+    return ""
   end
 
   local directives = {}
@@ -41,6 +41,39 @@ local function _composeStyleStack(stack)
     table.insert(directives, style.directives)
   end
   return table.concat(directives)
+end
+
+local function _composeStyleState(stack, activeDirectives)
+  local directives = _composeStyleStack(stack)
+  if activeDirectives and activeDirectives ~= "" then
+    if directives == "" then
+      return "^reset;" .. activeDirectives
+    end
+
+    return "^reset;" .. activeDirectives .. directives
+  end
+
+  if directives == "" then
+    return "^reset;"
+  end
+
+  return "^reset;" .. directives
+end
+
+local function _updateActiveDirectives(activeDirectives, text)
+  if not text or text == "" then
+    return activeDirectives or ""
+  end
+
+  for directive in text:gmatch("%^(%S-);") do
+    if directive == "reset" then
+      activeDirectives = ""
+    else
+      activeDirectives = (activeDirectives or "") .. "^" .. directive .. ";"
+    end
+  end
+
+  return activeDirectives or ""
 end
 
 local function _popStyle(stack, id)
@@ -61,14 +94,14 @@ local function _popStyle(stack, id)
   end
 end
 
-local function _appendText(output, text, stack)
+local function _appendText(output, text, stack, activeDirectives)
   if text == "" then
     return
   end
 
-  if #stack > 0 then
-    text = text:gsub("%^reset;", function()
-      return "^reset;" .. _composeStyleStack(stack)
+  if #stack > 0 or (activeDirectives and activeDirectives ~= "") then
+    text = text:gsub("%%^reset;", function()
+      return "^reset;" .. _composeStyleStack(stack) .. activeDirectives
     end)
   end
 
@@ -82,6 +115,7 @@ function starcustomchat.utils.resolveStyleText(text, styleDirectives)
 
   local output = {}
   local stack = {}
+  local activeDirectives = ""
   local index = 1
 
   while index <= #text do
@@ -94,12 +128,15 @@ function starcustomchat.utils.resolveStyleText(text, styleDirectives)
     elseif closeStart then
       markerStart, markerEnd, markerId, opening = closeStart, closeEnd, closeId, false
     else
-      _appendText(output, text:sub(index), stack)
+      activeDirectives = _updateActiveDirectives(activeDirectives, text:sub(index))
+      _appendText(output, text:sub(index), stack, activeDirectives)
       break
     end
 
     if markerStart > index then
-      _appendText(output, text:sub(index, markerStart - 1), stack)
+      local textSegment = text:sub(index, markerStart - 1)
+      activeDirectives = _updateActiveDirectives(activeDirectives, textSegment)
+      _appendText(output, textSegment, stack, activeDirectives)
     end
 
     local id = #markerId
@@ -110,7 +147,7 @@ function starcustomchat.utils.resolveStyleText(text, styleDirectives)
         table.insert(output, directives)
       else
         _popStyle(stack, id)
-        table.insert(output, _composeStyleStack(stack))
+        table.insert(output, _composeStyleState(stack, activeDirectives))
       end
     else
       table.insert(output, text:sub(markerStart, markerEnd))
