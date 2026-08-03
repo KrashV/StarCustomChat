@@ -65,6 +65,52 @@ function reply:contextMenuButtonClick(buttonName, selectedMessage)
   end
 end
 
+function reply:onMeasureMessage(message, drawData)
+  local previousMessageIndex = message.replyUUID and self.customChat:findMessageByUUID(message.replyUUID)
+  if not previousMessageIndex then
+    return
+  end
+
+  local replyOffset = self.customChat.config.replyOffsetHeight * self.customChat.config.fontSize / 10
+  drawData.reply = {
+    previousMessageIndex = previousMessageIndex,
+    height = replyOffset
+  }
+  drawData.height = drawData.height + replyOffset
+end
+
+function reply:onDrawMessage(message, drawData)
+  local replyData = drawData.reply
+  if not replyData then
+    return
+  end
+
+  local chat = self.customChat
+  local previousMessage = chat.messages[replyData.previousMessageIndex]
+  if not previousMessage then
+    return
+  end
+
+  local size = portraitSizeFromBaseFont(chat.config.fontSize)
+  local xOffset = chat.chatMode == "modern" and chat.config.nameOffset[1] + size or chat.config.textOffsetCompactMode[1]
+  local replyStartOffset = vec2.add({
+    xOffset,
+    drawData.messageOffset + drawData.bodyHeight + drawData.avatarOffset
+  }, chat.config.replyImageOffset)
+
+  chat.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png",
+    replyStartOffset, 1 / 8 * chat.config.fontSize)
+
+  local croppedText = string.format("%s: %s", previousMessage.displayName or previousMessage.nickname,
+    starcustomchat.utils.cropMessage(starcustomchat.utils.clearMetatags(previousMessage.text), chat.canvas:size()[1] // 10))
+
+  chat.canvas:drawText(string.gsub(croppedText, "\n", "    "), {
+    position = vec2.add(replyStartOffset, {size / 2, 0}),
+    horizontalAnchor = "left",
+    verticalAnchor = "bottom"
+  }, chat.config.fontSize / 1.2, chat:getColor("replytext"), nil, chat:getFont("chattext"))
+end
+
 function reply:cropMessage(targetName, text)
   local cleanText = starcustomchat.utils.clearMetatags(text)
   local cleanTargetName = starcustomchat.utils.clearMetatags(targetName)

@@ -238,3 +238,12 @@ end
 function starcustomchat.utils.connectionToEntityId(connection)
   return connection * -65536
 end
+
+
+-- Utility function: return the index of a value in the given array
+function index(tab, value)
+  for k, v in ipairs(tab) do
+    if v == value then return k end
+  end
+  return 0
+end

@@ -782,64 +782,24 @@ function StarCustomChat:processQueue()
       messageOffset = self.messages[self.drawnMessageIndexes[i + 1]].offset + self.messages[self.drawnMessageIndexes[i + 1]].height + self.config.spacings.messages
     end
 
-    local reactionOffset = 0
-
-    -- Reactions
-    if message.reactions and next(message.reactions) then
-      local size = portraitSizeFromBaseFont(self.config.fontSize)
-      local xOffset = self.chatMode == "modern" and self.config.nameOffset[1] + size or self.config.textOffsetCompactMode[1]
-      local hasReactions = false
-
-      local emojiStartOffset = vec2.add({xOffset, messageOffset}, self.config.emotesOffset)
-      for ind, reactObj in ipairs(message.reactions) do 
-        local reaction = reactObj.reaction
-
-        -- Do not draw old reactions
-        if not reactObj.sources then
-          break
-        end
-
-        hasReactions = true
-
-        if not root.assetOrigin(string.format("/emotes/%s.emote.png", reaction)) then
-          reaction = "unknown"
-          message.reactions[ind].reaction = "unknown"
-        end
-
-        self.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction),
-          emojiStartOffset, 1 / 16 * self.config.fontSize)
-
-        local haveIReacted = false
-        for _, source in ipairs(reactObj.sources or {}) do 
-          if source.uuid == player.uniqueId() then 
-            haveIReacted = true
-            break
-          end
-        end
-
-        self.canvas:drawText(#reactObj.sources, {
-          position = vec2.add(emojiStartOffset, {self.config.emoteNumberSpace * self.config.fontSize / 10, 0}),
-          horizontalAnchor = "left", -- left, mid, right
-          verticalAnchor = "bottom", -- top, mid, bottom
-          wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
-        }, self.config.fontSize - 1, haveIReacted and "cornflowerblue" or self:getColor("chattext"))
-
-        message.reactions[ind].position = copy(emojiStartOffset)
-        emojiStartOffset[1] = emojiStartOffset[1] + self.config.emoteSpacing * self.config.fontSize / 10
-      end
-
-      if hasReactions then
-        reactionOffset = self.config.emotePanelHeight * self.config.fontSize / 10
-        message.height = message.height + reactionOffset
-      else
-        message.reactions = nil
-      end
-    end
+    -- Plugins reserve any space their decorations need before this message is drawn.
+    -- bodyOffset shifts the built-in text/image down, while bodyHeight is the height
+    -- occupied before the avatar and bottom decorations.
+    local drawData = {
+      messageOffset = messageOffset,
+      bodyOffset = 0,
+      bodyHeight = message.height,
+      height = message.height
+    }
+    self.callbackPlugins("onMeasureMessage", message, drawData)
 
     local avatarOffset = self.chatMode == "modern" and message.avatar
       and self.config.spacings.name + self.config.fontSize + 1
       or 0
-    local messageBodyHeight = message.height
+    drawData.avatarOffset = avatarOffset
+    drawData.height = drawData.height + avatarOffset
+    local messageBodyHeight = drawData.bodyHeight
+    message.height = messageBodyHeight
 
     -- Draw the actual message unless it's outside of drawing area
     if self.chatMode == "modern" then
@@ -849,10 +809,10 @@ function StarCustomChat:processQueue()
 
 
         if message.image then
-          self.canvas:drawImage(message.image, {nameOffset[1], messageOffset + reactionOffset}, 1 / 10 * self.config.fontSize)
+          self.canvas:drawImage(message.image, {nameOffset[1], messageOffset + drawData.bodyOffset}, 1 / 10 * self.config.fontSize)
         else
           self.canvas:drawText(text, {
-            position = {nameOffset[1], messageOffset + reactionOffset},
+            position = {nameOffset[1], messageOffset + drawData.bodyOffset},
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthFullMode -- wrap width in pixels or nil
@@ -875,7 +835,7 @@ function StarCustomChat:processQueue()
         
         if not message.image then
           self.canvas:drawText(text, {
-            position = {offset[1], offset[2] + reactionOffset},
+            position = {offset[1], offset[2] + drawData.bodyOffset},
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
@@ -887,14 +847,14 @@ function StarCustomChat:processQueue()
             "", message.time, self:getColor("timetext"), self:getFont("timetext"))
           
           self.canvas:drawText(text, {
-            position = {offset[1], offset[2] + reactionOffset},
+            position = {offset[1], offset[2] + drawData.bodyOffset},
             horizontalAnchor = "left", -- left, mid, right
             verticalAnchor = "bottom", -- top, mid, bottom
             wrapWidth = self.config.wrapWidthCompactMode -- wrap width in pixels or nil
           }, self.config.fontSize, message.color or self:getColor("chattext"), nil, self:getFont("chattext"))
 
           local nameWidth = self:getTextSize(text)
-          self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + reactionOffset}, 1 / 10 * self.config.fontSize)
+          self.canvas:drawImage(message.image, {offset[1] + nameWidth[1], offset[2] + drawData.bodyOffset}, 1 / 10 * self.config.fontSize)
         end
 
         if message.avatar then
@@ -905,37 +865,14 @@ function StarCustomChat:processQueue()
       end
     end
 
-    message.height = message.height + avatarOffset
-
-    local replyOffset = 0
-    local prevMessage = message.replyUUID and self:findMessageByUUID(message.replyUUID)
-    if prevMessage then
-      replyOffset = self.config.replyOffsetHeight * self.config.fontSize / 10
-
-      local size = portraitSizeFromBaseFont(self.config.fontSize)
-      local xOffset = self.chatMode == "modern" and self.config.nameOffset[1] + size or self.config.textOffsetCompactMode[1]
-
-      local replyStartOffset = vec2.add({xOffset, messageOffset + message.height}, self.config.replyImageOffset)
-      self.canvas:drawImage("/interface/scripted/starcustomchat/plugins/reply/reply.png", 
-        replyStartOffset, 1 / 8 * self.config.fontSize)
-        
-      local croppedText = string.format("%s: %s", self.messages[prevMessage].displayName or self.messages[prevMessage].nickname, 
-        starcustomchat.utils.cropMessage(starcustomchat.utils.clearMetatags(self.messages[prevMessage].text), self.canvas:size()[1] // 10) )
-      
-      self.canvas:drawText(string.gsub(croppedText, "\n", "    "), {
-          position = vec2.add(replyStartOffset, {size / 2, 0}),
-          horizontalAnchor = "left",
-          verticalAnchor = "bottom"
-        }, self.config.fontSize / 1.2, self:getColor("replytext"), nil, self:getFont("chattext"))
-        
-      message.height = message.height + replyOffset
-    end
-    
+    message.height = drawData.height
     message.offset = messageOffset
     self.totalHeight = self.totalHeight + message.height
     self.messages[self.drawnMessageIndexes[i]] = message
 
-    self.callbackPlugins("onDrawMessage", message)
+    if self:isInsideChat(message, messageOffset, self.config.spacings.name + self.config.fontSize + 1, self.canvas:size()) then
+      self.callbackPlugins("onDrawMessage", message, drawData)
+    end
   end
 
   self.recalculateHeight = nil

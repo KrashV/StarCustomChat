@@ -157,7 +157,19 @@ function PluginClass:editMessage(message)
   return self:formatIncomingMessage(message)
 end
 
-function PluginClass:onDrawMessage(message)
+--[[
+  Called after the base text/image height is known but before the message is
+  drawn. Plugins may reserve space by mutating drawData:
+    bodyOffset: shifts the base text/image down
+    bodyHeight: height before the avatar and bottom decorations
+    height: final message height
+]]
+function PluginClass:onMeasureMessage(message, drawData)
+
+end
+
+-- Called for visible messages after their final offset and height are known.
+function PluginClass:onDrawMessage(message, drawData)
 
 end
 

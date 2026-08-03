@@ -95,6 +95,74 @@ function reactions:contextMenuButtonClick(buttonName, selectedMessage)
   end
 end
 
+function reactions:onMeasureMessage(message, drawData)
+  if not message.reactions or not next(message.reactions) then
+    return
+  end
+
+  for _, reactObj in ipairs(message.reactions) do
+    -- Reactions from the old protocol do not contain their sources and cannot
+    -- be displayed or interacted with.
+    if not reactObj.sources then
+      break
+    end
+
+    local reactionOffset = self.customChat.config.emotePanelHeight * self.customChat.config.fontSize / 10
+    drawData.reactionOffset = reactionOffset
+    drawData.bodyOffset = drawData.bodyOffset + reactionOffset
+    drawData.bodyHeight = drawData.bodyHeight + reactionOffset
+    drawData.height = drawData.height + reactionOffset
+    return
+  end
+
+  message.reactions = nil
+end
+
+function reactions:onDrawMessage(message, drawData)
+  if not drawData.reactionOffset then
+    return
+  end
+
+  local chat = self.customChat
+  local size = portraitSizeFromBaseFont(chat.config.fontSize)
+  local xOffset = chat.chatMode == "modern" and chat.config.nameOffset[1] + size or chat.config.textOffsetCompactMode[1]
+  local emojiStartOffset = vec2.add({xOffset, drawData.messageOffset}, chat.config.emotesOffset)
+
+  for ind, reactObj in ipairs(message.reactions) do
+    local reaction = reactObj.reaction
+
+    if not reactObj.sources then
+      break
+    end
+
+    if not root.assetOrigin(string.format("/emotes/%s.emote.png", reaction)) then
+      reaction = "unknown"
+      message.reactions[ind].reaction = "unknown"
+    end
+
+    chat.canvas:drawImage(string.format("/emotes/%s.emote.png", reaction),
+      emojiStartOffset, 1 / 16 * chat.config.fontSize)
+
+    local haveIReacted = false
+    for _, source in ipairs(reactObj.sources) do
+      if source.uuid == player.uniqueId() then
+        haveIReacted = true
+        break
+      end
+    end
+
+    chat.canvas:drawText(#reactObj.sources, {
+      position = vec2.add(emojiStartOffset, {chat.config.emoteNumberSpace * chat.config.fontSize / 10, 0}),
+      horizontalAnchor = "left",
+      verticalAnchor = "bottom",
+      wrapWidth = chat.config.wrapWidthFullMode
+    }, chat.config.fontSize - 1, haveIReacted and "cornflowerblue" or chat:getColor("chattext"))
+
+    message.reactions[ind].position = copy(emojiStartOffset)
+    emojiStartOffset[1] = emojiStartOffset[1] + chat.config.emoteSpacing * chat.config.fontSize / 10
+  end
+end
+
 function reactions:onCreateTooltip(screenPosition)
   local selectedMessage = self.customChat:selectMessage(screenPosition)
   if selectedMessage and selectedMessage.reactions then
