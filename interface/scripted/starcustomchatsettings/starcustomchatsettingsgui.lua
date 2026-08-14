@@ -114,7 +114,7 @@ function init()
   end
 
   self.localization = config.getParameter("localizationTable")
-
+  starcustomchat.utils.buildLocale(self.localization)
   self.runCallbackForPlugins("init", self.localization)
   populateLanguagesList()
 
@@ -317,3 +317,6 @@ function uninit()
   self.runCallbackForPlugins("uninit")
   save()
 end
+
+-- Required to be at the very bottom
+require("/interface/StarboundTextboxInterface/textarea/scripts/textbox.lua")
