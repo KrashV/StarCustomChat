@@ -44,7 +44,7 @@ function typing:buildTypingText(typingPlayers)
   local localPosition = world.entityPosition(player.id())
 
   for connection, playerData in pairs(typingPlayers or {}) do
-    local entityId = playerData.id
+    local entityId = playerData.entityId or playerData.id
 
     if entityId and world.entityExists(entityId) or entityId == 0 then
       local entityPosition = world.entityPosition(entityId == 0 and player.id() or entityId)  -- if it's a server, the position of the server is the same as the player

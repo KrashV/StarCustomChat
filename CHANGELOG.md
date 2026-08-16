@@ -44,3 +44,4 @@ Moved the images around internally.
 New callback hooks for widgets. Useful when one widget can contain multiple callbacks (i.e. textbox)
 New method to resolve the player names and data. Useful when you want to change their names in DM tab etc
 New callbacks for calculating the message height and drawing the message in the queue.
+New callback to set the dots showing up above the character.

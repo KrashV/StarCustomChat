@@ -575,7 +575,7 @@ function checkTyping()
     widget.setVisible("lblTextboxHint", text == "")
   end
 
-  if self.customChat:hasFocusInput() or text ~= "" and not status.getPersistentEffects("starchatdots") then
+  if (self.customChat:hasFocusInput() or text ~= "" or self.runCallbackForPlugins("showDots") ) and not next(status.getPersistentEffects("starchatdots")) ~= nil then
     status.addPersistentEffect("starchatdots", "starchatdots")
   else
     status.clearPersistentEffects("starchatdots")

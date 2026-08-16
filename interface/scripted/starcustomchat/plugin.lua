@@ -225,6 +225,10 @@ function PluginClass:cleanMessage(message)
 
 end
 
+function PluginClass:showDots()
+  return false
+end
+
 function PluginClass:uninit()
 
 end
