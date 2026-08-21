@@ -561,10 +561,11 @@ end
 
 function StarCustomChat:offsetCanvas(offset)
   if not offset then return end
-  
+
+    
   if #self.drawnMessageIndexes > 0 and offset < 0 then
     local firstMessage = self.messages[self.drawnMessageIndexes[1]]
-    local remainingOffset = firstMessage.offset
+    local remainingOffset = firstMessage.offset + firstMessage.height
 
     if remainingOffset <= 0 then
       return
