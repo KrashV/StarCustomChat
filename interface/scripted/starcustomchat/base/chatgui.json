@@ -162,9 +162,9 @@
           "type": "imageStretch",
           "direction" : "horizontal",
           "stretchSet": {
-            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/end.png",
-            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/inner.png",
-            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/begin.png"
+            "end": "/interface/scripted/starcustomchat/base/commandpreview/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/commandpreview/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/commandpreview/begin.png"
           },
           "zlevel": 11
         },
@@ -174,9 +174,9 @@
           "size": [270, 0],
           "position": [0, 12],
           "stretchSet": {
-            "end": "/interface/scripted/starcustomchat/base/images/commandpreview/description/end.png",
-            "inner": "/interface/scripted/starcustomchat/base/images/commandpreview/description/inner.png",
-            "begin": "/interface/scripted/starcustomchat/base/images/commandpreview/description/begin.png"
+            "end": "/interface/scripted/starcustomchat/base/commandpreview/description/end.png",
+            "inner": "/interface/scripted/starcustomchat/base/commandpreview/description/inner.png",
+            "begin": "/interface/scripted/starcustomchat/base/commandpreview/description/begin.png"
           }
         },
         "lblDescription": {

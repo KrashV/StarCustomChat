@@ -9,6 +9,7 @@ require "/interface/scripted/starcustomchat/plugin.lua"
 require "/interface/scripted/starcustomchat/chatbuilder.lua"
 require "/interface/scripted/starcustomchat/base/contextmenu/contextmenu.lua"
 require "/interface/scripted/starcustomchat/base/dmtab/dmtab.lua"
+require "/interface/scripted/starcustomchat/base/commandpreview/commandpreview.lua"
 require "/interface/scripted/starcustomchat/base/utils/config.lua"
 
 ICChatTimer = TimerKeeper.new()
@@ -111,7 +112,7 @@ function init()
 
   self.lastCommand = root.getConfiguration("icc_last_command")
 
-  self.savedCommandSelection = 0
+  self.commandPreview = CommandPreview:new(self.customChat, self.availableCommands)
 
   self.selectedMessage = nil
   self.sentMessages = root.getConfiguration("icc_my_messages") or jarray()
@@ -494,78 +495,8 @@ function textboxCallback()
 end
 
 function checkCommandsPreview()
-  local function getEntryDisplayText(entry)
-    if type(entry) == "table" then
-      return entry.name or entry.displayName or entry.data or entry.command or ""
-    end
-
-    return entry or ""
-  end
-
-  local function getEntryData(entry)
-    if type(entry) == "table" then
-      return entry.command or entry.name or entry.data or entry.displayName or ""
-    end
-
-    return entry or ""
-  end
-
-  local function setCommandPreviewData(entries)
-    if #entries > 0 then
-      self.savedCommandSelection = math.max(self.savedCommandSelection % (#entries + 1), 1)
-      local selectedEntry = entries[self.savedCommandSelection]
-      local displayText = getEntryDisplayText(selectedEntry)
-      local dataValue = getEntryData(selectedEntry)
-
-      widget.setVisible("lytCommandPreview", true)
-      widget.setText("lblCommandPreview", displayText)
-      widget.setData("lblCommandPreview", dataValue)
-      self.customChat:previewCommands(entries, self.savedCommandSelection)
-    else
-      widget.setVisible("lytCommandPreview", false)
-      widget.setText("lblCommandPreview", "")
-      widget.setData("lblCommandPreview", nil)
-      self.savedCommandSelection = 0
-    end
-  end
-
   local text = self.customChat:getText()
-
-  if utf8.len(text) > 2 and string.sub(text, 1, 1) == "/" then
-    local availableCommands = starcustomchat.utils.getCommands(self.availableCommands, text)
-    setCommandPreviewData(availableCommands)
-    
-  elseif utf8.len(text) >= 1 and string.sub(text, 1, 1) == "@" then
-    if not self.pingUsersAround then
-      self.pingUsersAround = {}
-      for _, pl in ipairs(starcustomchat.utils.playersInRadius(nil, true, true)) do
-        local playerData = {
-          name = world.entityName(pl),
-          entityId = pl,
-          uuid = world.entityUniqueId(pl)
-        }
-
-        local resolvedPlayerData = playerData -- TODO: self.customChat.callbackPlugins("resolvePlayerData", playerData)
-        local resolvedName = resolvedPlayerData and resolvedPlayerData.name or playerData.name or "Unknown"
-
-        table.insert(self.pingUsersAround, {
-          command = "@" .. world.entityName(pl),
-          displayName = "@" .. resolvedName,
-          description = "chat.alerts.ping_user"
-        })
-      end
-    end
-
-    local playersAround = starcustomchat.utils.getCommands({playerNames = self.pingUsersAround}, text)
-    setCommandPreviewData(playersAround)
-
-  else
-    widget.setVisible("lytCommandPreview", false)
-    widget.setText("lblCommandPreview", "")
-    widget.setData("lblCommandPreview", nil)
-    self.savedCommandSelection = 0
-    self.pingUsersAround = nil
-  end
+  self.commandPreview:update(text)
 end
 
 function checkTyping()
@@ -987,7 +918,7 @@ function processButtonEvents(dt)
         local altPressed = lAlt or rAlt
 
         if event.data.key == "Tab" then
-          self.savedCommandSelection = self.savedCommandSelection + 1
+          self.commandPreview:advanceSelection()
         elseif event.data.key == "Up" and altPressed then
           if #self.sentMessages > 0 then
             self.currentSentMessage = self.currentSentMessage and math.max(self.currentSentMessage - 1, 1) or #self.sentMessages
@@ -1061,6 +992,8 @@ function sendMessageToBeSent(text, mode)
     return
   end
 
+  local selectedInsertion = self.commandPreview:getSelectedInsertion(text)
+
   if string.sub(text, 1, 1) == "/" and not string.find(text, "^/%w+%.png") then
     if string.len(text) == 1 then
       self.recalledSentMessage = nil
@@ -1069,21 +1002,21 @@ function sendMessageToBeSent(text, mode)
       return
     end
 
-    if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
+    if selectedInsertion then
       self.recalledSentMessage = nil
-      self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
-      self.savedCommandSelection = 0
+      self.customChat:setText(selectedInsertion .. " ")
+      self.commandPreview:reset()
       return
     else
       self.customChat:processCommand(text)
       self.lastCommand = text
       starcustomchat.utils.saveMessage(text)
     end
-  elseif string.sub(text, 1, 1) == "@" and widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
-    self.recalledSentMessage = nil
-    self.customChat:setText(widget.getData("lblCommandPreview") .. " ")
-    self.savedCommandSelection = 0
-    return
+  elseif string.sub(text, 1, 1) == "@" and selectedInsertion then
+      self.recalledSentMessage = nil
+      self.customChat:setText(selectedInsertion .. " ")
+      self.commandPreview:reset()
+      return
   
   elseif not self.runCallbackForPlugins("onTextboxEnter", message) then 
     if message.mode == "Whisper" then

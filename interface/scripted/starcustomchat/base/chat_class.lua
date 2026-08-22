@@ -405,7 +405,7 @@ function portraitSizeFromBaseFont(font)
   return math.floor(font * 2.5)
 end
 
-function StarCustomChat:previewCommands(commands, selected)
+function StarCustomChat:drawCommandPreview(commands, selected)
 
   local result = ""
   local n = #commands

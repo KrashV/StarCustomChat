@@ -255,10 +255,26 @@ function mainchat:onTextboxEnter(message)
 
   if string.sub(message.text, 1, 1) == "@" then
     local name = string.sub(message.text, 2, string.len(message.text)):gsub("%s+$", "")
+    local function getResolvedPlayerName(entityId)
+      local playerData = {
+        name = world.entityName(entityId),
+        entityId = entityId,
+        uuid = world.entityUniqueId(entityId)
+      }
+      local resolvedPlayerData = self.customChat.callbackPlugins("resolvePlayerData", playerData)
+      return resolvedPlayerData and resolvedPlayerData.name or playerData.name or "Unknown"
+    end
+
     if string.len(message.text) > 1 then
+      local entityId = tonumber(name)
+      if entityId and world.entityExists(entityId) then
+        self:ping(entityId, getResolvedPlayerName(entityId))
+        return true
+      end
+
       for _, pl in ipairs(starcustomchat.utils.playersInRadius()) do 
         if name == world.entityName(pl) then
-          self:ping(pl, name)
+          self:ping(pl, getResolvedPlayerName(pl))
           return true
         end
       end
