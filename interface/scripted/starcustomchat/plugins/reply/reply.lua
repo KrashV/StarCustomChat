@@ -214,11 +214,6 @@ function reply:update(dt)
   end
 end
 
-function reply:onBackgroundChange(chatConfig)
-  chatConfig.replyingToMessage = self.replyingToMessage
-  return chatConfig
-end
-
 function reply:onSubMenuReopen(type)
   if type ~= "reply" then
     self.replyingToMessage = nil

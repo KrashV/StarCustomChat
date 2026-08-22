@@ -193,10 +193,6 @@ function PluginClass:onProcessCommand(text)
   return false
 end
 
-function PluginClass:onBackgroundChange(chatConfig)
-  return chatConfig
-end
-
 function PluginClass:onCustomButtonClick(buttonName, data)
 
 end

@@ -285,11 +285,6 @@ function mainchat:onTextboxEnter(message)
   end
 end
 
-function mainchat:onBackgroundChange(chatConfig)
-  chatConfig.DMingTo = self.DMingTo and self.DMingTo.uuid or nil
-  return chatConfig
-end
-
 function mainchat:onSubMenuReopen(type)
   if type ~= "DMs" then
     self.DMingTo = nil
