@@ -62,6 +62,11 @@ function StarCustomChat:create (canvasWid, backgroundCanvasWid, highlightCanvasW
     onChanged = textboxCallback,
     onEnterKey = textboxEnterKey,
     onEscapeKey = escapeTextbox,
+    scroll = {
+      scrollEnabled = true,
+      scrollOffset = { -8, 0 },
+      scrollGap = 1
+    },
     tabInsertText = "",
     lineSpacing = 1,
     caretColor = {255, 255, 255, 255},
