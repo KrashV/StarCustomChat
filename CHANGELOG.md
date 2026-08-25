@@ -18,20 +18,20 @@ Changed the pinged functionality - it now uses the entityId, not the player name
 
 ## Features
 MULTILINE TEXTBOX!! Thanks D.
-CHAT RESIZING
-Added the /filter command to filter the messages in the chat by text
-CommandPreview now enlarges to fit the longer descriptions
-Deleted BiggerChat
-Added the emojies window (left menu button)
-The sent messages are now trimmed from the beginning and the end. Does not remove spaces in between
+CHAT RESIZING.
+Added the /filter command to filter the messages in the chat by text or nickname.
+CommandPreview now enlarges to fit the longer descriptions.
+Deleted BiggerChat.
+Added the emojies window (left menu button).
+The sent messages are now trimmed from the beginning and the end. Does not remove spaces in between.
 Last message scroll is now triggered by Alt + Up/Down.
 Smoothed out the change of the chat size.
 Font names are now sorted by name.
 Added the /afk command. Does the same as the corresponding button.
-CharacterVoice: Added volume slider
-CharacterVoice: The sounds are now picked from the list of all the sounds
-ModeSounds: The sounds are now picked from the list of all the sounds
-Reacts added: gem, 100
+CharacterVoice: Added volume slider.
+CharacterVoice: The sounds are now picked from the list of all the sounds.
+ModeSounds: The sounds are now picked from the list of all the sounds.
+Reacts added: gem, 100.
 Added Belarus language support - thank you, Ender!
 Added the typing indicator.
 Moved the server messages to "CommandResult" mode.

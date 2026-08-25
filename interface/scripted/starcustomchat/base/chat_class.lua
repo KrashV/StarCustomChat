@@ -669,6 +669,7 @@ function filterMessages(messages, filter)
       and (
         not filter
         or (message.text and string.find(utf8.lower(message.text), utf8.lower(filter), 1, true))
+        or (message.nickname and string.find(utf8.lower(message.nickname), utf8.lower(filter), 1, true))
       )
     then
       table.insert(drawnMessageIndexes, i)
