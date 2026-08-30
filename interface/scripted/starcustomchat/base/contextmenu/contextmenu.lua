@@ -107,7 +107,6 @@ function processContextMenu(screenPosition)
 
   -- determine current hover / selection identity
   local inContext = widget.inMember("lytContext", screenPosition)
-   or rect.contains(rect.withSize(widget.getPosition("lytContext"), widget.getSize("lytContext")), vec2.add(pane.getPosition(), screenPosition))
 
   local prevSelectedUUID = self.contextMenu.lastSelectedUUID
   local selectedUUID = self.selectedMessage and self.selectedMessage.uuid or nil

@@ -14,7 +14,8 @@ Fixed the duplicating of entries for messages that are sent from chat history.
 Changed the notification of the ping to show the displayName instead of the actual nickname.
 Fixed the exploit of spamming the reactions by changing your name.
 Fixed the chat not showing the whole first message if it's too long.
-Changed the pinged functionality - it now uses the entityId, not the player name
+Changed the pinged functionality - it now uses the entityId, not the player name.
+Fixed the whisper messages to different people being merged into one block (not drawing the avatar and nickname).
 
 ## Features
 MULTILINE TEXTBOX!! Thanks D.
