@@ -100,8 +100,8 @@ local function _appendText(output, text, stack, activeDirectives)
   end
 
   if #stack > 0 or (activeDirectives and activeDirectives ~= "") then
-    text = text:gsub("%%^reset;", function()
-      return "^reset;" .. _composeStyleStack(stack) .. activeDirectives
+    text = text:gsub("%%?%^reset;", function()
+      return "^reset;" .. _composeStyleStack(stack) .. (activeDirectives or "")
     end)
   end
 
