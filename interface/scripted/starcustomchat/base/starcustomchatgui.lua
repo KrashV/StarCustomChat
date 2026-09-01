@@ -25,7 +25,7 @@ function init()
 
   self.chatWindowWidth = widget.getSize("saScrollArea")[1]
 
-  self.availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
+  local availableCommands = root.assetJson("/interface/scripted/starcustomchat/base/commands.config")
 
   local chatConfig = root.assetJson("/interface/scripted/starcustomchat/base/chat.config")
 
@@ -59,7 +59,7 @@ function init()
     end
 
     if pluginConfig.commands then
-      self.availableCommands = sb.jsonMerge(self.availableCommands, {[pluginName] = root.assetJson(pluginConfig.commands)})
+      availableCommands = sb.jsonMerge(availableCommands, {[pluginName] = root.assetJson(pluginConfig.commands)})
     end
 
     for _, localeConfig in ipairs(availableLocales) do 
@@ -112,7 +112,7 @@ function init()
 
   self.lastCommand = root.getConfiguration("icc_last_command")
 
-  self.commandPreview = CommandPreview:new(self.customChat, self.availableCommands)
+  self.commandPreview = CommandPreview:new(self.customChat, availableCommands)
 
   self.selectedMessage = nil
   self.sentMessages = root.getConfiguration("icc_my_messages") or jarray()
@@ -371,7 +371,7 @@ function registerCallbacks()
   end))
 
   starcustomchat.utils.setMessageHandler("scc_stagehand_commandlist", simpleHandler(function(commandList, pluginName)
-    self.availableCommands = sb.jsonMerge(self.availableCommands, { [pluginName or "serverside"] = commandList })
+    self.commandPreview:add({ [pluginName or "serverside"] = commandList })
   end))
 
   self.runCallbackForPlugins("registerMessageHandlers")

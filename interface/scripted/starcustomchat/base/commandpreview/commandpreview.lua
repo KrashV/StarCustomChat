@@ -11,6 +11,10 @@ function CommandPreview:new(customChat, availableCommands)
   }, self)
 end
 
+function CommandPreview:add(newCommands)
+  self.availableCommands = sb.jsonMerge(self.availableCommands, newCommands)
+end
+
 function CommandPreview:getDisplayText(entry)
   if type(entry) == "table" then
     return entry.name or entry.displayName or entry.data or entry.command or ""
