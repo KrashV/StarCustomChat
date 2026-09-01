@@ -26,7 +26,7 @@ end
 function CommandPreview:getInsertionText(entry)
   if type(entry) == "table" then
     if entry.entityId then
-      return "@" .. entry.entityId
+      return entry.displayName or entry.command or ""
     end
     return entry.command or entry.name or entry.data or entry.displayName or ""
   end
@@ -107,6 +107,14 @@ end
 function CommandPreview:getSelectedInsertion(text)
   if widget.getData("lblCommandPreview") and widget.getData("lblCommandPreview") ~= "" and widget.getData("lblCommandPreview") ~= text then
     return widget.getData("lblCommandPreview")
+  end
+end
+
+function CommandPreview:getPingTarget(text)
+  for _, entry in ipairs(self:getPingPlayers()) do
+    if entry.entityId and (entry.command == text or entry.displayName == text) then
+      return entry.entityId, string.sub(entry.displayName or entry.command or "", 2)
+    end
   end
 end
 

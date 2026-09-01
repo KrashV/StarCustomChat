@@ -254,6 +254,11 @@ function mainchat:onTextboxEnter(message)
   end
 
   if string.sub(message.text, 1, 1) == "@" then
+    if message.pingTarget then
+      self:ping(message.pingTarget.entityId, message.pingTarget.name)
+      return true
+    end
+
     local name = string.sub(message.text, 2, string.len(message.text)):gsub("%s+$", "")
     local function getResolvedPlayerName(entityId)
       local playerData = {

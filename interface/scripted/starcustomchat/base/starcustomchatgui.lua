@@ -988,6 +988,14 @@ function sendMessageToBeSent(text, mode)
     mode = mode
   }
 
+  local pingEntityId, pingName = self.commandPreview:getPingTarget(text)
+  if pingEntityId then
+    message.pingTarget = {
+      entityId = pingEntityId,
+      name = pingName
+    }
+  end
+
   if self.runCallbackForPlugins("preventTextboxCallback", message) then
     return
   end
