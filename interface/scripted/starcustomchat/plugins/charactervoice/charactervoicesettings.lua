@@ -10,15 +10,29 @@ function charactervoice:init()
   self.selectedSpecies = player.getProperty("scc_sound_species") or player.species()
   self.allRaceSounds = root.assetJson("/npcs/base.npctype")["scriptConfig"]["chatSounds"]
 
+  -- Quick migration of the custom sounds
+  local customSoundTable = player.getProperty("scc_charactervoice_custom")
+  if customSoundTable and type(customSoundTable) == "string" then
+    customSoundTable = {customSoundTable}
+  elseif customSoundTable and type(customSoundTable) == "table" then
+    local normalizedSoundTable = {}
+    for i = 1, 3 do
+      normalizedSoundTable[i] = customSoundTable[i] or customSoundTable[tostring(i)]
+    end
+    customSoundTable = normalizedSoundTable
+  end
+
+  self.customSoundsTable = customSoundTable or {}
+  player.setProperty("scc_charactervoice_custom", util.values(self.customSoundsTable))
+
   if self.selectedSpecies ~= "custom" then
     self.selectedSpecies = self.allRaceSounds[self.selectedSpecies] and self.selectedSpecies or "human"
 
-    local currentRaceSounds = self.allRaceSounds[self.selectedSpecies]
-
-    self.soundsPool = currentRaceSounds[player.gender()] 
+    self.soundsPool = self.allRaceSounds[self.selectedSpecies][player.gender()] 
   else
-    self.soundsPool = player.getProperty("scc_charactervoice_custom") and {player.getProperty("scc_charactervoice_custom")} or self.allRaceSounds["human"][player.gender()]
+    self.soundsPool = customSoundTable or self.allRaceSounds["human"][player.gender()]
   end
+
 
   self.soundsEnabled = player.getProperty("scc_sounds_enabled") or false
   self.widget.setChecked("chkEnabled", self.soundsEnabled or false)
@@ -47,17 +61,23 @@ function charactervoice:openTab()
       data = {displayPlainText = soundPath}
     }
   end
-  
-  self.combobox = self:createCombobox(soundList)
-  self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 
-  local sound = player.getProperty("scc_charactervoice_custom") or ""
-  self.widget.setText("btnCustomSound", sound:match("([^/]+)$") or "")
+  self.comboboxes = {}
+  for i = 1, 3 do 
+    local ind = tostring(i)
+    self.comboboxes["btnCustomSound" .. ind] = self:createCombobox(soundList, ind)
+
+    local sound = self.customSoundsTable[i] or ""
+    self.widget.setText("btnCustomSound" .. ind, sound:match("([^/]+)$") or "")
+    self.widget.setButtonEnabled("btnRemove" .. ind, sound and sound ~= "")
+  end
+  
+  self:populateScrollArea(self.allRaceSounds, self.selectedSpecies)
 end
 
-function charactervoice:createCombobox(soundList)
-  return Combobox:bind(self.layoutWidget .. "." .. "btnCustomSound", soundList, function(sound, data)
-    self:saveCustomSound(sound, data)
+function charactervoice:createCombobox(soundList, ind)
+  return Combobox:bind(self.layoutWidget .. "." .. "btnCustomSound" .. ind, soundList, function(sound, data)
+    self:saveCustomSound(sound, data, ind)
   end, {
     filter = true,
     background = "/interface/scripted/starcustomchatsettings/images/combobox/large/backgroundFilter.png",
@@ -71,8 +91,8 @@ function charactervoice:createCombobox(soundList)
   })
 end
 
-function charactervoice:openCombobox()
-  self.combobox:toggle()
+function charactervoice:toggleCombobox(btnName)
+  self.comboboxes[btnName]:toggle()
 end
 
 function charactervoice:populateScrollArea(allRaceSounds, selectedSpecies)
@@ -101,26 +121,39 @@ function charactervoice:changeSpecies()
   if li then
     local newSpecies = self.widget.getData("saSpecies.listItems." .. li)
     player.setProperty("scc_sound_species", newSpecies)
-    if newSpecies == "custom" then
-      self.widget.setVisible("btnCustomSound", true)
-    else
-      self.widget.setVisible("btnCustomSound", false)
-      self.soundsPool = self.allRaceSounds[newSpecies][player.gender()]
+
+    for i = 1, 3 do 
+      self.widget.setVisible("btnCustomSound" .. i, newSpecies == "custom")
+      self.widget.setVisible("btnRemove" .. i, newSpecies == "custom")
     end
-    
+
+    self.soundsPool = newSpecies == "custom" and util.values(self.customSoundsTable) or self.allRaceSounds[newSpecies][player.gender()]
     save()
   end
 end
 
-function charactervoice:saveCustomSound(sound, data)
+function charactervoice:removeSound(btnName)
+  local ind = tonumber(btnName:sub(-1))
+  self.widget.setText("btnCustomSound" .. ind, "")
+  self.customSoundsTable[ind] = nil
+  player.setProperty("scc_charactervoice_custom", util.values(self.customSoundsTable))
+  self.widget.setButtonEnabled("btnRemove" .. ind, false)
+  save()
+end
+
+function charactervoice:saveCustomSound(sound, data, ind)
+  ind = tonumber(ind)
   local customSound = data.displayPlainText or sound
 
   if customSound and customSound ~= "" then
-    self.widget.setText("btnCustomSound", customSound:match("([^/]+)$"))
+    self.widget.setText("btnCustomSound" .. ind, customSound:match("([^/]+)$"))
     if root.assetOrigin(customSound) then
-      player.setProperty("scc_charactervoice_custom", customSound)
+      self.customSoundsTable[ind] = customSound
       self.soundsPool = {customSound}
       self:playSound()
+      self.soundsPool = util.values(self.customSoundsTable)
+      player.setProperty("scc_charactervoice_custom", util.values(self.customSoundsTable))
+      self.widget.setButtonEnabled("btnRemove" .. ind, true)
       save()
     else
       starcustomchat.utils.alert("settings.plugins.charactervoice.soundNotFound")
@@ -166,11 +199,15 @@ function charactervoice:setTalkingVolume()
 end
 
 function charactervoice:uninit()
-  if self.combobox then
-    self.combobox:destroy()
-    self.combobox = nil
+  if self.comboboxes then
+    for _, cmbx in pairs(self.comboboxes) do 
+      if cmbx then
+        cmbx:destroy()
+      end
+    end
   end
-  if self.soundsPool[1] then
-    pane.stopAllSounds(self.soundsPool[1])
+
+  for i, v in ipairs(self.soundsPool) do
+    pane.stopAllSounds(v)
   end
 end

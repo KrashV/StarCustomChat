@@ -31,6 +31,7 @@ Font names are now sorted by name.
 Added the /afk command. Does the same as the corresponding button.
 CharacterVoice: Added volume slider.
 CharacterVoice: The sounds are now picked from the list of all the sounds.
+CharacterVoice: Added the ability to pick up to three Custom sounds.
 ModeSounds: The sounds are now picked from the list of all the sounds.
 Reacts added: gem, 100.
 Added Belarus language support - thank you, Ender!

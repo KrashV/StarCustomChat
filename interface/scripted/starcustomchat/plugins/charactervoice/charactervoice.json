@@ -138,14 +138,68 @@
         "translationKey": "settings.plugins.charactervoice.test"
       },
 
-      "btnCustomSound": {
+      "btnCustomSound1": {
         "type": "button",
-        "position": [90, 50],
+        "position": [90, 58],
         "caption": "...",
         "visible": false,
-        "callback": "openCombobox",
+        "callback": "toggleCombobox",
         "base": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:base",
         "hover": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:hover"
+      },
+
+      "btnCustomSound2": {
+        "type": "button",
+        "position": [90, 46],
+        "caption": "...",
+        "visible": false,
+        "callback": "toggleCombobox",
+        "base": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:hover"
+      },
+
+      "btnCustomSound3": {
+        "type": "button",
+        "position": [90, 34],
+        "caption": "...",
+        "visible": false,
+        "callback": "toggleCombobox",
+        "base": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/buttonlarge.png:hover"
+      },
+
+      "btnRemove1": {
+        "type": "button",
+        "position": [200, 62],
+        "base": "/interface/scripted/starcustomchatsettings/images/common/remove.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/remove.png:hover",
+        "callback": "removeSound",
+        "visible": false,
+        "data": {
+          "displayText": "settings.remove"
+        }
+      },
+      "btnRemove2": {
+        "type": "button",
+        "position": [200, 50],
+        "base": "/interface/scripted/starcustomchatsettings/images/common/remove.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/remove.png:hover",
+        "callback": "removeSound",
+        "visible": false,
+        "data": {
+          "displayText": "settings.remove"
+        }
+      },
+      "btnRemove3": {
+        "type": "button",
+        "position": [200, 38],
+        "base": "/interface/scripted/starcustomchatsettings/images/common/remove.png:base",
+        "hover": "/interface/scripted/starcustomchatsettings/images/common/remove.png:hover",
+        "callback": "removeSound",
+        "visible": false,
+        "data": {
+          "displayText": "settings.remove"
+        }
       }
     }
   },
