@@ -18,7 +18,10 @@ function emojis:onCustomButtonClick(btnName, data)
   if btnName == "btnEmojiList" then
     widget.setVisible("lytEmojiList", not widget.active("lytEmojiList"))
     if widget.active("lytEmojiList") then
+      self.customChat:blurInput()
       widget.focus("lytEmojiList.tbxSearch")
+    else
+        self.customChat:focusInput()
     end
     self:populateEmojiList(widget.getText("lytEmojiList.tbxSearch"))
   elseif btnName == "tbxSearch" then 
@@ -35,6 +38,7 @@ function emojis:onCustomButtonClick2(btnName, data)
     widget.setVisible("lytEmojiList", false)
     widget.setText("lytEmojiList.tbxSearch", "")
     widget.blur("lytEmojiList.tbxSearch")
+    self.customChat:focusInput()
     self.searchText = ""
   end
 end
@@ -42,13 +46,55 @@ end
 function emojis:onTextboxEscape()
     if widget.active("lytEmojiList") then
       widget.setVisible("lytEmojiList", false)
+      widget.blur("lytEmojiList.tbxSearch")
+      self.customChat:focusInput()
       return true
     end
 end
 
+local function containsModifier(mods, modifier)
+  for key, value in pairs(mods or {}) do
+    if value == modifier or (key == modifier and value) then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function matchesBind(event, bind)
+  if event.type ~= "KeyDown" or not event.data or bind.type ~= "key" then
+    return false
+  end
+
+  local eventMods = event.data.mods or {}
+  local bindMods = bind.mods or {}
+
+  if event.data.key ~= bind.value then
+    return false
+  end
+
+  for _, modifier in ipairs(bindMods) do
+    if not containsModifier(eventMods, modifier) then
+      return false
+    end
+  end
+
+  return true
+end
+
 function emojis:processEvents(events)
-    if input.bindDown("starcustomchat", "openEmojiPane") then
-        self:onCustomButtonClick("btnEmojiList")
+  local emojiBinds = input.getBinds("starcustomchat", "openEmojiPane")
+
+  if self.customChat:hasFocusInput() then
+    for _, event in ipairs(events) do
+        for _, bind in ipairs(emojiBinds) do
+        if matchesBind(event, bind) then
+            self:onCustomButtonClick("btnEmojiList")
+            return
+        end
+            end
+        end
     end
 end
 
