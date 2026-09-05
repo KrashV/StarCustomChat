@@ -99,7 +99,7 @@ end
 
 function StarCustomChat:addMessage(msg)
 
-  function formatMessage(message)
+  local function formatMessage(message)
 
     if message.mode == "RadioMessage" and message.portrait then
       message.portrait = message.portrait .. self.config.radioMessageCropDirective
